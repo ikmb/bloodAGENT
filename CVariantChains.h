@@ -1,0 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   CVariantChains.h
+ * Author: mwittig
+ *
+ * Created on July 24, 2019, 7:35 AM
+ */
+
+#ifndef CVARIANTCHAINS_H
+#define CVARIANTCHAINS_H
+
+#include <string>
+
+#include "CIsbtGt.h"
+
+
+class CVariantChains {
+public:
+    CVariantChains();
+    CVariantChains(CISBTAnno* isbt);
+    CVariantChains(const CVariantChains& orig);
+    virtual ~CVariantChains();
+    
+    friend std::ostream& operator<<(std::ostream& os, const CVariantChains& me);
+    
+    bool init();
+    bool add(const CVcfSnp& act_snp);
+    
+    std::set<CIsbtGt> getPossibleGenotypes(const string& system);
+    
+private:
+    
+    /// These are differences between LRG and genome reference
+    void addReferenceSnps();
+
+    CISBTAnno* m_isbt;
+    map<string,CVariantChain> m_variant_chains;
+    
+};
+
+#endif /* CVARIANTCHAINS_H */
+

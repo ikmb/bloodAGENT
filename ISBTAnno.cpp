@@ -14,6 +14,8 @@
 #include "vcf.h"
 #include "CVcf.h"
 #include "CVcfSnp.h"
+
+#include "CIsbtVariant.h"
 #include "ISBTAnno.h"
 
 CISBTAnno::CISBTAnno(const std::string& filename) 
@@ -27,6 +29,7 @@ CISBTAnno::CISBTAnno(const CISBTAnno& orig)
     m_entry_finder = orig.m_entry_finder;
     m_strand = orig.m_strand;
     m_parsed_isbt_variant = orig.m_parsed_isbt_variant;
+    m_loci = orig.m_loci;
 }
 
 CISBTAnno::~CISBTAnno() {
@@ -41,10 +44,13 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
         do{
             ostringstream osr("");
             osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["1-based end (hg19)"];
+            m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]=m_entry_finder.size();
             m_entry_finder.insert(pair<string,int>(osr.str(),m_entry_finder.size()));
             if(m_strand.find(m_vanno["system/gene"]) == m_strand.end())
                 m_strand[m_vanno["system/gene"]]=m_vanno["strand (hg19)"][0];
-            m_parsed_isbt_variant.push_back(parseIsbtVariant(m_vanno["Transcript annotation short"]));
+            m_loci.insert(m_vanno["system/gene"]);
+            m_parsed_isbt_variant.push_back(CIsbtVariant(m_vanno["Transcript annotation short"], 
+                    m_vanno["Reference base (hg19)"], m_vanno["Chrom (hg19)"], stoi(m_vanno["1-based end (hg19)"]),m_vanno["strand (hg19)"][0]));
         }while(m_vanno.Next());
         return true;
     }
@@ -53,76 +59,20 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
 
 bool CISBTAnno::isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system)
 {
-    variation var = parseIsbtVariant(isbtVariant);
-    if(strand(system) == '-')
-        return var.second.second.compare(CMyTools::GetComplSequence(allele)) == 0;
-    return var.second.second.compare(allele) == 0;
+    CIsbtVariant var = m_parsed_isbt_variant[m_isbt_variant_to_index[system][isbtVariant]];
+    return var.reference().compare(allele) == 0;
 }
 
-CISBTAnno::variation CISBTAnno::parseIsbtVariant(string var)
+map<string,vector<CISBTAnno::variation> > CISBTAnno::getReferenceVariations()
 {
-    variation vRet("",pair<string,string>("",""));
-    
-    smatch m;
-    regex e ("^[0-9_+-]{1,}");
-    
-    regex_search(var,m,e);
-    for (auto x:m)
-        vRet.first = x;
-    
-    string actBaseChange= m.suffix().str();
-    size_t pos = actBaseChange.find('>');
-    if(pos != string::npos)
-    {
-        vRet.second.first = actBaseChange.substr(0,pos);
-        vRet.second.second = actBaseChange.substr(pos+1);
-    }
-    else if(actBaseChange.substr(0,6).compare("delins")==0)
-    {
-        vRet.second.first = m_vanno["Reference base (hg19)"];
-        vRet.second.second = actBaseChange.substr(6);
-        if(strand(m_vanno["system/gene"]) == '-')
-            vRet.second.first = CMyTools::GetComplSequence(vRet.second.first);
-    }
-    else if(actBaseChange.substr(0,3).compare("del")==0)
-    {
-        vRet.second.first = actBaseChange.substr(3);
-        if(vRet.second.first.size() == 0) // sequence not part of annotation, so get it from table
-        {
-            vRet.second.first = m_vanno["Reference base (hg19)"];
-            if(strand(m_vanno["system/gene"]) == '-')
-                vRet.second.first = CMyTools::GetComplSequence(vRet.second.first);
-        }
-        vRet.second.second = "-";
-    }
-    else if(actBaseChange.substr(0,3).compare("ins")==0)
-    {
-        vRet.second.first = "-";
-        vRet.second.second = actBaseChange.substr(3);
-    }
-    else if(actBaseChange.substr(0,3).compare("dup")==0)
-    {
-        vRet.second.first = m_vanno["Reference base (hg19)"];
-        if(strand(m_vanno["system/gene"]) == '-')
-            vRet.second.first = CMyTools::GetComplSequence(vRet.second.first);
-        vRet.second.second = vRet.second.first + actBaseChange.substr(3);
-    }
-    else 
-    {
-        cerr << "Can not parse this variant annotation: " << vRet.first << " o" << actBaseChange << endl;
-    }
-    //cout << vRet.first << " o " << vRet.second.first << " o " << vRet.second.second << endl;
-    return vRet;
-}
-
-map<string,vector<string> > CISBTAnno::getReferenceVariations()
-{
-    map<string,vector<string> > mRet;
+    map<string,vector<CISBTAnno::variation> > mRet;
+    int i = 0;
     if(m_vanno.First())
     {
         do{
             if(m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0)
-                mRet[m_vanno["system/gene"]].push_back(m_vanno["Transcript annotation short"]);
+                mRet[m_vanno["system/gene"]].push_back(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]]);
+            i++;
         }while(m_vanno.Next());
     }
     return mRet;
@@ -142,7 +92,7 @@ std::vector<std::string> CISBTAnno::getVariationsAt(std::string chrom, int pos)c
     return vRet;
 }
 
-string CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)const
+CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)const
 {
     ostringstream osr("");
     osr << vcfsnp.chrom() << '_' << vcfsnp.pos();
@@ -154,17 +104,12 @@ string CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)const
         if(it->second >= m_parsed_isbt_variant.size())
             throw("something is out of bounds in string CISBTAnno::getCorrespondingIsbtVariations(CVcfSnp vcfsnp)const");
         variation varParsed = m_parsed_isbt_variant[it->second];
-        if(strand(m_vanno.cell(it->second,"system/gene")) == '-')
-        {
-            varParsed.second.first  = CMyTools::GetComplSequence(varParsed.second.first);
-            varParsed.second.second = CMyTools::GetComplSequence(varParsed.second.second);
-        }
         int equal_counter = 0;
         int allele_counter = 0;
         for(auto s:vcfsnp.alleles())
         {
             allele_counter++;
-            if(s.compare(varParsed.second.first) == 0 || s.compare(varParsed.second.second) == 0)
+            if(s.compare(varParsed.reference()) == 0 || s.compare(varParsed.alternative()) == 0)
                 equal_counter++;
         }
         // TODO: This is not robust!!!
@@ -173,12 +118,26 @@ string CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)const
         // parse the vcf output and adapt it to the helper table. Example
         // ABO del261G in helper table: -/C
         //                      in vcf: T/TC
+        // another exception would be KEL with G for k+,A for K+ and C for Kmod at rs8176058
         if(equal_counter == allele_counter || // alleles match perfect 
            abs(mRange.second->second - mRange.first->second) == 1  ) // only one entry
-            return m_vanno.cell(it->second,"Transcript annotation short");
+            return m_parsed_isbt_variant[it->second];
     }
-    return "";
+    return CISBTAnno::variation();
 }
+
+CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string& isbt_var)const
+{
+    std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);
+    if(i != m_isbt_variant_to_index.end())
+    {
+        std::map<std::string,int>::const_iterator j = i->second.find(isbt_var);
+        if(j != i->second.end())
+            return m_parsed_isbt_variant[j->second];
+    }
+    return  variation();
+}
+
 
 
 

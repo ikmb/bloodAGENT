@@ -1,0 +1,160 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   CIsbtVariant.cpp
+ * Author: mwittig
+ * 
+ * Created on July 22, 2019, 8:08 AM
+ */
+#include <cstdlib>
+#include <vector>
+#include <map>
+#include <string>
+#include <libgen.h>
+
+#include <regex>
+
+#include "CIsbtVariant.h"
+
+using namespace std;
+
+CIsbtVariant::CIsbtVariant() 
+{
+    m_isbt_name = "";
+    m_chromosome = "";
+    m_position = -1;
+    m_strand = 'u';
+    m_lrg_position = "";
+    /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
+    m_lrg_reference = "";
+    m_lrg_alternative = "";
+}
+
+CIsbtVariant::CIsbtVariant(std::string lrg_anno, std::string refBase, std::string chrom, int pos, char strand) 
+{
+    m_isbt_name = lrg_anno;
+    m_chromosome = chrom;
+    m_position = pos;
+    m_strand = strand;
+    m_lrg_position = "";
+    /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
+    m_lrg_reference = refBase;
+    m_lrg_alternative = "";
+    parseIsbtVariant();
+}
+
+CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig) 
+{
+    m_isbt_name = orig.m_isbt_name;
+    m_lrg_position = orig.m_lrg_position;
+    m_lrg_reference = orig.m_lrg_reference;
+    m_lrg_alternative = orig.m_lrg_alternative;
+    
+    m_chromosome = orig.m_chromosome;
+    m_position = orig.m_position;
+    m_strand = orig.m_strand;
+}
+
+CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
+{
+    m_isbt_name = orig.m_isbt_name;
+    m_lrg_position = orig.m_lrg_position;
+    m_lrg_reference = orig.m_lrg_reference;
+    m_lrg_alternative = orig.m_lrg_alternative;
+    
+    m_chromosome = orig.m_chromosome;
+    m_position = orig.m_position;
+    m_strand = orig.m_strand;
+    return *this;
+}
+
+bool   CIsbtVariant::operator <(const CIsbtVariant& orig)const
+{
+    int c = m_chromosome.compare(orig.m_chromosome);
+    if(c < 0 )
+        return true;
+    if(c > 0)
+        return false;
+    if(m_position < orig.m_position)
+        return true;
+    if(m_position > orig.m_position)
+        return false;
+    c = m_isbt_name.compare(orig.m_isbt_name);
+    if(c < 0 )
+        return true;
+    return false;
+}
+
+bool   CIsbtVariant::operator ==(const CIsbtVariant& orig)const
+{
+    return (
+            m_chromosome.compare(orig.m_chromosome) == 0 && 
+            m_position == orig.m_position && 
+            m_strand == orig.m_strand && 
+            m_isbt_name.compare(orig.m_isbt_name) == 0
+            );
+}
+
+std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me)
+{
+    os << me.name();
+    return os;
+}
+
+CIsbtVariant::~CIsbtVariant() 
+{
+    
+}
+
+bool CIsbtVariant::parseIsbtVariant()
+{
+    smatch m;
+    regex e ("^[0-9_+-]{1,}");
+    
+    regex_search(m_isbt_name,m,e);
+    for (auto x:m)
+        m_lrg_position = x;
+    
+    string actBaseChange= m.suffix().str();
+    size_t pos = actBaseChange.find('>');
+    if(pos != string::npos)
+    {
+        m_lrg_reference = actBaseChange.substr(0,pos);
+        m_lrg_alternative = actBaseChange.substr(pos+1);
+    }
+    else if(actBaseChange.substr(0,6).compare("delins")==0)
+    {
+        m_lrg_alternative = actBaseChange.substr(6);
+        if(strand() == '-')
+            m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
+    }
+    else if(actBaseChange.substr(0,3).compare("del")==0)
+    {
+        if(!actBaseChange.substr(3).empty())
+            m_lrg_reference = actBaseChange.substr(3);
+        else if(strand() == '-')
+            m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
+        m_lrg_alternative = "-";
+    }
+    else if(actBaseChange.substr(0,3).compare("ins")==0)
+    {
+        m_lrg_reference = "-";
+        m_lrg_alternative = actBaseChange.substr(3);
+    }
+    else if(actBaseChange.substr(0,3).compare("dup")==0)
+    {
+        if(strand() == '-')
+            m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
+        m_lrg_alternative = m_lrg_reference + actBaseChange.substr(3);
+    }
+    else 
+    {
+        cerr << "Can not parse this variant annotation: " << m_lrg_position << " o" << actBaseChange << endl;
+    }
+    //cout << vRet.first << " o " << m_lrg_reference << " o " << m_lrg_alternative << endl;
+    return true;
+}

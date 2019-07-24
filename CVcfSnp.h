@@ -36,7 +36,7 @@ public:
     std::vector<std::string>     alleles()const{return m_alleles;}
     std::vector<std::string>     indelalleles()const;
     std::string                    SNP()const;
-    size_t                     phasingID()const{return m_phasing_id;}
+    int                         phasingID()const{return m_phasing_id;}
     bool                        isPhased()const{return m_phasing_id != -1;}
     
     
@@ -49,7 +49,7 @@ private:
     std::vector<int>            m_qualities;
     long                        m_depth;
     bool                        m_verbose;
-    int                      m_phasing_id;
+    int                         m_phasing_id;
     
     void read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& m_seq_names,bcf1_t *rec);
 };

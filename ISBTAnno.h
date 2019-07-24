@@ -26,13 +26,14 @@
 
 #include "mytools.h"
 #include "CVcfSnp.h"
+#include "CIsbtVariant.h"
 
 class CISBTAnno {
 public:
     
     ///              position,<original nuc,alternative nuc>
     /// pos has to be string due to intronic annotation (e.g. 1254-31))
-    typedef std::pair<string,std::pair<std::string,std::string>> variation;
+    typedef CIsbtVariant variation;
     
     CISBTAnno(const std::string& filename);
     CISBTAnno(const CISBTAnno& orig);
@@ -42,21 +43,24 @@ public:
     std::vector<std::string> getVariationsAt(std::string chrom, int pos)const;
     
     /// return ISBT variation for this SNP or empty string
-    std::string getCorrespondingIsbtVariation(CVcfSnp)const;
+    variation getCorrespondingIsbtVariation(CVcfSnp)const;
     
     /// return blood group system for this genomic position
     std::string getSystemAt(std::string chrom, int pos)const;
     
     /// return all variations between LRG sequence and std GRCh reference ...
-    std::map<std::string,std::vector<std::string> > getReferenceVariations();
+    std::map<std::string,std::vector<CISBTAnno::variation> > getReferenceVariations();
     
     /// return strand +/-/u
     char strand(const std::string& system)const{if(m_strand.find(system) != m_strand.end())return m_strand.find(system)->second;return 'u';}
     
     
-    variation parseIsbtVariant(string var);
-    
     bool isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system);
+    
+    std::set<std::string>   loci()const{ return m_loci;}
+    
+    
+    variation getIsbtVariant(const std::string& system,const std::string& isbt_var)const;
     
 private:
     bool m_data_red;
@@ -65,9 +69,12 @@ private:
     
     
     CParsedTextfile m_vanno;
-    std::multimap<string,int>   m_entry_finder;
-    std::map<string,char>       m_strand;
-    std::vector<variation>      m_parsed_isbt_variant;
+    std::multimap<std::string,int>                      m_entry_finder; // by chromosomal coordinate, e.g. "chr9_1234567"
+    std::map<std::string,char>                          m_strand;
+    std::vector<variation>                              m_parsed_isbt_variant;
+    std::map<std::string,std::map<std::string,int>>     m_isbt_variant_to_index;
+    std::set<std::string>                               m_loci;
+    
 };
 
 #endif /* ISBTANNO_H */
