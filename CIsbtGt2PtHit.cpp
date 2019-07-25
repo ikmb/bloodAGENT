@@ -44,7 +44,7 @@ bool CIsbtGt2PtHit::sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2P
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2PtHit& me)
 {
-    os << me.m_phenotype_allele << " e1: " << me.m_anno_not_in_typed << " e2: " << me.m_typed_not_in_anno;
+    os << "malus: " << me.m_anno_not_in_typed+me.m_typed_not_in_anno << " " << me.m_phenotype_allele << " e1: " << me.m_anno_not_in_typed << " e2: " << me.m_typed_not_in_anno;
 }
 
 
