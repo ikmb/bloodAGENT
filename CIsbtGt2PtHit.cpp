@@ -39,6 +39,10 @@ CIsbtGt2PtHit::~CIsbtGt2PtHit()
 
 bool CIsbtGt2PtHit::sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 ) 
 { 
+    if(c1.m_typed_not_in_anno < c2.m_typed_not_in_anno)
+        return true;
+    if(c1.m_typed_not_in_anno > c2.m_typed_not_in_anno)
+        return false;
     return c1.m_anno_not_in_typed+c1.m_typed_not_in_anno < c2.m_anno_not_in_typed+c2.m_typed_not_in_anno; 
 }
 

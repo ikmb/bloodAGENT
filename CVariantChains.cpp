@@ -61,7 +61,7 @@ bool CVariantChains::init()
     set<string> loci = m_isbt->loci();
     for(set<string>::iterator locusIter = loci.begin(); locusIter != loci.end(); locusIter++)
         m_variant_chains[*locusIter]=CVariantChain(m_isbt);
-    
+    addReferenceSnps();
     return true;
 }
 

@@ -41,7 +41,7 @@ void CIsbtGt2Pt::init(const string& filename)
     CParsedTextfile ptx(filename,"\t","Phenotype",0,true, "#");
     if(ptx.First())
         do{
-            m_allele_vector[ptx["System"]].push_back(CIsbtPtAllele(ptx["Phenotype"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
+            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Phenotype"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
         }while(ptx.Next());
     
 }
