@@ -16,9 +16,13 @@
 
 class CIsbtPtAllele {
 public:
+    CIsbtPtAllele(std::string name, std::string base_changes, std::string acid_changes, std::string incidence);
     CIsbtPtAllele(std::string name, std::string base_changes, std::string acid_changes, float incidence);
     CIsbtPtAllele(const CIsbtPtAllele& orig);
     virtual ~CIsbtPtAllele();
+    
+    friend std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me);
+    
 private:
     
     void init(std::string name, std::string base_changes, std::string acid_changes, float incidence);

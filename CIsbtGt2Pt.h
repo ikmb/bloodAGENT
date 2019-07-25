@@ -22,6 +22,9 @@ public:
     CIsbtGt2Pt(const std::string& filename);
     CIsbtGt2Pt(const CIsbtGt2Pt& orig);
     virtual ~CIsbtGt2Pt();
+    
+    friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
+    
 private:
     
     void init(const std::string& filename);
