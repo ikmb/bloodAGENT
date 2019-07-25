@@ -42,7 +42,8 @@ public:
     
 private:
     
-    void getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele var, map<string,set<CVariantChainVariation>>::iterator iter, int type = 0);
+    void getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B, 
+            map<string,set<CVariantChainVariation>>::iterator iter, int type = 0);
     
     CISBTAnno* m_isbt_anno;
     

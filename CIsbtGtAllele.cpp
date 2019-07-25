@@ -48,6 +48,8 @@ bool CIsbtGtAllele::operator <(const CIsbtGtAllele& orig)const
     {
         if(*i < *j)
             return true;
+        if(*i > *j)
+            return false;
     }
     if(m_gt.size() < orig.m_gt.size())
         return true;
@@ -76,9 +78,10 @@ bool CIsbtGtAllele::add(const CIsbtVariant& var)
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGtAllele& me)
 {
+    long unsigned int i = 0;
     for(auto x:me.m_gt)
     {
-        os << x << ' ';
+        os << x << ( ++i == me.m_gt.size() ? "" : " ");
     }
     return os;
 }

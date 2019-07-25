@@ -119,44 +119,55 @@ std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()
     std::set<CIsbtGt> sRet;
     map<string,set<CVariantChainVariation>>::iterator i = m_chains.begin();
     
-    getPossibleGenotypes(sRet, CIsbtGtAllele(),i);
-    getPossibleGenotypes(sRet, CIsbtGtAllele(),i,1);
-    
+    if(i == m_chains.end())
+    {
+        CIsbtGt newGt;
+        newGt.add(CIsbtGtAllele());
+        newGt.add(CIsbtGtAllele());
+        sRet.insert(newGt);
+    }
+    else
+    {
+        getPossibleGenotypes(sRet, CIsbtGtAllele(), CIsbtGtAllele(),i);
+        getPossibleGenotypes(sRet, CIsbtGtAllele(), CIsbtGtAllele(),i,1);
+    }
     return sRet;
 }
 
-void CVariantChain::getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele var, 
+void CVariantChain::getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allA, CIsbtGtAllele allB,
         map<string,set<CVariantChainVariation>>::iterator iter, int type)
 {
-    CIsbtGtAllele varCopy = var;
     if(type == 0)
     {
         for(set<CVariantChainVariation>::iterator i = iter->second.begin(); i != iter->second.end(); i++)
+        {
             if(i->first_variant != CIsbtVariant())
-                var.add(i->first_variant);
+                allA.add(i->first_variant);
+            if(i->second_variant != CIsbtVariant())
+                allB.add(i->second_variant);
+        }
     }
     else
     {
         for(set<CVariantChainVariation>::iterator i = iter->second.begin(); i != iter->second.end(); i++)
+        {
+            if(i->first_variant != CIsbtVariant())
+                allB.add(i->first_variant);
             if(i->second_variant != CIsbtVariant())
-                var.add(i->second_variant);
+                allA.add(i->second_variant);
+        }
     }
     iter++;
     if(iter == m_chains.end())
     {
-        iter--;
         CIsbtGt newGt;
-        newGt.add(var);
-        // add second possibility
-        for(set<CVariantChainVariation>::iterator i = iter->second.begin(); i != iter->second.end(); i++)
-            if(i->second_variant != CIsbtVariant())
-                varCopy.add(i->second_variant);
-        newGt.add(varCopy);
+        newGt.add(allA);
+        newGt.add(allB);
         vars.insert(newGt);
         return;
     }
-    getPossibleGenotypes(vars, var,iter);
-    getPossibleGenotypes(vars, var,iter,1);
+    getPossibleGenotypes(vars, allA, allB,iter);
+    getPossibleGenotypes(vars, allA, allB,iter,1);
 }
 
 
