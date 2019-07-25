@@ -99,6 +99,12 @@ bool   CIsbtVariant::operator ==(const CIsbtVariant& orig)const
             );
 }
 
+ bool  CIsbtVariant::operator ==(const string& orig)const
+ {
+     return m_isbt_name.compare(orig) == 0;
+ }
+ 
+ 
 std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me)
 {
     os << me.name();

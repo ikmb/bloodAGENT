@@ -23,6 +23,11 @@ public:
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me);
     
+    std::set<std::string>  baseChanges()const{return m_base_changes;}
+    std::set<std::string>  acidChanges()const{return m_acid_changes;}
+    
+    bool containsBaseChange(const std::string& isbt_base_change)const;
+    
 private:
     
     void init(std::string name, std::string base_changes, std::string acid_changes, float incidence);

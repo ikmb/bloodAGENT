@@ -15,7 +15,8 @@
 #define CISBTGT2PT_H
 
 #include "CIsbtPtAllele.h"
-
+#include "CIsbtGtAllele.h"
+#include "CIsbtGt2PtHit.h"
 
 class CIsbtGt2Pt {
 public:
@@ -24,6 +25,9 @@ public:
     virtual ~CIsbtGt2Pt();
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
+    
+    std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt);
+    
     
 private:
     

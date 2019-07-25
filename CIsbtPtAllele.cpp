@@ -64,6 +64,14 @@ void CIsbtPtAllele::init(std::string name, std::string base_changes, std::string
      
 }
 
+bool CIsbtPtAllele::containsBaseChange(const std::string& isbt_base_change)const
+{
+    for(auto x:m_base_changes)
+        if(x.compare(isbt_base_change) == 0)
+            return true;
+    return false;
+}
+
 std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me)
 {
     long unsigned int i = 0;

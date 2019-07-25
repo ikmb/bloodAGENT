@@ -34,6 +34,10 @@ public:
     bool empty()const{return m_gt.empty();}
     long unsigned int size()const{return m_gt.size();}
     
+    bool contains(const std::string& isbt_base_change)const;
+    
+    std::set<CIsbtVariant>  variantSet()const{return m_gt;}
+    
     
     /// returns true if the CIsbtVariant is new
     bool add(const CIsbtVariant& var);

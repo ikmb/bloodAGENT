@@ -75,6 +75,13 @@ bool CIsbtGtAllele::add(const CIsbtVariant& var)
     return m_gt.insert(var).second;
 }
 
+bool CIsbtGtAllele::contains(const std::string& isbt_base_change)const
+{
+    for(auto x:m_gt)
+        if(x.name().compare(isbt_base_change) == 0)
+            return true;
+    return false;
+}
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGtAllele& me)
 {
@@ -85,3 +92,7 @@ std::ostream& operator<<(std::ostream& os, const CIsbtGtAllele& me)
     }
     return os;
 }
+
+
+
+

@@ -46,6 +46,34 @@ void CIsbtGt2Pt::init(const string& filename)
     
 }
 
+vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtGtAllele& isbtGtAllele)
+{
+    std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
+    if(iterSys == m_allele_vector.end())
+        return vector<CIsbtGt2PtHit>();
+    
+    vector<CIsbtGt2PtHit> vRet;
+    // calculate matching parameters for each annotated allele, 
+    for(auto anno:iterSys->second)
+    {
+        CIsbtGt2PtHit actHit(anno);
+        // for each annotated base change 
+        for(auto a:anno.baseChanges())
+        {
+            if(!isbtGtAllele.contains(a))
+                actHit.m_anno_not_in_typed++;
+        }
+        for(auto i:isbtGtAllele.variantSet())
+        {
+            if(!anno.containsBaseChange(i.name()))
+                actHit.m_typed_not_in_anno++;
+        }
+        vRet.push_back(actHit);
+    }
+    sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_errors_asc);
+    return vRet;
+}
+
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me)
 {
     long unsigned int i = 0;

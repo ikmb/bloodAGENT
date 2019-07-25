@@ -38,6 +38,8 @@ public:
     /// returns true if the CIsbtVariant is new
     bool add(const CIsbtGtAllele& var);
     
+    std::set<CIsbtGtAllele> getAlleles()const{return m_gt;}
+    
 private:
     std::set<CIsbtGtAllele> m_gt;
 };
