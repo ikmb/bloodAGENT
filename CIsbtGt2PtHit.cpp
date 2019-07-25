@@ -39,7 +39,7 @@ CIsbtGt2PtHit::~CIsbtGt2PtHit()
 
 bool CIsbtGt2PtHit::sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 ) 
 { 
-    return c1.m_anno_not_in_typed+c1.m_typed_not_in_anno > c2.m_anno_not_in_typed+c2.m_typed_not_in_anno; 
+    return c1.m_anno_not_in_typed+c1.m_typed_not_in_anno < c2.m_anno_not_in_typed+c2.m_typed_not_in_anno; 
 }
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2PtHit& me)
