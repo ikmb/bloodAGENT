@@ -37,6 +37,7 @@ public:
     bool contains(const std::string& isbt_base_change)const;
     
     std::set<CIsbtVariant>  variantSet()const{return m_gt;}
+    size_t  variantCount()const{return m_gt.size();}
     
     
     /// returns true if the CIsbtVariant is new

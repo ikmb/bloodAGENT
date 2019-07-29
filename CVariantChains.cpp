@@ -93,10 +93,10 @@ bool CVariantChains::add(const CVcfSnp& act_snp)
     return false;
 }
 
-std::set<CIsbtGt> CVariantChains::getPossibleGenotypes(const string& system)
+std::set<CIsbtGt> CVariantChains::getPossibleGenotypes(const string& system)const
 {
     std::set<CIsbtGt> sRet;
-    map<string,CVariantChain>::iterator i = m_variant_chains.find(system);
+    map<string,CVariantChain>::const_iterator i = m_variant_chains.find(system);
     if(i != m_variant_chains.end())
     {
         return i->second.getPossibleGenotypes();

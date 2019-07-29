@@ -26,11 +26,19 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2PtHit& me);
     
     static bool sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 );
+    static bool sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 );
+    
+    int errurSum()const{return m_typed_not_in_anno+m_anno_not_in_typed;}
     int m_typed_not_in_anno;
     int m_anno_not_in_typed;
     CIsbtPtAllele m_phenotype_allele;
     
+    
+    void score(const float& val){m_score = val;}
+    float score()const{return m_score;}
+    
 private:
+    float m_score;
 
 };
 

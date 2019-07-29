@@ -31,8 +31,9 @@ public:
     bool init();
     bool add(const CVcfSnp& act_snp);
     
-    std::set<CIsbtGt> getPossibleGenotypes(const string& system);
+    std::set<CIsbtGt> getPossibleGenotypes(const string& system)const;
     
+  
 private:
     
     /// These are differences between LRG and genome reference

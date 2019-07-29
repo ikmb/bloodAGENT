@@ -38,12 +38,12 @@ public:
     //void addHR(const CIsbtVariant& var);
     bool add(const CVcfSnp& var);
     
-    std::set<CIsbtGt> getPossibleGenotypes();
+    std::set<CIsbtGt> getPossibleGenotypes()const;
     
 private:
     
     void getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B, 
-            map<string,set<CVariantChainVariation>>::iterator iter, int type = 0);
+            map<string,set<CVariantChainVariation>>::const_iterator iter, int type = 0)const;
     
     CISBTAnno* m_isbt_anno;
     

@@ -114,10 +114,10 @@ bool CVariantChain::add(const CVcfSnp& var)
 }
 
 
-std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()
+std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()const
 {
     std::set<CIsbtGt> sRet;
-    map<string,set<CVariantChainVariation>>::iterator i = m_chains.begin();
+    map<string,set<CVariantChainVariation>>::const_iterator i = m_chains.begin();
     
     if(i == m_chains.end())
     {
@@ -135,7 +135,7 @@ std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()
 }
 
 void CVariantChain::getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allA, CIsbtGtAllele allB,
-        map<string,set<CVariantChainVariation>>::iterator iter, int type)
+        map<string,set<CVariantChainVariation>>::const_iterator iter, int type)const
 {
     if(type == 0)
     {

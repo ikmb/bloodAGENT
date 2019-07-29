@@ -24,16 +24,23 @@ public:
     CIsbtGt2Pt(const CIsbtGt2Pt& orig);
     virtual ~CIsbtGt2Pt();
     
+    typedef std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>> typing_result;
+    
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt);
+    typing_result type(const string& system, const CVariantChains& variants);
+    
+    void sort(typing_result& var);
     
     
 private:
     
     void init(const std::string& filename);
+    float scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&);
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
+    
 
 };
 
