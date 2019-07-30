@@ -79,6 +79,8 @@ std::ostream& operator<<(std::ostream& os, const CIsbtGt& me)
     for(auto x:me.m_gt)
     {
         os << x << ( ++i == me.m_gt.size() ? "" : " & ");
+        if(me.isHomozygous())
+            os << " homozygous";
     }
     return os;
 }

@@ -33,13 +33,18 @@ public:
     
     void sort(typing_result& var);
     
+    std::string getCallAsString(const std::string& system)const;
     
 private:
     
     void init(const std::string& filename);
     float scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&);
+    float getTopPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
+    float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
+    
+    std::map<std::string,typing_result> m_typing_results;
     
 
 };

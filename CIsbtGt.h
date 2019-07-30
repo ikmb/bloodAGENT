@@ -33,6 +33,7 @@ public:
     
     bool empty()const{return m_gt.empty();}
     long unsigned int size()const{return m_gt.size();}
+    bool isHomozygous()const{return m_gt.size()==1;}
     
     
     /// returns true if the CIsbtVariant is new

@@ -38,6 +38,7 @@ CIsbtGt2Pt::CIsbtGt2Pt(const string& filename)
 CIsbtGt2Pt::CIsbtGt2Pt(const CIsbtGt2Pt& orig) 
 {
     m_allele_vector = orig.m_allele_vector;
+    m_typing_results=orig.m_typing_results;
 }
 
 CIsbtGt2Pt::~CIsbtGt2Pt() {
@@ -100,6 +101,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     }
     float best_hit = scoreHits(mRet);
     sort(mRet);
+    m_typing_results[system]=mRet;
     return mRet;
 }
 
@@ -187,6 +189,47 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
+std::string CIsbtGt2Pt::getCallAsString(const std::string& system)const
+{
+    ostringstream osr("");
+    std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
+    if(iRes != m_typing_results.end())
+    {
+        // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
+        const CIsbtGt2Pt::typing_result& typing = iRes->second;
+        float top_score = getTopPredictedScoreOfAllGenotypes(iRes->second);
+    }
+    return osr.str();
+}
+
+float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const
+{
+    float fRet = 0.0f;
+    
+    for(const auto& act_gt:genotype_calls)
+    {
+        float act_score = getTopPredictedScoreOfGenotype(act_gt.second);
+        if(act_score > fRet)
+            fRet= act_score;
+    }
+    
+    return fRet;
+}
+
+float CIsbtGt2Pt::getTopPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
+{
+    float fRet = 0.0f;
+    for(auto& act_allele:allele_calls)
+    {
+        if(!act_allele.second.empty())
+            fRet+=act_allele.second.front().score();
+    }
+    if(allele_calls.size()==1) // is homozygous?
+        fRet+=fRet;
+    return fRet;
+}
+
+
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me)
 {
     long unsigned int i = 0;
@@ -201,6 +244,7 @@ std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me)
     }
     return os;
 }
+
 
 
 
