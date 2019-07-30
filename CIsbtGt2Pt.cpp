@@ -108,8 +108,8 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
 float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>& all_hits)
 {
     float fRet = 1.0f;
-    pair<int,int> range_typed_not_in_anno=pair<int,int>(-1,-1); // this is for normalizing values
-    pair<int,int> range_anno_not_in_typed=pair<int,int>(-1,-1); // this is for normalizing values
+    pair<int,int> range_typed_not_in_anno=pair<int,int>(0,-1); // this is for normalizing values
+    pair<int,int> range_anno_not_in_typed=pair<int,int>(0,-1); // this is for normalizing values
     for(auto& gt_scores:all_hits)
     {
         for(auto& act_alleles:gt_scores.second)
@@ -118,14 +118,16 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
             {
                 if(range_typed_not_in_anno.first == -1) // first cycle
                 {
-                    range_typed_not_in_anno.first = range_typed_not_in_anno.second = act_hit.m_typed_not_in_anno;
-                    range_anno_not_in_typed.first = range_anno_not_in_typed.second = act_hit.m_anno_not_in_typed;
+                    //range_typed_not_in_anno.first = range_typed_not_in_anno.second = act_hit.m_typed_not_in_anno;
+                    //range_anno_not_in_typed.first = range_anno_not_in_typed.second = act_hit.m_anno_not_in_typed;
+                    range_typed_not_in_anno.second = act_hit.m_typed_not_in_anno;
+                    range_anno_not_in_typed.second = act_hit.m_anno_not_in_typed;
                 }
                 else
                 {
-                    range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);
+                    //range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);
                     range_typed_not_in_anno.second = max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
-                    range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
+                    //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
                     range_anno_not_in_typed.second = max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
                 }
             }
