@@ -25,6 +25,7 @@ public:
     
     std::set<std::string>  baseChanges()const{return m_base_changes;}
     std::set<std::string>  acidChanges()const{return m_acid_changes;}
+    std::string name()const{return m_name;}
     
     bool containsBaseChange(const std::string& isbt_base_change)const;
     

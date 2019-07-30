@@ -39,8 +39,10 @@ private:
     
     void init(const std::string& filename);
     float scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&);
-    float getTopPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
+    float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
+    
+    std::string getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const;
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
     

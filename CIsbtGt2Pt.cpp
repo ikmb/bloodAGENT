@@ -191,6 +191,33 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
+std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
+{
+    ostringstream osr("");
+    
+    osr << gt << "\t";
+    int count_outer = 0;
+    for(const auto& act_allele:results)
+    {
+        float high_score = act_allele.second.front().score();
+        int count = 0;
+        if(count_outer++ != 0)
+            osr << '/';
+        for(const auto& act_hit:act_allele.second)
+        {
+            if(act_hit.score() < high_score)
+                break;
+            if(count++ != 0)
+                osr << ';';
+            osr << act_hit.m_phenotype_allele.name();
+        }
+        
+    }
+    osr << "\t" << getPredictedScoreOfGenotype(results);
+    return osr.str();
+}
+
+
 std::string CIsbtGt2Pt::getCallAsString(const std::string& system)const
 {
     ostringstream osr("");
@@ -200,6 +227,14 @@ std::string CIsbtGt2Pt::getCallAsString(const std::string& system)const
         // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
         const CIsbtGt2Pt::typing_result& typing = iRes->second;
         float top_score = getTopPredictedScoreOfAllGenotypes(iRes->second);
+        int count = 0;
+        for(auto& act_gt:typing)
+        {
+            if(count++ > 0)
+                osr << endl;
+            if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*0.99999f)
+                osr << getStringOfTypingResult(act_gt.first,act_gt.second);
+        }
     }
     return osr.str();
 }
@@ -210,7 +245,7 @@ float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genoty
     
     for(const auto& act_gt:genotype_calls)
     {
-        float act_score = getTopPredictedScoreOfGenotype(act_gt.second);
+        float act_score = getPredictedScoreOfGenotype(act_gt.second);
         if(act_score > fRet)
             fRet= act_score;
     }
@@ -218,7 +253,7 @@ float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genoty
     return fRet;
 }
 
-float CIsbtGt2Pt::getTopPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
+float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
 {
     float fRet = 0.0f;
     for(auto& act_allele:allele_calls)
