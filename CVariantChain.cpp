@@ -56,6 +56,16 @@ void CVariantChain::addHA(const CIsbtVariant& var)
     
 }
 
+void CVariantChain::removeHA(const CIsbtVariant& var)
+{
+    CVariantChainVariation vcv;
+    vcv.first_variant = var;
+    vcv.second_variant = var;
+    set<CVariantChainVariation>::iterator i = m_chains["ha"].find(vcv);
+    if(i != m_chains["ha"].end())
+        m_chains["ha"].erase(i);
+}
+
 /*
 void CVariantChain::addHR(const CIsbtVariant& var)
 {
@@ -90,7 +100,7 @@ bool CVariantChain::add(const CVcfSnp& var)
     }
     
     vector<string> alleles = var.alleles();
-    if(isbv.isInDel())
+    if(isbv.isInDel() && var.isHeterozygous())
         alleles = var.indelalleles();
     CVariantChainVariation vcv;
     for(int i = 0; i < 2 && i < alleles.size(); i++)

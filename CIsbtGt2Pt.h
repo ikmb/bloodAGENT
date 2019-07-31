@@ -35,6 +35,8 @@ public:
     
     std::string getCallAsString(const std::string& system)const;
     
+    vector<CIsbtPtAllele> alleleVector(const string& system)const;
+    
 private:
     
     void init(const std::string& filename);

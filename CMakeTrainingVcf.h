@@ -19,6 +19,10 @@ public:
     CMakeTrainingVcf();
     CMakeTrainingVcf(const CMakeTrainingVcf& orig);
     virtual ~CMakeTrainingVcf();
+    
+    
+    static std::string getHomEntries(const std::string& system, const CIsbtPtAllele& allele, const CISBTAnno& anno);
+    
 private:
 
 };

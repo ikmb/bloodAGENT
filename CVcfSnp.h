@@ -39,6 +39,9 @@ public:
     int                         phasingID()const{return m_phasing_id;}
     bool                        isPhased()const{return m_phasing_id != -1;}
     
+    bool                        isHomozygous()const;
+    bool                        isHeterozygous()const{return !isHomozygous();};
+    
     
 private:
     

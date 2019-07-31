@@ -33,6 +33,9 @@ public:
     
     std::set<CIsbtGt> getPossibleGenotypes(const string& system)const;
     
+    // this is required in our test data generator. Avoid calling this method!!!
+    void removeReferenceSnps();
+    
   
 private:
     

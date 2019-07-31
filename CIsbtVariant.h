@@ -42,8 +42,8 @@ public:
        
     std::string lrgReference(){return m_lrg_reference;}
     std::string lrgAlternative(){return m_lrg_alternative;}
-    std::string reference(){if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_reference); return m_lrg_reference;}
-    std::string alternative(){if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_alternative);return m_lrg_alternative;}
+    std::string reference()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_reference); return m_lrg_reference;}
+    std::string alternative()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_alternative);return m_lrg_alternative;}
     
     bool isInDel()const{return (m_lrg_reference.compare("-") == 0 || m_lrg_alternative.compare("-") == 0);}
 private:

@@ -50,6 +50,16 @@ CVcfSnp::CVcfSnp(const CVcfSnp& orig)
 CVcfSnp::~CVcfSnp() {
 }
 
+ bool CVcfSnp::isHomozygous()const
+ {
+     if(m_alleles.size() == 0)
+         return false;
+     for(int i = 1; i < m_alleles.size(); i++)
+         if(m_alleles[i].compare(m_alleles[i-1]) != 0)
+             return false;
+     return true;
+ }
+
 std::vector<std::string>  CVcfSnp::indelalleles()const
 {
     vector<std::string> vRet = m_alleles;

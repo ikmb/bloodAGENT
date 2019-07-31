@@ -11,8 +11,28 @@
  * Created on July 30, 2019, 12:42 PM
  */
 
+#include <cstdlib>
+#include <vector>
+#include <map>
+#include <set>
+#include <string>
+#include <libgen.h>
+
+#include "mytools.h"
+#include "vcf.h"
+#include "CVcf.h"
+#include "CVcfSnp.h"
+#include "CIsbtVariant.h"
+#include "ISBTAnno.h"
+#include "CVariantChain.h"
+#include "CVariantChains.h"
+#include "CIsbtPtAllele.h"
+#include "CIsbtGtAllele.h"
+#include "CIsbtGt2PtHit.h"
+
 #include "CMakeTrainingVcf.h"
 
+using namespace std;
 /*
  * 
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	UnnamedSample
@@ -36,4 +56,29 @@ CMakeTrainingVcf::~CMakeTrainingVcf()
 {
     
 }
+
+std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIsbtPtAllele& allele, const CISBTAnno& anno)
+{
+    ostringstream osr("");
+    int count = 0;
+    for(const auto& variation:allele.baseChanges())
+    {
+        CISBTAnno::variation act_variant = anno.getIsbtVariant(system,variation);
+        if(act_variant == CISBTAnno::variation())
+        {
+            cerr << "skipping unassigned " << variation << " of " << allele << endl;
+            continue;
+        }
+        if(count++ != 0)
+            osr << endl;
+        osr << act_variant.chrom() << '\t'
+            << act_variant.pos() << "\t.\t"
+            << act_variant.reference() << '\t'
+            << act_variant.alternative() << '\t'
+            << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
+    }
+    return osr.str();
+}
+
+
 

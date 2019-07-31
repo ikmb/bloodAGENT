@@ -116,20 +116,10 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
         {
             for(auto& act_hit:act_alleles.second)
             {
-                if(range_typed_not_in_anno.first == -1) // first cycle
-                {
-                    //range_typed_not_in_anno.first = range_typed_not_in_anno.second = act_hit.m_typed_not_in_anno;
-                    //range_anno_not_in_typed.first = range_anno_not_in_typed.second = act_hit.m_anno_not_in_typed;
-                    range_typed_not_in_anno.second = act_hit.m_typed_not_in_anno;
-                    range_anno_not_in_typed.second = act_hit.m_anno_not_in_typed;
-                }
-                else
-                {
-                    //range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);
-                    range_typed_not_in_anno.second = max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
-                    //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
-                    range_anno_not_in_typed.second = max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
-                }
+                //range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);
+                range_typed_not_in_anno.second = max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
+                //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
+                range_anno_not_in_typed.second = max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
             }
         }
     }
@@ -152,9 +142,14 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 // weigh: anno_not_in_typed as 1/3 important
                 //cout << "ranges typed_not_in_anno: " << range_typed_not_in_anno.first << " - " << range_typed_not_in_anno.second << endl;
                 //cout << "ranges anno_not_in_typed: " << range_anno_not_in_typed.first << " - " << range_anno_not_in_typed.second << endl;
-                //cout << "score of " << act_hit << "(3.0f+1.0f)*(" <<normed_anno_not_in_typed << '*' << normed_typed_not_in_anno << ")/((" <<normed_anno_not_in_typed << "*3.0f)+(1.0f*"<<normed_typed_not_in_anno << "))" << endl;
-                float score = ((2.0f+1.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno)/((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno));
+                float score = ((2.0f+1.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno); // numerator
+                float denominator = ((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno));
+                if(denominator == 0.0f)
+                    score = 0.0f;
+                else
+                    score /= denominator;
                 act_hit.score(score);
+                //cout << "score of " << act_hit << "(3.0f+1.0f)*(" <<normed_anno_not_in_typed << '*' << normed_typed_not_in_anno << ")/((" <<normed_anno_not_in_typed << "*3.0f)+(1.0f*"<<normed_typed_not_in_anno << "))" << endl;
                 fRet = max(fRet,score);
             }
         }
@@ -266,6 +261,13 @@ float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::
     return fRet;
 }
 
+vector<CIsbtPtAllele> CIsbtGt2Pt::alleleVector(const string& system)const
+{
+    std::map<std::string,vector<CIsbtPtAllele>>::const_iterator i = m_allele_vector.find(system);
+    if(i != m_allele_vector.end())
+        return i->second;
+    return vector<CIsbtPtAllele>();
+}
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me)
 {

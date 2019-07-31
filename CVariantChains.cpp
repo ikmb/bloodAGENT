@@ -79,6 +79,20 @@ void CVariantChains::addReferenceSnps()
     }
 }
 
+void CVariantChains::removeReferenceSnps()
+{
+    map<string,vector<CISBTAnno::variation> > refVar = m_isbt->getReferenceVariations();
+    for(map<string,vector<CISBTAnno::variation> >::const_iterator i = refVar.begin(); i != refVar.end(); i++)
+    {
+        for(vector<CISBTAnno::variation>::const_iterator j = i->second.begin(); j != i->second.end(); j++)
+        {
+            m_variant_chains[i->first].removeHA(*j);
+            
+        }
+    }
+}
+
+
 bool CVariantChains::add(const CVcfSnp& act_snp)
 {
     if(!m_isbt)
@@ -117,10 +131,10 @@ std::ostream& operator<<(std::ostream& os, const CVariantChains& me)
         set<string> loci = me.m_isbt->loci();
         for(set<string>::iterator locusIter = loci.begin(); locusIter != loci.end(); locusIter++)
         {
-            cout << "----------" << endl << *locusIter << endl;
+            os << "----------" << endl << *locusIter << endl;
             map<string,CVariantChain>::const_iterator i = me.m_variant_chains.find(*locusIter);
             if(i != me.m_variant_chains.end())
-                cout << i->second << endl;
+                os << i->second << endl;
 
         }
     }  
