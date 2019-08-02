@@ -28,9 +28,18 @@ public:
     * @param maxInsert max  length of the paired end fragment
     * @param readLength the leangth of each read
     * @param coverage we aim for this coverage
-    * @param basename the basename extended by _R1.fastq and _R2.fastq
+    * @param basename the basename extended by .R1.fastq and .R2.fastq
     */
     void makeIlluminaPairedEnd(int minInsert, int maxInsert, int readLength, int coverage, std::string basename);
+    
+    /**
+    * generate PacBio ccs reads in sam format
+    * @param minSize min length of the read
+    * @param maxSize max  length of the read
+    * @param coverage we aim for this coverage
+    * @param basename output filename (name it *.sam to avois confusion)
+    */
+    void makePacBioRead(int minSize, int maxSize, int coverage, std::string filename);
     
 private:
 
