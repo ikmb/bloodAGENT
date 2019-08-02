@@ -69,11 +69,12 @@ void CFastqCreator::makePacBioRead(int minSize, int maxSize, int coverage, std::
             
             string fragment = seq.substr(ref_start,fragment_size);
             
-           R1 << "m54349_190510_125704/1"   << std::setfill('0') << std::setw(7)  << counter << "/ccs\t4\t*\t0\t255\t*\t*\t0\t0\t";
+           R1 << "m54349_190510_125704/1"   << std::setfill('0') << std::setw(6)  << counter << "/ccs\t4\t*\t0\t255\t*\t*\t0\t0\t";
            R1 << seq.substr(ref_start,fragment_size) << '\t' << string(fragment_size,'~') << '\t';
-           R1 << "RG:Z:a92d5a0b\tbc:B:S,0,0\tbq:i:85\tnp:i:18\trq:f:0.999881\tsn:B:f,4.86057,9.51716,4.88941,8.44968\tt1:f:1.109\tt2:f:0.041\tt3:f:6.429\tzm:i:1" << std::setfill('0') << std::setw(7)  << counter << endl;
+           R1 << "RG:Z:a92d5a0b\tbc:B:S,0,0\tbq:i:85\tnp:i:18\trq:f:0.999881\tsn:B:f,4.86057,9.51716,4.88941,8.44968\tt1:f:1.109\tt2:f:0.041\tt3:f:6.429\tzm:i:1" << std::setfill('0') << std::setw(6)  << counter << endl;
+           counter++;
         }
-        counter++;
+        
         
     }
     R1.close();
