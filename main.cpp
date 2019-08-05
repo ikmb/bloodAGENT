@@ -51,7 +51,8 @@ using namespace BamTools;
  */
 int main(int argc, char** argv) 
 {
-    if(argc != 4)
+    cout << argc << endl;
+    if(argc < 4)
     {
         cerr << "Please provide 3 parameters in the right order:" << endl
              << basename(argv[0]) << " variation_annotation.dat genotype_to_phenotype_annotation.dat bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz" << endl;
