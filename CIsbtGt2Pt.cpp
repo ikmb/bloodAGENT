@@ -225,10 +225,12 @@ std::string CIsbtGt2Pt::getCallAsString(const std::string& system)const
         int count = 0;
         for(auto& act_gt:typing)
         {
-            if(count++ > 0)
-                osr << endl;
             if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*0.99999f)
+            {
+                if(count++ > 0)
+                    osr << endl;
                 osr << getStringOfTypingResult(act_gt.first,act_gt.second);
+            }
         }
     }
     return osr.str();

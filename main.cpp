@@ -51,6 +51,13 @@ using namespace BamTools;
  */
 int main(int argc, char** argv) 
 {
+    if(argc != 4)
+    {
+        cerr << "Please provide 3 parameters in the right order:" << endl
+             << basename(argv[0]) << " variation_annotation.dat genotype_to_phenotype_annotation.dat bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz" << endl;
+                
+        exit(EXIT_FAILURE);
+    }
     
     //CFastqCreator fq("/home/mwittig/data/Genotypisierung/Haemocarta/Erythrogene_Tables/IndelDups/target.hg38.purplevariation.fasta");
     //fq.makePacBioRead(1500,9000,50,"/home/mwittig/ramDisk/purple.ccs.5passes.sam");
@@ -67,8 +74,10 @@ int main(int argc, char** argv)
     */
     
     // init ISBT and variant chains
-    CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
-    CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
+    //CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
+    //CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
+    CISBTAnno  isbt(argv[1]);
+    CIsbtGt2Pt isbTyper(argv[2]);
     //cout << isbTyper << endl;
     std::set<string> loci = isbt.loci();
     
@@ -89,34 +98,24 @@ int main(int argc, char** argv)
             // vcs.removeReferenceSnps();
         }
     }//*/
-  
+    
+    CVariantChains vcs(&isbt);
+    CVcf vcf_file(argv[3]);
+    while(vcf_file.read_record())
+    {
+        CVcfSnp act_snp = vcf_file.get_record();
+        //cerr << act_snp << endl;
+        bool adding_successfull = vcs.add(act_snp);
+        if(!adding_successfull)
+            cerr << act_snp << "\tadding SNP failed" << endl;
+    };
+    
     for(auto locus:loci)
     {
-        for(auto known_allele:isbTyper.alleleVector(locus))
-        {
-            //if(known_allele.name().compare("ABO*O.04.01")!=0)
-            //    continue;
-            //std::string uuid;
-            //CMyTools::cmd("cat /proc/sys/kernel/random/uuid",uuid);
-            //string targetFile = string("/home/mwittig/ramDisk/").append(uuid).append(".vcf");
-            //string targetFile = string("/home/mwittig/ramDisk/simulator.vcf");
-            CVariantChains vcs(&isbt);
-            CVcf vcf_file("/home/mwittig/ramDisk/simulator.vcf");
-            while(vcf_file.read_record())
-            {
-                CVcfSnp act_snp = vcf_file.get_record();
-                //cerr << act_snp << endl;
-                bool adding_successfull = vcs.add(act_snp);
-                if(!adding_successfull)
-                    cerr << act_snp << "\tadding SNP failed" << endl;
-            };
-            //out_res << locus << "\t" << known_allele.name() << endl;
-            cout << locus << "\t" << known_allele.name() << endl;
-            isbTyper.type(locus,vcs);
-            //out_res << isbTyper.getCallAsString(locus) << endl;
-            cout << isbTyper.getCallAsString(locus) << endl;
-        }
+        isbTyper.type(locus,vcs);
+        cout << locus << '\t' << isbTyper.getCallAsString(locus) << endl;
     }
+
     
     // parse results
     // awk 'BEGIN{FS="\t"}{if(NR%2==0)print $2;else printf "%s\t%s\t",$1,$2}' simulator.txt > simulation.csv
