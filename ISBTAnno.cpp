@@ -87,7 +87,12 @@ std::vector<std::string> CISBTAnno::getVariationsAt(std::string chrom, int pos)c
     mRange = m_entry_finder.equal_range(osr.str());
     
     for (multimap<string,int>::const_iterator it=mRange.first; it!=mRange.second; ++it)
-      vRet.push_back(m_vanno.cell(it->second,"Transcript annotation short"));
+    {
+        const CParsedTextfile& vanno = m_vanno;
+        string act_entry = vanno.cell(it->second,"Transcript annotation short");
+        vRet.push_back(act_entry);
+    }
+    
     
     return vRet;
 }
@@ -149,7 +154,10 @@ string CISBTAnno::getSystemAt(std::string chrom, int pos)const
     mRange = m_entry_finder.equal_range(osr.str());
     
     if(mRange.first != mRange.second)
-        return m_vanno.cell(mRange.first->second,"system/gene");
+    {
+        string act_entry = m_vanno.cell(mRange.first->second,"system/gene");
+        return act_entry;
+    }
     
     
     return "";
