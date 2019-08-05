@@ -1,0 +1,131 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/* 
+ * File:   main.cpp
+ * Author: mwittig
+ *
+ * Created on July 18, 2019, 12:29 PM
+ */
+
+#include <cstdlib>
+#include <vector>
+#include <string>
+#include <libgen.h>
+
+#include <regex>
+#include <iterator>
+
+#include "api/BamIndex.h"
+#include "api/BamReader.h"
+#include "api/BamMultiReader.h"
+#include "api/BamWriter.h"
+//#include "shared/bamtools_global.h"
+
+
+// command line parsing
+#include <tclap/CmdLine.h>
+#include <complex>
+
+#include "mytools.h"
+#include "vcf.h"
+#include "CVcf.h"
+#include "CVcfSnp.h"
+#include "CIsbtVariant.h"
+#include "ISBTAnno.h"
+#include "CVariantChain.h"
+#include "CVariantChains.h"
+#include "CIsbtGt2Pt.h"
+#include "CMakeTrainingVcf.h"
+#include "CFastqCreator.h"
+
+using namespace std;
+using namespace BamTools;
+
+
+/*
+ * 
+ */
+int main(int argc, char** argv) 
+{
+    
+    //CFastqCreator fq("/home/mwittig/data/Genotypisierung/Haemocarta/Erythrogene_Tables/IndelDups/target.hg38.purplevariation.fasta");
+    //fq.makePacBioRead(1500,9000,50,"/home/mwittig/ramDisk/purple.ccs.5passes.sam");
+    //return 0;
+    
+    /*
+    CVcf vcf("/home/mwittig/data/Genotypisierung/Haemocarta/Erythrogene_Tables/IndelDups/purple.hg19.bwa.variants.ISBT.vcf.gz");
+    while(vcf.read_record())
+    {
+        CVcfSnp act_snp = vcf.get_record();
+        cerr << act_snp << endl;
+    };
+    return 0;
+    */
+    
+    // init ISBT and variant chains
+    CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
+    CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
+    //cout << isbTyper << endl;
+    std::set<string> loci = isbt.loci();
+    
+    // generate VCF Test Data
+    
+    /*// make test data
+    //    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/cpp/bamtools/build/src/api/:/home/mwittig/coding/cpp/htslib
+    for(auto locus:loci)
+    {
+        for(auto known_allele:isbTyper.alleleVector(locus))
+        {
+             CMyTools::cmd("cat /home/mwittig/coding/cpp/deepBlood/data/testdata/VCFheaderTestData.vcf > /home/mwittig/ramDisk/simulator.vcf",false);
+            ofstream outfile;
+            outfile.open("/home/mwittig/ramDisk/simulator.vcf", std::ios_base::app);
+            outfile << CMakeTrainingVcf::getHomEntries(locus,known_allele,isbt) << endl;
+            outfile.close();
+            /// if you analyze simulated VCF do the following on your CVariantChains object
+            // vcs.removeReferenceSnps();
+        }
+    }//*/
+  
+    for(auto locus:loci)
+    {
+        for(auto known_allele:isbTyper.alleleVector(locus))
+        {
+            //if(known_allele.name().compare("ABO*O.04.01")!=0)
+            //    continue;
+            //std::string uuid;
+            //CMyTools::cmd("cat /proc/sys/kernel/random/uuid",uuid);
+            //string targetFile = string("/home/mwittig/ramDisk/").append(uuid).append(".vcf");
+            //string targetFile = string("/home/mwittig/ramDisk/simulator.vcf");
+            CVariantChains vcs(&isbt);
+            CVcf vcf_file("/home/mwittig/ramDisk/simulator.vcf");
+            while(vcf_file.read_record())
+            {
+                CVcfSnp act_snp = vcf_file.get_record();
+                //cerr << act_snp << endl;
+                bool adding_successfull = vcs.add(act_snp);
+                if(!adding_successfull)
+                    cerr << act_snp << "\tadding SNP failed" << endl;
+            };
+            //out_res << locus << "\t" << known_allele.name() << endl;
+            cout << locus << "\t" << known_allele.name() << endl;
+            isbTyper.type(locus,vcs);
+            //out_res << isbTyper.getCallAsString(locus) << endl;
+            cout << isbTyper.getCallAsString(locus) << endl;
+        }
+    }
+    
+    // parse results
+    // awk 'BEGIN{FS="\t"}{if(NR%2==0)print $2;else printf "%s\t%s\t",$1,$2}' simulator.txt > simulation.csv
+    return 0;
+    
+   
+    
+    
+    
+    return 0;
+}
+
