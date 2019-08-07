@@ -75,11 +75,15 @@ int main(int argc, char** argv)
     return 0;
     */
     
-    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.abotarget.bw");
+    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw");
     cout << "genomic RHD covered from " << bwr.getMinCoverage("chr1",25598981,25656936) << " to " 
                                         << bwr.getAverageCoverage("chr1",25598981,25656936) << " to " 
-                                        << bwr.getMaxCoverage("chr1",25598981,25656936) << " - " << bwr.getPercentCoveredBases("chr1",25598981,25656936)  << " bases covered" << endl
+                                        << bwr.getMaxCoverage("chr1",25598981,25656936) << " - " << bwr.getPercentCoveredBases("chr1",25598981,25656936)  << "% bases covered" << endl
                                         << "RHD is " << ( bwr.isCovered("chr1",25598981,25656936) ? "" : "not ") << " expressed" << endl;
+    cout << "genomic RHCE covered from " << bwr.getMinCoverage("chr1",25688740,25747363) << " to " 
+                                        << bwr.getAverageCoverage("chr1",25688740,25747363) << " to " 
+                                        << bwr.getMaxCoverage("chr1",25688740,25747363) << " - " << bwr.getPercentCoveredBases("chr1",25688740,25747363)  << "% bases covered" << endl
+                                        << "RHCE is " << ( bwr.isCovered("chr1",25688740,25747363) ? "" : "not ") << " expressed" << endl;
     exit(EXIT_SUCCESS);
     
     // init ISBT and variant chains
