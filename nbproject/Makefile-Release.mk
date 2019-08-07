@@ -44,6 +44,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/CIsbtPtAllele.o \
 	${OBJECTDIR}/CIsbtVariant.o \
 	${OBJECTDIR}/CMakeTrainingVcf.o \
+	${OBJECTDIR}/CTranscript.o \
+	${OBJECTDIR}/CTranscriptAnno.o \
 	${OBJECTDIR}/CVariantChain.o \
 	${OBJECTDIR}/CVariantChainVariation.o \
 	${OBJECTDIR}/CVariantChains.o \
@@ -125,6 +127,16 @@ ${OBJECTDIR}/CMakeTrainingVcf.o: CMakeTrainingVcf.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../tclap-1.2.0/include -I../libBigWig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMakeTrainingVcf.o CMakeTrainingVcf.cpp
+
+${OBJECTDIR}/CTranscript.o: CTranscript.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../tclap-1.2.0/include -I../libBigWig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTranscript.o CTranscript.cpp
+
+${OBJECTDIR}/CTranscriptAnno.o: CTranscriptAnno.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../tclap-1.2.0/include -I../libBigWig -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTranscriptAnno.o CTranscriptAnno.cpp
 
 ${OBJECTDIR}/CVariantChain.o: CVariantChain.cpp
 	${MKDIR} -p ${OBJECTDIR}

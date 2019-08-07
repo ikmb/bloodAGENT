@@ -38,6 +38,8 @@
 #include "ISBTAnno.h"
 #include "CVariantChain.h"
 #include "CVariantChains.h"
+#include "CTranscript.h"
+#include "CTranscriptAnno.h"
 #include "CBigWigReader.h"
 #include "CIsbtGt2Pt.h"
 #include "CMakeTrainingVcf.h"
@@ -74,16 +76,24 @@ int main(int argc, char** argv)
     };
     return 0;
     */
-    
+    CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
     CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw");
-    cout << "genomic RHD covered from " << bwr.getMinCoverage("chr1",25598981,25656936) << " to " 
-                                        << bwr.getAverageCoverage("chr1",25598981,25656936) << " to " 
-                                        << bwr.getMaxCoverage("chr1",25598981,25656936) << " - " << bwr.getPercentCoveredBases("chr1",25598981,25656936)  << "% bases covered" << endl
-                                        << "RHD is " << ( bwr.isCovered("chr1",25598981,25656936) ? "" : "not ") << " expressed" << endl;
-    cout << "genomic RHCE covered from " << bwr.getMinCoverage("chr1",25688740,25747363) << " to " 
-                                        << bwr.getAverageCoverage("chr1",25688740,25747363) << " to " 
-                                        << bwr.getMaxCoverage("chr1",25688740,25747363) << " - " << bwr.getPercentCoveredBases("chr1",25688740,25747363)  << "% bases covered" << endl
-                                        << "RHCE is " << ( bwr.isCovered("chr1",25688740,25747363) ? "" : "not ") << " expressed" << endl;
+    std::set<string> names = trans_anno.loci();
+    for(auto locus:names)
+    {
+    
+        CTranscript act_trans = trans_anno.getTranscript(locus);
+        for(int i = 0; i < act_trans.exonCount();i++)
+        {
+            int act_start = act_trans.exonStart(i);
+            int act_end = act_trans.exonEnd(i);
+            string chrom = act_trans.getChrom();
+            cout << locus << " " << chrom << ":" << act_start << "-" << act_end << "; covered from " << bwr.getMinCoverage(chrom,act_start,act_end) << " to " 
+                                                << bwr.getAverageCoverage(chrom,act_start,act_end) << " to " 
+                                                << bwr.getMaxCoverage(chrom,act_start,act_end) << " - " << bwr.getPercentCoveredBases(chrom,act_start,act_end)  << "% bases covered; in general it is "
+                                                << ( bwr.isCovered(chrom,act_start,act_end) ? "" : "not ") << " expressed" << endl;
+        }
+    }
     exit(EXIT_SUCCESS);
     
     // init ISBT and variant chains
