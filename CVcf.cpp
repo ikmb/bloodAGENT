@@ -14,7 +14,7 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
-
+ 
 #include "CVcf.h"
 
 using namespace std;
@@ -32,8 +32,8 @@ CVcf::CVcf(const string& filename, bool verbose )
 
 CVcf::CVcf(const CVcf& orig) 
 {
-    memcpy( m_inf, orig.m_inf, sizeof(orig.m_inf) );
-    memcpy( m_hdr, orig.m_hdr, sizeof(orig.m_hdr) );
+    memcpy( m_inf, orig.m_inf, sizeof(*(orig.m_inf)) );
+    memcpy( m_hdr, orig.m_hdr, sizeof(*(orig.m_hdr)) );
     m_rec = bcf_init();
     m_verbose = orig.m_verbose;
 }
@@ -119,7 +119,6 @@ bool CVcf::read_record()
         }
         // filter data for each call
         int nfi_arr = 0;
-        int nfi     = 0;
         int *fi     = NULL;
        
         // the bcf_get_format_int32 function does not appear to reallocate
@@ -127,7 +126,8 @@ bool CVcf::read_record()
         // needs to be freed in the end. First call to bcf_get_format_*
         // takes care of calling bcf_unpack, which fills the `d` member
         // of bcf1_t
-        nfi = bcf_get_format_int32(m_hdr, m_rec, "FI", &fi, &nfi_arr);
+        //int nfi = bcf_get_format_int32(m_hdr, m_rec, "FI", &fi, &nfi_arr);
+        bcf_get_format_int32(m_hdr, m_rec, "FI", &fi, &nfi_arr);
         
         
         free(fi);

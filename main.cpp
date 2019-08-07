@@ -38,6 +38,7 @@
 #include "ISBTAnno.h"
 #include "CVariantChain.h"
 #include "CVariantChains.h"
+#include "CBigWigReader.h"
 #include "CIsbtGt2Pt.h"
 #include "CMakeTrainingVcf.h"
 #include "CFastqCreator.h"
@@ -52,14 +53,14 @@ using namespace BamTools;
 int main(int argc, char** argv) 
 {
     cout << argc << endl;
-    if(argc < 4)
+    /*if(argc < 4)
     {
         cerr << "Please provide 3 parameters in the right order:" << endl
              << basename(argv[0]) << " variation_annotation.dat genotype_to_phenotype_annotation.dat bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz" << endl;
                 
         exit(EXIT_FAILURE);
     }
-    
+    //*/
     //CFastqCreator fq("/home/mwittig/data/Genotypisierung/Haemocarta/Erythrogene_Tables/IndelDups/target.hg38.purplevariation.fasta");
     //fq.makePacBioRead(1500,9000,50,"/home/mwittig/ramDisk/purple.ccs.5passes.sam");
     //return 0;
@@ -74,11 +75,18 @@ int main(int argc, char** argv)
     return 0;
     */
     
+    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.abotarget.bw");
+    cout << "genomic RHD covered from " << bwr.getMinCoverage("chr1",25598981,25656936) << " to " 
+                                        << bwr.getAverageCoverage("chr1",25598981,25656936) << " to " 
+                                        << bwr.getMaxCoverage("chr1",25598981,25656936) << " - " << bwr.getPercentCoveredBases("chr1",25598981,25656936)  << " bases covered" << endl
+                                        << "RHD is " << ( bwr.isCovered("chr1",25598981,25656936) ? "" : "not ") << " expressed" << endl;
+    exit(EXIT_SUCCESS);
+    
     // init ISBT and variant chains
-    //CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
-    //CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
-    CISBTAnno  isbt(argv[1]);
-    CIsbtGt2Pt isbTyper(argv[2]);
+    CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
+    CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
+    //CISBTAnno  isbt(argv[1]);
+    //CIsbtGt2Pt isbTyper(argv[2]);
     //cout << isbTyper << endl;
     std::set<string> loci = isbt.loci();
     
@@ -101,7 +109,8 @@ int main(int argc, char** argv)
     }//*/
     
     CVariantChains vcs(&isbt);
-    CVcf vcf_file(argv[3]);
+    CVcf vcf_file("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz");
+    //CVcf vcf_file(argv[3]);
     while(vcf_file.read_record())
     {
         CVcfSnp act_snp = vcf_file.get_record();

@@ -103,13 +103,15 @@ bool CVariantChain::add(const CVcfSnp& var)
     if(isbv.isInDel() && var.isHeterozygous())
         alleles = var.indelalleles();
     CVariantChainVariation vcv;
-    for(int i = 0; i < 2 && i < alleles.size(); i++)
+    for(size_t i = 0; i < 2 && i < alleles.size(); i++)
     {
         if(isbv.alternative().compare(alleles[i]) == 0)
+        {
             if(i == 0)
                 vcv.first_variant = isbv;
             else
                 vcv.second_variant=isbv;
+        }
     }
     
     if(vcv != CVariantChainVariation())

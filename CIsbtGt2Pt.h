@@ -14,6 +14,8 @@
 #ifndef CISBTGT2PT_H
 #define CISBTGT2PT_H
 
+#include "bigWig.h"
+#include "CBigWigReader.h"
 #include "CIsbtPtAllele.h"
 #include "CIsbtGtAllele.h"
 #include "CIsbtGt2PtHit.h"

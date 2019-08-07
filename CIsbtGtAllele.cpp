@@ -33,6 +33,7 @@ CIsbtGtAllele::CIsbtGtAllele(const CIsbtGtAllele& orig)
 CIsbtGtAllele& CIsbtGtAllele::operator =(const CIsbtGtAllele& orig)
 {
     m_gt = orig.m_gt;
+    return *this;
 }
 
 CIsbtGtAllele::~CIsbtGtAllele() 

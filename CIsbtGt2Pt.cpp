@@ -46,10 +46,10 @@ CIsbtGt2Pt::~CIsbtGt2Pt() {
 
 void CIsbtGt2Pt::init(const string& filename)
 {
-    CParsedTextfile ptx(filename,"\t","Phenotype",0,true, "#");
+    CParsedTextfile ptx(filename,"\t","Allele",0,true, "#");
     if(ptx.First())
         do{
-            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Phenotype"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
+            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Allele"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
         }while(ptx.Next());
     
 }
@@ -74,7 +74,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     {
         //cout << "typing " << possible_sample_genotypes << endl; // output the genotype 
         std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes.getAlleles();
-        std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
+        //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
         
         for(auto& possible_sample_allele:possible_sample_alleles)
         {
@@ -99,7 +99,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
         }
         
     }
-    float best_hit = scoreHits(mRet);
+//    float best_hit = scoreHits(mRet);
     sort(mRet);
     m_typing_results[system]=mRet;
     return mRet;
@@ -117,9 +117,9 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
             for(auto& act_hit:act_alleles.second)
             {
                 //range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);
-                range_typed_not_in_anno.second = max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
+                range_typed_not_in_anno.second = std::max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
                 //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
-                range_anno_not_in_typed.second = max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
+                range_anno_not_in_typed.second = std::max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
             }
         }
     }
@@ -150,7 +150,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                     score /= denominator;
                 act_hit.score(score);
                 //cout << "score of " << act_hit << "(3.0f+1.0f)*(" <<normed_anno_not_in_typed << '*' << normed_typed_not_in_anno << ")/((" <<normed_anno_not_in_typed << "*3.0f)+(1.0f*"<<normed_typed_not_in_anno << "))" << endl;
-                fRet = max(fRet,score);
+                fRet = std::max(fRet,score);
             }
         }
     }

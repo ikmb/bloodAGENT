@@ -35,6 +35,7 @@ CIsbtGt::CIsbtGt(const CIsbtGt& orig)
 CIsbtGt& CIsbtGt::operator =(const CIsbtGt& orig)
 {
     m_gt = orig.m_gt;
+    return *this;
 }
 
 CIsbtGt::~CIsbtGt() {
