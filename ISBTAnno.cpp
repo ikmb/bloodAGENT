@@ -106,7 +106,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
     
     for (multimap<string,int>::const_iterator it=mRange.first; it!=mRange.second; ++it)
     {  
-        if(it->second >= m_parsed_isbt_variant.size())
+        if(static_cast<size_t>(it->second) >= m_parsed_isbt_variant.size())
             throw("something is out of bounds in string CISBTAnno::getCorrespondingIsbtVariations(CVcfSnp vcfsnp)const");
         variation varParsed = m_parsed_isbt_variant[it->second];
         int equal_counter = 0;

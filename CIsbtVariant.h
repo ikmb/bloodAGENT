@@ -57,6 +57,8 @@ private:
     int         m_position;
     char        m_strand;
     
+    
+    
     bool parseIsbtVariant();
     
 

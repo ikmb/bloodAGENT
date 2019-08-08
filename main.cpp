@@ -31,6 +31,7 @@
 #include <complex>
 
 #include "mytools.h"
+#include "CBigWigReader.h"
 #include "vcf.h"
 #include "CVcf.h"
 #include "CVcfSnp.h"
@@ -40,7 +41,7 @@
 #include "CVariantChains.h"
 #include "CTranscript.h"
 #include "CTranscriptAnno.h"
-#include "CBigWigReader.h"
+
 #include "CIsbtGt2Pt.h"
 #include "CMakeTrainingVcf.h"
 #include "CFastqCreator.h"
@@ -77,7 +78,7 @@ int main(int argc, char** argv)
     return 0;
     */
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
-    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw");
+    CBigWigReader bwr("/home/mwittig/ramDisk/FOC4/FOC00023/FOC00023.hg19.bwa.bw");
     std::set<string> names = trans_anno.loci();
     for(auto locus:names)
     {
