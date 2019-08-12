@@ -114,6 +114,8 @@ bool   CIsbtVariant::operator ==(const CIsbtVariant& orig)const
 std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me)
 {
     os << me.name();
+    if(me.m_coverage==me.m_coverage)
+        os << ", min coverage is " << me.m_coverage;
     return os;
 }
 

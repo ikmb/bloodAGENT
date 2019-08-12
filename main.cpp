@@ -78,15 +78,13 @@ int main(int argc, char** argv)
     return 0;
     */
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
-    CBigWigReader bwr("/home/mwittig/ramDisk/FOC4/FOC00027/FOC00027.hg19.bwa.bw");
-        
-    // init ISBT and variant chains
+    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw");
     CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
-    isbt.addCoverage(bwr);
     CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
-    //CISBTAnno  isbt(argv[1]);
-    //CIsbtGt2Pt isbTyper(argv[2]);
-    //cout << isbTyper << endl;
+
+    cout << isbt << endl;
+    isbt.addCoverage(bwr);
+    cout << isbt << endl;
     std::set<string> loci = isbt.loci();
     
     // generate VCF Test Data

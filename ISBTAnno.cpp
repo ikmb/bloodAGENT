@@ -148,7 +148,10 @@ bool CISBTAnno::addCoverage(const CBigWigReader& bigWig)
 {
     bool bRet = true;
     for(auto& x:m_parsed_isbt_variant)
-        bRet = !(!bRet || !x.addCoverage(bigWig));
+    {
+        if(!x.addCoverage(bigWig))
+            bRet = false;
+    }
     return bRet;
 }
 
@@ -169,3 +172,26 @@ string CISBTAnno::getSystemAt(std::string chrom, int pos)const
     
     return "";
 }
+
+std::ostream& operator<<(std::ostream& os, const CISBTAnno& me)
+{
+    bool bFirst = true;
+    for(auto locus:me.m_loci)
+    {
+        std::map<std::string,std::map<std::string,int>>::const_iterator i = me.m_isbt_variant_to_index.find(locus);
+        if(i != me.m_isbt_variant_to_index.end())
+        {
+            for(auto variant:i->second)
+            {
+                if(!bFirst)
+                    os << endl;
+                else
+                    bFirst=false;
+                os << locus << ' ' << me.m_parsed_isbt_variant[variant.second];
+
+            }
+        }
+    }
+    return os;
+}
+

@@ -39,6 +39,8 @@ public:
     CISBTAnno(const CISBTAnno& orig);
     virtual ~CISBTAnno();
     
+    friend std::ostream& operator<<(std::ostream& os, const CISBTAnno& me);
+    
     /// return all variations annotated for this genomic position
     std::vector<std::string> getVariationsAt(std::string chrom, int pos)const;
     
