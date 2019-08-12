@@ -99,7 +99,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
         }
         
     }
-//    float best_hit = scoreHits(mRet);
+    scoreHits(mRet);
     sort(mRet);
     m_typing_results[system]=mRet;
     return mRet;
