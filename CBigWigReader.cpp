@@ -18,6 +18,7 @@
 #include <libgen.h>
 #include <iostream>
 #include <cstring>
+#include <limits>
 
 #include "CBigWigReader.h"
 
@@ -45,7 +46,7 @@ CBigWigReader::~CBigWigReader()
     if(--m_instance_counter == 0)
         bwCleanup();
 }
-double CBigWigReader::getCoverage(const std::string& chrom, int start, int end, bwStatsType type)
+double CBigWigReader::getCoverage(const std::string& chrom, int start, int end, bwStatsType type)const
 {
     /// enum bwStatsType: 
     /// doesNotExist = -1, /*!< This does nothing */
@@ -58,7 +59,7 @@ double CBigWigReader::getCoverage(const std::string& chrom, int start, int end, 
     /// cov = 4, /*!< The number of bases covered */
     /// coverage = 4, /*!<The number of bases covered */ 
     /// sum = 5 /*!< The sum of per-base values */
-    double bRet = -1.0f;
+    double bRet = std::numeric_limits<float>::quiet_NaN();
     if(ready())
     {
         string str = chrom;

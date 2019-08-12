@@ -66,6 +66,8 @@ public:
     size_t                              size()const{return m_parsed_isbt_variant.size();}
     variation                           variant(size_t idx)const{if(idx < size())return m_parsed_isbt_variant[idx]; return variation();}
     
+    bool addCoverage(const CBigWigReader& bigWig);
+    
 private:
     bool m_data_red;
     bool readAnnotation(const std::string& filename);

@@ -15,6 +15,7 @@
 #define CISBTVARIANT_H
 
 #include "mytools.h"
+#include "CBigWigReader.h"
 
 class CIsbtVariant {
 public:
@@ -46,6 +47,9 @@ public:
     std::string alternative()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_alternative);return m_lrg_alternative;}
     
     bool isInDel()const{return (m_lrg_reference.compare("-") == 0 || m_lrg_alternative.compare("-") == 0);}
+    
+    bool addCoverage(const CBigWigReader& bigWig);
+    
 private:
     
     std::string m_isbt_name;
@@ -56,7 +60,7 @@ private:
     std::string m_chromosome;
     int         m_position;
     char        m_strand;
-    
+    double      m_coverage;
     
     
     bool parseIsbtVariant();

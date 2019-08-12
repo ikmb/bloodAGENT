@@ -29,9 +29,9 @@ public:
     bool ready()const{return (m_fp != NULL);}
     
     
-    double getMinCoverage(const std::string& chrom, int start, int end){return getCoverage(chrom, start, end, bwStatsType::min);}
-    double getAverageCoverage(const std::string& chrom, int start, int end){return getCoverage(chrom, start, end, bwStatsType::average);}
-    double getMaxCoverage(const std::string& chrom, int start, int end){return getCoverage(chrom, start, end, bwStatsType::max);}
+    double getMinCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::min);}
+    double getAverageCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::average);}
+    double getMaxCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::max);}
     
     double getPercentCoveredBases(const std::string& chrom, int start, int end);
     
@@ -40,7 +40,7 @@ public:
 private:
     
     bigWigFile_t*               m_fp;
-    double getCoverage(const std::string& chrom, int start, int end, bwStatsType type);
+    double getCoverage(const std::string& chrom, int start, int end, bwStatsType type)const;
 };
 
 #endif /* CBIGWIGREADER_H */

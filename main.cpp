@@ -78,27 +78,11 @@ int main(int argc, char** argv)
     return 0;
     */
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
-    CBigWigReader bwr("/home/mwittig/ramDisk/FOC4/FOC00023/FOC00023.hg19.bwa.bw");
-    std::set<string> names = trans_anno.loci();
-    for(auto locus:names)
-    {
-    
-        CTranscript act_trans = trans_anno.getTranscript(locus);
-        for(int i = 0; i < act_trans.exonCount();i++)
-        {
-            int act_start = act_trans.exonStart(i);
-            int act_end = act_trans.exonEnd(i);
-            string chrom = act_trans.getChrom();
-            cout << locus << " " << chrom << ":" << act_start << "-" << act_end << "; covered from " << bwr.getMinCoverage(chrom,act_start,act_end) << " to " 
-                                                << bwr.getAverageCoverage(chrom,act_start,act_end) << " to " 
-                                                << bwr.getMaxCoverage(chrom,act_start,act_end) << " - " << bwr.getPercentCoveredBases(chrom,act_start,act_end)  << "% bases covered; in general it is "
-                                                << ( bwr.isCovered(chrom,act_start,act_end) ? "" : "not ") << " expressed" << endl;
-        }
-    }
-    exit(EXIT_SUCCESS);
-    
+    CBigWigReader bwr("/home/mwittig/ramDisk/FOC4/FOC00027/FOC00027.hg19.bwa.bw");
+        
     // init ISBT and variant chains
     CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
+    isbt.addCoverage(bwr);
     CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
     //CISBTAnno  isbt(argv[1]);
     //CIsbtGt2Pt isbTyper(argv[2]);

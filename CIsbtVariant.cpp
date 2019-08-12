@@ -15,10 +15,12 @@
 #include <map>
 #include <string>
 #include <libgen.h>
+#include <limits>
 
 #include <regex>
 
 #include "CIsbtVariant.h"
+#include "CBigWigReader.h"
 
 using namespace std;
 
@@ -32,6 +34,7 @@ CIsbtVariant::CIsbtVariant()
     /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
     m_lrg_reference = "";
     m_lrg_alternative = "";
+    m_coverage = std::numeric_limits<float>::quiet_NaN();
 }
 
 CIsbtVariant::CIsbtVariant(std::string lrg_anno, std::string refBase, std::string chrom, int pos, char strand) 
@@ -44,6 +47,7 @@ CIsbtVariant::CIsbtVariant(std::string lrg_anno, std::string refBase, std::strin
     /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
     m_lrg_reference = refBase;
     m_lrg_alternative = "";
+    m_coverage = std::numeric_limits<float>::quiet_NaN();
     parseIsbtVariant();
 }
 
@@ -57,6 +61,7 @@ CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig)
     m_chromosome = orig.m_chromosome;
     m_position = orig.m_position;
     m_strand = orig.m_strand;
+    m_coverage = orig.m_coverage;
 }
 
 CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
@@ -69,6 +74,7 @@ CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
     m_chromosome = orig.m_chromosome;
     m_position = orig.m_position;
     m_strand = orig.m_strand;
+    m_coverage = orig.m_coverage;
     return *this;
 }
 
@@ -164,3 +170,12 @@ bool CIsbtVariant::parseIsbtVariant()
     //cout << vRet.first << " o " << m_lrg_reference << " o " << m_lrg_alternative << endl;
     return true;
 }
+
+bool CIsbtVariant::addCoverage(const CBigWigReader& bigWig)
+{
+    m_coverage = bigWig.getMinCoverage(m_chromosome,m_position-1,m_position+1);
+    return m_coverage == m_coverage;
+}
+
+
+

@@ -15,6 +15,7 @@
 #include "CVcf.h"
 #include "CVcfSnp.h"
 
+#include "CBigWigReader.h"
 #include "CIsbtVariant.h"
 #include "ISBTAnno.h"
 
@@ -143,7 +144,13 @@ CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string
     return  variation();
 }
 
-
+bool CISBTAnno::addCoverage(const CBigWigReader& bigWig)
+{
+    bool bRet = true;
+    for(auto& x:m_parsed_isbt_variant)
+        bRet = !(!bRet || !x.addCoverage(bigWig));
+    return bRet;
+}
 
 
 string CISBTAnno::getSystemAt(std::string chrom, int pos)const
