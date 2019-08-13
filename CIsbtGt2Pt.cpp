@@ -49,7 +49,7 @@ void CIsbtGt2Pt::init(const string& filename)
     CParsedTextfile ptx(filename,"\t","Allele",0,true, "#");
     if(ptx.First())
         do{
-            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Allele"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
+            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Allele"], ptx["Phenotype"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
         }while(ptx.Next());
     
 }
@@ -204,7 +204,7 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
                 break;
             if(count++ != 0)
                 osr << ';';
-            osr << act_hit.m_phenotype_allele.name();
+            osr << act_hit.m_phenotype_allele.phenotype();
         }
         
     }

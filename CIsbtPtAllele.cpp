@@ -23,24 +23,25 @@
 
 using namespace std;
 
-CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string base_changes, std::string acid_changes, string incidence) 
+CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, string incidence) 
 {
     try{
-        init(name,base_changes,acid_changes,stof(incidence));
+        init(name,phenotype,base_changes,acid_changes,stof(incidence));
     }catch(...)
     {
-        init(name,base_changes,acid_changes,-1.0f);
+        init(name,phenotype,base_changes,acid_changes,-1.0f);
     }
 }
 
-CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string base_changes, std::string acid_changes, float incidence) 
+CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence) 
 {
-    init(name,base_changes,acid_changes,incidence);
+    init(name,phenotype,base_changes,acid_changes,incidence);
 }
 
 CIsbtPtAllele::CIsbtPtAllele(const CIsbtPtAllele& orig) 
 {
     m_name = orig.m_name;
+    m_phenotype_name = orig.m_phenotype_name;
     m_base_changes = orig.m_base_changes; // ISBT naming like 261delG or 85A>G, ...
     m_acid_changes = orig.m_acid_changes; // ISBT naming like Ile60Leu or Ser230Ile, ...
     m_incidence = orig.m_incidence;
@@ -50,9 +51,10 @@ CIsbtPtAllele::~CIsbtPtAllele()
 {
     
 }
-void CIsbtPtAllele::init(std::string name, std::string base_changes, std::string acid_changes, float incidence)
+void CIsbtPtAllele::init(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence)
 {
     m_name = name;
+    m_phenotype_name = phenotype;
     m_incidence = incidence;
     
     vector<string> parsed = CMyTools::GetParsedLine(base_changes," ");

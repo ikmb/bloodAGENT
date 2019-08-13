@@ -56,6 +56,7 @@ bool CIsbtGt2PtHit::sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2P
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2PtHit& me)
 {
     os << "score: " << std::fixed << std::setprecision(5)  << me.m_score << " for " << me.m_phenotype_allele << " e1: " << me.m_anno_not_in_typed << " e2: " << me.m_typed_not_in_anno;
+    return os;
 }
 
 
