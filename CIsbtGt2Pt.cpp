@@ -186,7 +186,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
-std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
+std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool phenotype)const
 {
     ostringstream osr("");
     
@@ -204,7 +204,7 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
                 break;
             if(count++ != 0)
                 osr << ';';
-            osr << act_hit.m_phenotype_allele.phenotype();
+            osr << ( phenotype ? act_hit.m_phenotype_allele.phenotype() : act_hit.m_phenotype_allele.name()) ;
         }
         
     }
@@ -213,7 +213,7 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
 }
 
 
-std::string CIsbtGt2Pt::getCallAsString(const std::string& system)const
+std::string CIsbtGt2Pt::getCallAsString(const std::string& system, bool phenotype)const
 {
     ostringstream osr("");
     std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
@@ -229,7 +229,7 @@ std::string CIsbtGt2Pt::getCallAsString(const std::string& system)const
             {
                 if(count++ > 0)
                     osr << endl;
-                osr << getStringOfTypingResult(act_gt.first,act_gt.second);
+                osr << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype);
             }
         }
     }

@@ -35,7 +35,7 @@ public:
     
     void sort(typing_result& var);
     
-    std::string getCallAsString(const std::string& system)const;
+    std::string getCallAsString(const std::string& system, bool phenotype = true)const;
     
     vector<CIsbtPtAllele> alleleVector(const string& system)const;
     
@@ -46,7 +46,9 @@ private:
     float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     
-    std::string getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const;
+    
+    /// set phenotype to true to get the phenotype, otherwise you get the allele
+    std::string getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool phenotype = true)const;
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
     

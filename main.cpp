@@ -55,15 +55,8 @@ using namespace BamTools;
  */
 int main(int argc, char** argv) 
 {
-    cout << argc << endl;
-    /*if(argc < 4)
-    {
-        cerr << "Please provide 3 parameters in the right order:" << endl
-             << basename(argv[0]) << " variation_annotation.dat genotype_to_phenotype_annotation.dat bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz" << endl;
-                
-        exit(EXIT_FAILURE);
-    }
-    //*/
+    //cout << argc << endl;
+    
     //CFastqCreator fq("/home/mwittig/data/Genotypisierung/Haemocarta/Erythrogene_Tables/IndelDups/target.hg38.purplevariation.fasta");
     //fq.makePacBioRead(1500,9000,50,"/home/mwittig/ramDisk/purple.ccs.5passes.sam");
     //return 0;
@@ -77,14 +70,34 @@ int main(int argc, char** argv)
     };
     return 0;
     */
+    /* ********************
+    // ON MWMOB
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
-    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw");
+    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.abotarget.bw");
     CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
     CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
-
-    cout << isbt << endl;
+    CVcf vcf_file("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz");
+     */
+    //* ********************
+    // ON Cluster
+    if(argc != 6)
+    {
+        cerr << "Please provide 5 parameters in the right order:" << endl
+             << basename(argv[0]) << " variation_annotation.dat \\" << endl
+             << "   genotype_to_phenotype_annotation.dat\\" << endl
+             << "   exonic_annotation.hg19.abotarget.txt\\" << endl
+             << "   sample.bw\\" << endl
+             << "   sample.vcf.gz\\" << endl;
+                
+        exit(EXIT_FAILURE);
+    }
+    CISBTAnno  isbt(argv[1]);
+    CIsbtGt2Pt isbTyper(argv[2]);
+    CTranscriptAnno trans_anno(argv[3]);
+    CBigWigReader bwr(argv[4]);
+    CVcf vcf_file(argv[5]);
+    //*/
     isbt.addCoverage(bwr);
-    cout << isbt << endl;
     std::set<string> loci = isbt.loci();
     
     // generate VCF Test Data
@@ -106,7 +119,6 @@ int main(int argc, char** argv)
     }//*/
     
     CVariantChains vcs(&isbt);
-    CVcf vcf_file("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz");
     //CVcf vcf_file(argv[3]);
     while(vcf_file.read_record())
     {
@@ -120,7 +132,7 @@ int main(int argc, char** argv)
     for(auto locus:loci)
     {
         isbTyper.type(locus,vcs);
-        cout << locus << '\t' << isbTyper.getCallAsString(locus) << endl;
+        cout << locus << '\t' << isbTyper.getCallAsString(locus,false) << endl;
     }
 
     
