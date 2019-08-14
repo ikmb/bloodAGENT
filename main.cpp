@@ -84,10 +84,10 @@ int main(int argc, char** argv)
     {
         cerr << "Please provide 5 parameters in the right order:" << endl
              << basename(argv[0]) << " variation_annotation.dat \\" << endl
-             << "   genotype_to_phenotype_annotation.dat\\" << endl
-             << "   exonic_annotation.hg19.abotarget.txt\\" << endl
-             << "   sample.bw\\" << endl
-             << "   sample.vcf.gz\\" << endl;
+             << "   genotype_to_phenotype_annotation.dat \\" << endl
+             << "   exonic_annotation.hg19.abotarget.txt \\" << endl
+             << "   sample.bw \\" << endl
+             << "   sample.vcf.gz" << endl;
                 
         exit(EXIT_FAILURE);
     }
