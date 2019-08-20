@@ -75,6 +75,7 @@ void CVariantChain::addHR(const CIsbtVariant& var)
 
 bool CVariantChain::add(const CVcfSnp& var)
 {
+    static int unique_unphased_id = 1;
     if(!m_isbt_anno)
         return false;
     
@@ -119,7 +120,9 @@ bool CVariantChain::add(const CVcfSnp& var)
         if(var.isPhased())
             m_chains[to_string(var.phasingID())].insert(vcv);
         else
-            m_chains["no"].insert(vcv);
+        {
+            m_chains[string("no_").append(std::to_string(unique_unphased_id++))].insert(vcv);
+        }
     }
     
     return true;

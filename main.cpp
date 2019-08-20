@@ -70,13 +70,13 @@ int main(int argc, char** argv)
     };
     return 0;
     //*/
-    /* ********************
+    //* ********************
     // ON MWMOB
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
     CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
     CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
-    CVcf vcf_file("/home/mwittig/ramDisk/167616/167616.hg19.bwa.variants.vcf.gz");
-    CBigWigReader bwr("/home/mwittig/ramDisk/167616/167616.hg19.bwa.bw");
+    CVcf vcf_file("/home/mwittig/ramDisk/167622/167622.hg19.bwa.variants.vcf.gz");
+    CBigWigReader bwr("/home/mwittig/ramDisk/167622/167622.hg19.bwa.bw");
     //*/
     //* ********************
     // ON Cluster
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
                 
         exit(EXIT_FAILURE);
     }
-    //*
+    /*
     CISBTAnno  isbt(argv[1]);
     CIsbtGt2Pt isbTyper(argv[2]);
     CTranscriptAnno trans_anno(argv[3]);
@@ -129,7 +129,8 @@ int main(int argc, char** argv)
         if(!adding_successfull)
             cerr << act_snp << "\tadding SNP failed" << endl;
     };
-    
+
+    cout << vcs << endl;    
     for(auto locus:loci)
     {
         isbTyper.type(locus,vcs);
