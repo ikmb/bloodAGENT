@@ -69,8 +69,8 @@ int main(int argc, char** argv)
         cerr << act_snp << endl;
     };
     return 0;
-    */
-    //* ********************
+    //*/
+    /* ********************
     // ON MWMOB
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
     CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
@@ -91,13 +91,12 @@ int main(int argc, char** argv)
                 
         exit(EXIT_FAILURE);
     }
-    /*
+    //*
     CISBTAnno  isbt(argv[1]);
     CIsbtGt2Pt isbTyper(argv[2]);
     CTranscriptAnno trans_anno(argv[3]);
     CBigWigReader bwr(argv[4]);
     CVcf vcf_file(argv[5]);
-     */
     //*/
     isbt.addCoverage(bwr);
     std::set<string> loci = isbt.loci();
