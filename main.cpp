@@ -70,14 +70,14 @@ int main(int argc, char** argv)
     };
     return 0;
     */
-    /* ********************
+    //* ********************
     // ON MWMOB
     CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
-    CBigWigReader bwr("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.abotarget.bw");
     CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
     CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
-    CVcf vcf_file("/home/mwittig/coding/cpp/deepBlood/data/example/bc1002.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz");
-     */
+    CVcf vcf_file("/home/mwittig/ramDisk/167616/167616.hg19.bwa.variants.vcf.gz");
+    CBigWigReader bwr("/home/mwittig/ramDisk/167616/167616.hg19.bwa.bw");
+    //*/
     //* ********************
     // ON Cluster
     if(argc != 6)
@@ -91,11 +91,13 @@ int main(int argc, char** argv)
                 
         exit(EXIT_FAILURE);
     }
+    /*
     CISBTAnno  isbt(argv[1]);
     CIsbtGt2Pt isbTyper(argv[2]);
     CTranscriptAnno trans_anno(argv[3]);
     CBigWigReader bwr(argv[4]);
     CVcf vcf_file(argv[5]);
+     */
     //*/
     isbt.addCoverage(bwr);
     std::set<string> loci = isbt.loci();

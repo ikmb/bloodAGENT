@@ -44,7 +44,7 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
     {
         do{
             ostringstream osr("");
-            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["1-based end (hg19)"];
+            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Pos (hg19)"];
             m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]=m_entry_finder.size();
             m_entry_finder.insert(pair<string,int>(osr.str(),m_entry_finder.size()));
             if(m_strand.find(m_vanno["system/gene"]) == m_strand.end())
