@@ -27,7 +27,7 @@
 
 
 // command line parsing
-//#include <tclap/CmdLine.h>
+#include <tclap/CmdLine.h>
 #include <complex>
 
 #include "mytools.h"
@@ -50,11 +50,89 @@ using namespace std;
 using namespace BamTools;
 
 
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose);
+
 /*
  * 
  */
 int main(int argc, char** argv) 
 {
+    try
+    {
+        ostringstream tclapMessage;
+        tclapMessage << basename(argv[0]) << ':'  << endl 
+                     << "the NGS ISBT typer of the Institute of Clinical Molecular Biology in Kiel, Germany"  << endl
+                     << "" << endl 
+                     << "";
+        TCLAP::CmdLine cmd   (tclapMessage.str().c_str(), ' ', "0.9");
+        TCLAP::CmdLine cmdjob(tclapMessage.str().c_str(), ' ', "0.9");
+
+        tclapMessage.clear();
+        tclapMessage << "define which kind of job should be performed:"  << endl
+                     << "  phenotype: report phenotypes of all systems" << endl 
+                     << "  pht: report phenotypes of one system";
+        TCLAP::ValueArg<string> tc_jobType     ("j","job","define which kind of job should be performed",true,"","string");
+        TCLAP::ValueArg<string> tc_jobTypeInner("j","job","define which kind of job should be performed",true,"","string");
+        cmd.add(tc_jobType);
+        cmdjob.add(tc_jobTypeInner);
+
+        cmd.ignoreUnmatched(true);
+        cmd.parse(argc,argv);
+        cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
+        TCLAP::ValueArg<int> tc_verbose("d","verbose","Set verbose level. 0-1. 0 == no verbose, 1 == full verbose.",false,0,"int");
+        cmdjob.add(tc_verbose);
+        if(tc_jobType.getValue().compare("phenotype") == 0 || tc_jobType.getValue().compare("pht") == 0)
+        {
+            /*
+             "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
+             */
+            TCLAP::ValueArg<string> tc_abo_target_annotation("t","target","A text file containing the transcript annotation of all blood group targets (UCSC table export). This file comes with the package an can be usually found in the subfolder data.",true,"data/config/exonic_annotation.hg19.abotarget.txt","string");
+            cmdjob.add(tc_abo_target_annotation);
+            TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
+            cmdjob.add(tc_variants);
+            TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
+            cmdjob.add(tc_gt2pt);
+            TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt.",true,"","string");
+            cmdjob.add(tc_vcf);
+            TCLAP::ValueArg<string> tc_bigwig("b","bigwig","The output bam file to which all alignments go that failed the filtering criteria.",true,"","string");
+            cmdjob.add(tc_bigwig);
+            TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call.",false,10,"int");
+            cmdjob.add(tc_coverage);
+
+            if(tc_jobType.getValue().compare("phenotype") == 0)
+            {
+                cmdjob.parse(argc,argv);
+                cerr << "Everything found. starting run ..." << endl;
+                exit(EXIT_SUCCESS);
+            }
+            else if(tc_jobType.getValue().compare("pht") == 0)
+            {
+                TCLAP::ValueArg<string> tc_system("t","target","The system that should be analyzed",true,"ABO","string");
+                cmdjob.add(tc_system);
+                cmdjob.parse(argc,argv);
+                cerr << "Everything found. starting run ..." << endl;
+                cerr << "this job is currently not implemented" << endl;
+                exit(EXIT_SUCCESS);
+            }
+        }
+        else
+        {
+            cerr << "job " << tc_jobType.getValue() << " not implemented." << endl;
+            exit(EXIT_SUCCESS);
+        }
+    }
+    catch(const TCLAP::ArgException& err)
+    {
+        cerr << "Error parsing command line: " << err.what() << endl;
+        exit(EXIT_FAILURE);
+    }
+    catch(...)
+    {
+        cerr << "Unexpected error parsing command line." << endl;
+        exit(EXIT_FAILURE);
+    }
+    
+    
     //cout << argc << endl;
     
     //CFastqCreator fq("/home/mwittig/data/Genotypisierung/Haemocarta/Erythrogene_Tables/IndelDups/target.hg38.purplevariation.fasta");
@@ -70,36 +148,41 @@ int main(int argc, char** argv)
     };
     return 0;
     //*/
-    /* ********************
-    // ON MWMOB
-    CTranscriptAnno trans_anno("/home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt");
-    CISBTAnno  isbt("/home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat");
-    CIsbtGt2Pt isbTyper("/home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat");
-    CVcf vcf_file("/home/mwittig/ramDisk/167622/167622.hg19.bwa.variants.vcf.gz");
-    CBigWigReader bwr("/home/mwittig/ramDisk/167622/167622.hg19.bwa.bw");
-    //*/
     //* ********************
-    // ON Cluster
-    if(argc != 6)
-    {
-        cerr << "Please provide 5 parameters in the right order:" << endl
-             << basename(argv[0]) << " variation_annotation.dat \\" << endl
-             << "   genotype_to_phenotype_annotation.dat \\" << endl
-             << "   exonic_annotation.hg19.abotarget.txt \\" << endl
-             << "   sample.bw \\" << endl
-             << "   sample.vcf.gz" << endl;
-                
-        exit(EXIT_FAILURE);
-    }
-    //*
-    CISBTAnno  isbt(argv[1]);
-    CIsbtGt2Pt isbTyper(argv[2]);
-    CTranscriptAnno trans_anno(argv[3]);
-    CBigWigReader bwr(argv[4]);
-    CVcf vcf_file(argv[5]);
-    //*/
+    // ON MWMOB
+    return 0;
+}
+        
+
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose)
+{
+    
+    CTranscriptAnno trans_anno(arg_target_anno);
+    if(arg_verbose == 2)
+        cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
+    CISBTAnno  isbt(arg_isbt_SNPs);
+    if(arg_verbose == 2)
+        cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
+    CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
+    if(arg_verbose == 2)
+        cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
+    CVcf vcf_file(arg_vcf_file);
+    if(arg_verbose == 2)
+        cerr << "VCF file loaded from:"  << arg_vcf_file << endl;
+    CBigWigReader bwr(arg_bigWig);
+    if(arg_verbose == 2)
+        cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
+    
     isbt.addCoverage(bwr);
     std::set<string> loci = isbt.loci();
+    
+    
+    if(arg_verbose == 2)
+    {
+        cerr << "ISBT annotation:" << endl << isbt << endl << endl;
+        cerr << "ISBT genotype to phenotype translation:" << endl << isbTyper << endl << endl;
+        
+     }
     
     // generate VCF Test Data
     
@@ -126,26 +209,18 @@ int main(int argc, char** argv)
         CVcfSnp act_snp = vcf_file.get_record();
         //cerr << act_snp << endl;
         bool adding_successfull = vcs.add(act_snp);
-        if(!adding_successfull)
-            cerr << act_snp << "\tadding SNP failed" << endl;
+        if(!adding_successfull && arg_verbose >= 1)
+            cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
+        else if(adding_successfull && arg_verbose == 2)
+            cerr << act_snp << "\tISBT relevant SNP added" << endl;
     };
 
-    cout << vcs << endl;    
+    if(arg_verbose == 2)
+        cerr << "Variant chains of current sample: " << vcs << endl;    
     for(auto locus:loci)
     {
         isbTyper.type(locus,vcs);
-        cout << locus << '\t' << isbTyper.getCallAsString(locus,false) << endl;
+        cout << locus << '\t' << isbTyper.getCallAsString(locus,true) << endl;
     }
-
-    
-    // parse results
-    // awk 'BEGIN{FS="\t"}{if(NR%2==0)print $2;else printf "%s\t%s\t",$1,$2}' simulator.txt > simulation.csv
-    return 0;
-    
-   
-    
-    
-    
-    return 0;
 }
 

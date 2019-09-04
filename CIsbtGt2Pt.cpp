@@ -213,7 +213,7 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
 }
 
 
-std::string CIsbtGt2Pt::getCallAsString(const std::string& system, bool phenotype)const
+std::string CIsbtGt2Pt::getCallAsString(const std::string& system, bool phenotype, float top_score_range)const
 {
     ostringstream osr("");
     std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
@@ -225,7 +225,7 @@ std::string CIsbtGt2Pt::getCallAsString(const std::string& system, bool phenotyp
         int count = 0;
         for(auto& act_gt:typing)
         {
-            if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*0.99999f)
+            if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*top_score_range)
             {
                 if(count++ > 0)
                     osr << endl;
