@@ -49,6 +49,7 @@ public:
     bool isInDel()const{return (m_lrg_reference.compare("-") == 0 || m_lrg_alternative.compare("-") == 0);}
     
     bool addCoverage(const CBigWigReader& bigWig);
+    double getCoverage()const{return m_coverage;}
     
 private:
     

@@ -56,29 +56,29 @@ void CIsbtGt2Pt::init(const string& filename)
 
 void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
 {
-    for(auto& gt_scores:var)
+    for(CIsbtGt2Pt::typing_result::iterator gt_scores = var.begin(); gt_scores != var.end(); gt_scores++)
     {
-        for(auto& act_alleles:gt_scores.second)
+        for(std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>::iterator act_alleles = gt_scores->second.begin(); act_alleles != gt_scores->second.end(); act_alleles++)
         {
-            std::sort(act_alleles.second.begin(),act_alleles.second.end(),CIsbtGt2PtHit::sort_by_score_desc);
+            std::sort(act_alleles->second.begin(),act_alleles->second.end(),CIsbtGt2PtHit::sort_by_score_desc);
         }
     }
 }
 
-CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants)
+CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants, int required_coverage)
 {
     map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
     
-    for(auto& possible_sample_genotypes:theoretical_genotypes)
+    for(const CIsbtGt& possible_sample_genotypes:theoretical_genotypes)
     {
         //cout << "typing " << possible_sample_genotypes << endl; // output the genotype 
         std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes.getAlleles();
         //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
         
-        for(auto& possible_sample_allele:possible_sample_alleles)
+        for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
         {
-            vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele);
+            vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
             /*if(
                 gt2pt.size() != 0 && iterSampleAlleles->variantCount() < gt2pt[0].errurSum()
               )
@@ -110,6 +110,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
     float fRet = 1.0f;
     pair<int,int> range_typed_not_in_anno=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_anno_not_in_typed=pair<int,int>(0,-1); // this is for normalizing values
+    pair<int,int> range_anno_in_typed_but_not_in_current_genotype=pair<int,int>(0,-1); // this is for normalizing values
     for(auto& gt_scores:all_hits)
     {
         for(auto& act_alleles:gt_scores.second)
@@ -120,6 +121,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 range_typed_not_in_anno.second = std::max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
                 //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
                 range_anno_not_in_typed.second = std::max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
+                range_anno_in_typed_but_not_in_current_genotype.second = std::max(range_anno_in_typed_but_not_in_current_genotype.second,act_hit.m_anno_in_typed_but_not_in_current_genotype);
             }
         }
     }
@@ -137,13 +139,16 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 float normed_anno_not_in_typed = 1.0f;
                 if(range_anno_not_in_typed.first != range_anno_not_in_typed.second)
                     normed_anno_not_in_typed = 1.0f-static_cast<float>(act_hit.m_anno_not_in_typed-range_anno_not_in_typed.first)/static_cast<float>(range_anno_not_in_typed.second-range_anno_not_in_typed.first);
+                float normed_anno_in_typed_but_not_in_current_genotype = 1.0f;
+                if(range_anno_in_typed_but_not_in_current_genotype.first != range_anno_in_typed_but_not_in_current_genotype.second)
+                    normed_anno_in_typed_but_not_in_current_genotype = 1.0f-static_cast<float>(act_hit.m_anno_in_typed_but_not_in_current_genotype-range_anno_in_typed_but_not_in_current_genotype.first)/static_cast<float>(range_anno_in_typed_but_not_in_current_genotype.second-range_anno_in_typed_but_not_in_current_genotype.first);
 
                 // harmonic mean
                 // weigh: anno_not_in_typed as 1/3 important
                 //cout << "ranges typed_not_in_anno: " << range_typed_not_in_anno.first << " - " << range_typed_not_in_anno.second << endl;
                 //cout << "ranges anno_not_in_typed: " << range_anno_not_in_typed.first << " - " << range_anno_not_in_typed.second << endl;
-                float score = ((2.0f+1.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno); // numerator
-                float denominator = ((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno));
+                float score = ((2.0f+1.0f+5.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno*normed_anno_in_typed_but_not_in_current_genotype); // numerator
+                float denominator = ((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno)+(5.0f*normed_anno_in_typed_but_not_in_current_genotype));
                 if(denominator == 0.0f)
                     score = 0.0f;
                 else
@@ -157,7 +162,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
     return fRet;
 }
 
-vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtGtAllele& isbtGtAllele)
+vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
 {
     std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
     if(iterSys == m_allele_vector.end())
@@ -166,16 +171,20 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     //cout << "find matches " << isbtGtAllele << endl;
     vector<CIsbtGt2PtHit> vRet;
     // calculate matching parameters for each annotated allele, 
-    for(auto anno:iterSys->second)
+    for(const CIsbtPtAllele& anno:iterSys->second)
     {
         CIsbtGt2PtHit actHit(anno);
         // for each annotated base change 
-        for(auto a:anno.baseChanges())
+        for(const string& a:anno.baseChanges())
         {
             if(!isbtGtAllele.contains(a))
+            {
                 actHit.m_anno_not_in_typed++;
+                if( static_cast<int>(isbt_snps->getIsbtVariant(system,a).getCoverage()+0.5) >= required_coverage )
+                    actHit.m_anno_in_typed_but_not_in_current_genotype++;
+            }
         }
-        for(auto i:isbtGtAllele.variantSet())
+        for(const CIsbtVariant& i:isbtGtAllele.variantSet())
         {
             if(!anno.containsBaseChange(i.name()))
                 actHit.m_typed_not_in_anno++;

@@ -30,8 +30,8 @@ public:
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
     
-    std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt);
-    typing_result type(const string& system, const CVariantChains& variants);
+    std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
+    typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10);
     
     void sort(typing_result& var);
     

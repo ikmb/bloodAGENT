@@ -186,26 +186,26 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
     try
     {
         CTranscriptAnno trans_anno(arg_target_anno);
-        if(arg_verbose == 2)
+        if(arg_verbose >= 2)
             cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
         CISBTAnno  isbt(arg_isbt_SNPs);
-        if(arg_verbose == 2)
+        if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
-        if(arg_verbose == 2)
+        if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
         CVcf vcf_file(arg_vcf_file);
-        if(arg_verbose == 2)
+        if(arg_verbose >= 2)
             cerr << "VCF file loaded from:"  << arg_vcf_file << endl;
         CBigWigReader bwr(arg_bigWig);
-        if(arg_verbose == 2)
+        if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
 
         isbt.addCoverage(bwr);
         std::set<string> loci = isbt.loci();
 
 
-        if(arg_verbose == 2)
+        if(arg_verbose >= 2)
         {
             cerr << "ISBT annotation:" << endl << isbt << endl << endl;
             cerr << "ISBT genotype to phenotype translation:" << endl << isbTyper << endl << endl;
@@ -243,7 +243,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
                 cerr << act_snp << "\tISBT relevant SNP added" << endl;
         };
 
-        if(arg_verbose == 2)
+        if(arg_verbose >= 1)
             cerr << "Variant chains of current sample: " << vcs << endl;    
         for(auto locus:loci)
         {
@@ -253,6 +253,8 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
                 cout << locus << '\t' << isbTyper.getCallAsString(locus,false,arg_top_hits) << endl;
             }
         }
+        //if(arg_verbose >= 2)
+            cerr << isbTyper << endl;
     }
     catch(const CMyException& err)
     {
