@@ -116,6 +116,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
     pair<int,int> range_typed_not_in_anno=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_anno_not_in_typed=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_anno_in_typed_but_not_in_current_genotype=pair<int,int>(0,-1); // this is for normalizing values
+    pair<int,int> range_not_covered=pair<int,int>(0,-1); // this is for normalizing values
     for(auto& gt_scores:all_hits)
     {
         for(auto& act_alleles:gt_scores.second)
@@ -127,6 +128,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
                 range_anno_not_in_typed.second = std::max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
                 range_anno_in_typed_but_not_in_current_genotype.second = std::max(range_anno_in_typed_but_not_in_current_genotype.second,act_hit.m_anno_in_typed_but_not_in_current_genotype);
+                range_not_covered.second = std::max(range_not_covered.second,act_hit.m_not_covered);
             }
         }
     }
@@ -147,13 +149,16 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 float normed_anno_in_typed_but_not_in_current_genotype = 1.0f;
                 if(range_anno_in_typed_but_not_in_current_genotype.first != range_anno_in_typed_but_not_in_current_genotype.second)
                     normed_anno_in_typed_but_not_in_current_genotype = 1.0f-static_cast<float>(act_hit.m_anno_in_typed_but_not_in_current_genotype-range_anno_in_typed_but_not_in_current_genotype.first)/static_cast<float>(range_anno_in_typed_but_not_in_current_genotype.second-range_anno_in_typed_but_not_in_current_genotype.first);
+                float normed_not_covered = 1.0f;
+                if(range_not_covered.first != range_not_covered.second)
+                    normed_not_covered = 1.0f-static_cast<float>(act_hit.m_not_covered-range_not_covered.first)/static_cast<float>(range_not_covered.second-range_not_covered.first);
 
                 // harmonic mean
                 // weigh: anno_not_in_typed as 1/3 important
                 //cout << "ranges typed_not_in_anno: " << range_typed_not_in_anno.first << " - " << range_typed_not_in_anno.second << endl;
                 //cout << "ranges anno_not_in_typed: " << range_anno_not_in_typed.first << " - " << range_anno_not_in_typed.second << endl;
-                float score = ((2.0f+1.0f+5.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno*normed_anno_in_typed_but_not_in_current_genotype); // numerator
-                float denominator = ((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno)+(5.0f*normed_anno_in_typed_but_not_in_current_genotype));
+                float score = ((2.0f+1.0f+5.0f+1.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno*normed_anno_in_typed_but_not_in_current_genotype*normed_not_covered); // numerator
+                float denominator = ((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno)+(5.0f*normed_anno_in_typed_but_not_in_current_genotype)+(1.0f*normed_not_covered));
                 if(denominator == 0.0f)
                     score = 0.0f;
                 else
@@ -182,10 +187,16 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
         // for each annotated base change 
         for(const string& a:anno.baseChanges())
         {
-            if(!isbtGtAllele.contains(a))
+            double act_variant_coverage = isbt_snps->getIsbtVariant(system,a).getCoverage();
+            if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
+            {
+                // incomplete covered
+                actHit.m_not_covered++;
+            }
+            if( !isbtGtAllele.contains(a) )
             {
                 actHit.m_anno_not_in_typed++;
-                if( static_cast<int>(isbt_snps->getIsbtVariant(system,a).getCoverage()+0.5) >= required_coverage )
+                if( static_cast<int>(act_variant_coverage+0.5) >= required_coverage )
                     actHit.m_anno_in_typed_but_not_in_current_genotype++;
             }
         }

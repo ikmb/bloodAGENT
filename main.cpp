@@ -242,7 +242,9 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             else if(adding_successfull && arg_verbose == 2)
                 cerr << act_snp << "\tISBT relevant SNP added" << endl;
         };
-
+        vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
+        
+        
         if(arg_verbose >= 1)
             cerr << "Variant chains of current sample: " << vcs << endl;    
         for(auto locus:loci)

@@ -79,6 +79,27 @@ void CVariantChains::addReferenceSnps()
     }
 }
 
+void CVariantChains::removeUncoveredSnps(double limit, int verbose)
+{
+    for(map<string,CVariantChain>::iterator i = m_variant_chains.begin(); i != m_variant_chains.end(); i++)
+    {
+        for(std::map<std::string,set<CVariantChainVariation>>::iterator iChains =  i->second.getChains().begin(); iChains !=  i->second.getChains().end(); iChains++)
+        {
+           for(set<CVariantChainVariation>::iterator iVchainVar = iChains->second.begin(); iVchainVar != iChains->second.end();)
+           {
+               if( !iVchainVar->first_variant.isCovered(limit) && !iVchainVar->second_variant.isCovered(limit))
+               {
+                   if(verbose >= 1)
+                       cerr << i->first << ": deleting too low covered variant " << iVchainVar->first_variant << endl;
+                   iVchainVar = iChains->second.erase(iVchainVar);
+               }
+               else
+                   iVchainVar++;
+           }
+        }
+    }
+}
+
 void CVariantChains::removeReferenceSnps()
 {
     map<string,vector<CISBTAnno::variation> > refVar = m_isbt->getReferenceVariations();

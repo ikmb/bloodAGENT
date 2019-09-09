@@ -50,6 +50,7 @@ public:
     
     bool addCoverage(const CBigWigReader& bigWig);
     double getCoverage()const{return m_coverage;}
+    bool isCovered(double limit = 0.0f)const;
     
 private:
     

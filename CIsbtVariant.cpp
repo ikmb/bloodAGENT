@@ -178,5 +178,9 @@ bool CIsbtVariant::addCoverage(const CBigWigReader& bigWig)
     return m_coverage == m_coverage;
 }
 
-
-
+bool CIsbtVariant::isCovered(double limit)const
+{
+    if( !(m_coverage == m_coverage) ) // is NaN
+        return false;
+    return m_coverage >= limit;
+}

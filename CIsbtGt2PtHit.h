@@ -31,7 +31,8 @@ public:
     int errurSum()const{return m_typed_not_in_anno+m_anno_not_in_typed;}
     int m_typed_not_in_anno;
     int m_anno_not_in_typed;
-    int m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive
+    int m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive, as it is well covered, typed but not in this genotype
+    int m_not_covered;  // numvber of SNPs that are not covered
     CIsbtPtAllele m_phenotype_allele;
     
     

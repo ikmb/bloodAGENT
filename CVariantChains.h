@@ -35,6 +35,7 @@ public:
     
     // this is required in our test data generator. Avoid calling this method!!!
     void removeReferenceSnps();
+    void removeUncoveredSnps(double limit, int verbose = 0);
     
     const CISBTAnno* isbtSnps()const{return m_isbt;}
   
