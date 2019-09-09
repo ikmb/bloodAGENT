@@ -49,6 +49,9 @@ bool CIsbtGt::operator <(const CIsbtGt& orig)const
     {
         if(*i < *j)
             return true;
+        if(*i > *j)
+            return false;
+        
     }
     if(m_gt.size() < orig.m_gt.size())
         return true;

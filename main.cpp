@@ -247,13 +247,13 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             cerr << "Variant chains of current sample: " << vcs << endl;    
         for(auto locus:loci)
         {
-            if(arg_locus.length() == 0 ||  locus.compare(arg_locus) == 0)
+            if( arg_locus.length() == 0 ||  locus.compare(arg_locus) == 0 )
             {
                 isbTyper.type(locus,vcs);
                 cout << locus << '\t' << isbTyper.getCallAsString(locus,false,arg_top_hits) << endl;
             }
         }
-        //if(arg_verbose >= 2)
+        if(arg_verbose >= 2)
             cerr << isbTyper << endl;
     }
     catch(const CMyException& err)

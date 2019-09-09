@@ -27,7 +27,7 @@ public:
     bool          operator <(const CIsbtVariant& orig)const;
     bool          operator >(const CIsbtVariant& orig)const{return !(*this < orig || *this == orig);}
     bool          operator ==(const CIsbtVariant& orig)const;
-    bool          operator ==(const string& orig)const;
+    //bool          operator ==(const string& orig)const;
     bool          operator !=(const CIsbtVariant& orig)const{return !(*this == orig);};
     friend std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me);
     

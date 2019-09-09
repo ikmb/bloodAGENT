@@ -67,18 +67,20 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
 
 CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants, int required_coverage)
 {
-    map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;;
+    map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
     
-    for(const CIsbtGt& possible_sample_genotypes:theoretical_genotypes)
+    for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
-        //cout << "typing " << possible_sample_genotypes << endl; // output the genotype 
-        std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes.getAlleles();
+        //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
+        std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
         //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
         
         for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
         {
             vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+            //for(auto i : gt2pt)
+            //    cout << i << endl;
             /*if(
                 gt2pt.size() != 0 && iterSampleAlleles->variantCount() < gt2pt[0].errurSum()
               )
@@ -95,7 +97,10 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
                 break;
             }
             else
-                mRet[possible_sample_genotypes][possible_sample_allele]=gt2pt;
+            {
+                mRet[*possible_sample_genotypes][possible_sample_allele]=gt2pt;
+                //cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotypes][possible_sample_allele][0] << endl;
+            }
         }
         
     }
@@ -154,7 +159,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 else
                     score /= denominator;
                 act_hit.score(score);
-                //cout << "score of " << act_hit << "(3.0f+1.0f)*(" <<normed_anno_not_in_typed << '*' << normed_typed_not_in_anno << ")/((" <<normed_anno_not_in_typed << "*3.0f)+(1.0f*"<<normed_typed_not_in_anno << "))" << endl;
+                //cout << "score of " << act_hit << endl;
                 fRet = std::max(fRet,score);
             }
         }
