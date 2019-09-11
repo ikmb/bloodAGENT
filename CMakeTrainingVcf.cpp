@@ -80,5 +80,49 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
     return osr.str();
 }
 
+std::string getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno)
+{
+    ostringstream osr("");
+    std::set<std::string> variationsA = alleleA.baseChanges();
+    std::set<std::string> variationsB = alleleB.baseChanges();
+ 
+    set<CISBTAnno::variation> varSet;
+    
+    for(auto& var:variationsA)
+        varSet.insert(anno.getIsbtVariant(system,var));
+    for(auto& var:variationsB)
+        varSet.insert(anno.getIsbtVariant(system,var));
+    
+    int count = 0;
+    for(auto& actVar:varSet)
+    {
+        bool isInA = variationsA.find(actVar.name()) != variationsA.end();
+        bool isInB = variationsB.find(actVar.name()) != variationsB.end();
+        bool hetA =  isInA && !isInB;
+        bool hetB =  !isInA && isInB;
+        bool homo =  isInA && isInB;
+        if(!hetA && !hetB && homo)
+        {
+            cerr << "skipping unassigned " << actVar << " of " << alleleA << '/' << alleleB << endl;
+            continue;
+        }
+        if(count++ != 0)
+            osr << endl;
+        osr << actVar.chrom() << '\t'
+            << actVar.pos() << "\t.\t"
+            << actVar.reference() << '\t'
+            << actVar.alternative() << '\t';
+        if(hetA)
+            osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|0:0,20:20:48:471,48,0";
+        if(hetB)
+            osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|1:0,20:20:48:471,48,0";
+       if(homo)
+            osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
+        
+    }
+     return osr.str();
+}
+
+
 
 
