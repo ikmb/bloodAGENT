@@ -43,6 +43,12 @@ public:
     std::string getCallAsString(const std::string& system, bool phenotype = true, float top_score_range = 0.999f)const;
     
     vector<CIsbtPtAllele> alleleVector(const string& system)const;
+    /// this returns the CIsbtPtAllele of a given allele
+    /// @param1: alleel name as string. Eg ABO*B.01
+    CIsbtPtAllele alleleOf(const string& allele)const;
+    string systemOf(const string& allele)const;
+    
+    
     
 private:
     

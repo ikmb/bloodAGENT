@@ -50,7 +50,9 @@ using namespace std;
 using namespace BamTools;
 
 
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "");
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", bool arg_is_in_silico = false);
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose);
+string getArgumentList(TCLAP::CmdLine& args);
 
 /*
  * 
@@ -88,7 +90,7 @@ int main(int argc, char** argv)
              */
             TCLAP::ValueArg<string> tc_abo_target_annotation("t","target","A text file containing the transcript annotation of all blood group targets (UCSC table export). This file comes with the package an can be usually found in the subfolder data.",true,"data/config/exonic_annotation.hg19.abotarget.txt","string");
             cmdjob.add(tc_abo_target_annotation);
-            TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
+            TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/variation_annotation.dat","string");
             cmdjob.add(tc_variants);
             TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
             cmdjob.add(tc_gt2pt);
@@ -100,7 +102,10 @@ int main(int argc, char** argv)
             cmdjob.add(tc_coverage);
             TCLAP::ValueArg<float> tc_tophits("r","scoreRange","Value between 0.0 and 1.0. After genotyping multiply the best score with this value and report all genotypes better than the resulting value.",false,1.0,"int");
             cmdjob.add(tc_tophits);
-
+            TCLAP::SwitchArg tc_isInSilico("i","insilicovcf","If the input vcf is in silico generated VCF file, this trigger must be set! If not, the differences between LRG and GRCh are always analyzed resulting in wrong calls.",false);
+            cmdjob.add(tc_isInSilico);
+            TCLAP::ValueArg<string> tc_locus("l","locus","Get typing of a specific locus only. E.g. ABO, RHD, ...",false,"","string");
+            cmdjob.add(tc_locus);
             
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.variants.ISBT.vcf.gz SNPs.vcf.gz
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.bw coverage.bw
@@ -116,7 +121,9 @@ int main(int argc, char** argv)
                         tc_bigwig.getValue(),
                         tc_coverage.getValue(), 
                         tc_verbose.getValue(),
-                        tc_tophits.getValue());
+                        tc_tophits.getValue(),
+                        tc_locus.getValue(),
+                        tc_isInSilico.getValue());
                 exit(EXIT_SUCCESS);
             }
             else if(tc_jobType.getValue().compare("pht") == 0)
@@ -136,6 +143,26 @@ int main(int argc, char** argv)
                         tc_system.getValue());
                 exit(EXIT_SUCCESS);
             }
+        }
+        if(tc_jobType.getValue().compare("vcf") == 0)
+        {
+            TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
+            cmdjob.add(tc_variants);
+            TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
+            cmdjob.add(tc_gt2pt);
+            TCLAP::ValueArg<string> tc_alleleA("a","alleleA","First allele of the requested in silico data",true,"ABO*O.01.01","string");
+            cmdjob.add(tc_alleleA);
+            TCLAP::ValueArg<string> tc_alleleB("b","alleleB","First allele of the requested in silico data",true,"ABO*A2.01","string");
+            cmdjob.add(tc_alleleB);
+            cmdjob.parse(argc,argv);
+            cerr << "Everything found. starting run ..." << endl;
+            inSilicoVCF(tc_variants.getValue(),
+                    tc_gt2pt.getValue(),
+                    tc_alleleA.getValue(),
+                    tc_alleleB.getValue(), 
+                    tc_verbose.getValue());
+            exit(EXIT_SUCCESS);
+            
         }
         else
         {
@@ -181,7 +208,7 @@ int main(int argc, char** argv)
 }
         
 
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus)
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, bool arg_is_in_silico)
 {
     try
     {
@@ -209,28 +236,17 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         {
             cerr << "ISBT annotation:" << endl << isbt << endl << endl;
             cerr << "ISBT genotype to phenotype translation:" << endl << isbTyper << endl << endl;
-
+            CIsbtVariant hlp;
+            hlp.setVerbose();
          }
 
         // generate VCF Test Data
 
-        /*// make test data
-        //    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/cpp/bamtools/build/src/api/:/home/mwittig/coding/cpp/htslib
-        for(auto locus:loci)
-        {
-            for(auto known_allele:isbTyper.alleleVector(locus))
-            {
-                 CMyTools::cmd("cat /home/mwittig/coding/cpp/deepBlood/data/testdata/VCFheaderTestData.vcf > /home/mwittig/ramDisk/simulator.vcf",false);
-                ofstream outfile;
-                outfile.open("/home/mwittig/ramDisk/simulator.vcf", std::ios_base::app);
-                outfile << CMakeTrainingVcf::getHomEntries(locus,known_allele,isbt) << endl;
-                outfile.close();
-                /// if you analyze simulated VCF do the following on your CVariantChains object
-                // vcs.removeReferenceSnps();
-            }
-        }//*/
-
+        
         CVariantChains vcs(&isbt);
+        /// if you analyze simulated VCF do the following on your CVariantChains object
+        if(arg_is_in_silico)
+            vcs.removeReferenceSnps();
         //CVcf vcf_file(argv[3]);
         while(vcf_file.read_record())
         {
@@ -249,7 +265,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             cerr << "Variant chains of current sample: " << vcs << endl;    
         for(auto locus:loci)
         {
-            if( arg_locus.length() == 0 ||  locus.compare(arg_locus) == 0 )
+            if( arg_locus.length() == 0 || locus.compare(arg_locus) == 0 )
             {
                 isbTyper.type(locus,vcs);
                 cout << locus << '\t' << isbTyper.getCallAsString(locus,false,arg_top_hits) << endl;
@@ -267,4 +283,70 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         throw(CMyException("Unexpected Error in phenotype function"));
     }
 }
+
+// # extract all alleles and mix
+// cut -f 4 data/config/genotype_to_phenotype_annotation.dat | grep ABO | shuf > ~/ramDisk/mixed_ABO
+// generate pairs of allelses from that shuffeled output (in excel)
+// Example file mixed_ABO:
+// ABO*O.01.26     ABO*cisAB.01
+// ABO*A2.12       ABO*O.01.58
+// ABO*AW.22       ABO*BW.04
+// ...
+// export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
+/* 
+   for i in `cat mixed_ABO`
+   do
+    A1=`echo $i | cut -f 1`
+    A2=`echo $i | cut -f 2`
+    /home/mwittig/coding/cpp/deepBlood/dist/Debug/GNU-Linux/deepblood --job vcf --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat --gt2pt /home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat -a $A1 -b $A2 1> ${A1}_${A2}.vcf
+   done
+*/
+
+
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose)
+{
+    try
+    {
+        CISBTAnno  isbt(arg_isbt_SNPs);
+        if(arg_verbose >= 2)
+            cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
+        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
+        if(arg_verbose >= 2)
+            cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
+        
+            
+        string systemA = isbTyper.systemOf(arg_allele_A);
+        string systemB = isbTyper.systemOf(arg_allele_B);
+        
+        if(systemA.compare(systemB) != 0)
+            throw CMyException(string("The system of both alleles must be the same. You have ")+arg_allele_A+"/"+arg_allele_B+" with '"+systemA+"'/'"+systemB+"'");
+        
+        CIsbtPtAllele alleleA = isbTyper.alleleOf(arg_allele_A);
+        CIsbtPtAllele alleleB = isbTyper.alleleOf(arg_allele_B);
+        
+        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt);
+        
+    }
+    catch(const CMyException& err)
+    {
+        throw(err);
+    }
+    catch(...)
+    {
+        throw(CMyException("Unexpected Error in phenotype function"));
+    }
+}
+
+
+string getArgumentList(TCLAP::CmdLine& args)
+{
+    ostringstream osr("");
+    
+    const std::list<TCLAP::Arg*>& argL = args.getArgList();
+    for(const auto& j:argL)
+        osr << j->getName() << endl;
+    
+    return osr.str();
+}
+
 

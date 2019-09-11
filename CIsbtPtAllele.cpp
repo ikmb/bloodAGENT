@@ -23,6 +23,11 @@
 
 using namespace std;
 
+CIsbtPtAllele::CIsbtPtAllele()
+{
+    init("","","","",0.0f);
+}
+
 CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, string incidence) 
 {
     try{

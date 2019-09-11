@@ -19,6 +19,7 @@
 
 class CIsbtPtAllele {
 public:
+    CIsbtPtAllele();
     CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, std::string incidence);
     CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence);
     CIsbtPtAllele(const CIsbtPtAllele& orig);

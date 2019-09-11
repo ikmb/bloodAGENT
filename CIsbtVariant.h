@@ -17,6 +17,8 @@
 #include "mytools.h"
 #include "CBigWigReader.h"
 
+
+
 class CIsbtVariant {
 public:
     CIsbtVariant();
@@ -52,6 +54,7 @@ public:
     double getCoverage()const{return m_coverage;}
     bool isCovered(double limit = 0.0f)const;
     
+    void setVerbose(bool value = true){verbose=value;}
 private:
     
     std::string m_isbt_name;
@@ -66,6 +69,8 @@ private:
     
     
     bool parseIsbtVariant();
+    
+    static bool verbose;
     
 
 };

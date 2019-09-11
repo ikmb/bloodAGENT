@@ -24,6 +24,8 @@
 
 using namespace std;
 
+bool CIsbtVariant::verbose = false;
+
 CIsbtVariant::CIsbtVariant() 
 {
     m_isbt_name = "";
@@ -114,7 +116,9 @@ bool   CIsbtVariant::operator ==(const CIsbtVariant& orig)const
  
 std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me)
 {
-    os << me.name() << " (" << (me.m_coverage == me.m_coverage ? me.m_coverage : 0 ) << "x)";
+    os << me.name();
+    if(me.verbose)
+        os << " (" << (me.m_coverage == me.m_coverage ? me.m_coverage : 0 ) << "x)";
     return os;
 }
 

@@ -296,6 +296,31 @@ vector<CIsbtPtAllele> CIsbtGt2Pt::alleleVector(const string& system)const
     return vector<CIsbtPtAllele>();
 }
 
+CIsbtPtAllele CIsbtGt2Pt::alleleOf(const string& allele)const
+{
+    for(map<string,vector<CIsbtPtAllele>>::const_iterator i = m_allele_vector.begin(); i != m_allele_vector.end(); i++)
+    {
+        for(auto isbtptallele:i->second)
+            if(isbtptallele.name().compare(allele) == 0)
+                return isbtptallele;
+        
+    }
+    return CIsbtPtAllele();
+}
+
+string CIsbtGt2Pt::systemOf(const string& allele)const
+{
+    for(map<string,vector<CIsbtPtAllele>>::const_iterator i = m_allele_vector.begin(); i != m_allele_vector.end(); i++)
+    {
+        for(auto isbtptallele:i->second)
+            if(isbtptallele.name().compare(allele) == 0)
+                return i->first;
+        
+    }
+    return "";
+}
+
+
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me)
 {
     long unsigned int i = 0;
