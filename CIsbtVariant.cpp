@@ -36,12 +36,13 @@ CIsbtVariant::CIsbtVariant()
     /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
     m_lrg_reference = "";
     m_lrg_alternative = "";
+    m_vcf_coordinate = -1;
     m_vcf_reference = "";
     m_vcf_alternative = "";
     m_coverage = std::numeric_limits<float>::quiet_NaN();
 }
 
-CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const string& chrom, int pos, char strand, const string& vcfRef, const string& vcfAlt) 
+CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const string& chrom, int pos, char strand, int vcfCoord, const string& vcfRef, const string& vcfAlt) 
 {
     m_isbt_name = lrg_anno;
     m_chromosome = chrom;
@@ -51,6 +52,7 @@ CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const 
     /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
     m_lrg_reference = refBase;
     m_lrg_alternative = "";
+    m_vcf_coordinate = vcfCoord;
     m_vcf_reference = vcfRef;
     m_vcf_alternative = vcfAlt;
     m_coverage = std::numeric_limits<float>::quiet_NaN();
@@ -63,6 +65,7 @@ CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig)
     m_lrg_position = orig.m_lrg_position;
     m_lrg_reference = orig.m_lrg_reference;
     m_lrg_alternative = orig.m_lrg_alternative;
+    m_vcf_coordinate = orig.m_vcf_coordinate;
     m_vcf_reference = orig.m_vcf_reference;
     m_vcf_alternative = orig.m_vcf_alternative;
     
@@ -78,6 +81,7 @@ CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
     m_lrg_position = orig.m_lrg_position;
     m_lrg_reference = orig.m_lrg_reference;
     m_lrg_alternative = orig.m_lrg_alternative;
+    m_vcf_coordinate = orig.m_vcf_coordinate;
     m_vcf_reference = orig.m_vcf_reference;
     m_vcf_alternative = orig.m_vcf_alternative;
     

@@ -22,7 +22,7 @@
 class CIsbtVariant {
 public:
     CIsbtVariant();
-    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, const std::string& vcfRef, const std::string& vcfAlt);
+    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, int vcfCoord, const std::string& vcfRef, const std::string& vcfAlt);
     CIsbtVariant(const CIsbtVariant& orig);
     
     CIsbtVariant& operator =(const CIsbtVariant& orig);
@@ -45,6 +45,7 @@ public:
        
     std::string lrgReference()const{return m_lrg_reference;}
     std::string lrgAlternative()const{return m_lrg_alternative;}
+    int         vcfCoordinate()const{return m_vcf_coordinate;}
     std::string vcfReference()const{return m_vcf_reference;}
     std::string vcfAlternative()const{return m_vcf_alternative;}
     std::string reference()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_reference); return m_lrg_reference;}
@@ -63,6 +64,7 @@ private:
     std::string m_lrg_position;
     std::string m_lrg_reference;
     std::string m_lrg_alternative;
+    int         m_vcf_coordinate;
     std::string m_vcf_reference;
     std::string m_vcf_alternative;
     

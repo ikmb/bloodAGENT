@@ -72,7 +72,7 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
         if(count++ != 0)
             osr << endl;
         osr << act_variant.chrom() << '\t'
-            << act_variant.pos() << "\t.\t"
+            << act_variant.vcfCoordinate() << "\t.\t"
             << act_variant.vcfReference() << '\t'
             << act_variant.vcfAlternative() << '\t'
             << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
@@ -114,7 +114,7 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
         else
             phase_id=actVar.pos();
         osr << actVar.chrom() << '\t'
-            << actVar.pos() << "\t.\t"
+            << actVar.vcfCoordinate() << "\t.\t"
             << actVar.vcfReference() << '\t'
             << actVar.vcfAlternative() << '\t';
         if(hetA)
