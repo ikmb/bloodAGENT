@@ -73,8 +73,8 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
             osr << endl;
         osr << act_variant.chrom() << '\t'
             << act_variant.pos() << "\t.\t"
-            << act_variant.reference() << '\t'
-            << act_variant.alternative() << '\t'
+            << act_variant.vcfReference() << '\t'
+            << act_variant.vcfAlternative() << '\t'
             << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
     }
     return osr.str();
@@ -115,8 +115,8 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             phase_id=actVar.pos();
         osr << actVar.chrom() << '\t'
             << actVar.pos() << "\t.\t"
-            << actVar.reference() << '\t'
-            << actVar.alternative() << '\t';
+            << actVar.vcfReference() << '\t'
+            << actVar.vcfAlternative() << '\t';
         if(hetA)
             osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
         if(hetB)

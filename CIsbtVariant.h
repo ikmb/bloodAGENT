@@ -22,7 +22,7 @@
 class CIsbtVariant {
 public:
     CIsbtVariant();
-    CIsbtVariant(std::string lrg_anno, std::string refBase, std::string chrom, int pos, char strand);
+    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, const std::string& vcfRef, const std::string& vcfAlt);
     CIsbtVariant(const CIsbtVariant& orig);
     
     CIsbtVariant& operator =(const CIsbtVariant& orig);
@@ -43,8 +43,10 @@ public:
     std::string chrom()const{return m_chromosome;}
     int         pos()const{return m_position;}
        
-    std::string lrgReference(){return m_lrg_reference;}
-    std::string lrgAlternative(){return m_lrg_alternative;}
+    std::string lrgReference()const{return m_lrg_reference;}
+    std::string lrgAlternative()const{return m_lrg_alternative;}
+    std::string vcfReference()const{return m_vcf_reference;}
+    std::string vcfAlternative()const{return m_vcf_alternative;}
     std::string reference()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_reference); return m_lrg_reference;}
     std::string alternative()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_alternative);return m_lrg_alternative;}
     
@@ -61,6 +63,8 @@ private:
     std::string m_lrg_position;
     std::string m_lrg_reference;
     std::string m_lrg_alternative;
+    std::string m_vcf_reference;
+    std::string m_vcf_alternative;
     
     std::string m_chromosome;
     int         m_position;
