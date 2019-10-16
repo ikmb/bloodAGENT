@@ -44,7 +44,8 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
     {
         do{
             ostringstream osr("");
-            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Pos (hg19)"];
+            //osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Pos (hg19)"];
+            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Coordinate in VCF hg19"];
             m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]=m_entry_finder.size();
             m_entry_finder.insert(pair<string,int>(osr.str(),m_entry_finder.size()));
             if(m_strand.find(m_vanno["system/gene"]) == m_strand.end())
@@ -52,7 +53,8 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
             m_loci.insert(m_vanno["system/gene"]);
             m_parsed_isbt_variant.push_back(CIsbtVariant(m_vanno["Transcript annotation short"], 
                     m_vanno["Reference base (hg19)"], m_vanno["Chrom (hg19)"], stoi(m_vanno["1-based end (hg19)"]),m_vanno["strand (hg19)"][0],
-                    stoi(m_vanno["Coordinate in VCF hg19"]),m_vanno["RefAllele in VCF hg19"], m_vanno["AltAllele in VCF hg19"]));
+                    stoi(m_vanno["Coordinate in VCF hg19"]),m_vanno["RefAllele in VCF hg19"], m_vanno["AltAllele in VCF hg19"],
+                    m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0));
         }while(m_vanno.Next());
         return true;
     }
