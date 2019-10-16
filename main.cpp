@@ -55,7 +55,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
 string getArgumentList(TCLAP::CmdLine& args);
 
 /*
- * 
+ * export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
  */
 int main(int argc, char** argv) 
 {
