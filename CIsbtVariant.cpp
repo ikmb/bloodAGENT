@@ -57,6 +57,7 @@ CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const 
     m_vcf_reference = vcfRef;
     m_vcf_alternative = vcfAlt;
     m_coverage = std::numeric_limits<float>::quiet_NaN();
+    m_are_ref_and_alt_switched_in_GRCh = are_ref_and_alt_switched_in_GRCh;
     parseIsbtVariant();
 }
 
