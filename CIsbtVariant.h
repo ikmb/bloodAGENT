@@ -22,7 +22,7 @@
 class CIsbtVariant {
 public:
     CIsbtVariant();
-    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, int vcfCoord, const std::string& vcfRef, const std::string& vcfAlt);
+    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, int vcfCoord, const std::string& vcfRef, const std::string& vcfAlt, bool are_ref_and_alt_switched_in_GRCh);
     CIsbtVariant(const CIsbtVariant& orig);
     
     CIsbtVariant& operator =(const CIsbtVariant& orig);
@@ -57,6 +57,8 @@ public:
     double getCoverage()const{return m_coverage;}
     bool isCovered(double limit = 0.0f)const;
     
+    bool isRefNClikeGRChNC()const{return !m_are_ref_and_alt_switched_in_GRCh;}
+    
     void setVerbose(bool value = true){verbose=value;}
 private:
     
@@ -67,6 +69,8 @@ private:
     int         m_vcf_coordinate;
     std::string m_vcf_reference;
     std::string m_vcf_alternative;
+    
+    bool        m_are_ref_and_alt_switched_in_GRCh;
     
     std::string m_chromosome;
     int         m_position;
