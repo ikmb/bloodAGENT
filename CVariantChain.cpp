@@ -101,7 +101,7 @@ bool CVariantChain::add(const CVcfSnp& var)
     }
     
     vector<string> alleles = var.alleles();
-    if(isbv.isInDel() && var.isHeterozygous())
+    if(isbv.isInDel())
         alleles = var.indelalleles();
     CVariantChainVariation vcv;
     for(size_t i = 0; i < 2 && i < alleles.size(); i++)

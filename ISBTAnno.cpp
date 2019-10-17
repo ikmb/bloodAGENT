@@ -54,7 +54,7 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
             m_parsed_isbt_variant.push_back(CIsbtVariant(m_vanno["Transcript annotation short"], 
                     m_vanno["Reference base (hg19)"], m_vanno["Chrom (hg19)"], stoi(m_vanno["1-based end (hg19)"]),m_vanno["strand (hg19)"][0],
                     stoi(m_vanno["Coordinate in VCF hg19"]),m_vanno["RefAllele in VCF hg19"], m_vanno["AltAllele in VCF hg19"],
-                    m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0));
+                    m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0,m_vanno["TYPE"]));
         }while(m_vanno.Next());
         return true;
     }

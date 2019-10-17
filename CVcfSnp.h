@@ -53,6 +53,7 @@ private:
     long                        m_depth;
     bool                        m_verbose;
     int                         m_phasing_id;
+    std::string                 m_ref_allele;
     
     void read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& m_seq_names,bcf1_t *rec);
 };
