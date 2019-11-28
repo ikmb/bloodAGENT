@@ -51,7 +51,7 @@ public:
     std::string reference()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_reference); return m_lrg_reference;}
     std::string alternative()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_alternative);return m_lrg_alternative;}
     
-    bool isInDel()const{return (m_variation_type.compare("del") == 0);}
+    bool isInDel()const{return (m_variation_type.compare("del") == 0 || m_variation_type.compare("ins") == 0);}
     
     bool addCoverage(const CBigWigReader& bigWig);
     double getCoverage()const{return m_coverage;}
