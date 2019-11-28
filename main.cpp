@@ -56,7 +56,19 @@ string getArgumentList(TCLAP::CmdLine& args);
 
 /*
  * export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
+ * 
+ * 
+  "${OUTPUT_PATH}" --job phenotype --target /home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt 
+                   --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat 
+                   --gt2pt /home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat --vcf /home/mwittig/ramDisk/SNPs.vcf 
+                   --bigwig /home/mwittig/coding/cpp/deepBlood/data/config/fake_50x_coverage_at_target.bw 
+                   --coverage 10 --verbose 1 --insilicovcf --locus RHD --scoreRange 0.0
+ 
+  "${OUTPUT_PATH}"  --job vcf --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat 
+                    --gt2pt /home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat -a "RHD*01EL.24" -b "RHD*01W.72"
  */
+
+
 int main(int argc, char** argv) 
 {
     try
