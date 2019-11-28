@@ -22,7 +22,7 @@
 class CIsbtVariant {
 public:
     CIsbtVariant();
-    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, int vcfCoord, const std::string& vcfRef, const std::string& vcfAlt, bool are_ref_and_alt_switched_in_GRCh);
+    CIsbtVariant(const std::string& lrg_anno, const std::string& refBase, const std::string& chrom, int pos, char strand, int vcfCoord, const std::string& vcfRef, const std::string& vcfAlt, bool are_ref_and_alt_switched_in_GRCh, const string& variation_type);
     CIsbtVariant(const CIsbtVariant& orig);
     
     CIsbtVariant& operator =(const CIsbtVariant& orig);
@@ -51,7 +51,7 @@ public:
     std::string reference()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_reference); return m_lrg_reference;}
     std::string alternative()const{if(m_strand == '-')return CMyTools::GetComplSequence(m_lrg_alternative);return m_lrg_alternative;}
     
-    bool isInDel()const{return (m_lrg_reference.compare("-") == 0 || m_lrg_alternative.compare("-") == 0);}
+    bool isInDel()const{return (m_variation_type.compare("del") == 0);}
     
     bool addCoverage(const CBigWigReader& bigWig);
     double getCoverage()const{return m_coverage;}
@@ -69,6 +69,7 @@ private:
     int         m_vcf_coordinate;
     std::string m_vcf_reference;
     std::string m_vcf_alternative;
+    std::string m_variation_type;;
     
     bool        m_are_ref_and_alt_switched_in_GRCh;
     
