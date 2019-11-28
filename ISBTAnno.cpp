@@ -106,6 +106,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
     ostringstream osr("");
     osr << vcfsnp.chrom() << '_' << vcfsnp.pos();
     pair<multimap<string,int>::const_iterator, multimap<string,int>::const_iterator> mRange;
+    //cout << osr.str() << endl;
     mRange = m_entry_finder.equal_range(osr.str());
     
     for (multimap<string,int>::const_iterator it=mRange.first; it!=mRange.second; ++it)
@@ -118,7 +119,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         for(auto s:vcfsnp.alleles())
         {
             allele_counter++;
-            if(s.compare(varParsed.reference()) == 0 || s.compare(varParsed.alternative()) == 0)
+            if(s.compare(varParsed.vcfReference()) == 0 || s.compare(varParsed.vcfAlternative()) == 0)
                 equal_counter++;
         }
         // TODO: This is not robust!!!
