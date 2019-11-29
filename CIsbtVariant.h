@@ -69,7 +69,7 @@ private:
     int         m_vcf_coordinate;
     std::string m_vcf_reference;
     std::string m_vcf_alternative;
-    std::string m_variation_type;;
+    std::string m_variation_type;
     
     bool        m_are_ref_and_alt_switched_in_GRCh;
     
