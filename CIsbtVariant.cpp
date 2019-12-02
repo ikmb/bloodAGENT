@@ -186,9 +186,13 @@ bool CIsbtVariant::parseIsbtVariant()
     }
     else if(actBaseChange.substr(0,3).compare("dup")==0)
     {
-        if(strand() == '-')
-            m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
-        m_lrg_alternative = m_lrg_reference + actBaseChange.substr(3);
+        // in the SNP calling a duplication is reported as a left aligned insertion
+        // so we have to store that here accordingly
+        //if(strand() == '-')
+        //    m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
+        //m_lrg_alternative = m_lrg_reference + actBaseChange.substr(3);
+        m_lrg_reference = "-";
+        m_lrg_alternative = actBaseChange.substr(3);
     }
     else 
     {
