@@ -119,7 +119,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         for(auto s:vcfsnp.alleles())
         {
             allele_counter++;
-            if(s.compare(varParsed.vcfReference()) == 0 || s.compare(varParsed.vcfAlternative()) == 0)
+            if( s.compare(varParsed.vcfReference()) == 0 || s.compare(varParsed.vcfAlternative()) == 0 )
                 equal_counter++;
         }
         // TODO: This is not robust!!!
@@ -129,8 +129,9 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         // ABO del261G in helper table: -/C
         //                      in vcf: T/TC
         // another exception would be KEL with G for k+,A for K+ and C for Kmod at rs8176058
-        if(equal_counter == allele_counter || // alleles match perfect 
-           abs(mRange.second->second - mRange.first->second) == 1  ) // only one entry
+        if( (equal_counter == allele_counter || // alleles match perfect 
+           abs(mRange.second->second - mRange.first->second) == 1 ) &&  // only one entry
+           vcfsnp.refAllele().compare(varParsed.vcfReference()) == 0   )
             return m_parsed_isbt_variant[it->second];
     }
     return CISBTAnno::variation();
