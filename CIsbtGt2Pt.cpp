@@ -217,22 +217,26 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
     
     osr << gt << "\t";
     int count_outer = 0;
+    string dummyForHomozygous;
     for(const auto& act_allele:results)
     {
         float high_score = act_allele.second.front().score();
         int count = 0;
         if(count_outer++ != 0)
             osr << '/';
+        dummyForHomozygous = "";
         for(const auto& act_hit:act_allele.second)
         {
             if(act_hit.score() < high_score)
                 break;
             if(count++ != 0)
-                osr << ';';
-            osr << ( phenotype ? act_hit.m_phenotype_allele.phenotype() : act_hit.m_phenotype_allele.name()) ;
+                dummyForHomozygous.append(";");
+            ( phenotype ? dummyForHomozygous.append(act_hit.m_phenotype_allele.phenotype()) : dummyForHomozygous.append(act_hit.m_phenotype_allele.name())) ;
         }
-        
+        osr << dummyForHomozygous;
     }
+    if(count_outer == 1) // if we have a homozygous call, write the first allele/phenotype again
+        osr << '/' << dummyForHomozygous;
     osr << "\t" << getPredictedScoreOfGenotype(results);
     return osr.str();
 }
