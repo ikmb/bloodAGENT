@@ -56,7 +56,7 @@ private:
     float scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&);
     float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
-    
+    static bool sort_by_space_separated_entries_asc(const string& a,const string& b);
     
     
     /// set phenotype to true to get the phenotype, otherwise you get the allele

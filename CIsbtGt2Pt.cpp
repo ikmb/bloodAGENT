@@ -292,14 +292,33 @@ void CIsbtGt2Pt::findAlleTaggingBaseChanges()const
             for(auto act_combination : act_all_combinations)
                 unique_Finder[act_combination].insert(act_allele);
         }
-        for(auto act_gt_combi : unique_Finder)
+        // find tagging SNPs
+        for(auto act_allele : blood_system.second)
         {
-                cerr << act_system << '\t' << act_gt_combi.first << '\t';
-                for(auto act_allele : act_gt_combi.second)
-                    cerr << act_allele.name() << '-';
-                cerr << endl;
+            vector<string> hit_list;
+            for(auto act_gt_combi : unique_Finder)
+            {   // if the act_allele is the only one for this genotype set then store it
+                // multiple hits are possible, so we will take the one with the fewest variations
+                if(act_gt_combi.second.size() == 1 && act_gt_combi.second.begin()->operator ==(act_allele))
+                    hit_list.push_back(act_gt_combi.first);
+            }
+            std::sort(hit_list.begin(),hit_list.end(),sort_by_space_separated_entries_asc);
+            
+            for(auto act_gt : hit_list)
+                cerr << act_system << '\t' << act_allele.name() << '\t' << act_gt << endl;
         }
     }
+}
+
+bool CIsbtGt2Pt::sort_by_space_separated_entries_asc(const string& a,const string& b)
+{
+    size_t countA = count(a.begin(), a.end(), ' ');
+    size_t countB = count(b.begin(), b.end(), ' ');
+    
+    if(countA < countB)
+        return true;
+    return false;
+    
 }
 
 float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const

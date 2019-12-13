@@ -87,7 +87,7 @@ std::vector<std::string> CIsbtPtAllele::getFullBaseChangeRecombinations()const
        string actSet = "";
         for(set<string>::iterator j = i; j != m_base_changes.end();j++)
         {
-            actSet.append(*j).append("-");
+            actSet.append(*j).append(" ");
             vRet.push_back(actSet);
         }
     }
