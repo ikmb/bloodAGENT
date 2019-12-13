@@ -27,6 +27,9 @@ public:
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me);
     
+    bool operator==(const CIsbtPtAllele& me)const;
+    bool operator<(const CIsbtPtAllele& me)const;
+    
     std::set<std::string>  baseChanges()const{return m_base_changes;}
     std::set<std::string>  acidChanges()const{return m_acid_changes;}
     std::string name()const{return m_name;}

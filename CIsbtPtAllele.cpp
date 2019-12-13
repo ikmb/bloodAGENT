@@ -95,6 +95,39 @@ std::vector<std::set<std::string>> CIsbtPtAllele::getFullBaseChangeRecombination
     return vRet;
 }
 
+bool CIsbtPtAllele::operator==(const CIsbtPtAllele& me)const
+{
+    return (
+            me.name().compare(m_name) == 0 &&
+            me.m_phenotype_name.compare(m_phenotype_name) == 0 &&
+            me.m_incidence == m_incidence &&
+            me.m_base_changes == m_base_changes &&
+            me.m_acid_changes == m_acid_changes
+            );
+}
+
+bool CIsbtPtAllele::operator<(const CIsbtPtAllele& me)const
+{
+    if(me.name().compare(m_name) < 0)
+        return true;
+    if(me.name().compare(m_name) > 0)
+        return false;
+    if(me.m_phenotype_name.compare(m_phenotype_name) < 0)
+        return true;
+    if(me.m_phenotype_name.compare(m_phenotype_name) > 0)
+        return false;
+    if(me.m_incidence < m_incidence)
+        return true;
+    if(me.m_incidence > m_incidence)
+        return false;
+    if(me.m_base_changes.size() < m_base_changes.size())
+        return true;
+    if(me.m_base_changes.size() > m_base_changes.size())
+        return false;
+    if(me.m_acid_changes.size() < m_acid_changes.size())
+        return true;
+    return false;
+}
 
 std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me)
 {

@@ -231,6 +231,8 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
+        isbTyper.findAlleTaggingBaseChanges();
+        exit(EXIT_SUCCESS);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
         CVcf vcf_file(arg_vcf_file);
