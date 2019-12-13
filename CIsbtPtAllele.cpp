@@ -79,18 +79,17 @@ bool CIsbtPtAllele::containsBaseChange(const std::string& isbt_base_change)const
     return false;
 }
 
-std::vector<std::set<std::string>> CIsbtPtAllele::getFullBaseChangeRecombinations()const
+std::vector<std::string> CIsbtPtAllele::getFullBaseChangeRecombinations()const
 {
-    std::vector<std::set<std::string>> vRet;
-    
+    std::vector<std::string> vRet;
     for(set<string>::iterator i = m_base_changes.begin(); i != m_base_changes.end();i++)
     {
-        set<std::string> actSet;
-        for(set<string>::reverse_iterator j = m_base_changes.rbegin(); j.base() != next(i);j++)
+       string actSet = "";
+        for(set<string>::iterator j = i; j != m_base_changes.end();j++)
         {
-            actSet.insert(*j);
+            actSet.append(*j).append("-");
+            vRet.push_back(actSet);
         }
-        vRet.push_back(actSet);
     }
     return vRet;
 }

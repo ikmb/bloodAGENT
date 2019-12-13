@@ -284,20 +284,17 @@ void CIsbtGt2Pt::findAlleTaggingBaseChanges()const
     // std::map<std::string,vector<CIsbtPtAllele>>
     for(auto blood_system : m_allele_vector)
     {
-        map<set<string>,set<CIsbtPtAllele>> unique_Finder;
+        map<string,set<CIsbtPtAllele>> unique_Finder;
         const string& act_system = blood_system.first;
         for(auto act_allele : blood_system.second)
         {
-            std::vector<std::set<std::string>> act_all_combinations = act_allele.getFullBaseChangeRecombinations();
+            std::vector<string> act_all_combinations = act_allele.getFullBaseChangeRecombinations();
             for(auto act_combination : act_all_combinations)
                 unique_Finder[act_combination].insert(act_allele);
         }
         for(auto act_gt_combi : unique_Finder)
         {
-                cerr << act_system << '\t';
-                for(auto act_gt : act_gt_combi.first)
-                    cerr << act_gt << '-';
-                cerr << '\t';
+                cerr << act_system << '\t' << act_gt_combi.first << '\t';
                 for(auto act_allele : act_gt_combi.second)
                     cerr << act_allele.name() << '-';
                 cerr << endl;
