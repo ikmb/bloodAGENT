@@ -279,6 +279,21 @@ float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genoty
     return fRet;
 }
 
+void CIsbtGt2Pt::findAlleTaggingBaseChanges()const
+{
+    map<set<string>,set<CIsbtPtAllele>> unique_Finder;
+    // std::map<std::string,vector<CIsbtPtAllele>>
+    for(auto blood_system : m_allele_vector)
+    {
+        const string& act_system = blood_system.first;
+        for(auto act_allele : blood_system.second)
+        {
+            std::vector<std::set<std::string>> act_all_combinations = act_allele.getFullBaseChangeRecombinations();
+            
+        }
+    }
+}
+
 float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
 {
     float fRet = 0.0f;

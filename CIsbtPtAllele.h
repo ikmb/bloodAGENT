@@ -34,6 +34,8 @@ public:
     
     
     bool containsBaseChange(const std::string& isbt_base_change)const;
+    // returns a set of base changes
+    std::vector<std::set<std::string>> getFullBaseChangeRecombinations()const;
     
 private:
     

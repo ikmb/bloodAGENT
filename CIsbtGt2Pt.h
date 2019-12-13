@@ -56,6 +56,7 @@ private:
     float scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&);
     float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
+    void findAlleTaggingBaseChanges()const;
     
     
     /// set phenotype to true to get the phenotype, otherwise you get the allele

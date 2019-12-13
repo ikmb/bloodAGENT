@@ -64,6 +64,10 @@ CVcfSnp::~CVcfSnp() {
 
 std::vector<std::string>  CVcfSnp::indelalleles()const
 {
+    // ToDO:
+    // Seltener Fall eineszum SNP benachbarten indels mit Freebyas gecallt
+    // Soll sein G/A, reportiert aber mit Freebayes als:
+    // 6       31106499        .       GTCCCCCCCA      ATCCCCCCA       271.543
     vector<std::string> vRet = m_alleles;
     if(vRet.size() > 1)
     {
@@ -129,7 +133,7 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     
     
 
-    if(rec->rid < seq_names.size())
+    if(rec->rid < static_cast<int32_t>(seq_names.size()))
         m_chrom = seq_names[rec->rid];
     m_pos = rec->pos+1;                 // vcf LIB INTERNALLY STORES 0-BASED POSITIONS
     if(ndp > 0)
@@ -160,7 +164,7 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
 std::string    CVcfSnp::SNP()const
 {
     ostringstream osr("");
-    for(int i = 0; i < m_alleles.size(); i++)
+    for(size_t i = 0; i < m_alleles.size(); i++)
         osr << m_alleles[i] << ( i + 1 == m_alleles.size() ? '\t' : ( isPhased() ? '|' : '/'));
     return osr.str();
 }
@@ -169,13 +173,13 @@ std::ostream& operator<<(std::ostream& os, const CVcfSnp& me)
 {
     os << me.m_chrom << '\t' << me.m_pos << '\t' << me.m_depth << '\t';
     
-    for(int i = 0; i < me.m_alleles.size(); i++)
+    for(size_t i = 0; i < me.m_alleles.size(); i++)
         os << me.m_alleles[i] << ( i + 1 == me.m_alleles.size() ? '\t' : ( me.isPhased() ? '|' : '/'));
     
-    for(int i = 0; i < me.m_coverage.size(); i++)
+    for(size_t i = 0; i < me.m_coverage.size(); i++)
         os << me.m_coverage[i] << ( i + 1 == me.m_coverage.size() ? '\t' : '/');
     
-    for(int i = 0; i < me.m_qualities.size(); i++)
+    for(size_t i = 0; i < me.m_qualities.size(); i++)
         os << me.m_qualities[i] << ( i + 1 == me.m_qualities.size() ? '\t' : '/');
     
     if(me.isPhased())
@@ -201,7 +205,7 @@ bool CVcfSnp::isInRegion(const std::vector<std::string>& chrom, std::vector<long
         return false;
     }
     
-    for(int i = 0; i < chrom.size(); i++)
+    for(size_t i = 0; i < chrom.size(); i++)
         if(isInRegion(chrom[i], start[i],end[i]))
             return true;
     return false;
