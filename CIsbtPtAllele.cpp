@@ -23,6 +23,11 @@
 
 using namespace std;
 
+CIsbtPtAllele::CIsbtPtAllele()
+{
+    init("","","","",0.0f);
+}
+
 CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, string incidence) 
 {
     try{
@@ -71,6 +76,55 @@ bool CIsbtPtAllele::containsBaseChange(const std::string& isbt_base_change)const
     for(auto x:m_base_changes)
         if(x.compare(isbt_base_change) == 0)
             return true;
+    return false;
+}
+
+std::vector<std::string> CIsbtPtAllele::getFullBaseChangeRecombinations()const
+{
+    std::vector<std::string> vRet;
+    for(set<string>::iterator i = m_base_changes.begin(); i != m_base_changes.end();i++)
+    {
+       string actSet = "";
+        for(set<string>::iterator j = i; j != m_base_changes.end();j++)
+        {
+            actSet.append(*j).append(" ");
+            vRet.push_back(actSet);
+        }
+    }
+    return vRet;
+}
+
+bool CIsbtPtAllele::operator==(const CIsbtPtAllele& me)const
+{
+    return (
+            me.name().compare(m_name) == 0 &&
+            me.m_phenotype_name.compare(m_phenotype_name) == 0 &&
+            me.m_incidence == m_incidence &&
+            me.m_base_changes == m_base_changes &&
+            me.m_acid_changes == m_acid_changes
+            );
+}
+
+bool CIsbtPtAllele::operator<(const CIsbtPtAllele& me)const
+{
+    if(me.name().compare(m_name) < 0)
+        return true;
+    if(me.name().compare(m_name) > 0)
+        return false;
+    if(me.m_phenotype_name.compare(m_phenotype_name) < 0)
+        return true;
+    if(me.m_phenotype_name.compare(m_phenotype_name) > 0)
+        return false;
+    if(me.m_incidence < m_incidence)
+        return true;
+    if(me.m_incidence > m_incidence)
+        return false;
+    if(me.m_base_changes.size() < m_base_changes.size())
+        return true;
+    if(me.m_base_changes.size() > m_base_changes.size())
+        return false;
+    if(me.m_acid_changes.size() < m_acid_changes.size())
+        return true;
     return false;
 }
 

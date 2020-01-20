@@ -44,14 +44,17 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
     {
         do{
             ostringstream osr("");
-            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["1-based end (hg19)"];
+            //osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Pos (hg19)"];
+            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Coordinate in VCF hg19"];
             m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]=m_entry_finder.size();
             m_entry_finder.insert(pair<string,int>(osr.str(),m_entry_finder.size()));
             if(m_strand.find(m_vanno["system/gene"]) == m_strand.end())
                 m_strand[m_vanno["system/gene"]]=m_vanno["strand (hg19)"][0];
             m_loci.insert(m_vanno["system/gene"]);
             m_parsed_isbt_variant.push_back(CIsbtVariant(m_vanno["Transcript annotation short"], 
-                    m_vanno["Reference base (hg19)"], m_vanno["Chrom (hg19)"], stoi(m_vanno["1-based end (hg19)"]),m_vanno["strand (hg19)"][0]));
+                    m_vanno["Reference base (hg19)"], m_vanno["Chrom (hg19)"], stoi(m_vanno["1-based end (hg19)"]),m_vanno["strand (hg19)"][0],
+                    stoi(m_vanno["Coordinate in VCF hg19"]),m_vanno["RefAllele in VCF hg19"], m_vanno["AltAllele in VCF hg19"],
+                    m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0,m_vanno["TYPE"]));
         }while(m_vanno.Next());
         return true;
     }
@@ -103,6 +106,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
     ostringstream osr("");
     osr << vcfsnp.chrom() << '_' << vcfsnp.pos();
     pair<multimap<string,int>::const_iterator, multimap<string,int>::const_iterator> mRange;
+    //cout << osr.str() << endl;
     mRange = m_entry_finder.equal_range(osr.str());
     
     for (multimap<string,int>::const_iterator it=mRange.first; it!=mRange.second; ++it)
@@ -115,7 +119,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         for(auto s:vcfsnp.alleles())
         {
             allele_counter++;
-            if(s.compare(varParsed.reference()) == 0 || s.compare(varParsed.alternative()) == 0)
+            if( s.compare(varParsed.vcfReference()) == 0 || s.compare(varParsed.vcfAlternative()) == 0 )
                 equal_counter++;
         }
         // TODO: This is not robust!!!
@@ -125,8 +129,9 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         // ABO del261G in helper table: -/C
         //                      in vcf: T/TC
         // another exception would be KEL with G for k+,A for K+ and C for Kmod at rs8176058
-        if(equal_counter == allele_counter || // alleles match perfect 
-           abs(mRange.second->second - mRange.first->second) == 1  ) // only one entry
+        if( (equal_counter == allele_counter || // alleles match perfect 
+           abs(mRange.second->second - mRange.first->second) == 1 ) &&  // only one entry
+           vcfsnp.refAllele().compare(varParsed.vcfReference()) == 0   )
             return m_parsed_isbt_variant[it->second];
     }
     return CISBTAnno::variation();

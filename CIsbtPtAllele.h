@@ -19,12 +19,16 @@
 
 class CIsbtPtAllele {
 public:
+    CIsbtPtAllele();
     CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, std::string incidence);
     CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence);
     CIsbtPtAllele(const CIsbtPtAllele& orig);
     virtual ~CIsbtPtAllele();
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me);
+    
+    bool operator==(const CIsbtPtAllele& me)const;
+    bool operator<(const CIsbtPtAllele& me)const;
     
     std::set<std::string>  baseChanges()const{return m_base_changes;}
     std::set<std::string>  acidChanges()const{return m_acid_changes;}
@@ -33,6 +37,8 @@ public:
     
     
     bool containsBaseChange(const std::string& isbt_base_change)const;
+    // returns a set of base changes
+    std::vector<std::string> getFullBaseChangeRecombinations()const;
     
 private:
     

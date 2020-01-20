@@ -24,6 +24,8 @@
 
 using namespace std;
 
+bool CIsbtVariant::verbose = false;
+
 CIsbtVariant::CIsbtVariant() 
 {
     m_isbt_name = "";
@@ -34,10 +36,17 @@ CIsbtVariant::CIsbtVariant()
     /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
     m_lrg_reference = "";
     m_lrg_alternative = "";
+    m_are_ref_and_alt_switched_in_GRCh = false;
+    m_vcf_coordinate = -1;
+    m_vcf_reference = "";
+    m_vcf_alternative = "";
+    m_variation_type="";
+    
     m_coverage = std::numeric_limits<float>::quiet_NaN();
 }
 
-CIsbtVariant::CIsbtVariant(std::string lrg_anno, std::string refBase, std::string chrom, int pos, char strand) 
+CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const string& chrom, int pos, char strand, 
+                           int vcfCoord, const string& vcfRef, const string& vcfAlt, bool are_ref_and_alt_switched_in_GRCh, const string& variation_type) 
 {
     m_isbt_name = lrg_anno;
     m_chromosome = chrom;
@@ -47,7 +56,12 @@ CIsbtVariant::CIsbtVariant(std::string lrg_anno, std::string refBase, std::strin
     /// attention: m_lrg_reference will be revised in bool CIsbtVariant::parseIsbtVariant()
     m_lrg_reference = refBase;
     m_lrg_alternative = "";
+    m_vcf_coordinate = vcfCoord;
+    m_vcf_reference = vcfRef;
+    m_vcf_alternative = vcfAlt;
     m_coverage = std::numeric_limits<float>::quiet_NaN();
+    m_are_ref_and_alt_switched_in_GRCh = are_ref_and_alt_switched_in_GRCh;
+    m_variation_type=variation_type;
     parseIsbtVariant();
 }
 
@@ -57,11 +71,16 @@ CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig)
     m_lrg_position = orig.m_lrg_position;
     m_lrg_reference = orig.m_lrg_reference;
     m_lrg_alternative = orig.m_lrg_alternative;
+    m_vcf_coordinate = orig.m_vcf_coordinate;
+    m_vcf_reference = orig.m_vcf_reference;
+    m_vcf_alternative = orig.m_vcf_alternative;
+    m_are_ref_and_alt_switched_in_GRCh = orig.m_are_ref_and_alt_switched_in_GRCh;
     
     m_chromosome = orig.m_chromosome;
     m_position = orig.m_position;
     m_strand = orig.m_strand;
     m_coverage = orig.m_coverage;
+    m_variation_type = orig.m_variation_type;
 }
 
 CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
@@ -70,11 +89,16 @@ CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
     m_lrg_position = orig.m_lrg_position;
     m_lrg_reference = orig.m_lrg_reference;
     m_lrg_alternative = orig.m_lrg_alternative;
+    m_vcf_coordinate = orig.m_vcf_coordinate;
+    m_vcf_reference = orig.m_vcf_reference;
+    m_vcf_alternative = orig.m_vcf_alternative;
+    m_are_ref_and_alt_switched_in_GRCh = orig.m_are_ref_and_alt_switched_in_GRCh;
     
     m_chromosome = orig.m_chromosome;
     m_position = orig.m_position;
     m_strand = orig.m_strand;
     m_coverage = orig.m_coverage;
+    m_variation_type = orig.m_variation_type;
     return *this;
 }
 
@@ -105,15 +129,18 @@ bool   CIsbtVariant::operator ==(const CIsbtVariant& orig)const
             );
 }
 
+/*
  bool  CIsbtVariant::operator ==(const string& orig)const
  {
      return m_isbt_name.compare(orig) == 0;
  }
- 
+ */
  
 std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me)
 {
-    os << me.name() << " (" << (me.m_coverage == me.m_coverage ? me.m_coverage : 0 ) << "x)";
+    os << me.name();
+    if(me.verbose)
+        os << " (" << (me.m_coverage == me.m_coverage ? me.m_coverage : 0 ) << "x)";
     return os;
 }
 
@@ -159,9 +186,13 @@ bool CIsbtVariant::parseIsbtVariant()
     }
     else if(actBaseChange.substr(0,3).compare("dup")==0)
     {
-        if(strand() == '-')
-            m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
-        m_lrg_alternative = m_lrg_reference + actBaseChange.substr(3);
+        // in the SNP calling a duplication is reported as a left aligned insertion
+        // so we have to store that here accordingly
+        //if(strand() == '-')
+        //    m_lrg_reference = CMyTools::GetComplSequence(m_lrg_reference);
+        //m_lrg_alternative = m_lrg_reference + actBaseChange.substr(3);
+        m_lrg_reference = "-";
+        m_lrg_alternative = actBaseChange.substr(3);
     }
     else 
     {
@@ -177,5 +208,9 @@ bool CIsbtVariant::addCoverage(const CBigWigReader& bigWig)
     return m_coverage == m_coverage;
 }
 
-
-
+bool CIsbtVariant::isCovered(double limit)const
+{
+    if( !(m_coverage == m_coverage) ) // is NaN
+        return false;
+    return m_coverage >= limit;
+}

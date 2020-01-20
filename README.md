@@ -1,4 +1,4 @@
-# deep blood group typing of long read sequencng data 
+# deep blood group typing of long read sequencing data 
 There are some dependencies that I solve in a special way. So I do not implement everything by submodules but clone repositories next to each other. 
 
 ## Installing the tool at the ikmbhead.uni-kiel.de

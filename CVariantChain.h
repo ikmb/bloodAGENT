@@ -42,6 +42,9 @@ public:
     
     // this is used in the test data generating module. do not call this function
     void removeHA(const CIsbtVariant& var);
+    
+    std::map<std::string,set<CVariantChainVariation>>& getChains(){return m_chains;}
+    
 private:
     
     void getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B, 

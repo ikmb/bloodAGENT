@@ -25,6 +25,8 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtPtAllele& allele) : m_phenotype_allele(a
 {
     m_typed_not_in_anno = 0;
     m_anno_not_in_typed = 0;
+    m_anno_in_typed_but_not_in_current_genotype = 0;
+    m_not_covered = 0;
     m_score = 0.0f;
 }
 
@@ -32,6 +34,8 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig)  : m_phenotype_allele(or
 {
     m_typed_not_in_anno = orig.m_typed_not_in_anno;
     m_anno_not_in_typed = orig.m_anno_not_in_typed;
+    m_anno_in_typed_but_not_in_current_genotype = orig.m_anno_in_typed_but_not_in_current_genotype;
+    m_not_covered = orig.m_not_covered;
     m_score = orig.m_score;
 }
 
@@ -42,11 +46,19 @@ CIsbtGt2PtHit::~CIsbtGt2PtHit()
 
 bool CIsbtGt2PtHit::sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 ) 
 { 
+    if(c1.m_anno_in_typed_but_not_in_current_genotype < c2.m_anno_in_typed_but_not_in_current_genotype)
+        return true;
+    if(c1.m_anno_in_typed_but_not_in_current_genotype > c2.m_anno_in_typed_but_not_in_current_genotype)
+        return false;
     if(c1.m_typed_not_in_anno < c2.m_typed_not_in_anno)
         return true;
     if(c1.m_typed_not_in_anno > c2.m_typed_not_in_anno)
         return false;
-    return c1.m_anno_not_in_typed+c1.m_typed_not_in_anno < c2.m_anno_not_in_typed+c2.m_typed_not_in_anno; 
+    if(c1.m_anno_not_in_typed < c2.m_anno_not_in_typed)
+        return true;
+    if(c1.m_anno_not_in_typed > c2.m_anno_not_in_typed)
+        return false;
+    return c1.m_not_covered < c2.m_not_covered; 
 }
 bool CIsbtGt2PtHit::sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 )
 {
@@ -55,7 +67,7 @@ bool CIsbtGt2PtHit::sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2P
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2PtHit& me)
 {
-    os << "score: " << std::fixed << std::setprecision(5)  << me.m_score << " for " << me.m_phenotype_allele << " e1: " << me.m_anno_not_in_typed << " e2: " << me.m_typed_not_in_anno;
+    os << "score: " << std::fixed << std::setprecision(5)  << me.m_score << " for " << me.m_phenotype_allele << " e1: " << me.m_anno_in_typed_but_not_in_current_genotype << " e2: " << me.m_anno_not_in_typed << " e3: " << me.m_typed_not_in_anno;
     return os;
 }
 

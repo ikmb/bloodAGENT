@@ -31,11 +31,12 @@ public:
     std::string getPosKey()const;
     
     
-    std::string                    chrom()const{return m_chrom;}
-    long                             pos()const{return m_pos;}
-    std::vector<std::string>     alleles()const{return m_alleles;}
-    std::vector<std::string>     indelalleles()const;
-    std::string                    SNP()const;
+    std::string                 chrom()const{return m_chrom;}
+    long                        pos()const{return m_pos;}
+    std::vector<std::string>    alleles()const{return m_alleles;}
+    std::vector<std::string>    indelalleles()const;
+    std::string                 refAllele()const{return m_ref_allele;}
+    std::string                 SNP()const;
     int                         phasingID()const{return m_phasing_id;}
     bool                        isPhased()const{return m_phasing_id != -1;}
     
@@ -53,6 +54,7 @@ private:
     long                        m_depth;
     bool                        m_verbose;
     int                         m_phasing_id;
+    std::string                 m_ref_allele;
     
     void read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& m_seq_names,bcf1_t *rec);
 };

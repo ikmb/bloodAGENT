@@ -72,13 +72,76 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
         if(count++ != 0)
             osr << endl;
         osr << act_variant.chrom() << '\t'
-            << act_variant.pos() << "\t.\t"
-            << act_variant.reference() << '\t'
-            << act_variant.alternative() << '\t'
+            << act_variant.vcfCoordinate() << "\t.\t"
+            << act_variant.vcfReference() << '\t'
+            << act_variant.vcfAlternative() << '\t'
             << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
     }
     return osr.str();
 }
+
+std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno)
+{
+    ostringstream osr("");
+    std::set<std::string> variationsA = alleleA.baseChanges();
+    std::set<std::string> variationsB = alleleB.baseChanges();
+ 
+    set<CISBTAnno::variation> varSet;
+    
+    for(auto& var:variationsA)
+        varSet.insert(anno.getIsbtVariant(system,var));
+    for(auto& var:variationsB)
+        varSet.insert(anno.getIsbtVariant(system,var));
+    
+    int count = 0;
+    int phase_id = 0;
+    for(auto& actVar:varSet)
+    {
+        bool isInA = variationsA.find(actVar.name()) != variationsA.end();
+        bool isInB = variationsB.find(actVar.name()) != variationsB.end();
+        bool hetA =  isInA && !isInB;
+        bool hetB =  !isInA && isInB;
+        bool homo =  isInA && isInB;
+        
+        if(!hetA && !hetB && !homo)
+        {
+            cerr << "skipping unassigned " << actVar << " of " << alleleA << '/' << alleleB << endl;
+            continue;
+        }
+        if(count++ != 0)
+            osr << endl;
+        else
+            phase_id=actVar.pos();
+        osr << actVar.chrom() << '\t'
+            << actVar.vcfCoordinate() << "\t.\t"
+            << actVar.vcfReference() << '\t'
+            << actVar.vcfAlternative() << '\t';
+        if(hetA)
+        {
+            if(actVar.isRefNClikeGRChNC())
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+            else
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+        }
+        if(hetB)
+        {
+            if(actVar.isRefNClikeGRChNC())
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+            else
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+        }
+       if(homo)
+       {
+           if(actVar.isRefNClikeGRChNC())
+               osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
+           else
+               osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
+       }
+        
+    }
+     return osr.str();
+}
+
 
 
 

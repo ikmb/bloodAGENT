@@ -32,6 +32,7 @@ CVcfSnp::CVcfSnp(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& seq_name
     m_depth = -1;
     m_verbose = verbose;
     m_phasing_id = -1;
+    m_ref_allele="";
     read_SNP_entry(inf, hdr,seq_names,rec);
 }
 
@@ -45,6 +46,7 @@ CVcfSnp::CVcfSnp(const CVcfSnp& orig)
     m_depth     = orig.m_depth;
     m_verbose   = orig.m_verbose;
     m_phasing_id = orig.m_phasing_id;
+    m_ref_allele = orig.m_ref_allele;
 }
 
 CVcfSnp::~CVcfSnp() {
@@ -54,7 +56,7 @@ CVcfSnp::~CVcfSnp() {
  {
      if(m_alleles.size() == 0)
          return false;
-     for(int i = 1; i < m_alleles.size(); i++)
+     for(size_t i = 1; i < m_alleles.size(); i++)
          if(m_alleles[i].compare(m_alleles[i-1]) != 0)
              return false;
      return true;
@@ -62,15 +64,19 @@ CVcfSnp::~CVcfSnp() {
 
 std::vector<std::string>  CVcfSnp::indelalleles()const
 {
+    // ToDO:
+    // Seltener Fall eineszum SNP benachbarten indels mit Freebyas gecallt
+    // Soll sein G/A, reportiert aber mit Freebayes als:
+    // 6       31106499        .       GTCCCCCCCA      ATCCCCCCA       271.543
     vector<std::string> vRet = m_alleles;
     if(vRet.size() > 1)
     {
-        string hlp = vRet[0];
-        int counter = 0;
+        string hlp = m_ref_allele;
+        size_t counter = 0;
         while(counter < hlp.size())
         {
             bool remove = true;
-            for(int i = 0; i < vRet.size(); i++)
+            for(size_t i = 0; i < vRet.size(); i++)
             {
                 if(vRet[i].size() == 0 || vRet[i][0] != hlp[counter])
                 {
@@ -79,12 +85,12 @@ std::vector<std::string>  CVcfSnp::indelalleles()const
                 }
             }
             if(remove)
-                for(int i = 0; i < vRet.size(); i++)
+                for(size_t i = 0; i < vRet.size(); i++)
                     vRet[i]=vRet[i].substr(1);
             counter++;
         };
     }
-    for(int i = 0; i < vRet.size(); i++)
+    for(size_t i = 0; i < vRet.size(); i++)
         if(vRet[i].size() == 0)
             vRet[i]="-";
     return vRet;
@@ -125,15 +131,19 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     ndp = bcf_get_info_int32(hdr, rec, "DP", &dp, &ndp_arr);
     nps = bcf_get_format_int32(hdr, rec, "PS", &ps, &nps_arr);
     
+    
 
-    if(rec->rid < seq_names.size())
+    if(rec->rid < static_cast<int32_t>(seq_names.size()))
         m_chrom = seq_names[rec->rid];
     m_pos = rec->pos+1;                 // vcf LIB INTERNALLY STORES 0-BASED POSITIONS
     if(ndp > 0)
         m_depth = dp[0];
     
     for(int i = 0; i < ngt; i++)
+    {
         m_alleles.push_back(rec->d.allele[bcf_gt_allele(gt[i])]);
+    }
+    cout << endl;
     for(int i = 0; i < nad; i++)
         m_coverage.push_back(ad[i]);
     for(int i = 0; i < ngq; i++)
@@ -141,7 +151,7 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     if(nps > 0)   
         m_phasing_id = ps[0];
     
-        
+    m_ref_allele = rec->d.allele[0];    
     
     
     free(gq);
@@ -154,7 +164,7 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
 std::string    CVcfSnp::SNP()const
 {
     ostringstream osr("");
-    for(int i = 0; i < m_alleles.size(); i++)
+    for(size_t i = 0; i < m_alleles.size(); i++)
         osr << m_alleles[i] << ( i + 1 == m_alleles.size() ? '\t' : ( isPhased() ? '|' : '/'));
     return osr.str();
 }
@@ -163,13 +173,13 @@ std::ostream& operator<<(std::ostream& os, const CVcfSnp& me)
 {
     os << me.m_chrom << '\t' << me.m_pos << '\t' << me.m_depth << '\t';
     
-    for(int i = 0; i < me.m_alleles.size(); i++)
+    for(size_t i = 0; i < me.m_alleles.size(); i++)
         os << me.m_alleles[i] << ( i + 1 == me.m_alleles.size() ? '\t' : ( me.isPhased() ? '|' : '/'));
     
-    for(int i = 0; i < me.m_coverage.size(); i++)
+    for(size_t i = 0; i < me.m_coverage.size(); i++)
         os << me.m_coverage[i] << ( i + 1 == me.m_coverage.size() ? '\t' : '/');
     
-    for(int i = 0; i < me.m_qualities.size(); i++)
+    for(size_t i = 0; i < me.m_qualities.size(); i++)
         os << me.m_qualities[i] << ( i + 1 == me.m_qualities.size() ? '\t' : '/');
     
     if(me.isPhased())
@@ -195,7 +205,7 @@ bool CVcfSnp::isInRegion(const std::vector<std::string>& chrom, std::vector<long
         return false;
     }
     
-    for(int i = 0; i < chrom.size(); i++)
+    for(size_t i = 0; i < chrom.size(); i++)
         if(isInRegion(chrom[i], start[i],end[i]))
             return true;
     return false;

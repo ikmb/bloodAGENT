@@ -49,6 +49,9 @@ bool CIsbtGt::operator <(const CIsbtGt& orig)const
     {
         if(*i < *j)
             return true;
+        if(*i > *j)
+            return false;
+        
     }
     if(m_gt.size() < orig.m_gt.size())
         return true;
@@ -81,7 +84,8 @@ std::ostream& operator<<(std::ostream& os, const CIsbtGt& me)
     {
         os << x << ( ++i == me.m_gt.size() ? "" : " & ");
         if(me.isHomozygous())
-            os << " homozygous";
+            os << " & " << x;
     }
     return os;
 }
+

@@ -563,20 +563,20 @@ ToDo	GYPB	GYPB	GYPB*04N.01	MNS:–4,w5	270+5G>A	Alternative splicing
 ToDo	GYPB	GYPB	GYPB*06.01	MNS:4,6 or s+, He+	59T>G 60A>G 67A>T 71A>G 72G>T	Leu20Trp Thr23Ser Glu24Gly	 
 ToDo	GYPB	GYPB	GYPB*06.02	MNS:3,6 or S+, He+	59T>G 60A>G 67A>T 71A>G 72G>T 143C>T	Leu20Trp Thr23Ser Glu24Gly Thr48Met	 
 ToDo	GYPB	GYPB	GYPB*21	MNS:21or Mv+	65C>G	Thr22Ser	 
-ToDo	GYPC	GYPC	GE*01	GE:2,3,4			97.40%
-ToDo	GYPC	GYPC	GE*01.-10	GE:–10 or GEPL–	134C>T	Pro45Leu	0.02%
-ToDo	GYPC	GYPC	GE*01.-02	Ge:–2,3,4 or Yus type	(?_50)_(106_?)del	in frame deletion	 
-ToDo	GYPC	GYPC	GE*01.-03	GE:–2,–3,4 or Gerbich type	(?_107)_(190_?)del	in frame deletion	 
-ToDo	GYPC	GYPC	GE*01.-11	GE :–11 or GEAT–	56A>T	Asp19Val	 
-ToDo	GYPC	GYPC	GE*01.-12	GE:–12 or GETI–	80C>T	Thr27Ile	 
-ToDo	GYPC	GYPC	GE*01.05	GE:5 or Wb+	23A>G	Asn8Ser	 
-ToDo	GYPC	GYPC	GE*01.06.01	GE:6 or Ls(a+)	(?_107)_(190_?)dup	in frame duplication	 
-ToDo	GYPC	GYPC	GE*01.06.02	GE:6 or Ls(a+)	(?_107)_(190_?)3	in frame triplication	 
-ToDo	GYPC	GYPC	GE*01.07	GE:7 or An(a+)	67G>T	Ala23Ser	 
-ToDo	GYPC	GYPC	GE*01.08	GE:8 or Dh(a+)	40C>T	Leu14Phe	 
-ToDo	GYPC	GYPC	GE*01.09	GE:9 or GEIS+	95C>A	Thr32Asn	 
-ToDo	GYPC	GYPC	GE*01N.01	Ge:–2,–3,–4 Leach type (PL)	(?_191)_(*533_?)del	del Exons 3 & 4	 
-ToDo	GYPC	GYPC	GE*01N.02	Ge:–2,–3,–4 Leach type (LN)	131G>T 134delC	Trp44Leu Pro45Argfs*12	 
+ToDo	GE	GYPC	GE*01	GE:2,3,4			97.40%
+ToDo	GE	GYPC	GE*01.-10	GE:–10 or GEPL–	134C>T	Pro45Leu	0.02%
+ToDo	GE	GYPC	GE*01.-02	Ge:–2,3,4 or Yus type	(?_50)_(106_?)del	in frame deletion	 
+ToDo	GE	GYPC	GE*01.-03	GE:–2,–3,4 or Gerbich type	(?_107)_(190_?)del	in frame deletion	 
+ToDo	GE	GYPC	GE*01.-11	GE :–11 or GEAT–	56A>T	Asp19Val	 
+ToDo	GE	GYPC	GE*01.-12	GE:–12 or GETI–	80C>T	Thr27Ile	 
+ToDo	GE	GYPC	GE*01.05	GE:5 or Wb+	23A>G	Asn8Ser	 
+ToDo	GE	GYPC	GE*01.06.01	GE:6 or Ls(a+)	(?_107)_(190_?)dup	in frame duplication	 
+ToDo	GE	GYPC	GE*01.06.02	GE:6 or Ls(a+)	(?_107)_(190_?)3	in frame triplication	 
+ToDo	GE	GYPC	GE*01.07	GE:7 or An(a+)	67G>T	Ala23Ser	 
+ToDo	GE	GYPC	GE*01.08	GE:8 or Dh(a+)	40C>T	Leu14Phe	 
+ToDo	GE	GYPC	GE*01.09	GE:9 or GEIS+	95C>A	Thr32Asn	 
+ToDo	GE	GYPC	GE*01N.01	Ge:–2,–3,–4 Leach type (PL)	(?_191)_(*533_?)del	del Exons 3 & 4	 
+ToDo	GE	GYPC	GE*01N.02	Ge:–2,–3,–4 Leach type (LN)	131G>T 134delC	Trp44Leu Pro45Argfs*12	 
 ToDo	LW	ICAM4	LW*05	LW:5 or LW(a+)			98.96%
 ToDo	LW	ICAM4	LW*07	LW:7 or LW(b+)	299A>G	Gln100Arg	0.08%
 ToDo	LW	ICAM4	LW*05N.01	LW:–6 or LW(a–b–)	346_355delACCTGCGCAG	Thr116Glufs*19	 
@@ -804,7 +804,7 @@ ToDo	RHCE	RHCE	RHCE*04.01	#N/A	48G>C 150C>T 178C>A 201A>G 203A>G 307C>T 676G>C 7
 ToDo	RHD	RHD	RHD*01	D or RH:1			36.48%
 ToDo	RHD	RHD	RHD*01N.01	#N/A	(?_-62)_(*1521_?)del	0	20.61%
 ToDo	RHD	RHD	RHD*10.00	DAU0	1136C>T	Thr379Met	16.85%
-ToDo	RHD	RHD	RHD*08N.01	#N/A	609G>A 654G>C 667T>G 674C>T 807T>G and-a-37-bp-insertion-in-intron-3	0	1.14%
+ToDo	RHD	RHD	RHD*08N.01	#N/A	609G>A 654G>C 667T>G 674C>T 807T>G 505insTTACTGGGTTTTATTGCAGACAGACTACCACATGAAC	0	1.14%
 ToDo	RHD	RHD	RHD*10.03	DAU3	835G>A 1136C>T	Val279Met Thr379Met	0.92%
 ToDo	RHD	RHD	RHD*01EL.36	#N/A	1227G>A 1073+152C>A	Alternative splicing	0.86%
 ToDo	RHD	RHD	RHD*10.00.01	DAU0.01	579G>A 1136C>T	Thr379Met	0.44%
