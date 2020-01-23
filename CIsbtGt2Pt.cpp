@@ -67,11 +67,11 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
     }
 }
 
+
 CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants, int required_coverage)
 {
     map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
-    
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
         //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 

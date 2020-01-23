@@ -16,6 +16,7 @@
 
 #include <vector>
 
+#include "CBigWigReader.h"
 
 class CTranscript {
 public:

@@ -60,3 +60,29 @@ CTranscript CTranscriptAnno::getTranscript(const std::string& name)
     return CTranscript("","","","","");
     
 }
+
+double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigReader& bw)
+{
+    double dRet = 0.0;
+    size_t base_count = 0;
+    std::map<std::string,CTranscript>::const_iterator i =  m_transcripts.find(target);
+    if(i!=m_transcripts.end())
+    {
+         
+        const CTranscript& trans = i->second;
+        for(int i = 0; i < trans.exonCount(); i++)
+        {
+            int start = trans.exonStart(i);
+            int end = trans.exonEnd(i);
+            string chrom = trans.getChrom();
+            
+            double act_cov =  bw.getSumCoverage(chrom,start,end);
+            dRet += (act_cov == act_cov ? act_cov : 0); // is not nan?
+            base_count+=(end-start)+1;
+        }
+        dRet/=static_cast<double>(base_count);
+    }
+    return dRet;
+}
+
+

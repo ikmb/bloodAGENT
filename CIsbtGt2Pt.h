@@ -32,7 +32,7 @@ public:
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
     typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10);
-    
+     
     void sort(typing_result& var);
     
     /// returns all best calls within a specific range
@@ -41,6 +41,7 @@ public:
     /// \param top_score_range: we multiply this value with the best score and report all calls >= this call
     /// \return one call per line
     std::string getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype = true, float top_score_range = 0.999f)const;
+    
     
     vector<CIsbtPtAllele> alleleVector(const string& system)const;
     /// this returns the CIsbtPtAllele of a given allele
@@ -66,7 +67,6 @@ private:
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector_redundant;
     
     std::map<std::string,typing_result> m_typing_results;
-    
 
 };
 

@@ -137,6 +137,17 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
     }
     return CISBTAnno::variation();
 }
+std::vector<CISBTAnno::variation>  CISBTAnno::getIsbtVariants(const string& system)const
+{
+    std::vector<CISBTAnno::variation> vRet;
+    std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);
+    if(i != m_isbt_variant_to_index.end())
+    {
+        for(auto index : i->second)
+            vRet.push_back(m_parsed_isbt_variant[index.second]);
+    }
+    return vRet;
+}
 
 CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string& isbt_var)const
 {

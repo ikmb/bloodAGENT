@@ -14,6 +14,7 @@
 #ifndef CTRANSCRIPTANNO_H
 #define CTRANSCRIPTANNO_H
 
+#include "CBigWigReader.h"
 #include "CTranscript.h"
 
 
@@ -25,6 +26,8 @@ public:
     
     std::set<std::string> loci()const;
     CTranscript getTranscript(const std::string& name);
+    
+    double getExonicCoverage(const string& target, const CBigWigReader& bw);
 private:
     
     std::map<std::string,CTranscript>  m_transcripts;

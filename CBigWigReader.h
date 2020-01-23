@@ -32,6 +32,7 @@ public:
     double getMinCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::min);}
     double getAverageCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::average);}
     double getMaxCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::max);}
+    double getSumCoverage(const std::string& chrom, int start, int end)const{return getCoverage(chrom, start, end, bwStatsType::sum);}
     
     double getPercentCoveredBases(const std::string& chrom, int start, int end);
     

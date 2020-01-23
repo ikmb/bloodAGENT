@@ -62,7 +62,8 @@ public:
     std::set<std::string>   loci()const{ return m_loci;}
     
     
-    variation getIsbtVariant(const std::string& system,const std::string& isbt_var)const;
+    variation                           getIsbtVariant(const std::string& system,const std::string& isbt_var)const;
+    std::vector<variation>              getIsbtVariants(const string& system)const;
     
     std::vector<variation>              getAllVariations()const{return m_parsed_isbt_variant;}
     size_t                              size()const{return m_parsed_isbt_variant.size();}

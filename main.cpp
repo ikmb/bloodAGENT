@@ -241,9 +241,11 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
 
+        cout << "RHD: " << trans_anno.getExonicCoverage("RHD",bwr) << " RHCE: " << trans_anno.getExonicCoverage("RHCE",bwr) << endl;
+        return;
+        
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
-
 
         if(arg_verbose >= 2)
         {
@@ -280,8 +282,28 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         {
             if( arg_locus.length() == 0 || locus.compare(arg_locus) == 0 )
             {
-                isbTyper.type(locus,vcs);
-                cout << isbTyper.getCallAsString(isbt,locus,false,arg_top_hits) << endl;
+                bool type_by_snps = true; // for example RHD: if coverage is 0 we do not type and set this to false
+                if(locus.compare("RHD") == 0)
+                {
+                    double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr);
+                    double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr);
+                    if(rhce_cov == 0.0)
+                    {
+                        cout << "RHD\t- & -\tn.a./n.a.\t2\t-" << endl;
+                        type_by_snps = false;
+                    }
+                    else if( rhd_cov/rhce_cov <= 0.1 )
+                    {
+                        cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
+                        type_by_snps = false;
+                    }
+                    //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
+                }
+                if(type_by_snps)
+                {
+                    isbTyper.type(locus,vcs,arg_coverage);
+                    cout << isbTyper.getCallAsString(isbt,locus,false,arg_top_hits) << endl;
+                }
             }
         }
         if(arg_verbose >= 2)

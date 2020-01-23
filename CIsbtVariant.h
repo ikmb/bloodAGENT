@@ -54,7 +54,7 @@ public:
     bool isInDel()const{return (m_variation_type.compare("del") == 0 || m_variation_type.compare("ins") == 0 || m_variation_type.compare("delins") == 0);}
     
     bool addCoverage(const CBigWigReader& bigWig);
-    double getCoverage()const{return m_coverage;}
+    double getCoverage()const{if(m_coverage != m_coverage) return 0.0;return m_coverage;}
     bool isCovered(double limit = 0.0f)const;
     
     bool isRefNClikeGRChNC()const{return !m_are_ref_and_alt_switched_in_GRCh;}
