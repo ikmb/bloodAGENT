@@ -33,11 +33,13 @@ using namespace std;
 CIsbtGt2Pt::CIsbtGt2Pt(const string& filename) 
 {
     init(filename);
+    findAlleTaggingBaseChanges();
 }
 
 CIsbtGt2Pt::CIsbtGt2Pt(const CIsbtGt2Pt& orig) 
 {
     m_allele_vector = orig.m_allele_vector;
+    m_allele_vector_redundant = orig.m_allele_vector_redundant;
     m_typing_results=orig.m_typing_results;
 }
 
@@ -177,6 +179,9 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
     if(iterSys == m_allele_vector.end())
         return vector<CIsbtGt2PtHit>();
+    //std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector_redundant.find(system);
+    //if(iterSys == m_allele_vector_redundant.end())
+    //    return vector<CIsbtGt2PtHit>();
     
     //cout << "find matches " << isbtGtAllele << endl;
     vector<CIsbtGt2PtHit> vRet;
@@ -242,8 +247,11 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
 }
 
 
-std::string CIsbtGt2Pt::getCallAsString(const std::string& system, bool phenotype, float top_score_range)const
+std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range)const
 {
+    size_t uncovered_target_variants = 0;
+    if(isbt_anno.hasUncoveredVariants(system))
+        uncovered_target_variants = isbt_anno.getCoverageFailedVariants(system).size();
     ostringstream osr("");
     std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
     if(iRes != m_typing_results.end())
@@ -258,7 +266,7 @@ std::string CIsbtGt2Pt::getCallAsString(const std::string& system, bool phenotyp
             {
                 if(count++ > 0)
                     osr << endl;
-                osr << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype);
+                osr << system << '\t' << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype) << '\t' << uncovered_target_variants ;
             }
         }
     }
@@ -279,7 +287,7 @@ float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genoty
     return fRet;
 }
 
-void CIsbtGt2Pt::findAlleTaggingBaseChanges()const
+void CIsbtGt2Pt::findAlleTaggingBaseChanges()
 {
     // std::map<std::string,vector<CIsbtPtAllele>>
     for(auto blood_system : m_allele_vector)
@@ -305,7 +313,10 @@ void CIsbtGt2Pt::findAlleTaggingBaseChanges()const
             std::sort(hit_list.begin(),hit_list.end(),sort_by_space_separated_entries_asc);
             
             for(auto act_gt : hit_list)
-                cerr << act_system << '\t' << act_allele.name() << '\t' << act_gt << endl;
+            {
+                //cerr << act_system << '\t' << act_allele.name() << '\t' << act_gt << endl;
+                m_allele_vector_redundant[act_system].push_back(CIsbtPtAllele(act_allele.name(), act_allele.phenotype(), act_gt, "", 0.0f));
+            }
         }
     }
 }

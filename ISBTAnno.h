@@ -68,7 +68,10 @@ public:
     size_t                              size()const{return m_parsed_isbt_variant.size();}
     variation                           variant(size_t idx)const{if(idx < size())return m_parsed_isbt_variant[idx]; return variation();}
     
-    bool addCoverage(const CBigWigReader& bigWig);
+    bool addCoverage(const CBigWigReader& bigWig, int min_req_coverage = 10);
+    
+    std::vector<variation>              getCoverageFailedVariants(const string& system)const;
+    bool                                hasUncoveredVariants(const string& system)const;
     
 private:
     bool m_data_red;
@@ -80,6 +83,7 @@ private:
     std::multimap<std::string,int>                      m_entry_finder; // by chromosomal coordinate, e.g. "chr9_1234567"
     std::map<std::string,char>                          m_strand;
     std::vector<variation>                              m_parsed_isbt_variant;
+    std::map<string,std::vector<variation>>             m_coverage_failed; // the required coverage was not met
     std::map<std::string,std::map<std::string,int>>     m_isbt_variant_to_index;
     std::set<std::string>                               m_loci;
     

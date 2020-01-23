@@ -40,14 +40,13 @@ public:
     /// \param phenotype: report phenotye or allele (default is allele (false)))
     /// \param top_score_range: we multiply this value with the best score and report all calls >= this call
     /// \return one call per line
-    std::string getCallAsString(const std::string& system, bool phenotype = true, float top_score_range = 0.999f)const;
+    std::string getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype = true, float top_score_range = 0.999f)const;
     
     vector<CIsbtPtAllele> alleleVector(const string& system)const;
     /// this returns the CIsbtPtAllele of a given allele
     /// @param1: alleel name as string. Eg ABO*B.01
     CIsbtPtAllele alleleOf(const string& allele)const;
     string systemOf(const string& allele)const;
-    void findAlleTaggingBaseChanges()const;
     
     
 private:
@@ -57,12 +56,14 @@ private:
     float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     static bool sort_by_space_separated_entries_asc(const string& a,const string& b);
+    void findAlleTaggingBaseChanges();
     
     
     /// set phenotype to true to get the phenotype, otherwise you get the allele
     std::string getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool phenotype = true)const;
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
+    std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector_redundant;
     
     std::map<std::string,typing_result> m_typing_results;
     

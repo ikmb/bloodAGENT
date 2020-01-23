@@ -31,6 +31,7 @@ CISBTAnno::CISBTAnno(const CISBTAnno& orig)
     m_strand = orig.m_strand;
     m_parsed_isbt_variant = orig.m_parsed_isbt_variant;
     m_loci = orig.m_loci;
+    m_coverage_failed = orig.m_coverage_failed;
 }
 
 CISBTAnno::~CISBTAnno() {
@@ -149,17 +150,38 @@ CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string
     return  variation();
 }
 
-bool CISBTAnno::addCoverage(const CBigWigReader& bigWig)
+bool CISBTAnno::addCoverage(const CBigWigReader& bigWig, int min_req_coverage)
 {
     bool bRet = true;
     for(auto& x:m_parsed_isbt_variant)
     {
         if(!x.addCoverage(bigWig))
             bRet = false;
+        if(x.getCoverage() < min_req_coverage)
+        {
+            string system = getSystemAt(x.chrom(),x.pos());
+            m_coverage_failed[system].push_back(x);
+        }
+        
     }
     return bRet;
 }
 
+bool   CISBTAnno::hasUncoveredVariants(const string& system)const
+{
+    std::map<string,std::vector<variation>>::const_iterator iter = m_coverage_failed.find(system);
+    if(iter == m_coverage_failed.end() || iter->second.empty())
+        return false;
+    return true;
+}
+
+std::vector<CISBTAnno::variation>   CISBTAnno::getCoverageFailedVariants(const string& system)const
+{
+    std::map<string,std::vector<variation>>::const_iterator iter = m_coverage_failed.find(system);
+    if(iter == m_coverage_failed.end())
+        return std::vector<variation>();
+    return iter->second;
+}
 
 string CISBTAnno::getSystemAt(std::string chrom, int pos)const
 {

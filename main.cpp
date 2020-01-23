@@ -219,7 +219,8 @@ int main(int argc, char** argv)
     return 0;
 }
         
-
+// ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
+// ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, bool arg_is_in_silico)
 {
     try
@@ -231,8 +232,6 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
-        isbTyper.findAlleTaggingBaseChanges();
-        exit(EXIT_SUCCESS);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
         CVcf vcf_file(arg_vcf_file);
@@ -242,7 +241,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
 
-        isbt.addCoverage(bwr);
+        isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
 
 
@@ -282,7 +281,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             if( arg_locus.length() == 0 || locus.compare(arg_locus) == 0 )
             {
                 isbTyper.type(locus,vcs);
-                cout << locus << '\t' << isbTyper.getCallAsString(locus,false,arg_top_hits) << endl;
+                cout << isbTyper.getCallAsString(isbt,locus,false,arg_top_hits) << endl;
             }
         }
         if(arg_verbose >= 2)
