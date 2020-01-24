@@ -40,7 +40,7 @@ public:
     /// \param phenotype: report phenotye or allele (default is allele (false)))
     /// \param top_score_range: we multiply this value with the best score and report all calls >= this call
     /// \return one call per line
-    std::string getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype = true, float top_score_range = 0.999f)const;
+    std::string getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype = true, float top_score_range = 0.999f, const std::string& sampleId = "")const;
     
     
     vector<CIsbtPtAllele> alleleVector(const string& system)const;

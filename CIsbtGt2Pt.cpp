@@ -247,11 +247,22 @@ std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map
 }
 
 
-std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range)const
+std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range, const std::string& sampleId)const
 {
     size_t uncovered_target_variants = 0;
+    ostringstream uncovered_target_variants_list("");
     if(isbt_anno.hasUncoveredVariants(system))
-        uncovered_target_variants = isbt_anno.getCoverageFailedVariants(system).size();
+    {
+        std::vector<CISBTAnno::variation> vl = isbt_anno.getCoverageFailedVariants(system);
+        uncovered_target_variants = vl.size();
+        for(auto a : vl)
+        {
+            if(uncovered_target_variants_list.str().empty())
+                uncovered_target_variants_list << a.name();
+            else
+                uncovered_target_variants_list << ',' << a.name();
+        }
+    }
     ostringstream osr("");
     std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
     if(iRes != m_typing_results.end())
@@ -266,7 +277,7 @@ std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::s
             {
                 if(count++ > 0)
                     osr << endl;
-                osr << system << '\t' << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype) << '\t' << uncovered_target_variants ;
+                osr << (sampleId.empty() ? "" : sampleId+"\t") << system << '\t' << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype) << '\t' << uncovered_target_variants << '\t' << uncovered_target_variants_list.str();
             }
         }
     }

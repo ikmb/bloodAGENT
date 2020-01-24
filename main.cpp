@@ -50,7 +50,7 @@ using namespace std;
 using namespace BamTools;
 
 
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", bool arg_is_in_silico = false);
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", bool arg_is_in_silico = false, const string& sampleId = "");
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
@@ -89,13 +89,13 @@ int main(int argc, char** argv)
         TCLAP::ValueArg<string> tc_jobTypeInner("j","job","define which kind of job should be performed",true,"","string");
         cmd.add(tc_jobType);
         cmdjob.add(tc_jobTypeInner);
-
+        
         cmd.ignoreUnmatched(true);
         cmd.parse(argc,argv);
         cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
         TCLAP::ValueArg<int> tc_verbose("d","verbose","Set verbose level. 0-1. 0 == no verbose, 1 == full verbose.",false,0,"int");
         cmdjob.add(tc_verbose);
-        if(tc_jobType.getValue().compare("phenotype") == 0 || tc_jobType.getValue().compare("pht") == 0)
+        if(tc_jobType.getValue().compare("phenotype") == 0)
         {
             /*
              "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
@@ -118,43 +118,26 @@ int main(int argc, char** argv)
             cmdjob.add(tc_isInSilico);
             TCLAP::ValueArg<string> tc_locus("l","locus","Get typing of a specific locus only. E.g. ABO, RHD, ...",false,"","string");
             cmdjob.add(tc_locus);
-            
+            TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"","string");
+            cmdjob.add(tc_Id);
+
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.variants.ISBT.vcf.gz SNPs.vcf.gz
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.bw coverage.bw
 
-            if(tc_jobType.getValue().compare("phenotype") == 0)
-            {
-                cmdjob.parse(argc,argv);
-                cerr << "Everything found. starting run ..." << endl;
-                phenotype(tc_abo_target_annotation.getValue(),
-                        tc_variants.getValue(),
-                        tc_gt2pt.getValue(),
-                        tc_vcf.getValue(),
-                        tc_bigwig.getValue(),
-                        tc_coverage.getValue(), 
-                        tc_verbose.getValue(),
-                        tc_tophits.getValue(),
-                        tc_locus.getValue(),
-                        tc_isInSilico.getValue());
-                exit(EXIT_SUCCESS);
-            }
-            else if(tc_jobType.getValue().compare("pht") == 0)
-            {
-                TCLAP::ValueArg<string> tc_system("t","target","The system that should be analyzed",true,"ABO","string");
-                cmdjob.add(tc_system);
-                cmdjob.parse(argc,argv);
-                cerr << "Everything found. starting run ..." << endl;
-                phenotype(tc_abo_target_annotation.getValue(),
-                        tc_variants.getValue(),
-                        tc_gt2pt.getValue(),
-                        tc_vcf.getValue(),
-                        tc_bigwig.getValue(),
-                        tc_coverage.getValue(), 
-                        tc_verbose.getValue(),
-                        tc_tophits.getValue(),
-                        tc_system.getValue());
-                exit(EXIT_SUCCESS);
-            }
+            cmdjob.parse(argc,argv);
+            cerr << "Everything found. starting run ..." << endl;
+            phenotype(tc_abo_target_annotation.getValue(),
+                    tc_variants.getValue(),
+                    tc_gt2pt.getValue(),
+                    tc_vcf.getValue(),
+                    tc_bigwig.getValue(),
+                    tc_coverage.getValue(), 
+                    tc_verbose.getValue(),
+                    tc_tophits.getValue(),
+                    tc_locus.getValue(),
+                    tc_isInSilico.getValue(),
+                    tc_Id.getValue());
+            exit(EXIT_SUCCESS);
         }
         if(tc_jobType.getValue().compare("vcf") == 0)
         {
@@ -221,7 +204,9 @@ int main(int argc, char** argv)
         
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, bool arg_is_in_silico)
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
+               const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, bool arg_is_in_silico,
+               const string& sampleId)
 {
     try
     {
@@ -241,9 +226,6 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
 
-        cout << "RHD: " << trans_anno.getExonicCoverage("RHD",bwr) << " RHCE: " << trans_anno.getExonicCoverage("RHCE",bwr) << endl;
-        return;
-        
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
 
@@ -289,12 +271,12 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
                     double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr);
                     if(rhce_cov == 0.0)
                     {
-                        cout << "RHD\t- & -\tn.a./n.a.\t2\t-" << endl;
+                        cout << (sampleId.empty() ? "" : sampleId+"\t") << "RHD\t- & -\tn.a./n.a.\t2\t-" << endl;
                         type_by_snps = false;
                     }
                     else if( rhd_cov/rhce_cov <= 0.1 )
                     {
-                        cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
+                        cout << (sampleId.empty() ? "" : sampleId+"\t") << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
                         type_by_snps = false;
                     }
                     //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
@@ -302,7 +284,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
                 if(type_by_snps)
                 {
                     isbTyper.type(locus,vcs,arg_coverage);
-                    cout << isbTyper.getCallAsString(isbt,locus,false,arg_top_hits) << endl;
+                    cout << isbTyper.getCallAsString(isbt,locus,false,arg_top_hits,sampleId) << endl;
                 }
             }
         }
