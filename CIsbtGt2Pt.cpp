@@ -277,7 +277,7 @@ std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::s
             {
                 if(count++ > 0)
                     osr << endl;
-                osr << (sampleId.empty() ? "" : sampleId+"\t") << system << '\t' << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype) << '\t' << uncovered_target_variants << '\t' << uncovered_target_variants_list.str();
+                osr << (sampleId.empty() ? "" : sampleId+"\t") << system << '\t' << getStringOfTypingResult(act_gt.first,act_gt.second,phenotype) << '\t' << uncovered_target_variants << '/' << isbt_anno.getAllVariations(system).size() << '\t' << uncovered_target_variants_list.str();
             }
         }
     }

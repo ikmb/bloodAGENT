@@ -186,6 +186,17 @@ bool   CISBTAnno::hasUncoveredVariants(const string& system)const
     return true;
 }
 
+std::vector<CISBTAnno::variation>   CISBTAnno::getAllVariations(const string& system)const
+{
+    vector<variation>  vRet;
+    for(auto& x:m_parsed_isbt_variant)
+    {
+        if(getSystemAt(x.chrom(),x.pos()).compare(system) == 0)
+            vRet.push_back(x);
+    }
+    return vRet;
+}
+
 std::vector<CISBTAnno::variation>   CISBTAnno::getCoverageFailedVariants(const string& system)const
 {
     std::map<string,std::vector<variation>>::const_iterator iter = m_coverage_failed.find(system);

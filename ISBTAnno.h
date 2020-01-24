@@ -65,6 +65,7 @@ public:
     variation                           getIsbtVariant(const std::string& system,const std::string& isbt_var)const;
     std::vector<variation>              getIsbtVariants(const string& system)const;
     
+    std::vector<variation>              getAllVariations(const string& system)const;
     std::vector<variation>              getAllVariations()const{return m_parsed_isbt_variant;}
     size_t                              size()const{return m_parsed_isbt_variant.size();}
     variation                           variant(size_t idx)const{if(idx < size())return m_parsed_isbt_variant[idx]; return variation();}
