@@ -1,0 +1,33 @@
+{
+    "sample_id": "1236LOP",
+    "calls": [
+		{
+			"system": "ABO",
+			"calls": [
+     			{
+					"haplotype A": "1029dupC,987G>A,914C>T", 
+					"haplotype B": "462C>A,461A>G,460T>C,442G>T",			// Listen statt semikolon separierter string? geht liste so?: ["462C>A","461A>G"]
+					"allele A": "KN*01",
+					"allele B": "KN*01.-05;KN*01.-09",						// Listen statt semikolon separierter string?
+					"phenotype": "AB",
+					"score":	"2.0",
+					"uncovered variants": "1A>G,3G>A,8C>G,17C>T,19C>T,26T>A,28C>T,29G>A",  // lieber ne Liste? und wenn Liste, brauch man dann count?
+					"uncovered variants count": "8"
+					"annotated variants count":	"45"
+
+				},
+				{
+					"haplotype_A": "1029dupC,987G>A,914C>T", 
+					...
+				}
+			]
+		},
+		{
+			"system": "RHD",
+			"calls": [
+     			{
+				}
+			]
+		}
+	]
+}
