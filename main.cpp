@@ -28,6 +28,7 @@
 
 // command line parsing
 #include <tclap/CmdLine.h>
+#include "json/single_include/nlohmann/json.hpp"
 #include <complex>
 
 #include "mytools.h"
@@ -49,8 +50,10 @@
 using namespace std;
 using namespace BamTools;
 
+#define APP_VERSION_DEEPBLOOD "v0.0.1"
 
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", bool arg_is_in_silico = false, const string& sampleId = "");
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,int arg_coverage
+, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", bool arg_is_in_silico = false, const string& sampleId = "", const string& outfile = "");
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
@@ -120,6 +123,8 @@ int main(int argc, char** argv)
             cmdjob.add(tc_locus);
             TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"","string");
             cmdjob.add(tc_Id);
+            TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"","string");
+            cmdjob.add(tc_output);
 
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.variants.ISBT.vcf.gz SNPs.vcf.gz
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.bw coverage.bw
@@ -136,7 +141,8 @@ int main(int argc, char** argv)
                     tc_tophits.getValue(),
                     tc_locus.getValue(),
                     tc_isInSilico.getValue(),
-                    tc_Id.getValue());
+                    tc_Id.getValue(),
+                    tc_output.getValue());
             exit(EXIT_SUCCESS);
         }
         if(tc_jobType.getValue().compare("vcf") == 0)
@@ -206,7 +212,7 @@ int main(int argc, char** argv)
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, bool arg_is_in_silico,
-               const string& sampleId)
+               const string& sampleId, const string& outfile)
 {
     try
     {
@@ -259,7 +265,16 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         
         
         if(arg_verbose >= 1)
-            cerr << "Variant chains of current sample: " << vcs << endl;    
+            cerr << "Variant chains of current sample: " << vcs << endl;   
+        ofstream out_file;
+        if(!outfile.empty())
+        {
+            out_file.open (outfile.c_str(), ios::out);
+            if(!out_file.is_open())
+                cerr << "failed to open " << outfile << endl;
+        }
+        
+        nlohmann::json j;
         for(auto locus:loci)
         {
             if( arg_locus.length() == 0 || locus.compare(arg_locus) == 0 )
@@ -284,12 +299,22 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
                 if(type_by_snps)
                 {
                     isbTyper.type(locus,vcs,arg_coverage);
-                    cout << isbTyper.getCallAsString(isbt,locus,false,arg_top_hits,sampleId) << endl;
+                    if(!out_file.is_open())
+                        cout << isbTyper.getCallAsJson(isbt,locus,false,arg_top_hits) << endl;
+                    else
+                        j["loci"].push_back(isbTyper.getCallAsJson(isbt,locus,false,arg_top_hits));
                 }
             }
         }
+        j["sample_id"] = sampleId;
+        j["version"]=APP_VERSION_DEEPBLOOD;
+        j["genome"]="hg19";
+        if(out_file.is_open())
+            out_file << j.dump();
         if(arg_verbose >= 2)
             cerr << isbTyper << endl;
+        if(out_file.is_open())
+            out_file.close();
     }
     catch(const CMyException& err)
     {

@@ -3,35 +3,44 @@
     "calls": [
 		{
 			"system": "ABO",
+			"uncoveredVariants": ["1A>G","3G>A"],  
+			"annotatedVariants": ["1A>G","3G>A","8C>G","17C>T","19C>T","26T>A","28C>T","29G>A"],
+			"annotatedVariants": ["1A>G","3G>A","8C>G","17C>T","19C>T","26T>A","28C>T","29G>A"],
 			"calls": [
      			{
-					"haplotype_A": [ 
-                         {
-                         	"transcript_var": "1029dupC",
-                           	"build":		 "hg38",
-							"chrom":		 "chr1",
-							"pos":			 "12345",
-							"genotype":		 "C/CC",
-							"[rs]":
-							"depth":		 "34"
-                         },
-						{
-							"transcriptVar": "987G>A",
+					"haplotypes": [
+                         { "genotypes": [
+								{
+				                 	"transcript_var": "1029dupC",
+				                   	"build":		 "hg38",
+									"chrom":		 "chr1",
+									"pos":			 "12345",
+									"genotype":		 "C/CC",
+									"[rs]":			 "rs1234",
+									"depth":		 "34"
+				                 },
+								{
+									"transcriptVar": "987G>A"
+								}
+							],
+							[
+							],
+						
+
 						}
-                     ], 
-					"haplotype_B": ["462C>A","461A>G","460T>C","442G>T"],			
+                     ]
+					 
+
 					"allele_A": ["KN*01"],
 					"allele_B": ["KN*01.-05","KN*01.-09"],						
 					"phenotype_A": "A",
 					"phenotype_B": "B",
 					"phenotype":  ["AB"],
-					"score":	  "2.0",
-					"uncoveredVariants": ["1A>G","3G>A"],  
-					"annotatedVariants": ["1A>G","3G>A","8C>G","17C>T","19C>T","26T>A","28C>T","29G>A"]
+					"score":	  "2.0"
 				},
 				{
-					"haplotype_A": "1029dupC,987G>A,914C>T", 
-					...
+					"haplotype_A": "1029dupC,987G>A,914C>T"
+
 				}
 			]
 		},

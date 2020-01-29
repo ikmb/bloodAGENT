@@ -26,6 +26,7 @@
 #include "ISBTAnno.h"
 #include "CVariantChain.h"
 #include "CVariantChains.h"
+#include "json/single_include/nlohmann/json.hpp"
 #include "CIsbtGt2Pt.h"
 
 using namespace std;
@@ -216,41 +217,96 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
-std::string CIsbtGt2Pt::getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool phenotype)const
+nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
 {
-    ostringstream osr("");
+    nlohmann::json jRet;
     
-    osr << gt << "\t";
-    int count_outer = 0;
-    string dummyForHomozygous;
+    nlohmann::json haplotypes;
+    for(auto act_allele : gt.getAlleles())
+    {
+        nlohmann::json genotypes;
+        for(auto act_variant :act_allele.variantSet())
+        {
+            nlohmann::json genotype;
+            genotype["variation"]=act_variant.name();
+            genotype["chrom"]=act_variant.chrom();
+            genotype["position"]=act_variant.pos();
+            genotype["depth"]=act_variant.getCoverage();
+            genotype["reference"]=act_variant.reference();
+            genotype["alternative"]=act_variant.alternative();
+            genotype["lrg_reference"]=act_variant.lrgReference();
+            genotype["lrg_alternative"]=act_variant.lrgAlternative();
+            genotypes.push_back(genotype);
+        }
+        haplotypes["genotypes"].push_back(genotypes);
+    }
+    jRet["haplotypes"]=haplotypes;
+    nlohmann::json alleles;
+    nlohmann::json phenotypes;
     for(const auto& act_allele:results)
     {
         float high_score = act_allele.second.front().score();
-        int count = 0;
-        if(count_outer++ != 0)
-            osr << '/';
-        dummyForHomozygous = "";
+        nlohmann::json allele;
+        nlohmann::json phenotype;
         for(const auto& act_hit:act_allele.second)
         {
             if(act_hit.score() < high_score)
                 break;
-            if(count++ != 0)
-                dummyForHomozygous.append(";");
-            ( phenotype ? dummyForHomozygous.append(act_hit.m_phenotype_allele.phenotype()) : dummyForHomozygous.append(act_hit.m_phenotype_allele.name())) ;
+            allele.push_back(act_hit.m_phenotype_allele.name());
+            phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
         }
-        osr << dummyForHomozygous;
+        alleles.push_back(allele);
+        phenotypes.push_back(phenotype);
     }
-    if(count_outer == 1) // if we have a homozygous call, write the first allele/phenotype again
-        osr << '/' << dummyForHomozygous;
-    osr << "\t" << getPredictedScoreOfGenotype(results);
-    return osr.str();
+    jRet["alleles"]=alleles;
+    jRet["phenotypes"]=phenotypes;
+    jRet["score"]=getPredictedScoreOfGenotype(results);
+    
+    return jRet;
 }
 
+std::string CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range)const
+{
+    nlohmann::json j;
+    
+    
+    nlohmann::json uncovered_target_variants_list;
+    std::vector<CISBTAnno::variation> vl = isbt_anno.getCoverageFailedVariants(system);
+    for(auto a : vl)
+        uncovered_target_variants_list.push_back(a.name());
+    j["coverage_failed_variants"]=uncovered_target_variants_list;
+          
+    std::vector<CISBTAnno::variation> all_variations = isbt_anno.getAllVariations(system);
+    nlohmann::json all_target_variants_list;
+    nlohmann::json all_target_variants_coverage_list;
+    for(auto a : all_variations)
+    {
+        all_target_variants_list.push_back(a.name());
+        all_target_variants_coverage_list.push_back(a.getCoverage());
+    }
+    j["relevant_variations"]=all_target_variants_list;
+    j["relevant_variations_coverage"]=all_target_variants_coverage_list;
+    std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
+    if(iRes != m_typing_results.end())
+    {
+        // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
+        const CIsbtGt2Pt::typing_result& typing = iRes->second;
+        float top_score = getTopPredictedScoreOfAllGenotypes(iRes->second);
+        for(auto& act_gt:typing)
+        {
+            if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*top_score_range)
+            {
+                j["calls"].push_back(getJsonOfTypingResult(act_gt.first,act_gt.second));
+            }
+        }
+    }
+    return j.dump();
+}
 
 std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range, const std::string& sampleId)const
 {
-    size_t uncovered_target_variants = 0;
     ostringstream uncovered_target_variants_list("");
+    /*
     if(isbt_anno.hasUncoveredVariants(system))
     {
         std::vector<CISBTAnno::variation> vl = isbt_anno.getCoverageFailedVariants(system);
@@ -281,7 +337,8 @@ std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::s
             }
         }
     }
-    return osr.str();
+     */
+    return uncovered_target_variants_list.str();
 }
 
 float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const
