@@ -242,10 +242,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             CIsbtVariant hlp;
             hlp.setVerbose();
          }
-
         // generate VCF Test Data
-
-        
         CVariantChains vcs(&isbt);
         /// if you analyze simulated VCF do the following on your CVariantChains object
         if(arg_is_in_silico)
@@ -279,31 +276,11 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         {
             if( arg_locus.length() == 0 || locus.compare(arg_locus) == 0 )
             {
-                bool type_by_snps = true; // for example RHD: if coverage is 0 we do not type and set this to false
-                if(locus.compare("RHD") == 0)
-                {
-                    double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr);
-                    double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr);
-                    if(rhce_cov == 0.0)
-                    {
-                        cout << (sampleId.empty() ? "" : sampleId+"\t") << "RHD\t- & -\tn.a./n.a.\t2\t-" << endl;
-                        type_by_snps = false;
-                    }
-                    else if( rhd_cov/rhce_cov <= 0.1 )
-                    {
-                        cout << (sampleId.empty() ? "" : sampleId+"\t") << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
-                        type_by_snps = false;
-                    }
-                    //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
-                }
-                if(type_by_snps)
-                {
-                    isbTyper.type(locus,vcs,arg_coverage);
-                    if(!out_file.is_open())
-                        cout << isbTyper.getCallAsJson(isbt,locus,false,arg_top_hits) << endl;
-                    else
-                        j["loci"].push_back(isbTyper.getCallAsJson(isbt,locus,false,arg_top_hits));
-                }
+                isbTyper.type(locus,vcs,arg_coverage);
+                if(!out_file.is_open())
+                    cout << isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits) << endl;
+                else
+                    j["loci"].push_back(isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits));
             }
         }
         j["sample_id"] = sampleId;

@@ -61,7 +61,7 @@ CTranscript CTranscriptAnno::getTranscript(const std::string& name)
     
 }
 
-double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigReader& bw)
+double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigReader& bw)const
 {
     double dRet = 0.0;
     size_t base_count = 0;

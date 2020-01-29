@@ -27,7 +27,7 @@ public:
     std::set<std::string> loci()const;
     CTranscript getTranscript(const std::string& name);
     
-    double getExonicCoverage(const string& target, const CBigWigReader& bw);
+    double getExonicCoverage(const string& target, const CBigWigReader& bw)const;
 private:
     
     std::map<std::string,CTranscript>  m_transcripts;

@@ -19,6 +19,7 @@
 #include <libgen.h>
 
 #include "mytools.h"
+#include "CBigWigReader.h"
 #include "vcf.h"
 #include "CVcf.h"
 #include "CVcfSnp.h"
@@ -27,6 +28,8 @@
 #include "CVariantChain.h"
 #include "CVariantChains.h"
 #include "json/single_include/nlohmann/json.hpp"
+#include "CTranscript.h"
+#include "CTranscriptAnno.h"
 #include "CIsbtGt2Pt.h"
 
 using namespace std;
@@ -265,11 +268,10 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
     return jRet;
 }
 
-std::string CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range)const
+std::string CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTranscriptAnno& trans_anno, const CBigWigReader& bwr, const std::string& system, bool phenotype, float top_score_range)const
 {
     nlohmann::json j;
-    
-    
+    j["system"]=system;
     nlohmann::json uncovered_target_variants_list;
     std::vector<CISBTAnno::variation> vl = isbt_anno.getCoverageFailedVariants(system);
     for(auto a : vl)
@@ -286,17 +288,47 @@ std::string CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const std::str
     }
     j["relevant_variations"]=all_target_variants_list;
     j["relevant_variations_coverage"]=all_target_variants_coverage_list;
+    
     std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
     if(iRes != m_typing_results.end())
     {
-        // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
-        const CIsbtGt2Pt::typing_result& typing = iRes->second;
-        float top_score = getTopPredictedScoreOfAllGenotypes(iRes->second);
-        for(auto& act_gt:typing)
+        bool type_by_snps = true; // for example RHD: if coverage is 0 we do not type and set this to false
+        // special RhD treatment
+        if(system.compare("RHD") == 0)
         {
-            if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*top_score_range)
+            double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr);
+            double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr);
+            if(rhce_cov == 0.0)
             {
-                j["calls"].push_back(getJsonOfTypingResult(act_gt.first,act_gt.second));
+                nlohmann::json js;
+                js["alleles"].push_back("n.a.");
+                js["phenotypes"].push_back("n.a.");
+                js["score"]=0.0f;
+                j["calls"].push_back(js);
+                type_by_snps = false;
+            }
+            else if( rhd_cov/rhce_cov <= 0.1 )
+            {
+                nlohmann::json js;
+                js["alleles"].push_back("RhD-");
+                js["phenotypes"].push_back("RhD-");
+                js["score"]=2.0f;
+                j["calls"].push_back(js);
+                type_by_snps = false;
+            }
+            //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
+        }
+        if(type_by_snps)
+        {
+            // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
+            const CIsbtGt2Pt::typing_result& typing = iRes->second;
+            float top_score = getTopPredictedScoreOfAllGenotypes(iRes->second);
+            for(auto& act_gt:typing)
+            {
+                if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*top_score_range)
+                {
+                    j["calls"].push_back(getJsonOfTypingResult(act_gt.first,act_gt.second));
+                }
             }
         }
     }
