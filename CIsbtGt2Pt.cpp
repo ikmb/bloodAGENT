@@ -268,7 +268,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
     return jRet;
 }
 
-std::string CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTranscriptAnno& trans_anno, const CBigWigReader& bwr, const std::string& system, bool phenotype, float top_score_range)const
+nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTranscriptAnno& trans_anno, const CBigWigReader& bwr, const std::string& system, bool phenotype, float top_score_range)const
 {
     nlohmann::json j;
     j["system"]=system;
@@ -332,7 +332,7 @@ std::string CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTranscr
             }
         }
     }
-    return j.dump();
+    return j;
 }
 
 std::string CIsbtGt2Pt::getCallAsString(const CISBTAnno& isbt_anno, const std::string& system, bool phenotype, float top_score_range, const std::string& sampleId)const

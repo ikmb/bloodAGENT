@@ -282,12 +282,12 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             {
                 isbTyper.type(locus,vcs,arg_coverage);
                 if(!out_file.is_open())
-                    cout << isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits) << endl;
+                    cout << isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits).dump() << endl;
                 else
                     j["loci"].push_back(isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits));
             }
         }
-        j["sample_id"] = sampleId;
+        j["sample_id"]=sampleId;
         j["version"]=APP_VERSION_DEEPBLOOD;
         j["genome"]="hg19";
         if(out_file.is_open())
