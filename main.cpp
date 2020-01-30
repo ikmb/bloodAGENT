@@ -119,7 +119,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_tophits);
             TCLAP::SwitchArg tc_isInSilico("i","insilicovcf","If the input vcf is in silico generated VCF file, this trigger must be set! If not, the differences between LRG and GRCh are always analyzed resulting in wrong calls.",false);
             cmdjob.add(tc_isInSilico);
-            TCLAP::ValueArg<string> tc_locus("l","locus","Get typing of a specific locus only. E.g. ABO, RHD, ...",false,"","string");
+            TCLAP::ValueArg<string> tc_locus("l","locus","Get typing of specific loci only. Provide a comma separated list without spaces E.g. ABO,RHD, ...",false,"","string");
             cmdjob.add(tc_locus);
             TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"","string");
             cmdjob.add(tc_Id);
@@ -234,6 +234,10 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
 
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
+        
+        
+        vector<std::string> v = CMyTools::Tokenize(arg_locus,",");
+        set<std::string> arg_loci_set(v.begin(), v.end());
 
         if(arg_verbose >= 2)
         {
@@ -274,7 +278,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         nlohmann::json j;
         for(auto locus:loci)
         {
-            if( arg_locus.length() == 0 || locus.compare(arg_locus) == 0 )
+            if( arg_locus.length() == 0 || arg_loci_set.find(locus) != arg_loci_set.end() )
             {
                 isbTyper.type(locus,vcs,arg_coverage);
                 if(!out_file.is_open())
