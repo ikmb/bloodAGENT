@@ -52,6 +52,34 @@ CVcfSnp::CVcfSnp(const CVcfSnp& orig)
     m_ref_allele = orig.m_ref_allele;
 }
 
+CVcfSnp::CVcfSnp(const CVcfSnp* orig)
+{
+    if(orig)
+    {
+        m_chrom     = orig->m_chrom;
+        m_pos       = orig->m_pos;
+        m_alleles   = orig->m_alleles;
+        m_coverage  = orig->m_coverage;
+        m_qualities = orig->m_qualities;
+        m_depth     = orig->m_depth;
+        m_verbose   = orig->m_verbose;
+        m_phasing_id = orig->m_phasing_id;
+        m_mapping_quality = orig->m_mapping_quality;
+        m_haplotype_qualities = orig->m_haplotype_qualities;
+        m_ref_allele = orig->m_ref_allele;
+    }
+    else
+    {
+        m_chrom = "";
+        m_pos = -1;
+        m_depth = -1;
+        m_verbose = 0;
+        m_phasing_id = -1;
+        m_ref_allele="";
+        m_mapping_quality = 0;
+    }
+}
+
 CVcfSnp::~CVcfSnp() {
 }
 
@@ -179,6 +207,9 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     free(ad);
     free(dp);
     free(ps);
+    free(mq);
+    free(hq);
+    
 }
 
 std::string    CVcfSnp::SNP()const

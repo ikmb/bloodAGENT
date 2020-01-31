@@ -239,6 +239,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
             genotype["alternative"]=act_variant.alternative();
             genotype["lrg_reference"]=act_variant.lrgReference();
             genotype["lrg_alternative"]=act_variant.lrgAlternative();
+            genotype["gt_quality"]=act_variant.getVcfGenotypeQuality();
             genotypes.push_back(genotype);
         }
         haplotypes["genotypes"].push_back(genotypes);

@@ -16,6 +16,8 @@
 
 #include "mytools.h"
 #include "CBigWigReader.h"
+#include "vcf.h"
+#include "CVcfSnp.h"
 
 
 
@@ -60,8 +62,14 @@ public:
     bool isRefNClikeGRChNC()const{return !m_are_ref_and_alt_switched_in_GRCh;}
     
     void setVerbose(bool value = true){verbose=value;}
+    void addVcfSnp(const CVcfSnp& snp);
+    
+    int getVcfGenotypeQuality()const;
+    
 private:
     
+    
+    CVcfSnp*    m_vcf_snp;
     std::string m_isbt_name;
     std::string m_lrg_position;
     std::string m_lrg_reference;

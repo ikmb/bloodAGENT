@@ -28,6 +28,7 @@ bool CIsbtVariant::verbose = false;
 
 CIsbtVariant::CIsbtVariant() 
 {
+    m_vcf_snp = NULL;
     m_isbt_name = "";
     m_chromosome = "";
     m_position = -1;
@@ -48,6 +49,7 @@ CIsbtVariant::CIsbtVariant()
 CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const string& chrom, int pos, char strand, 
                            int vcfCoord, const string& vcfRef, const string& vcfAlt, bool are_ref_and_alt_switched_in_GRCh, const string& variation_type) 
 {
+    m_vcf_snp = NULL;
     m_isbt_name = lrg_anno;
     m_chromosome = chrom;
     m_position = pos;
@@ -81,6 +83,7 @@ CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig)
     m_strand = orig.m_strand;
     m_coverage = orig.m_coverage;
     m_variation_type = orig.m_variation_type;
+    m_vcf_snp = new CVcfSnp(orig.m_vcf_snp);
 }
 
 CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
@@ -99,7 +102,25 @@ CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
     m_strand = orig.m_strand;
     m_coverage = orig.m_coverage;
     m_variation_type = orig.m_variation_type;
+    m_vcf_snp = new CVcfSnp(orig.m_vcf_snp);
     return *this;
+}
+
+void CIsbtVariant::addVcfSnp(const CVcfSnp& snp)
+{
+    m_vcf_snp = new CVcfSnp(snp);
+}
+
+int CIsbtVariant::getVcfGenotypeQuality()const
+{
+    if(m_vcf_snp)
+    {
+        vector<int> q = m_vcf_snp->genotypeQualities();
+        if(q.empty())
+            return -1;
+        return q[0];
+    }
+    -1;
 }
 
 bool   CIsbtVariant::operator <(const CIsbtVariant& orig)const
@@ -146,7 +167,8 @@ std::ostream& operator<<(std::ostream& os, const CIsbtVariant& me)
 
 CIsbtVariant::~CIsbtVariant() 
 {
-    
+    if(m_vcf_snp)
+        delete m_vcf_snp;
 }
 
 bool CIsbtVariant::parseIsbtVariant()

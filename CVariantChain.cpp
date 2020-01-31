@@ -80,6 +80,7 @@ bool CVariantChain::add(const CVcfSnp& var)
         return false;
     
     CISBTAnno::variation isbv = m_isbt_anno->getCorrespondingIsbtVariation(var);
+    isbv.addVcfSnp(var);
     CVariantChainVariation clean_vcv(isbv);
     // remove variant if it is already stored somewhere
     // ususally it should be stored as "hr"

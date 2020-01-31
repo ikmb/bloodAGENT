@@ -21,6 +21,7 @@ class CVcfSnp {
 public:
     CVcfSnp(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& seq_names,bcf1_t *rec, bool verbose = false);
     CVcfSnp(const CVcfSnp& orig);
+    CVcfSnp(const CVcfSnp* orig);
     virtual ~CVcfSnp();
     
     friend std::ostream& operator<<(std::ostream& os, const CVcfSnp& me);
@@ -43,8 +44,11 @@ public:
     bool                        isHomozygous()const;
     bool                        isHeterozygous()const{return !isHomozygous();};
     
+    std::vector<int>            genotypeQualities()const{return m_qualities;}
     std::vector<int>            haplotypeQualities()const{return m_haplotype_qualities;}
     int                         mappingQuality()const{return m_mapping_quality;}
+    
+    
 private:
     
     std::string                 m_chrom;

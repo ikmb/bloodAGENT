@@ -290,6 +290,19 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         j["sample_id"]=sampleId;
         j["version"]=APP_VERSION_DEEPBLOOD;
         j["genome"]="hg19";
+        j["parameters"]["--target"]=arg_target_anno;
+        j["parameters"]["--variants"]=arg_isbt_SNPs;
+        j["parameters"]["--gt2pt"]=arg_genotype_to_phenotype;
+        j["parameters"]["--vcf"]=arg_vcf_file;
+        j["parameters"]["--bigwig"]=arg_bigWig;
+        j["parameters"]["--coverage"]=arg_coverage;
+        j["parameters"]["--verbose"]=arg_verbose;
+        j["parameters"]["--scoreRange"]=arg_top_hits;
+        j["parameters"]["--locus"]=arg_locus;
+        j["parameters"]["--insilicovcf"]=arg_is_in_silico;
+        j["parameters"]["--id"]=sampleId;
+        j["parameters"]["--out"]=outfile;
+        
         if(out_file.is_open())
             out_file << j.dump();
         if(arg_verbose >= 2)
