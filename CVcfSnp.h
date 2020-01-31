@@ -43,7 +43,8 @@ public:
     bool                        isHomozygous()const;
     bool                        isHeterozygous()const{return !isHomozygous();};
     
-    
+    std::vector<int>            haplotypeQualities()const{return m_haplotype_qualities;}
+    int                         mappingQuality()const{return m_mapping_quality;}
 private:
     
     std::string                 m_chrom;
@@ -51,6 +52,8 @@ private:
     std::vector<std::string>    m_alleles;
     std::vector<int>            m_coverage;
     std::vector<int>            m_qualities;
+    std::vector<int>            m_haplotype_qualities;
+    int                         m_mapping_quality;
     long                        m_depth;
     bool                        m_verbose;
     int                         m_phasing_id;

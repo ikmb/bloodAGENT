@@ -33,6 +33,7 @@ CVcfSnp::CVcfSnp(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& seq_name
     m_verbose = verbose;
     m_phasing_id = -1;
     m_ref_allele="";
+    m_mapping_quality = 0;
     read_SNP_entry(inf, hdr,seq_names,rec);
 }
 
@@ -46,6 +47,8 @@ CVcfSnp::CVcfSnp(const CVcfSnp& orig)
     m_depth     = orig.m_depth;
     m_verbose   = orig.m_verbose;
     m_phasing_id = orig.m_phasing_id;
+    m_mapping_quality = orig.m_mapping_quality;
+    m_haplotype_qualities = orig.m_haplotype_qualities;
     m_ref_allele = orig.m_ref_allele;
 }
 
@@ -125,11 +128,23 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     int nps       = 0;
     int *ps     = NULL;
 
+    // Mapping Quality
+    int nmq_arr = 0;
+    int nmq       = 0;
+    int *mq     = NULL;
+
+    // Haplotype Quality
+    int nhq_arr = 0;
+    int nhq       = 0;
+    int *hq     = NULL;
+
     ngq = bcf_get_format_int32(hdr, rec, "GQ", &gq, &ngq_arr);
     ngt = bcf_get_format_int32(hdr, rec, "GT", &gt, &ngt_arr);
     nad = bcf_get_format_int32(hdr, rec, "AD", &ad, &nad_arr);
     ndp = bcf_get_info_int32(hdr, rec, "DP", &dp, &ndp_arr);
     nps = bcf_get_format_int32(hdr, rec, "PS", &ps, &nps_arr);
+    nmq = bcf_get_format_int32(hdr, rec, "MQ", &mq, &nmq_arr);
+    nhq = bcf_get_format_int32(hdr, rec, "HQ", &hq, &nhq_arr);
     
     
 
@@ -148,8 +163,13 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
         m_coverage.push_back(ad[i]);
     for(int i = 0; i < ngq; i++)
         m_qualities.push_back(gq[i]);
+    for(int i = 0; i < nhq; i++)
+        m_haplotype_qualities.push_back(hq[i]);
     if(nps > 0)   
         m_phasing_id = ps[0];
+    if(nmq > 0)
+        m_mapping_quality = mq[0];
+        
     
     m_ref_allele = rec->d.allele[0];    
     
