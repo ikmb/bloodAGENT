@@ -62,6 +62,7 @@ string getArgumentList(TCLAP::CmdLine& args);
  * 
  * StatusPlus
  * http://134.245.63.197:4200/
+ * --locus ABO,RHD,LU,KEL,FY,JK,DI
  * test, test
  * 
   "${OUTPUT_PATH}" --job phenotype --target /home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt 
