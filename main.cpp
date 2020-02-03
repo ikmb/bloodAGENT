@@ -284,10 +284,10 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             if( arg_locus.length() == 0 || arg_loci_set.find(locus) != arg_loci_set.end() )
             {
                 isbTyper.type(locus,vcs,arg_coverage);
+                nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
+                j["loci"][locus]=jCall;
                 if(!out_file.is_open())
-                    cout << isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage).dump() << endl;
-                else
-                    j["loci"][locus]=isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
+                    cout << jCall.dump() << endl;
             }
         }
         j["sample_id"]=sampleId;

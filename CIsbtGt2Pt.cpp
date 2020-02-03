@@ -319,7 +319,10 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             {
                 if(getPredictedScoreOfGenotype(act_gt.second) >= top_score*top_score_range)
                 {
-                    j["calls"].push_back(getJsonOfTypingResult(act_gt.first,act_gt.second));
+                    nlohmann::json jAct = getJsonOfTypingResult(act_gt.first,act_gt.second);
+                    if(!uncovered_target_variants_list.empty())
+                        jAct["score"] = 0.0;
+                    j["calls"].push_back(jAct);
                 }
             }
         }
