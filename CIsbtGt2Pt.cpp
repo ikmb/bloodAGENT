@@ -238,23 +238,28 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
     jRet["haplotypes"]=haplotypes;
     nlohmann::json alleles;
     nlohmann::json phenotypes;
+    nlohmann::json flat_phenotypes;
     for(const auto& act_allele:results)
     {
         float high_score = act_allele.second.front().score();
         nlohmann::json allele;
         nlohmann::json phenotype;
+        nlohmann::json flat_phenotype;
         for(const auto& act_hit:act_allele.second)
         {
             if(act_hit.score() < high_score)
                 break;
             allele.push_back(act_hit.m_phenotype_allele.name());
             phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
+            flat_phenotype.push_back(act_hit.m_phenotype_allele.flatPhenotype());
         }
         alleles.push_back(allele);
         phenotypes.push_back(phenotype);
+        flat_phenotypes.push_back(flat_phenotype);
     }
     jRet["alleles"]=alleles;
     jRet["phenotypes"]=phenotypes;
+    jRet["flat_phenotypes"]=flat_phenotypes;
     jRet["score"]=getPredictedScoreOfGenotype(results);
     
     return jRet;
@@ -295,6 +300,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                 nlohmann::json js;
                 js["alleles"].push_back("n.a.");
                 js["phenotypes"].push_back("n.a.");
+                js["flat_phenotypes"].push_back("n.a.");
                 js["score"]=0.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
@@ -304,6 +310,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                 nlohmann::json js;
                 js["alleles"].push_back("RhD-");
                 js["phenotypes"].push_back("RhD-");
+                js["flat_phenotypes"].push_back("RhD-");
                 js["score"]=2.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
