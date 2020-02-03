@@ -60,6 +60,9 @@ string getArgumentList(TCLAP::CmdLine& args);
 /*
  * export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
  * 
+ * StatusPlus
+ * http://134.245.63.197:4200/
+ * test, test
  * 
   "${OUTPUT_PATH}" --job phenotype --target /home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg19.abotarget.txt 
                    --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat 
@@ -282,9 +285,9 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             {
                 isbTyper.type(locus,vcs,arg_coverage);
                 if(!out_file.is_open())
-                    cout << isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits).dump() << endl;
+                    cout << isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage).dump() << endl;
                 else
-                    j["loci"].push_back(isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits));
+                    j["loci"][locus]=isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
             }
         }
         j["sample_id"]=sampleId;

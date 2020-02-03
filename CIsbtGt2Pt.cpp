@@ -230,16 +230,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
         nlohmann::json genotypes;
         for(auto act_variant :act_allele.variantSet())
         {
-            nlohmann::json genotype;
-            genotype["variation"]=act_variant.name();
-            genotype["chrom"]=act_variant.chrom();
-            genotype["position"]=act_variant.pos();
-            genotype["depth"]=act_variant.getCoverage();
-            genotype["reference"]=act_variant.reference();
-            genotype["alternative"]=act_variant.alternative();
-            genotype["lrg_reference"]=act_variant.lrgReference();
-            genotype["lrg_alternative"]=act_variant.lrgAlternative();
-            genotype["gt_quality"]=act_variant.getVcfGenotypeQuality();
+            nlohmann::json genotype = act_variant.getSnpAsJson();
             genotypes.push_back(genotype);
         }
         haplotypes["genotypes"].push_back(genotypes);
@@ -269,7 +260,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
     return jRet;
 }
 
-nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTranscriptAnno& trans_anno, const CBigWigReader& bwr, const std::string& system, bool phenotype, float top_score_range)const
+nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTranscriptAnno& trans_anno, const CBigWigReader& bwr, const std::string& system, bool phenotype, float top_score_range, int coverage_limit)const
 {
     nlohmann::json j;
     j["system"]=system;
@@ -281,14 +272,14 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
           
     std::vector<CISBTAnno::variation> all_variations = isbt_anno.getAllVariations(system);
     nlohmann::json all_target_variants_list;
-    nlohmann::json all_target_variants_coverage_list;
     for(auto a : all_variations)
     {
-        all_target_variants_list.push_back(a.name());
-        all_target_variants_coverage_list.push_back(a.getCoverage());
+        nlohmann::json act_j = a.getSnpAsJson();
+        act_j["coverage_limit"] = coverage_limit;
+        act_j["is_covered"] = a.isCovered(static_cast<double>(coverage_limit));
+        all_target_variants_list.push_back(act_j);
     }
     j["relevant_variations"]=all_target_variants_list;
-    j["relevant_variations_coverage"]=all_target_variants_coverage_list;
     
     std::map<std::string,typing_result>::const_iterator iRes = m_typing_results.find(system);
     if(iRes != m_typing_results.end())

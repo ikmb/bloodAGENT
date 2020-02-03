@@ -18,7 +18,7 @@
 #include "CBigWigReader.h"
 #include "vcf.h"
 #include "CVcfSnp.h"
-
+#include "json/single_include/nlohmann/json.hpp"
 
 
 class CIsbtVariant {
@@ -65,6 +65,8 @@ public:
     void addVcfSnp(const CVcfSnp& snp);
     
     int getVcfGenotypeQuality()const;
+    
+    nlohmann::json  getSnpAsJson()const;
     
 private:
     

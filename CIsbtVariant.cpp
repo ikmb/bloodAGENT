@@ -106,6 +106,21 @@ CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
     return *this;
 }
 
+nlohmann::json  CIsbtVariant::getSnpAsJson()const
+{
+    nlohmann::json jRet;
+    jRet["variation"]=name();
+    jRet["chrom"]=chrom();
+    jRet["position"]=pos();
+    jRet["depth"]=getCoverage();
+    jRet["reference"]=reference();
+    jRet["alternative"]=alternative();
+    jRet["lrg_reference"]=lrgReference();
+    jRet["lrg_alternative"]=lrgAlternative();
+    jRet["gt_quality"]=getVcfGenotypeQuality();
+    return jRet;
+}
+
 void CIsbtVariant::addVcfSnp(const CVcfSnp& snp)
 {
     m_vcf_snp = new CVcfSnp(snp);
@@ -120,7 +135,7 @@ int CIsbtVariant::getVcfGenotypeQuality()const
             return -1;
         return q[0];
     }
-    -1;
+    return -1;
 }
 
 bool   CIsbtVariant::operator <(const CIsbtVariant& orig)const
