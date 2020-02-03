@@ -55,7 +55,7 @@ void CIsbtGt2Pt::init(const string& filename)
     CParsedTextfile ptx(filename,"\t","Allele",0,true, "#");
     if(ptx.First())
         do{
-            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Allele"], ptx["Phenotype"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
+            m_allele_vector[ptx["MySystemKey"]].push_back(CIsbtPtAllele(ptx["Allele"], ptx["Phenotype"], ptx["Phenotype_flat"], ptx["base_change"], ptx["acid_change"], ptx["incidence"]));
         }while(ptx.Next());
     
 }
@@ -410,7 +410,7 @@ void CIsbtGt2Pt::findAlleTaggingBaseChanges()
             for(auto act_gt : hit_list)
             {
                 //cerr << act_system << '\t' << act_allele.name() << '\t' << act_gt << endl;
-                m_allele_vector_redundant[act_system].push_back(CIsbtPtAllele(act_allele.name(), act_allele.phenotype(), act_gt, "", 0.0f));
+                m_allele_vector_redundant[act_system].push_back(CIsbtPtAllele(act_allele.name(), act_allele.phenotype(), act_allele.flatPhenotype(), act_gt, "", 0.0f));
             }
         }
     }

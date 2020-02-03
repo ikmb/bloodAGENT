@@ -25,22 +25,22 @@ using namespace std;
 
 CIsbtPtAllele::CIsbtPtAllele()
 {
-    init("","","","",0.0f);
+    init("","","","","",0.0f);
 }
 
-CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, string incidence) 
+CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype,const std::string& flat_phenotype_name, std::string base_changes, std::string acid_changes, string incidence) 
 {
     try{
-        init(name,phenotype,base_changes,acid_changes,stof(incidence));
+        init(name,phenotype,flat_phenotype_name,base_changes,acid_changes,stof(incidence));
     }catch(...)
     {
-        init(name,phenotype,base_changes,acid_changes,-1.0f);
+        init(name,phenotype,flat_phenotype_name,base_changes,acid_changes,-1.0f);
     }
 }
 
-CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence) 
+CIsbtPtAllele::CIsbtPtAllele(std::string name, std::string phenotype,const std::string& flat_phenotype_name, std::string base_changes, std::string acid_changes, float incidence) 
 {
-    init(name,phenotype,base_changes,acid_changes,incidence);
+    init(name,phenotype,flat_phenotype_name,base_changes,acid_changes,incidence);
 }
 
 CIsbtPtAllele::CIsbtPtAllele(const CIsbtPtAllele& orig) 
@@ -50,16 +50,18 @@ CIsbtPtAllele::CIsbtPtAllele(const CIsbtPtAllele& orig)
     m_base_changes = orig.m_base_changes; // ISBT naming like 261delG or 85A>G, ...
     m_acid_changes = orig.m_acid_changes; // ISBT naming like Ile60Leu or Ser230Ile, ...
     m_incidence = orig.m_incidence;
+    m_flat_phenotype_name = orig.m_flat_phenotype_name;
 }
 
 CIsbtPtAllele::~CIsbtPtAllele() 
 {
     
 }
-void CIsbtPtAllele::init(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence)
+void CIsbtPtAllele::init(const std::string& name, const std::string& phenotype,const std::string& flat_phenotype_name, const std::string& base_changes, const std::string& acid_changes, float incidence)
 {
     m_name = name;
     m_phenotype_name = phenotype;
+    m_flat_phenotype_name = flat_phenotype_name;
     m_incidence = incidence;
     
     vector<string> parsed = CMyTools::GetParsedLine(base_changes," ");

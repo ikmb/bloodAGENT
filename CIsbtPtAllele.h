@@ -20,8 +20,8 @@
 class CIsbtPtAllele {
 public:
     CIsbtPtAllele();
-    CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, std::string incidence);
-    CIsbtPtAllele(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence);
+    CIsbtPtAllele(std::string name, std::string phenotype,const std::string& flat_phenotype_name, std::string base_changes, std::string acid_changes, std::string incidence);
+    CIsbtPtAllele(std::string name, std::string phenotype,const std::string& flat_phenotype_name, std::string base_changes, std::string acid_changes, float incidence);
     CIsbtPtAllele(const CIsbtPtAllele& orig);
     virtual ~CIsbtPtAllele();
     
@@ -34,6 +34,7 @@ public:
     std::set<std::string>  acidChanges()const{return m_acid_changes;}
     std::string name()const{return m_name;}
     std::string phenotype()const{if(m_phenotype_name.compare("#N/A") == 0)return m_name;return m_phenotype_name;}
+    std::string flatPhenotype()const{if(m_flat_phenotype_name.compare("#N/A") == 0)return phenotype();return m_flat_phenotype_name;}
     
     
     bool containsBaseChange(const std::string& isbt_base_change)const;
@@ -42,10 +43,11 @@ public:
     
 private:
     
-    void init(std::string name, std::string phenotype, std::string base_changes, std::string acid_changes, float incidence);
+    void init(const std::string& name, const std::string& phenotype,const std::string& flat_phenotype_name, const std::string& base_changes, const std::string& acid_changes, float incidence);
     
     std::string m_name;
     std::string m_phenotype_name;
+    std::string m_flat_phenotype_name;
     std::set<std::string>   m_base_changes; // ISBT naming like 261delG or 85A>G, ...
     std::set<std::string>   m_acid_changes; // ISBT naming like Ile60Leu or Ser230Ile, ...
     float                   m_incidence;
