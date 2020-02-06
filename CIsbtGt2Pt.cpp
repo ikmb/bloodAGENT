@@ -249,7 +249,13 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
         {
             if(act_hit.score() < high_score)
                 break;
-            allele.push_back(act_hit.m_phenotype_allele.name());
+            allele["names"].push_back(act_hit.m_phenotype_allele.name());
+            nlohmann::json metrics;
+            metrics["typed_not_in_anno"] = act_hit.m_typed_not_in_anno;
+            metrics["anno_not_in_typed"] = act_hit.m_anno_not_in_typed;
+            metrics["anno_in_typed_but_not_in_current_genotype"] = act_hit.m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive, as it is well covered, typed but not in this genotype
+            metrics["not_covered"] = act_hit.m_not_covered;
+            allele["issues"].push_back(metrics);
             phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
             flat_phenotype.push_back(act_hit.m_phenotype_allele.flatPhenotype());
         }
