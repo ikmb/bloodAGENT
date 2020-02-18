@@ -304,7 +304,9 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             if(rhce_cov == 0.0)
             {
                 nlohmann::json js;
-                js["alleles"].push_back("n.a.");
+                nlohmann::json allele;
+                allele["names"].push_back("n.a.");
+                js["alleles"].push_back(allele);
                 js["phenotypes"].push_back("n.a.");
                 js["flat_phenotypes"].push_back("n.a.");
                 js["score"]=0.0f;
@@ -314,7 +316,9 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             else if( rhd_cov/rhce_cov <= 0.1 )
             {
                 nlohmann::json js;
-                js["alleles"].push_back("RhD-");
+                nlohmann::json allele;
+                allele["names"].push_back("RhD-");
+                js["alleles"].push_back(allele);
                 js["phenotypes"].push_back("RhD-");
                 js["flat_phenotypes"].push_back("RhD-");
                 js["score"]=2.0f;
