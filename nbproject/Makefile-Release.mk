@@ -37,8 +37,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/CBigWigReader.o \
 	${OBJECTDIR}/CFastqCreator.o \
-	${OBJECTDIR}/CFr.o \
-	${OBJECTDIR}/CFrSnp.o \
 	${OBJECTDIR}/CIsbtGt.o \
 	${OBJECTDIR}/CIsbtGt2Pt.o \
 	${OBJECTDIR}/CIsbtGt2PtHit.o \
@@ -94,16 +92,6 @@ ${OBJECTDIR}/CFastqCreator.o: CFastqCreator.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqCreator.o CFastqCreator.cpp
-
-${OBJECTDIR}/CFr.o: CFr.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFr.o CFr.cpp
-
-${OBJECTDIR}/CFrSnp.o: CFrSnp.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFrSnp.o CFrSnp.cpp
 
 ${OBJECTDIR}/CIsbtGt.o: CIsbtGt.cpp
 	${MKDIR} -p ${OBJECTDIR}

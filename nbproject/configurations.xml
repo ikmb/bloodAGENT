@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>CBigWigReader.h</itemPath>
+      <itemPath>CFastqCreator.h</itemPath>
+      <itemPath>CFr.h</itemPath>
+      <itemPath>CFrSnp.h</itemPath>
+      <itemPath>CIsbtGt.h</itemPath>
+      <itemPath>CIsbtGt2Pt.h</itemPath>
+      <itemPath>CIsbtGt2PtHit.h</itemPath>
+      <itemPath>CIsbtGtAllele.h</itemPath>
+      <itemPath>CIsbtPtAllele.h</itemPath>
+      <itemPath>CIsbtVariant.h</itemPath>
+      <itemPath>CMakeTrainingVcf.h</itemPath>
+      <itemPath>CTranscript.h</itemPath>
+      <itemPath>CTranscriptAnno.h</itemPath>
+      <itemPath>CVariantChain.h</itemPath>
+      <itemPath>CVariantChainVariation.h</itemPath>
+      <itemPath>CVariantChains.h</itemPath>
+      <itemPath>CVcf.h</itemPath>
+      <itemPath>CVcfSnp.h</itemPath>
+      <itemPath>ISBTAnno.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>CBigWigReader.cpp</itemPath>
+      <itemPath>CFastqCreator.cpp</itemPath>
+      <itemPath>CIsbtGt.cpp</itemPath>
+      <itemPath>CIsbtGt2Pt.cpp</itemPath>
+      <itemPath>CIsbtGt2PtHit.cpp</itemPath>
+      <itemPath>CIsbtGtAllele.cpp</itemPath>
+      <itemPath>CIsbtPtAllele.cpp</itemPath>
+      <itemPath>CIsbtVariant.cpp</itemPath>
+      <itemPath>CMakeTrainingVcf.cpp</itemPath>
+      <itemPath>CTranscript.cpp</itemPath>
+      <itemPath>CTranscriptAnno.cpp</itemPath>
+      <itemPath>CVariantChain.cpp</itemPath>
+      <itemPath>CVariantChainVariation.cpp</itemPath>
+      <itemPath>CVariantChains.cpp</itemPath>
+      <itemPath>CVcf.cpp</itemPath>
+      <itemPath>CVcfSnp.cpp</itemPath>
+      <itemPath>ISBTAnno.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../MyTools</pElem>
+            <pElem>../htslib/htslib</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../bamtools/src</pElem>
+            <pElem>../libBigWig</pElem>
+            <pElem>tclap/include</pElem>
+          </incDir>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood</output>
+          <linkerAddLib>
+            <pElem>../bamtools/build/src/api/</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../libBigWig</pElem>
+          </linkerAddLib>
+          <linkerDynSerch>
+            <pElem>../bamtools/build/src/api/</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../libBigWig</pElem>
+          </linkerDynSerch>
+          <linkerLibItems>
+            <linkerLibFileItem>../bamtools/build/src/api/libbamtools.a</linkerLibFileItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../MyTools"
+                            CT="2"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../MyTools"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libMyTools.${CND_DLIB_EXT}">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+          <commandLine>-lz -lhts -lBigWig</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="CBigWigReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CBigWigReader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFastqCreator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastqCreator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFrSnp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGt.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGt2Pt.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGt2Pt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGt2PtHit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGt2PtHit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGtAllele.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGtAllele.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtPtAllele.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtPtAllele.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtVariant.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtVariant.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CMakeTrainingVcf.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMakeTrainingVcf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTranscript.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTranscriptAnno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTranscriptAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVariantChain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVariantChain.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVariantChainVariation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVariantChainVariation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVariantChains.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVariantChains.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVcf.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVcf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVcfSnp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVcfSnp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ISBTAnno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ISBTAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>../MyTools</pElem>
+            <pElem>../htslib/htslib</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../bamtools/src</pElem>
+            <pElem>../libBigWig</pElem>
+            <pElem>tclap/include</pElem>
+          </incDir>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>../bamtools/build/src/api/</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../libBigWig</pElem>
+          </linkerAddLib>
+          <linkerDynSerch>
+            <pElem>../bamtools/build/src/api/</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../libBigWig</pElem>
+          </linkerDynSerch>
+          <linkerLibItems>
+            <linkerLibFileItem>../bamtools/build/src/api/libbamtools.a</linkerLibFileItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../MyTools"
+                            CT="3"
+                            CN="Release"
+                            AC="false"
+                            BL="true"
+                            WD="../MyTools"
+                            BC="${MAKE}  -f Makefile CONF=Release"
+                            CC="${MAKE}  -f Makefile CONF=Release clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmytools.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+          <commandLine>-lz -lhts -lBigWig</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="CBigWigReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CBigWigReader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFastqCreator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastqCreator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFrSnp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGt.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGt2Pt.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGt2Pt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGt2PtHit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGt2PtHit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtGtAllele.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtGtAllele.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtPtAllele.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtPtAllele.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CIsbtVariant.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CIsbtVariant.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CMakeTrainingVcf.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMakeTrainingVcf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTranscript.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTranscriptAnno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTranscriptAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVariantChain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVariantChain.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVariantChainVariation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVariantChainVariation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVariantChains.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVariantChains.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVcf.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVcf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CVcfSnp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CVcfSnp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ISBTAnno.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ISBTAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
