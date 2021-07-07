@@ -34,6 +34,7 @@ CBigWigReader::CBigWigReader(const std::string& filename)
 
 CBigWigReader::CBigWigReader(const CBigWigReader& orig) 
 {
+    m_fp = NULL;
     memcpy( m_fp, orig.m_fp, sizeof(*orig.m_fp) );
 }
 

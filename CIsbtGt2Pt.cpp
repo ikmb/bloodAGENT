@@ -238,23 +238,34 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
     jRet["haplotypes"]=haplotypes;
     nlohmann::json alleles;
     nlohmann::json phenotypes;
+    nlohmann::json flat_phenotypes;
     for(const auto& act_allele:results)
     {
         float high_score = act_allele.second.front().score();
         nlohmann::json allele;
         nlohmann::json phenotype;
+        nlohmann::json flat_phenotype;
         for(const auto& act_hit:act_allele.second)
         {
             if(act_hit.score() < high_score)
                 break;
-            allele.push_back(act_hit.m_phenotype_allele.name());
+            allele["names"].push_back(act_hit.m_phenotype_allele.name());
+            nlohmann::json metrics;
+            metrics["typed_not_in_anno"] = act_hit.m_typed_not_in_anno;
+            metrics["anno_not_in_typed"] = act_hit.m_anno_not_in_typed;
+            metrics["anno_in_typed_but_not_in_current_genotype"] = act_hit.m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive, as it is well covered, typed but not in this genotype
+            metrics["not_covered"] = act_hit.m_not_covered;
+            allele["issues"].push_back(metrics);
             phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
+            flat_phenotype.push_back(act_hit.m_phenotype_allele.flatPhenotype());
         }
         alleles.push_back(allele);
         phenotypes.push_back(phenotype);
+        flat_phenotypes.push_back(flat_phenotype);
     }
     jRet["alleles"]=alleles;
     jRet["phenotypes"]=phenotypes;
+    jRet["flat_phenotypes"]=flat_phenotypes;
     jRet["score"]=getPredictedScoreOfGenotype(results);
     
     return jRet;
@@ -293,8 +304,11 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             if(rhce_cov == 0.0)
             {
                 nlohmann::json js;
-                js["alleles"].push_back("n.a.");
+                nlohmann::json allele;
+                allele["names"].push_back("n.a.");
+                js["alleles"].push_back(allele);
                 js["phenotypes"].push_back("n.a.");
+                js["flat_phenotypes"].push_back("n.a.");
                 js["score"]=0.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
@@ -302,8 +316,11 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             else if( rhd_cov/rhce_cov <= 0.1 )
             {
                 nlohmann::json js;
-                js["alleles"].push_back("RhD-");
+                nlohmann::json allele;
+                allele["names"].push_back("RhD-");
+                js["alleles"].push_back(allele);
                 js["phenotypes"].push_back("RhD-");
+                js["flat_phenotypes"].push_back("RhD-");
                 js["score"]=2.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
