@@ -142,4 +142,24 @@ bool CBigWigReader::init(const std::string& filename)
     return true;
 }
  
- 
+double CBigWigReader::getMinCoverage(const std::string& chrom, int start, int end)const
+{
+    return getCoverage(chrom, start, end, bwStatsType::min);
+}
+
+double CBigWigReader::getAverageCoverage(const std::string& chrom, int start, int end)const
+{
+    return getCoverage(chrom, start, end, bwStatsType::average);
+}
+
+double CBigWigReader::getMaxCoverage(const std::string& chrom, int start, int end)const
+{
+    return getCoverage(chrom, start, end, bwStatsType::max);
+}
+
+double CBigWigReader::getSumCoverage(const std::string& chrom, int start, int end)const
+{
+    return getCoverage(chrom, start, end, bwStatsType::sum);
+}
+
+    
