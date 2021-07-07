@@ -6,8 +6,6 @@
                    projectFiles="true">
       <itemPath>CBigWigReader.h</itemPath>
       <itemPath>CFastqCreator.h</itemPath>
-      <itemPath>CFr.h</itemPath>
-      <itemPath>CFrSnp.h</itemPath>
       <itemPath>CIsbtGt.h</itemPath>
       <itemPath>CIsbtGt2Pt.h</itemPath>
       <itemPath>CIsbtGt2PtHit.h</itemPath>
@@ -119,10 +117,6 @@
       <item path="CFastqCreator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CFastqCreator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="CFr.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="CFrSnp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CIsbtGt.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -251,10 +245,6 @@
       <item path="CFastqCreator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CFastqCreator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="CFr.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="CFrSnp.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CIsbtGt.cpp" ex="false" tool="1" flavor2="0">
       </item>
