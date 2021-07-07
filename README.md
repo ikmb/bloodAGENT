@@ -47,6 +47,8 @@ libBigWig created
 
 Optional: `git submodule update --init --recursive`
 
+If needed, create library symlinks and: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_ifs/sukko545/haemo/tool/`
+
 `make all`
 
 `cd ..`
