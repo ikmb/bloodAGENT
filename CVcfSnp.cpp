@@ -185,10 +185,9 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     for(int i = 0; i < ngt; i++)
     {
         int bcfA = bcf_gt_allele(gt[i]);
-        if(bcfA > 0)
+        if(bcfA > -1)
             m_alleles.push_back(rec->d.allele[bcfA]);
     }
-    cout << endl;
     for(int i = 0; i < nad; i++)
         m_coverage.push_back(ad[i]);
     for(int i = 0; i < ngq; i++)
