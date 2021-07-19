@@ -59,6 +59,7 @@ string getArgumentList(TCLAP::CmdLine& args);
 
 /*
  * export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
+ * ln -s ../mnts/gvfs/sftp\:host\=medcluster.medfdm.uni-kiel.de\,user\=sukko545/work_ifs/sukko545/haemo/PacBio PacBio
  * 
  * StatusPlus
  * http://134.245.63.197:4200/
@@ -287,8 +288,6 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
                 isbTyper.type(locus,vcs,arg_coverage);
                 nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;
-                if(!out_file.is_open())
-                    cout << jCall.dump() << endl;
             }
         }
         j["sample_id"]=sampleId;
@@ -309,6 +308,8 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         
         if(out_file.is_open())
             out_file << j.dump();
+        else
+            cout  << j.dump();
         if(arg_verbose >= 2)
             cerr << isbTyper << endl;
         if(out_file.is_open())
