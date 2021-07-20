@@ -306,12 +306,12 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         j["parameters"]["--id"]=sampleId;
         j["parameters"]["--out"]=outfile;
         
+        if(arg_verbose >= 2)
+            cerr << isbTyper << endl;
         if(out_file.is_open())
             out_file << j.dump();
         else
             cout  << j.dump();
-        if(arg_verbose >= 2)
-            cerr << isbTyper << endl;
         if(out_file.is_open())
             out_file.close();
     }
