@@ -7,7 +7,7 @@ Setup environment first
 
 `module load IKMB`
 
-`module load GCC/6.1`
+`module load gcc/8.3.0`
 
 To install this pipeline, simply clone the repository to a location:
 
@@ -44,6 +44,10 @@ libBigWig created
 `git clone --recursive git@git.ikmb.uni-kiel.de:m.wittig/deepBlood.git`
 
 `cd deepBlood`
+
+Optional: `git submodule update --init --recursive`
+
+If needed, create library symlinks and: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_ifs/sukko545/haemo/tool/`
 
 `make all`
 
