@@ -261,6 +261,8 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         {
             CVcfSnp act_snp = vcf_file.get_record();
             //cerr << act_snp << endl;
+            if(act_snp.pos() == 25627559)
+                cout << "jetzt" << endl;
             bool adding_successfull = vcs.add(act_snp);
             if(!adding_successfull && arg_verbose >= 1)
                 cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;

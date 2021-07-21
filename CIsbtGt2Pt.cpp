@@ -296,6 +296,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
     if(iRes != m_typing_results.end())
     {
         bool type_by_snps = true; // for example RHD: if coverage is 0 we do not type and set this to false
+        bool is_RHD_DEL_HET = false;
         // special RhD treatment
         if(system.compare("RHD") == 0)
         {
@@ -317,13 +318,17 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             {
                 nlohmann::json js;
                 nlohmann::json allele;
-                allele["names"].push_back("RhD-");
+                allele["names"].push_back("RHD*01N.01");
                 js["alleles"].push_back(allele);
-                js["phenotypes"].push_back("RhD-");
-                js["flat_phenotypes"].push_back("RhD-");
+                js["phenotypes"].push_back("RHD*01N.01");
+                js["flat_phenotypes"].push_back("RHD*01N.01");
                 js["score"]=2.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
+            }
+            else if( rhd_cov/rhce_cov <= 0.7 )
+            {
+                is_RHD_DEL_HET = true;
             }
             //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
         }
@@ -339,6 +344,12 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                     nlohmann::json jAct = getJsonOfTypingResult(act_gt.first,act_gt.second);
                     if(!uncovered_target_variants_list.empty())
                         jAct["score"] = 0.0;
+                    if(system.compare("RHD") == 0 && is_RHD_DEL_HET && jAct["alleles"].size() == 1)
+                    {
+                        nlohmann::json allele;
+                        allele["names"].push_back("RHD*01N.01");
+                        jAct["alleles"].push_back(allele);
+                    }
                     j["calls"].push_back(jAct);
                 }
             }
