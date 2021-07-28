@@ -18,6 +18,7 @@
 
 #include <regex>
 #include <iterator>
+#include <experimental/filesystem>
 
 #include "api/BamIndex.h"
 #include "api/BamReader.h"
@@ -135,7 +136,7 @@ int main(int argc, char** argv)
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.bw coverage.bw
 
             cmdjob.parse(argc,argv);
-            cerr << "Everything found. starting run ..." << endl;
+            cerr << "Parameter validation passed. Starting run ..." << endl;
             phenotype(tc_abo_target_annotation.getValue(),
                     tc_variants.getValue(),
                     tc_gt2pt.getValue(),
@@ -178,12 +179,12 @@ int main(int argc, char** argv)
     }
     catch(const TCLAP::ArgException& err)
     {
-        cerr << "Error: " << err.what() << endl;
+        cerr << "Error parsing command line: " << err.what() << endl;
         exit(EXIT_FAILURE);
     }
     catch(const CMyException& err)
     {
-        cerr << "Error parsing command line: " << err.what() << endl;
+        cerr << err.what() << endl;
         exit(EXIT_FAILURE);
     }
     catch(...)

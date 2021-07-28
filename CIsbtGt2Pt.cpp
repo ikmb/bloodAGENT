@@ -36,6 +36,8 @@ using namespace std;
 
 CIsbtGt2Pt::CIsbtGt2Pt(const string& filename) 
 {
+    if(!CMyTools::file_exists(filename))
+        throw(CMyException("File does not exist: ")+filename);
     init(filename);
     findAlleTaggingBaseChanges();
 }

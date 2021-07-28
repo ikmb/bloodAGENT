@@ -14,6 +14,7 @@
 #include "vcf.h"
 #include "CVcf.h"
 #include "CVcfSnp.h"
+#include <experimental/filesystem>
 
 #include "CBigWigReader.h"
 #include "CIsbtVariant.h"
@@ -21,6 +22,8 @@
 
 CISBTAnno::CISBTAnno(const std::string& filename) 
 {
+    if(!CMyTools::file_exists(filename))
+        throw(CMyException("File does not exist: ")+filename);
     m_data_red = readAnnotation(filename);
 }
 

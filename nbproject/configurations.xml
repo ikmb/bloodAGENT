@@ -70,6 +70,7 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <standard>11</standard>
           <incDir>
             <pElem>../MyTools</pElem>
             <pElem>../htslib/htslib</pElem>
@@ -193,6 +194,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>11</standard>
           <incDir>
             <pElem>../MyTools</pElem>
             <pElem>../htslib/htslib</pElem>

@@ -29,6 +29,8 @@ using namespace std;
 
 CTranscriptAnno::CTranscriptAnno(const string& filename) 
 {
+    if(!CMyTools::file_exists(filename))
+        throw(CMyException("File does not exist: ")+filename);
     CParsedTextfile anno(filename,"\t","refGene.name2",0, true,  "#");
     if(anno.First())
         do{
