@@ -61,7 +61,7 @@ public:
     
     bool isRefNClikeGRChNC()const{return !m_are_ref_and_alt_switched_in_GRCh;}
     
-    void setVerbose(bool value = true){verbose=value;}
+    static void setVerbose(bool value = true){verbose=value;}
     void addVcfSnp(const CVcfSnp& snp);
     
     int getVcfGenotypeQuality()const;
