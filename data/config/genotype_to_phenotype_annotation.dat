@@ -344,13 +344,13 @@ ToDo	FY	ACKR1	FY*02W.04	Fy(b+w)	Fy(b+w)	Fy(b+w)	901C>T	Pro301Ser
 ToDo	CO	AQP1	CO*01.01	CO:1 or Co(a+)	Co(a+)	Co(a+)			95.61%
 ToDo	CO	AQP1	CO*02	CO:2 or Co(b+)	Co(b+)	Co(b+)	134C>T	Ala45Val	1.14%
 ToDo	CO	AQP1	CO*01.-04	#N/A	#N/A	#N/A	140A>G	Gln47Arg	 
-ToDo	CO	AQP1	CO*01N.03	CO:1,2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	576C>A	Asn192Lys	 
-ToDo	CO	AQP1	CO*01N.04	CO:1,2 or Co(a–b)	Co(a–b)	Co(a–b)	232delG	Ala78Leufs*42	 
-ToDo	CO	AQP1	CO*01N.05	CO:1,2 or Co(a–b)	Co(a–b)	Co(a–b)	112C>T	Pro38Ser	 
-ToDo	CO	AQP1	CO*01N.06	CO:1,2 or Co(a–b)	Co(a–b)	Co(a–b)	601delG	Val201Ter	 
-ToDo	CO	AQP1	CO*M.01	CO:1,2,W3 or Co(a–b) Co3+w	Co(a–b) Co3+w	Co(a–b) Co3+w	113C>T	Pro38Leu	 
-ToDo	CO	AQP1	CO*N.01	CO:1,2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	(?_-110)_(384_?)del	0	 
-ToDo	CO	AQP1	CO*N.02	CO:1,2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	308_309insT	Ala105Glyfs*24	 
+ToDo	CO	AQP1	CO*01N.03	CO:-1,-2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	576C>A	Asn192Lys	 
+ToDo	CO	AQP1	CO*01N.04	CO:-1,-2 or Co(a–b-)	Co(a–b-)	Co(a–b-)	232delG	Ala78Leufs*42	 
+ToDo	CO	AQP1	CO*01N.05	CO:-1,-2 or Co(a–b-)	Co(a–b-)	Co(a–b-)	112C>T	Pro38Ser	 
+ToDo	CO	AQP1	CO*01N.06	CO:-1,-2 or Co(a–b-)	Co(a–b-)	Co(a–b-)	601delG	Val201Ter	 
+ToDo	CO	AQP1	CO*M.01	CO:-1,-2,W3 or Co(a–b-) Co3+w	Co(a–b-) Co3+w	Co(a–b-) Co3+w	113C>T	Pro38Leu	 
+ToDo	CO	AQP1	CO*N.01	CO:-1,-2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	(?_-110)_(384_?)del	0	 
+ToDo	CO	AQP1	CO*N.02	CO:-1,-2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	308_309insT	Ala105Glyfs*24	 
 ToDo	GIL	AQP3	GIL*01	GIL:1 or GIL+	GIL+	GIL+			99.72%
 ToDo	GIL	AQP3	GIL*01N.01	GIL:−1 or GIL−	GIL−	GIL−	710+1G>A	Phe165Aspfs*57	 
 ToDo	DO	ART4	DO*02	DO:2 or Do(b+)	Do(b+)	Do(b+)	793A>G	Asn265Asp	59.37%
@@ -383,14 +383,14 @@ ToDo	GLOB	B3GALNT1	GLOB*01N.11	GLOB:–1 (P–)	GLOB:–1 (P–)	GLOB:–1 (P–
 ToDo	GLOB	B3GALNT1	GLOB*01N.12	GLOB:–1 (P–)	GLOB:–1 (P–)	GLOB:–1 (P–)	449A>G	Asp150Gly	 
 ToDo	GLOB	B3GALNT1	GLOB*02N.01	GLOB:–1 (P–)	GLOB:–1 (P–)	GLOB:–1 (P–)	376G>A 598delT	Asp126Asn Ser200Glnfs*10	 
 ToDo	LU	BCAM	LU*02	Lu(a–b–)	Lu(b+)	Lu(b+)			66.77%
-ToDo	LU	BCAM	LU*02.19	LU:18,19 or Au(ab+)	LU:-18,19	Lu(b+)	1615A>G	Thr539Ala	24.54%
+ToDo	LU	BCAM	LU*02.19	LU:-18,19 or Au(a-b+)	LU:-18,19	Lu(b+)	1615A>G	Thr539Ala	24.54%
 ToDo	LU	BCAM	LU*02.-13	#N/A	LU:-13	Lu(b+)	1340C>T 1671C>T 1742A>T	Ser447Leu Gln581Leu	1.12%
 ToDo	LU	BCAM	LU*01.19	LU:1,19	LU:1,19	Lu(b+)	230G>A 1615A>G	Arg77His Thr539Ala	0.36%
-ToDo	LU	BCAM	LU*02.14	LU:8,14	LU:-8,14	Lu(b+)	611T>A	Met204Lys	0.26%
+ToDo	LU	BCAM	LU*02.14	LU:-8,14	LU:--8,14	Lu(b+)	611T>A	Met204Lys	0.26%
 ToDo	LU	BCAM	LU*02.-26	#N/A	LU:-26	Lu(b+)	1495C>T	Arg499Trp	0.24%
 ToDo	LU	BCAM	LU*01	Lu(a–b–)	LU:1	Lu(a+)	230G>A	Arg77His	0.22%
 ToDo	LU	BCAM	LU*01.-16	#N/A	LU:-16	Lu(a+)	230G>A 679C>T	Arg77His Arg227Cys	0.16%
-ToDo	LU	BCAM	LU*02.09	LU:6,9	LU:-6,9	Lu(b+)	824C>T	Ser275Phe	0.16%
+ToDo	LU	BCAM	LU*02.09	LU:-6,9	LU:--6,9	Lu(b+)	824C>T	Ser275Phe	0.16%
 ToDo	LU	BCAM	LU*02.-22	#N/A	LU:-22	Lu(b+)	223C>T	Arg75Cys	0.04%
 ToDo	LU	BCAM	LU*02.-04.1	#N/A	LU:-4	Lu(b+)	524G>A	Arg175Gln	 
 ToDo	LU	BCAM	LU*02.-04.2	#N/A	LU:-4	Lu(b+)	524G>T	Arg175Leu	 
@@ -404,7 +404,7 @@ ToDo	LU	BCAM	LU*02.-21	#N/A	LU:-21	Lu(b+)	282C>G	Asp94Glu
 ToDo	LU	BCAM	LU*02.-23	#N/A	LU:-23	Lu(b+)	469G>A 1289C>T	Gly157Arg Thr430Ile	 
 ToDo	LU	BCAM	LU*02.-24	#N/A	LU:-24	Lu(b+)	212G>A 711C>T 714C>T	Arg71His	 
 ToDo	LU	BCAM	LU*02.-25	#N/A	LU:-25	Lu(b+)	662C>T	Thr221Ile	 
-ToDo	LU	BCAM	LU*02.19.14	LU:18,19,-8,14	LU:-18,19,-8,14	Lu(b+)	611T>A 1615A>G	Met204Lys Thr539Ala	 
+ToDo	LU	BCAM	LU*02.19.14	LU:-18,19,-8,14	LU:--18,19,-8,14	Lu(b+)	611T>A 1615A>G	Met204Lys Thr539Ala	 
 ToDo	LU	BCAM	LU*02N.01	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	691C>T	Arg231Ter	 
 ToDo	LU	BCAM	LU*02N.02	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	(?_205)_(504_?)del	Thr69_Glu168del	 
 ToDo	LU	BCAM	LU*02N.03	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	711C>A	Cys237Ter	 

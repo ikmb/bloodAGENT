@@ -69,19 +69,17 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L../bamtools/build/src/api/ -L../htslib -L../libBigWig -Wl,-rpath,'../bamtools/build/src/api/' -Wl,-rpath,'../htslib' -Wl,-rpath,'../libBigWig' ../bamtools/build/src/api/libbamtools.a ../MyTools/dist/Release/GNU-Linux/libmytools.a
+LDLIBSOPTIONS=-L../bamtools/build/src/api/ -L../htslib -L../libBigWig -Wl,-rpath,'../bamtools/build/src/api/' -Wl,-rpath,'../htslib' -Wl,-rpath,'../libBigWig' ../MyTools/dist/Release/GNU-Linux/libmytools.a -lhts -lBigWig -lbamtools
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ../bamtools/build/src/api/libbamtools.a
-
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ../MyTools/dist/Release/GNU-Linux/libmytools.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood ${OBJECTFILES} ${LDLIBSOPTIONS} -lz -lhts -lBigWig
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood ${OBJECTFILES} ${LDLIBSOPTIONS} -lz
 
 ${OBJECTDIR}/CBigWigReader.o: CBigWigReader.cpp
 	${MKDIR} -p ${OBJECTDIR}

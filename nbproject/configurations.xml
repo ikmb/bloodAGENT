@@ -223,7 +223,6 @@
             <pElem>../libBigWig</pElem>
           </linkerDynSerch>
           <linkerLibItems>
-            <linkerLibFileItem>../bamtools/build/src/api/libbamtools.a</linkerLibFileItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../MyTools"
                             CT="3"
@@ -236,8 +235,11 @@
                             OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmytools.a">
               </makeArtifact>
             </linkerLibProjectItem>
+            <linkerLibLibItem>hts</linkerLibLibItem>
+            <linkerLibLibItem>BigWig</linkerLibLibItem>
+            <linkerLibLibItem>bamtools</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-lz -lhts -lBigWig</commandLine>
+          <commandLine>-lz</commandLine>
         </linkerTool>
       </compileType>
       <item path="CBigWigReader.cpp" ex="false" tool="1" flavor2="0">
