@@ -20,6 +20,8 @@
 #include <cstring>
 #include <limits>
 
+
+#include "mytools.h"
 #include "CBigWigReader.h"
 
 using namespace std;
@@ -29,6 +31,8 @@ int CBigWigReader::m_instance_counter = 0;
 CBigWigReader::CBigWigReader(const std::string& filename) 
 {
     m_fp = NULL;
+    if(!CMyTools::file_exists(filename))
+        throw(CMyException("File does not exist: ")+filename);
     init(filename);
 }
 

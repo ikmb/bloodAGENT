@@ -18,6 +18,7 @@
 
 #include <regex>
 #include <iterator>
+#include <experimental/filesystem>
 
 #include "api/BamIndex.h"
 #include "api/BamReader.h"
@@ -97,13 +98,14 @@ int main(int argc, char** argv)
         TCLAP::ValueArg<string> tc_jobTypeInner("j","job","define which kind of job should be performed",true,"","string");
         cmd.add(tc_jobType);
         cmdjob.add(tc_jobTypeInner);
+        TCLAP::ValueArg<int> tc_verbose("d","verbose","Set verbose level. 0-2. 0 == no verbose, 1 == warnings, 2 == status, 3 == full",false,0,"int");
+        cmdjob.add(tc_verbose);
         
         cmd.ignoreUnmatched(true);
         cmd.parse(argc,argv);
-        cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
-        TCLAP::ValueArg<int> tc_verbose("d","verbose","Set verbose level. 0-1. 0 == no verbose, 1 == full verbose.",false,0,"int");
-        cmdjob.add(tc_verbose);
-        if(tc_jobType.getValue().compare("phenotype") == 0)
+        if(tc_verbose.getValue() >= 2)
+            cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
+         if(tc_jobType.getValue().compare("phenotype") == 0)
         {
             /*
              "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
@@ -135,7 +137,15 @@ int main(int argc, char** argv)
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.bw coverage.bw
 
             cmdjob.parse(argc,argv);
-            cerr << "Everything found. starting run ..." << endl;
+            if(tc_verbose.getValue() >= 2)
+            {
+                cerr << "Parameter validation passed. Starting run ..." << endl;
+            }
+            else
+            {
+                cout << cmdjob.getMessage() << endl;
+                exit(EXIT_FAILURE);
+            }
             phenotype(tc_abo_target_annotation.getValue(),
                     tc_variants.getValue(),
                     tc_gt2pt.getValue(),
@@ -161,7 +171,8 @@ int main(int argc, char** argv)
             TCLAP::ValueArg<string> tc_alleleB("b","alleleB","First allele of the requested in silico data",true,"ABO*A2.01","string");
             cmdjob.add(tc_alleleB);
             cmdjob.parse(argc,argv);
-            cerr << "Everything found. starting run ..." << endl;
+            if(tc_verbose.getValue() >= 2)
+                cerr << "Everything found. starting run ..." << endl;
             inSilicoVCF(tc_variants.getValue(),
                     tc_gt2pt.getValue(),
                     tc_alleleA.getValue(),
@@ -178,12 +189,12 @@ int main(int argc, char** argv)
     }
     catch(const TCLAP::ArgException& err)
     {
-        cerr << "Error: " << err.what() << endl;
+        cerr << "Error parsing command line: " << err.what() << endl;
         exit(EXIT_FAILURE);
     }
     catch(const CMyException& err)
     {
-        cerr << "Error parsing command line: " << err.what() << endl;
+        cerr << err.what() << endl;
         exit(EXIT_FAILURE);
     }
     catch(...)
@@ -244,12 +255,11 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         vector<std::string> v = CMyTools::Tokenize(arg_locus,",");
         set<std::string> arg_loci_set(v.begin(), v.end());
 
-        if(arg_verbose >= 2)
+        if(arg_verbose >= 3)
         {
             cerr << "ISBT annotation:" << endl << isbt << endl << endl;
             cerr << "ISBT genotype to phenotype translation:" << endl << isbTyper << endl << endl;
-            CIsbtVariant hlp;
-            hlp.setVerbose();
+            CIsbtVariant::setVerbose();
          }
         // generate VCF Test Data
         CVariantChains vcs(&isbt);
@@ -262,15 +272,15 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
             CVcfSnp act_snp = vcf_file.get_record();
             //cerr << act_snp << endl;
             bool adding_successfull = vcs.add(act_snp);
-            if(!adding_successfull && arg_verbose >= 1)
+            if(!adding_successfull && arg_verbose >= 3)
                 cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
-            else if(adding_successfull && arg_verbose == 2)
+            else if(adding_successfull && arg_verbose >= 2)
                 cerr << act_snp << "\tISBT relevant SNP added" << endl;
         };
         vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
         
         
-        if(arg_verbose >= 1)
+        if(arg_verbose >= 3)
             cerr << "Variant chains of current sample: " << vcs << endl;   
         ofstream out_file;
         if(!outfile.empty())
@@ -306,10 +316,14 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         j["parameters"]["--id"]=sampleId;
         j["parameters"]["--out"]=outfile;
         
-        if(arg_verbose >= 2)
+        if(arg_verbose >= 3)
             cerr << isbTyper << endl;
         if(out_file.is_open())
+        {
             out_file << j.dump();
+            if(arg_verbose >= 2)
+                cerr << "results written to " << outfile << endl;
+        }
         else
             cout  << j.dump();
         if(out_file.is_open())

@@ -26,6 +26,8 @@ CVcf::CVcf(const string& filename, bool verbose )
     m_hdr = NULL;
     m_rec = bcf_init();
     m_verbose = verbose;
+    if(!CMyTools::file_exists(filename))
+        throw(CMyException("File does not exist: ")+filename);
     if(open(filename) && read_header())
         read_sequences();
 }
