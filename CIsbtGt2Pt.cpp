@@ -78,12 +78,13 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
 {
     map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
+    // go through all heterozygous genetoypes
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
         //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
         std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
         //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
-        
+        // evaluate each allele if it fits to the current genotype
         for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
         {
             vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
@@ -198,6 +199,8 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
         // for each annotated base change 
         for(const string& a:anno.baseChanges())
         {
+            if(a.size() == 0)
+                continue;
             double act_variant_coverage = isbt_snps->getIsbtVariant(system,a).getCoverage();
             if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
             {
@@ -216,6 +219,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
             if(!anno.containsBaseChange(i.name()))
                 actHit.m_typed_not_in_anno++;
         }
+        //cout << actHit << endl;
         vRet.push_back(actHit);
     }
     std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_errors_asc);

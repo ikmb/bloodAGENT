@@ -141,11 +141,7 @@ int main(int argc, char** argv)
             {
                 cerr << "Parameter validation passed. Starting run ..." << endl;
             }
-            else
-            {
-                cout << cmdjob.getMessage() << endl;
-                exit(EXIT_FAILURE);
-            }
+            
             phenotype(tc_abo_target_annotation.getValue(),
                     tc_variants.getValue(),
                     tc_gt2pt.getValue(),
