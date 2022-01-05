@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>CBigWigReader.h</itemPath>
       <itemPath>CFastqCreator.h</itemPath>
+      <itemPath>CFastqReader.h</itemPath>
       <itemPath>CIsbtGt.h</itemPath>
       <itemPath>CIsbtGt2Pt.h</itemPath>
       <itemPath>CIsbtGt2PtHit.h</itemPath>
@@ -13,6 +14,7 @@
       <itemPath>CIsbtPtAllele.h</itemPath>
       <itemPath>CIsbtVariant.h</itemPath>
       <itemPath>CMakeTrainingVcf.h</itemPath>
+      <itemPath>CMotifFinder.h</itemPath>
       <itemPath>CTranscript.h</itemPath>
       <itemPath>CTranscriptAnno.h</itemPath>
       <itemPath>CVariantChain.h</itemPath>
@@ -21,6 +23,7 @@
       <itemPath>CVcf.h</itemPath>
       <itemPath>CVcfSnp.h</itemPath>
       <itemPath>ISBTAnno.h</itemPath>
+      <itemPath>gzstream.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -31,6 +34,7 @@
                    projectFiles="true">
       <itemPath>CBigWigReader.cpp</itemPath>
       <itemPath>CFastqCreator.cpp</itemPath>
+      <itemPath>CFastqReader.cpp</itemPath>
       <itemPath>CIsbtGt.cpp</itemPath>
       <itemPath>CIsbtGt2Pt.cpp</itemPath>
       <itemPath>CIsbtGt2PtHit.cpp</itemPath>
@@ -38,6 +42,7 @@
       <itemPath>CIsbtPtAllele.cpp</itemPath>
       <itemPath>CIsbtVariant.cpp</itemPath>
       <itemPath>CMakeTrainingVcf.cpp</itemPath>
+      <itemPath>CMotifFinder.cpp</itemPath>
       <itemPath>CTranscript.cpp</itemPath>
       <itemPath>CTranscriptAnno.cpp</itemPath>
       <itemPath>CVariantChain.cpp</itemPath>
@@ -46,6 +51,7 @@
       <itemPath>CVcf.cpp</itemPath>
       <itemPath>CVcfSnp.cpp</itemPath>
       <itemPath>ISBTAnno.cpp</itemPath>
+      <itemPath>gzstream.C</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -119,6 +125,10 @@
       </item>
       <item path="CFastqCreator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CFastqReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastqReader.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CIsbtGt.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CIsbtGt.h" ex="false" tool="3" flavor2="0">
@@ -146,6 +156,10 @@
       <item path="CMakeTrainingVcf.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CMakeTrainingVcf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CMotifFinder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMotifFinder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -178,6 +192,10 @@
       <item path="ISBTAnno.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ISBTAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gzstream.C" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="gzstream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -250,6 +268,10 @@
       </item>
       <item path="CFastqCreator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CFastqReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastqReader.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CIsbtGt.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CIsbtGt.h" ex="false" tool="3" flavor2="0">
@@ -277,6 +299,10 @@
       <item path="CMakeTrainingVcf.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CMakeTrainingVcf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CMotifFinder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMotifFinder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -309,6 +335,10 @@
       <item path="ISBTAnno.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ISBTAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="gzstream.C" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="gzstream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
