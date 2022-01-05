@@ -13,7 +13,10 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <vector>
 
+#include "vcf.h"
+#include "CVcfSnp.h"
 #include "gzstream.h"
 #include "mytools.h"
 #include "CFastqReader.h"
@@ -21,12 +24,38 @@
 
 using namespace std;
 
-CMotifFinder::CMotifFinder() {
+CMotifFinder::CMotifFinder(const std::string& config, std::string& filenames) 
+{
+    CParsedTextfile motif_config(config,"\t",-1,0, true,"#");
+    map<string,int> motifs;
+    if(motif_config.First())
+        do{
+            vector<string> entries = CMyTools::Tokenize(motif_config["seq-A"],",");
+            for(auto a : entries)          
+            {
+                motifs[a]=0;
+                motifs[CMyTools::GetComplSequence(a)]=0;
+            }
+            entries = CMyTools::Tokenize(motif_config["seq-B"],",");
+            for(auto a : entries)          
+            {
+                motifs[a]=0;
+                motifs[CMyTools::GetComplSequence(a)]=0;
+            }
+        }while(motif_config.Next());
+    vector<string> entries = CMyTools::Tokenize(filenames);
+    for(auto a : entries)  
+        findMotifs(a,motifs);
 }
 
+CMotifFinder::CMotifFinder(const CMotifFinder& orig)
+{
+    m_motifs_snps = orig.m_motifs_snps;
+}
 
-
-CMotifFinder::~CMotifFinder() {
+CMotifFinder::~CMotifFinder() 
+{
+    
 }
 
 std::map<string,int>  CMotifFinder::findMotifs(const std::string& filename,std::vector<string>& motifs)

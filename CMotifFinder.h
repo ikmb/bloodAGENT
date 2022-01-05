@@ -15,14 +15,19 @@
 
 class CMotifFinder {
 public:
-    CMotifFinder();
+    CMotifFinder(const std::string& config, std::string& filenames);
+    CMotifFinder(const CMotifFinder& orig);
     virtual ~CMotifFinder();
     
     static std::map<string,int>  findMotifs(const std::string& filename,std::vector<string>& motifs);
     static void  findMotifs(const std::string& filename,std::map<string,int>& motifs);
     
+    
+    
 private:
 
+    map<std::string,CVcfSnp>    m_motifs_snps;
+    
 };
 
 #endif /* CMOTIFFINDER_H */
