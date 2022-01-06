@@ -15,18 +15,22 @@
 
 class CMotifFinder {
 public:
-    CMotifFinder(const std::string& config, std::string& filenames);
+    CMotifFinder(const std::string& config, std::string& filenames,int verbose = 0);
     CMotifFinder(const CMotifFinder& orig);
     virtual ~CMotifFinder();
     
     static std::map<string,int>  findMotifs(const std::string& filename,std::vector<string>& motifs);
     static void  findMotifs(const std::string& filename,std::map<string,int>& motifs);
     
+    map<std::string,CVcfSnp> getSystemsMotifSnps(const std::string& system);
     
     
 private:
 
-    map<std::string,CVcfSnp>    m_motifs_snps;
+    void storeMotifSnps(CParsedTextfile& config, map<string,int> motifs);
+    // first string is system
+    // second string is SNP name in short (see variation annotation)
+    map<std::string,map<std::string,CVcfSnp> >    m_motifs_snps;
     
 };
 
