@@ -15,15 +15,17 @@
 
 class CMotifFinder {
 public:
-    CMotifFinder(const std::string& config, std::string& filenames,int verbose = 0);
+    CMotifFinder(const std::string& config, const std::string& filenames,int verbose = 0);
     CMotifFinder(const CMotifFinder& orig);
     virtual ~CMotifFinder();
+    
+    friend std::ostream& operator<<(std::ostream& os, const CMotifFinder& me);
     
     static std::map<string,int>  findMotifs(const std::string& filename,std::vector<string>& motifs);
     static void  findMotifs(const std::string& filename,std::map<string,int>& motifs);
     
-    map<std::string,CVcfSnp> getSystemsMotifSnps(const std::string& system);
-    
+    map<std::string,CVcfSnp> getSystemsMotifSnps(const std::string& system)const;
+    std::set<std::string> getSystems()const;
     
 private:
 

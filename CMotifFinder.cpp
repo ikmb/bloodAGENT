@@ -24,7 +24,7 @@
 
 using namespace std;
 
-CMotifFinder::CMotifFinder(const std::string& config, std::string& filenames,int verbose) 
+CMotifFinder::CMotifFinder(const std::string& config, const std::string& filenames,int verbose) 
 {
     CParsedTextfile motif_config(config,"\t",-1,0, true,"#");
     map<string,int> motifs;
@@ -75,7 +75,7 @@ std::map<string,int>  CMotifFinder::findMotifs(const std::string& filename,std::
     {
         for(std::vector<string>::const_iterator i = motifs.begin(); i != motifs.end();i++)
         {
-            if(strLine.find(*i) != string::npos || strLine.find(CMyTools::GetComplSequence(*i)) != string::npos)
+            if(strLine.find(*i) != string::npos)
                 mRet[*i]++;
         }
         fastq.getline(strLine);
@@ -90,14 +90,14 @@ void  CMotifFinder::findMotifs(const std::string& filename,std::map<string,int>&
     
     CFastqReader fastq(filename);
     string strLine;
-    while(fastq.getline(strLine))
+    while(fastq.getline(strLine) && fastq.getline(strLine))
     {
         for(std::map<string,int>::const_iterator i = motifs.begin(); i != motifs.end();i++)
         {
             if(strLine.find(i->first) != string::npos || strLine.find(CMyTools::GetComplSequence(i->first)) != string::npos)
                 motifs[i->first]++;
         }
-        fastq.getline(strLine);
+        ;
         fastq.getline(strLine);
         fastq.getline(strLine);
     }
@@ -164,13 +164,33 @@ void CMotifFinder::storeMotifSnps(CParsedTextfile& config, map<string,int> motif
 
 
 
-map<std::string,CVcfSnp> CMotifFinder::getSystemsMotifSnps(const std::string& system)
+map<std::string,CVcfSnp> CMotifFinder::getSystemsMotifSnps(const std::string& system)const
 {
-    map<std::string,map<std::string,CVcfSnp> >::iterator i = m_motifs_snps.find(system);
+    map<std::string,map<std::string,CVcfSnp> >::const_iterator i = m_motifs_snps.find(system);
     if(i != m_motifs_snps.end())
         return i->second;
     return map<std::string,CVcfSnp>();
 }
 
+std::set<std::string> CMotifFinder::getSystems()const
+{
+    set<std::string> sRet;
+    for(map<std::string,map<std::string,CVcfSnp> >::const_iterator i = m_motifs_snps.begin(); i != m_motifs_snps.end(); i++)
+        sRet.insert(i->first);
+    return sRet;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const CMotifFinder& me)
+{
+    bool line_feed = false;
+    for(const auto s : me.getSystems())
+        for(const auto e : me.getSystemsMotifSnps(s))
+        {
+            os << (line_feed ? "\n" : "") << s << '\t' << e.second;
+            line_feed=true;
+        }
+    return os;
+}
 
 

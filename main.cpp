@@ -44,6 +44,8 @@
 #include "CTranscript.h"
 #include "CTranscriptAnno.h"
 
+#include "CMotifFinder.h"
+
 #include "CIsbtGt2Pt.h"
 #include "CMakeTrainingVcf.h"
 #include "CFastqCreator.h"
@@ -53,8 +55,9 @@ using namespace BamTools;
 
 #define APP_VERSION_DEEPBLOOD "v0.0.1"
 
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,const string& arg_fastqgz,int arg_coverage
-, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", bool arg_is_in_silico = false, const string& sampleId = "", const string& outfile = "");
+void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
+        const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
+        bool arg_is_in_silico = false, const string& sampleId = "", const string& outfile = "");
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
@@ -122,6 +125,8 @@ int main(int argc, char** argv)
             cmdjob.add(tc_bigwig);
             TCLAP::ValueArg<string> tc_fastqgz("z","fastq","The fastq.gz files comma separated",true,"","string");
             cmdjob.add(tc_fastqgz);
+            TCLAP::ValueArg<string> tc_motifs("m","motif","Configuration file that lists specific sequence motifs. These motifs identify SNPs that usually are not present in vcf files",true,"","string");
+            cmdjob.add(tc_motifs);
             TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call.",false,10,"int");
             cmdjob.add(tc_coverage);
             TCLAP::ValueArg<float> tc_tophits("r","scoreRange","Value between 0.0 and 1.0. After genotyping multiply the best score with this value and report all genotypes better than the resulting value.",false,1.0,"int");
@@ -150,6 +155,7 @@ int main(int argc, char** argv)
                     tc_vcf.getValue(),
                     tc_bigwig.getValue(),
                     tc_fastqgz.getValue(),
+                    tc_motifs.getValue(),
                     tc_coverage.getValue(), 
                     tc_verbose.getValue(),
                     tc_tophits.getValue(),
@@ -226,7 +232,7 @@ int main(int argc, char** argv)
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
-               const string& arg_bigWig,const string& arg_fastqgz,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
+               const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
                bool arg_is_in_silico,const string& sampleId, const string& outfile)
 {
     try
@@ -246,7 +252,10 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         CBigWigReader bwr(arg_bigWig);
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
-
+        CMotifFinder mf(arg_motifs,arg_fastqgz,arg_verbose);
+        cerr << mf << endl;
+        if(arg_verbose >= 2)
+            cerr << "Motif SNPs defined in " << arg_motifs << " looked up in "  << arg_fastqgz << endl;
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
         
