@@ -1221,7 +1221,8 @@ ToDo	JK	SLC14A1	JK*02W.02	Jk(b+w)	Jk(b+w)	Jk(b+w)	718T>A	Trp240Arg
 ToDo	AUG	SLC29A1	AUG*01	At(a+) or AUG:1,2,−3	At(a+) or AUG:1,2,−3	At(a+) or AUG:1,2,−3			98.48% 
 ToDo	AUG	SLC29A1	AUG*02	At(a−) or AUG:1,−2,−3	At(a−) or AUG:1,−2,−3	At(a−) or AUG:1,−2,−3	1171G>A	Glu433Lys	0.32% 
 ToDo	AUG	SLC29A1	AUG*01N	At(a−) or AUG: −1,−2	At(a−) or AUG: −1,−2	At(a−) or AUG: −1,−2	589+1G>C	Ser239fs	
-ToDo	DI	SLC4A1	DI*02	DI:–1,2 or Di(a–b+)	Di(a–b+),Wr(a-b+)	Di(a–b+),Wr(a-b+)			83.85%
+#ToDo	DI	SLC4A1	DI*02	DI:–1,2 or Di(a–b+)	Di(a–b+)	Di(a–b+))			83.85%
+ToDo	DI	SLC4A1	DI*02.04	DI:–1,2,-3,4 or Di(a–b+),Wr(a-b+)	Di(a–b+),Wr(a-b+)	Di(a–b+),Wr(a-b+)			
 ToDo	DI	SLC4A1	DI*01	DI:1,–2 or Di(a+b–)	Di(a+b–),Wr(a-b+)	Di(a+b–),Wr(a-b+)	2561C>T	Pro854Leu	0.18%
 ToDo	DI	SLC4A1	DI*02.03	DI:3,–4 or Wr(a+b–)	Di(a–b+),Wr(a+b–)	Di(a–b+),Wr(a+b–)	1972G>A	Glu658Lys	0.02%
 ToDo	DI	SLC4A1	DI*02.05	DI:5 or Wd(a+)	Wd(a+)	Wd(a+)	1669G>A	Val557Met	0.02%
