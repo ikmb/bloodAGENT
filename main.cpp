@@ -125,7 +125,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_bigwig);
             TCLAP::ValueArg<string> tc_fastqgz("z","fastq","The fastq.gz files comma separated",true,"","string");
             cmdjob.add(tc_fastqgz);
-            TCLAP::ValueArg<string> tc_motifs("m","motif","Configuration file that lists specific sequence motifs. These motifs identify SNPs that usually are not present in vcf files",true,"","string");
+            TCLAP::ValueArg<string> tc_motifs("m","motif","Configuration file that lists specific sequence motifs. These motifs identify SNPs that usually are not present in vcf files",false,"","string");
             cmdjob.add(tc_motifs);
             TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call.",false,10,"int");
             cmdjob.add(tc_coverage);
@@ -252,10 +252,13 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         CBigWigReader bwr(arg_bigWig);
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
-        CMotifFinder mf(arg_motifs,arg_fastqgz,arg_verbose);
-        cerr << mf << endl;
-        if(arg_verbose >= 2)
-            cerr << "Motif SNPs defined in " << arg_motifs << " looked up in "  << arg_fastqgz << endl;
+        if(!arg_motifs.empty())
+        {
+            CMotifFinder mf(arg_motifs,arg_fastqgz,arg_verbose);
+            cerr << mf << endl;
+            if(arg_verbose >= 2)
+                cerr << "Motif SNPs defined in " << arg_motifs << " looked up in "  << arg_fastqgz << endl;
+        }
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
         
