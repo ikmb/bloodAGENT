@@ -122,7 +122,7 @@ void CMotifFinder::storeMotifSnps(CParsedTextfile& config, map<string,int> motif
             m_ref_allele = rec->d.allele[0];  
              */
             
-            std::string                 chrom = config["Chrom (hg19)"];
+            std::string                 chrom = config["Chr (hg19)"];
             long                        pos = atol(config["Coordinate in VCF hg19"].c_str());
             std::vector<std::string>    alleles;
             std::vector<int>            vcoverage;
