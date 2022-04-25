@@ -11,7 +11,7 @@ Setup environment first
 
 To install this pipeline, simply clone the repository to a location:
 
-`git clone git@git.ikmb.uni-kiel.de:m.wittig/BfxCppClasses.git MyTools`
+`git clone https://github.com/ikmb/BfxCppClasses MyTools`
 
 `cd MyTools`
 
