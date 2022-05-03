@@ -11,7 +11,7 @@ Setup environment first
 
 To install this pipeline, simply clone the repository to a location:
 
-`git clone git@git.ikmb.uni-kiel.de:m.wittig/BfxCppClasses.git MyTools`
+`git clone git@github.com:ikmb/BfxCppClasses.git MyTools`
 
 `cd MyTools`
 
@@ -21,7 +21,7 @@ To install this pipeline, simply clone the repository to a location:
 
 MyTools libs created
 
-`git clone https://github.com/samtools/htslib.git`
+`git clone git@github.com:samtools/htslib.git`
 
 `cd htslib`
 
@@ -31,7 +31,7 @@ MyTools libs created
 
 htslib created
 
-`git clone https://github.com/dpryan79/libBigWig.git`
+`git clone git@github.com:dpryan79/libBigWig.git`
 
 `cd libBigWig`
 
