@@ -5,8 +5,6 @@ There are some dependencies that I solve in a special way. So I do not implement
 
 Setup environment first
 
-`module load IKMB`
-
 `module load gcc/8.3.0`
 
 To install this pipeline, simply clone the repository to a location:
@@ -35,13 +33,15 @@ htslib created
 
 `cd libBigWig`
 
+`git submodule update --init --recursive`
+
 `make`
 
 `cd ..`
 
 libBigWig created
 
-`git clone --recursive git@git.ikmb.uni-kiel.de:m.wittig/deepBlood.git`
+`git clone --recursive git@github.com:ikmb/deepBlood.git`
 
 `cd deepBlood`
 
