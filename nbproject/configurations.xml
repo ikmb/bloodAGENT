@@ -81,7 +81,6 @@
             <pElem>../MyTools</pElem>
             <pElem>../htslib/htslib</pElem>
             <pElem>../htslib</pElem>
-            <pElem>../bamtools/src</pElem>
             <pElem>../libBigWig</pElem>
             <pElem>tclap/include</pElem>
           </incDir>
@@ -90,17 +89,14 @@
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood</output>
           <linkerAddLib>
-            <pElem>../bamtools/build/src/api/</pElem>
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
           </linkerAddLib>
           <linkerDynSerch>
-            <pElem>../bamtools/build/src/api/</pElem>
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
           </linkerDynSerch>
           <linkerLibItems>
-            <linkerLibFileItem>../bamtools/build/src/api/libbamtools.a</linkerLibFileItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../MyTools"
                             CT="2"
@@ -217,7 +213,6 @@
             <pElem>../MyTools</pElem>
             <pElem>../htslib/htslib</pElem>
             <pElem>../htslib</pElem>
-            <pElem>../bamtools/src</pElem>
             <pElem>../libBigWig</pElem>
             <pElem>tclap/include</pElem>
           </incDir>
@@ -231,12 +226,10 @@
         </asmTool>
         <linkerTool>
           <linkerAddLib>
-            <pElem>../bamtools/build/src/api/</pElem>
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
           </linkerAddLib>
           <linkerDynSerch>
-            <pElem>../bamtools/build/src/api/</pElem>
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
           </linkerDynSerch>
@@ -255,7 +248,6 @@
             </linkerLibProjectItem>
             <linkerLibLibItem>hts</linkerLibLibItem>
             <linkerLibLibItem>BigWig</linkerLibLibItem>
-            <linkerLibLibItem>bamtools</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>-lz</commandLine>
         </linkerTool>
