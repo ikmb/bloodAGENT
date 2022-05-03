@@ -25,6 +25,32 @@
 
 using namespace std;
 
+CVcfSnp::CVcfSnp() 
+{
+    m_chrom = "";
+    m_pos = -1;
+    m_depth = -1;
+    m_verbose = false;
+    m_phasing_id = -1;
+    m_ref_allele="";
+    m_mapping_quality = 0;
+}
+
+CVcfSnp::CVcfSnp(std::string chrom,  long pos,  std::vector<std::string> alleles,  std::vector<int> coverage,  std::vector<int> qualities,  std::vector<int> haplotype_qualities,  int mapping_quality,  long depth,  bool verbose,  int phasing_id,  std::string ref_allele)
+{
+    m_chrom = chrom;
+    m_pos = pos;
+    m_alleles = alleles;
+    m_coverage = coverage;
+    m_qualities = qualities;
+    m_haplotype_qualities = haplotype_qualities;
+    m_mapping_quality = mapping_quality;
+    m_depth = depth;
+    m_verbose = false;
+    m_phasing_id = phasing_id;
+    m_ref_allele = ref_allele;
+}
+
 CVcfSnp::CVcfSnp(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& seq_names,bcf1_t *rec, bool verbose) 
 {
     m_chrom = "";

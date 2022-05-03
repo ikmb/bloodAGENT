@@ -19,6 +19,8 @@
 
 class CVcfSnp {
 public:
+    CVcfSnp();
+    CVcfSnp(std::string chrom,  long pos,  std::vector<std::string> alleles,  std::vector<int> coverage,  std::vector<int> qualities,  std::vector<int> haplotype_qualities,  int mapping_quality,  long depth,  bool verbose,  int phasing_id,  std::string ref_allele);
     CVcfSnp(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& seq_names,bcf1_t *rec, bool verbose = false);
     CVcfSnp(const CVcfSnp& orig);
     CVcfSnp(const CVcfSnp* orig);

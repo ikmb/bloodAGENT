@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/CBigWigReader.o \
 	${OBJECTDIR}/CFastqCreator.o \
+	${OBJECTDIR}/CFastqReader.o \
 	${OBJECTDIR}/CIsbtGt.o \
 	${OBJECTDIR}/CIsbtGt2Pt.o \
 	${OBJECTDIR}/CIsbtGt2PtHit.o \
@@ -44,6 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/CIsbtPtAllele.o \
 	${OBJECTDIR}/CIsbtVariant.o \
 	${OBJECTDIR}/CMakeTrainingVcf.o \
+	${OBJECTDIR}/CMotifFinder.o \
 	${OBJECTDIR}/CTranscript.o \
 	${OBJECTDIR}/CTranscriptAnno.o \
 	${OBJECTDIR}/CVariantChain.o \
@@ -52,6 +54,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/CVcf.o \
 	${OBJECTDIR}/CVcfSnp.o \
 	${OBJECTDIR}/ISBTAnno.o \
+	${OBJECTDIR}/gzstream.o \
 	${OBJECTDIR}/main.o
 
 
@@ -93,6 +96,11 @@ ${OBJECTDIR}/CFastqCreator.o: CFastqCreator.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqCreator.o CFastqCreator.cpp
 
+${OBJECTDIR}/CFastqReader.o: CFastqReader.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqReader.o CFastqReader.cpp
+
 ${OBJECTDIR}/CIsbtGt.o: CIsbtGt.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -127,6 +135,11 @@ ${OBJECTDIR}/CMakeTrainingVcf.o: CMakeTrainingVcf.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMakeTrainingVcf.o CMakeTrainingVcf.cpp
+
+${OBJECTDIR}/CMotifFinder.o: CMotifFinder.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMotifFinder.o CMotifFinder.cpp
 
 ${OBJECTDIR}/CTranscript.o: CTranscript.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -167,6 +180,11 @@ ${OBJECTDIR}/ISBTAnno.o: ISBTAnno.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ISBTAnno.o ISBTAnno.cpp
+
+${OBJECTDIR}/gzstream.o: gzstream.C
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../bamtools/src -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gzstream.o gzstream.C
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
