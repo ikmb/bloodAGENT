@@ -20,10 +20,10 @@
 #include <iterator>
 #include <experimental/filesystem>
 
-#include "api/BamIndex.h"
-#include "api/BamReader.h"
-#include "api/BamMultiReader.h"
-#include "api/BamWriter.h"
+//#include "api/BamIndex.h"
+//#include "api/BamReader.h"
+//#include "api/BamMultiReader.h"
+//#include "api/BamWriter.h"
 //#include "shared/bamtools_global.h"
 
 
@@ -51,7 +51,7 @@
 #include "CFastqCreator.h"
 
 using namespace std;
-using namespace BamTools;
+//using namespace BamTools;
 
 #define APP_VERSION_DEEPBLOOD "v0.0.1"
 
