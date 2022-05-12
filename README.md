@@ -23,6 +23,8 @@ MyTools libs created
 
 `cd htslib`
 
+`git submodule update --init --recursive`
+
 `make`
 
 `cd ..`
@@ -32,8 +34,6 @@ htslib created
 `git clone git@github.com:dpryan79/libBigWig.git`
 
 `cd libBigWig`
-
-`git submodule update --init --recursive`
 
 `make`
 
@@ -47,7 +47,7 @@ libBigWig created
 
 Optional: `git submodule update --init --recursive`
 
-If needed, create library symlinks and: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_ifs/sukko545/haemo/tool/`
+If needed, create library symlinks. MyTools library is in the subfolder dist/[Release|Debug]/GNU-Linux/. htslib and libbigwig in their root folder: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_ifs/sukko545/haemo/tool/`
 
 `make all`
 
