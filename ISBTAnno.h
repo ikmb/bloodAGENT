@@ -35,7 +35,7 @@ public:
     /// pos has to be string due to intronic annotation (e.g. 1254-31))
     typedef CIsbtVariant variation;
     
-    CISBTAnno(const std::string& filename);
+    CISBTAnno(const std::string& filename, const std::string build = "hg38" );
     CISBTAnno(const CISBTAnno& orig);
     virtual ~CISBTAnno();
     
@@ -88,7 +88,7 @@ private:
     std::map<string,std::vector<variation>>             m_coverage_failed; // the required coverage was not met
     std::map<std::string,std::map<std::string,int>>     m_isbt_variant_to_index;
     std::set<std::string>                               m_loci;
-    
+    std::string                                         m_build;
 };
 
 #endif /* ISBTANNO_H */

@@ -20,8 +20,9 @@
 #include "CIsbtVariant.h"
 #include "ISBTAnno.h"
 
-CISBTAnno::CISBTAnno(const std::string& filename) 
+CISBTAnno::CISBTAnno(const std::string& filename, const std::string build) 
 {
+    m_build=build;
     if(!CMyTools::file_exists(filename))
         throw(CMyException("File does not exist: ")+filename);
     m_data_red = readAnnotation(filename);
@@ -35,6 +36,7 @@ CISBTAnno::CISBTAnno(const CISBTAnno& orig)
     m_parsed_isbt_variant = orig.m_parsed_isbt_variant;
     m_loci = orig.m_loci;
     m_coverage_failed = orig.m_coverage_failed;
+    m_build = orig.m_build;
 }
 
 CISBTAnno::~CISBTAnno() {
@@ -48,17 +50,17 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
     {
         do{
             ostringstream osr("");
-            //osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Pos (hg19)"];
-            osr << m_vanno["Chrom (hg19)"] << '_' << m_vanno["Coordinate in VCF hg19"];
+            //osr << m_vanno["Chrom ("+m_build+")"] << '_' << m_vanno["Pos ("+m_build+")"];
+            osr << m_vanno["Chrom ("+m_build+")"] << '_' << m_vanno["Coordinate in VCF "+m_build+""];
             m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]=m_entry_finder.size();
             m_entry_finder.insert(pair<string,int>(osr.str(),m_entry_finder.size()));
             if(m_strand.find(m_vanno["system/gene"]) == m_strand.end())
-                m_strand[m_vanno["system/gene"]]=m_vanno["strand (hg19)"][0];
+                m_strand[m_vanno["system/gene"]]=m_vanno["strand ("+m_build+")"][0];
             m_loci.insert(m_vanno["system/gene"]);
             m_parsed_isbt_variant.push_back(CIsbtVariant(m_vanno["Transcript annotation short"], 
-                    m_vanno["Reference base (hg19)"], m_vanno["Chrom (hg19)"], stoi(m_vanno["1-based end (hg19)"]),m_vanno["strand (hg19)"][0],
-                    stoi(m_vanno["Coordinate in VCF hg19"]),m_vanno["RefAllele in VCF hg19"], m_vanno["AltAllele in VCF hg19"],
-                    m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0,m_vanno["TYPE"]));
+                    m_vanno["Reference base ("+m_build+")"], m_vanno["Chrom ("+m_build+")"], stoi(m_vanno["1-based end ("+m_build+")"]),m_vanno["strand ("+m_build+")"][0],
+                    stoi(m_vanno["Coordinate in VCF "+m_build+""]),m_vanno["RefAllele in VCF "+m_build+""], m_vanno["AltAllele in VCF "+m_build+""],
+                    m_vanno["is transcript_NC == "+m_build+"_NC"].compare("FALSE")==0,m_vanno["TYPE"]));
         }while(m_vanno.Next());
         return true;
     }
@@ -78,7 +80,7 @@ map<string,vector<CISBTAnno::variation> > CISBTAnno::getReferenceVariations()
     if(m_vanno.First())
     {
         do{
-            if(m_vanno["is transcript_NC == hg19_NC"].compare("FALSE")==0)
+            if(m_vanno["is transcript_NC == "+m_build+"_NC"].compare("FALSE")==0)
                 mRet[m_vanno["system/gene"]].push_back(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]]);
             i++;
         }while(m_vanno.Next());
