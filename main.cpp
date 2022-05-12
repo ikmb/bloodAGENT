@@ -108,7 +108,7 @@ int main(int argc, char** argv)
         cmd.parse(argc,argv);
         if(tc_verbose.getValue() >= 2)
             cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
-         if(tc_jobType.getValue().compare("phenotype") == 0)
+        if(tc_jobType.getValue().compare("phenotype") == 0)
         {
             /*
              "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
@@ -168,7 +168,7 @@ int main(int argc, char** argv)
                     tc_output.getValue());
             exit(EXIT_SUCCESS);
         }
-        if(tc_jobType.getValue().compare("vcf") == 0)
+        else if(tc_jobType.getValue().compare("vcf") == 0)
         {
             TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
             cmdjob.add(tc_variants);
