@@ -119,7 +119,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_variants);
             TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
             cmdjob.add(tc_gt2pt);
-            TCLAP::ValueArg<string> tc_hg("h","build","Human genome build [hg19|hg38]",true,"hg38","string");
+            TCLAP::ValueArg<string> tc_hg("u","build","Human genome build [hg19|hg38]",true,"hg38","string");
             cmdjob.add(tc_hg);
             TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt.",true,"","string");
             cmdjob.add(tc_vcf);
