@@ -57,7 +57,7 @@ using namespace std;
 
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
-        bool arg_is_in_silico = false, const string& sampleId = "", const string& outfile = "");
+        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "");
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
@@ -119,6 +119,8 @@ int main(int argc, char** argv)
             cmdjob.add(tc_variants);
             TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
             cmdjob.add(tc_gt2pt);
+            TCLAP::ValueArg<string> tc_hg("h","build","Human genome build [hg19|hg38]",true,"hg38","string");
+            cmdjob.add(tc_gt2pt);
             TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt.",true,"","string");
             cmdjob.add(tc_vcf);
             TCLAP::ValueArg<string> tc_bigwig("b","bigwig","The big wig or wig file that contains the coverage data..",true,"","string");
@@ -162,6 +164,7 @@ int main(int argc, char** argv)
                     tc_locus.getValue(),
                     tc_isInSilico.getValue(),
                     tc_Id.getValue(),
+                    tc_hg.getValue(),
                     tc_output.getValue());
             exit(EXIT_SUCCESS);
         }
@@ -233,7 +236,7 @@ int main(int argc, char** argv)
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
-               bool arg_is_in_silico,const string& sampleId, const string& outfile)
+               bool arg_is_in_silico,const string& sampleId,const string& build, const string& outfile)
 {
     try
     {
