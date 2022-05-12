@@ -7,7 +7,7 @@ Setup environment first
 
 `module load gcc/8.3.0`
 
-To install this pipeline, simply clone the repository to a location:
+To install this pipeline, clone the following repositories and build the libraries and executable by copy&paste the following commands:
 
 `git clone git@github.com:ikmb/BfxCppClasses.git MyTools`
 
