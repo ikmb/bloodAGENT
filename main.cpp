@@ -236,14 +236,14 @@ int main(int argc, char** argv)
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
-               bool arg_is_in_silico,const string& sampleId,const string& build, const string& outfile)
+               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile)
 {
     try
     {
         CTranscriptAnno trans_anno(arg_target_anno);
         if(arg_verbose >= 2)
             cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
-        CISBTAnno  isbt(arg_isbt_SNPs);
+        CISBTAnno  isbt(arg_isbt_SNPs,arg_build);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
@@ -316,10 +316,11 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
         }
         j["sample_id"]=sampleId;
         j["version"]=APP_VERSION_DEEPBLOOD;
-        j["genome"]="hg19";
+        j["genome"]=arg_build;
         j["parameters"]["--target"]=arg_target_anno;
         j["parameters"]["--variants"]=arg_isbt_SNPs;
         j["parameters"]["--gt2pt"]=arg_genotype_to_phenotype;
+        j["parameters"]["--build"]=arg_build;
         j["parameters"]["--vcf"]=arg_vcf_file;
         j["parameters"]["--bigwig"]=arg_bigWig;
         j["parameters"]["--coverage"]=arg_coverage;
