@@ -58,7 +58,7 @@ using namespace std;
 void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
         bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "");
-void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose);
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
 /*
@@ -170,7 +170,7 @@ int main(int argc, char** argv)
         }
         else if(tc_jobType.getValue().compare("vcf") == 0)
         {
-            TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
+            TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/variation_annotation.dat","string");
             cmdjob.add(tc_variants);
             TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
             cmdjob.add(tc_gt2pt);
@@ -178,13 +178,17 @@ int main(int argc, char** argv)
             cmdjob.add(tc_alleleA);
             TCLAP::ValueArg<string> tc_alleleB("b","alleleB","First allele of the requested in silico data",true,"ABO*A2.01","string");
             cmdjob.add(tc_alleleB);
+            TCLAP::SwitchArg tc_makeHaplotypes("p","phased","Create solid haplotypes or unphased. Set this parameter if you want phased vcf",false);
+            cmdjob.add(tc_makeHaplotypes);
+            
             cmdjob.parse(argc,argv);
             if(tc_verbose.getValue() >= 2)
                 cerr << "Everything found. starting run ..." << endl;
             inSilicoVCF(tc_variants.getValue(),
                     tc_gt2pt.getValue(),
                     tc_alleleA.getValue(),
-                    tc_alleleB.getValue(), 
+                    tc_alleleB.getValue(),
+                    tc_makeHaplotypes.getValue(),
                     tc_verbose.getValue());
             exit(EXIT_SUCCESS);
             
@@ -373,7 +377,7 @@ void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const s
 */
 
 
-void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, int arg_verbose)
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose)
 {
     try
     {
@@ -383,7 +387,6 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
-        
             
         string systemA = isbTyper.systemOf(arg_allele_A);
         string systemB = isbTyper.systemOf(arg_allele_B);
@@ -394,7 +397,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CIsbtPtAllele alleleA = isbTyper.alleleOf(arg_allele_A);
         CIsbtPtAllele alleleB = isbTyper.alleleOf(arg_allele_B);
         
-        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt);
+        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt,arg_phased);
         
     }
     catch(const CMyException& err)

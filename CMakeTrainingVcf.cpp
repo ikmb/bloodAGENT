@@ -80,7 +80,7 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
     return osr.str();
 }
 
-std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno)
+std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno, bool phased)
 {
     ostringstream osr("");
     std::set<std::string> variationsA = alleleA.baseChanges();
@@ -116,27 +116,51 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             << actVar.vcfCoordinate() << "\t.\t"
             << actVar.vcfReference() << '\t'
             << actVar.vcfAlternative() << '\t';
-        if(hetA)
+        if(phased)
         {
-            if(actVar.isRefNClikeGRChNC())
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
-            else
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+            if(hetA)
+            {
+                if(actVar.isRefNClikeGRChNC())
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+                else
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+            }
+            if(hetB)
+            {
+                if(actVar.isRefNClikeGRChNC())
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+                else
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+            }
+           if(homo)
+           {
+               if(actVar.isRefNClikeGRChNC())
+                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
+               else
+                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
+           }
         }
-        if(hetB)
+        else
         {
-            if(actVar.isRefNClikeGRChNC())
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
-            else
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+            // UNPHASED
+            if(hetA)
+            {
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:0,20:20:48:471,48,0";
+            }
+            if(hetB)
+            {
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:0,20:20:48:471,48,0";
+            }
+            if(homo)
+            {
+                if(actVar.isRefNClikeGRChNC())
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
+                else
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:0,20:20:48:471,48,0";
+            }
         }
-       if(homo)
-       {
-           if(actVar.isRefNClikeGRChNC())
-               osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
-           else
-               osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
-       }
+        
+       
         
     }
      return osr.str();
