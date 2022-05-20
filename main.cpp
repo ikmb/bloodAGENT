@@ -55,7 +55,7 @@ using namespace std;
 
 #define APP_VERSION_DEEPBLOOD "v0.0.1"
 
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
+void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
         bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "");
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose);
@@ -113,8 +113,10 @@ int main(int argc, char** argv)
             /*
              "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
              */
-            TCLAP::ValueArg<string> tc_abo_target_annotation("t","target","A text file containing the transcript annotation of all blood group targets (UCSC table export). This file comes with the package an can be usually found in the subfolder data.",true,"data/config/exonic_annotation.hg19.abotarget.txt","string");
+            TCLAP::ValueArg<string> tc_abo_target_annotation("t","target","A text file containing the transcript annotation of all blood group targets (UCSC table export). This file comes with the package an can be usually found in the subfolder data.",false,"data/config/exonic_annotation.hg19.abotarget.txt","string");
             cmdjob.add(tc_abo_target_annotation);
+            TCLAP::SwitchArg tc_trick_calling("k","trick","Paralogous (loci) have usually bad quality variant calls. Set this switch to perform coverage based typing of the main allele instead of variant based typing.",false);
+            cmdjob.add(tc_trick_calling);
             TCLAP::ValueArg<string> tc_variants("s","variants","A text file containing the variant annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/variation_annotation.dat","string");
             cmdjob.add(tc_variants);
             TCLAP::ValueArg<string> tc_gt2pt("g","gt2pt","A text file containing the genotype to phenotype annotation of the ISBT. This file comes with the package an can be usually found in the subfolder data.",true,"data/config/genotype_to_phenotype_annotation.dat","string");
@@ -142,6 +144,11 @@ int main(int argc, char** argv)
             TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"","string");
             cmdjob.add(tc_output);
 
+            if(tc_trick_calling.getValue() == true && !tc_abo_target_annotation.isSet())
+            {
+                throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
+            }
+            
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.variants.ISBT.vcf.gz SNPs.vcf.gz
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.bw coverage.bw
 
@@ -152,6 +159,7 @@ int main(int argc, char** argv)
             }
             
             phenotype(tc_abo_target_annotation.getValue(),
+                    tc_trick_calling.getValue(),
                     tc_variants.getValue(),
                     tc_gt2pt.getValue(),
                     tc_vcf.getValue(),
@@ -238,15 +246,23 @@ int main(int argc, char** argv)
         
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
-void phenotype(const string& arg_target_anno,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
+void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
                bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile)
 {
     try
     {
-        CTranscriptAnno trans_anno(arg_target_anno);
-        if(arg_verbose >= 2)
-            cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
+        
+        CTranscriptAnno trans_anno;
+        if(arg_trick)
+        {
+            // see special RhD treatment in function CIsbtGt2Pt::getCallAsJson()
+            // to understand the following assignment.
+            // in brief. We do special calling based on transcript coverage for some loci if the user defined that
+            trans_anno = CTranscriptAnno(arg_target_anno);
+            if(arg_verbose >= 2)
+                cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
+        }
         CISBTAnno  isbt(arg_isbt_SNPs,arg_build);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;

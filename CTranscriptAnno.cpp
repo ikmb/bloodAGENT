@@ -41,6 +41,13 @@ CTranscriptAnno::CTranscriptAnno(const string& filename)
 
 CTranscriptAnno::CTranscriptAnno(const CTranscriptAnno& orig)
 {
+    m_transcripts = orig.m_transcripts;
+}
+
+CTranscriptAnno& CTranscriptAnno::operator= (const CTranscriptAnno& orig)
+{
+    m_transcripts = orig.m_transcripts;
+    return *this;
 }
 
 CTranscriptAnno::~CTranscriptAnno() {
