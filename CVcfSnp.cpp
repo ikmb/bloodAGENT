@@ -226,7 +226,13 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
         m_mapping_quality = mq[0];
         
     
-    m_ref_allele = rec->d.allele[0];    
+    //m_ref_allele = rec->d.allele[0];    
+    string ref_alt = rec->d.als; // // '\0' separated
+    int idx = ref_alt.find_first_of('\0');
+    if(idx > 0)
+        m_ref_allele = std::string(rec->d.als).substr(0,idx); // this is the correct way
+    else
+        m_ref_allele = rec->d.allele[0]; // this is just if the correct way fails
     
     
     free(gq);
