@@ -1,5 +1,5 @@
 PureSystem	MySystemKey	System	Allele	Phenotype_PDF_Table	Phenotype	Phenotype_flat	base_change	acid_change	incidence
-ToDo	ABO	ABO	ABO*O1	O	O	O	261delG		28.41%
-ToDo	ABO	ABO	ABO*B	B	B	B	803G>C 	14.16%
-ToDo	ABO	ABO	ABO*A	A1	A1	A1			9.54%
-ToDo	ABO	ABO	ABO*O2	O	O	O	802G>A		0.76%
+ToDo	ABO	ABO	ABO*O1	O	O	O	261delG	ukn	28.41%
+ToDo	ABO	ABO	ABO*B	B	B	B	803G>C 	ukn	14.16%
+ToDo	ABO	ABO	ABO*A	A1	A1	A1		ukn	9.54%
+ToDo	ABO	ABO	ABO*O2	O	O	O	802G>A	ukn	0.76%
