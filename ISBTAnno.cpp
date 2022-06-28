@@ -196,7 +196,7 @@ std::vector<CISBTAnno::variation>   CISBTAnno::getAllVariations(const string& sy
     vector<variation>  vRet;
     for(auto& x:m_parsed_isbt_variant)
     {
-        if(getSystemAt(x.chrom(),x.pos()).compare(system) == 0)
+        if(getSystemAt(x.chrom(),x.vcfCoordinate()).compare(system) == 0)
             vRet.push_back(x);
     }
     return vRet;
