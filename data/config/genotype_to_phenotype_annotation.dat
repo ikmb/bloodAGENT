@@ -406,7 +406,7 @@ ToDo	LU	BCAM	LU*02.-24	#N/A	LU:-24	Lu(b+)	212G>A 711C>T 714C>T	Arg71His
 ToDo	LU	BCAM	LU*02.-25	#N/A	LU:-25	Lu(b+)	662C>T	Thr221Ile	 
 ToDo	LU	BCAM	LU*02.19.14	LU:-18,19,-8,14	LU:--18,19,-8,14	Lu(b+)	611T>A 1615A>G	Met204Lys Thr539Ala	 
 ToDo	LU	BCAM	LU*02N.01	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	691C>T	Arg231Ter	 
-ToDo	LU	BCAM	LU*02N.02	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	(?_205)_(504_?)del	Thr69_Glu168del	 
+#ToDo	LU	BCAM	LU*02N.02	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	(?_205)_(504_?)del	Thr69_Glu168del	 
 ToDo	LU	BCAM	LU*02N.03	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	711C>A	Cys237Ter	 
 ToDo	LU	BCAM	LU*02N.04	Lu(a–b–)	Lu(a–b–)	Lu(a–b–)	361C>T	Arg121Ter	 
 ToDo	OK	BSG	OK*01.01	OK:1 or Ok(a+)	Ok(a+)	Ok(a+)			98.20%
@@ -444,7 +444,7 @@ ToDo	CD59	CD59	CD59*01	CD59:+1 or CD59.1+	CD59:+1	CD59:+1			99.38%
 ToDo	CD59	CD59	CD59*01N.01	CD59:-1 or CD59.1-	CD59:-1	CD59:-1	146delA	Asp49Valfs*31	 
 ToDo	CD59	CD59	CD59*01N.02	CD59:-1 or CD59.1-	CD59:-1	CD59:-1	123delC 361delG	Val42Serfs*38	 
 ToDo	CD59	CD59	CD59*01N.03	CD59:-1 or CD59.1-	CD59:-1	CD59:-1	266G>A	Cys89Tyr	 
-ToDo	CD99	CD99	CD99*01	#N/A	#N/A	#N/A			89.54%
+#ToDo	CD99	CD99	CD99*01	#N/A	#N/A	#N/A			89.54%
 ToDo	KN	CR1	KN*01.-05	KN:5 or Yk(a–)	KN:5	KN:5	4223C>T	Thr1408Met	17.93%
 ToDo	KN	CR1	KN*01	KN:1 or Kn(a+) or McC(a+) or S11+ or S13+ or KCAM+	KN:1	KN:1			12.72%
 ToDo	KN	CR1	KN*01.-09	KN:–9 or KCAM–	KN:–9	KN:–9	4843A>G	Ile1615Val	0.12%
@@ -565,8 +565,8 @@ ToDo	GYPB	GYPB	GYPB*06.02	MNS:3,6 or S+, He+	MNS:3,6	MNS:3,6	59T>G 60A>G 67A>T 7
 ToDo	GYPB	GYPB	GYPB*21	MNS:21or Mv+	MNS:21	MNS:21	65C>G	Thr22Ser	 
 ToDo	GE	GYPC	GE*01	GE:2,3,4	GE:2,3,4	GE:2,3,4			97.40%
 ToDo	GE	GYPC	GE*01.-10	GE:–10 or GEPL–	GE:–10	GE:–10	134C>T	Pro45Leu	0.02%
-ToDo	GE	GYPC	GE*01.-02	Ge:–2,3,4 or Yus type	Ge:–2,3,4	Ge:–2,3,4	(?_50)_(106_?)del	in frame deletion	 
-ToDo	GE	GYPC	GE*01.-03	GE:–2,–3,4 or Gerbich type	GE:–2,–3,4	GE:–2,–3,4	(?_107)_(190_?)del	in frame deletion	 
+#ToDo	GE	GYPC	GE*01.-02	Ge:–2,3,4 or Yus type	Ge:–2,3,4	Ge:–2,3,4	(?_50)_(106_?)del	in frame deletion	 
+#ToDo	GE	GYPC	GE*01.-03	GE:–2,–3,4 or Gerbich type	GE:–2,–3,4	GE:–2,–3,4	(?_107)_(190_?)del	in frame deletion	 
 ToDo	GE	GYPC	GE*01.-11	GE :–11 or GEAT–	GE :–11	GE :–11	56A>T	Asp19Val	 
 ToDo	GE	GYPC	GE*01.-12	GE:–12 or GETI–	GE:–12	GE:–12	80C>T	Thr27Ile	 
 ToDo	GE	GYPC	GE*01.05	GE:5 or Wb+	GE:5	GE:5	23A>G	Asn8Ser	 
@@ -575,7 +575,7 @@ ToDo	GE	GYPC	GE*01.05	GE:5 or Wb+	GE:5	GE:5	23A>G	Asn8Ser
 ToDo	GE	GYPC	GE*01.07	GE:7 or An(a+)	GE:7	GE:7	67G>T	Ala23Ser	 
 ToDo	GE	GYPC	GE*01.08	GE:8 or Dh(a+)	GE:8	GE:8	40C>T	Leu14Phe	 
 ToDo	GE	GYPC	GE*01.09	GE:9 or GEIS+	GE:9	GE:9	95C>A	Thr32Asn	 
-ToDo	GE	GYPC	GE*01N.01	Ge:–2,–3,–4 Leach type (PL)	Ge:–2,–3,–4 Leach type (PL)	Ge:–2,–3,–4 Leach type (PL)	(?_191)_(*533_?)del	del Exons 3 & 4	 
+#ToDo	GE	GYPC	GE*01N.01	Ge:–2,–3,–4 Leach type (PL)	Ge:–2,–3,–4 Leach type (PL)	Ge:–2,–3,–4 Leach type (PL)	(?_191)_(*533_?)del	del Exons 3 & 4	 
 ToDo	GE	GYPC	GE*01N.02	Ge:–2,–3,–4 Leach type (LN)	Ge:–2,–3,–4 Leach type (LN)	Ge:–2,–3,–4 Leach type (LN)	131G>T 134delC	Trp44Leu Pro45Argfs*12	 
 ToDo	LW	ICAM4	LW*05	LW:5 or LW(a+)	LW:5	LW:5			98.96%
 ToDo	LW	ICAM4	LW*07	LW:7 or LW(b+)	LW:7	LW:7	299A>G	Gln100Arg	0.08%
@@ -681,7 +681,7 @@ ToDo	RHAG	RHAG	RHAG*01N.11	Rhnull	Rhnull	Rhnull	1139G>T	Gly380Val, Alternative s
 ToDo	RHAG	RHAG	RHAG*01N.12	Rhnull	Rhnull	Rhnull	353C>A	Ala118Glu	 
 ToDo	RHAG	RHAG	RHAG*01N.13	Rhnull	Rhnull	Rhnull	1003G>A	Gly335Ser	 
 ToDo	RHAG	RHAG	RHAG*01N.14	Rhnull	Rhnull	Rhnull	946-2A>G	Alternative splicing	 
-ToDo	RHAG	RHAG	RHAG*01N.15	Rhnull	Rhnull	Rhnull	(?_-62)_(*638_?)del	0	 
+#ToDo	RHAG	RHAG	RHAG*01N.15	Rhnull	Rhnull	Rhnull	(?_-62)_(*638_?)del	0	 
 ToDo	RHAG	RHAG	RHAG*01N.16	Rhnull	Rhnull	Rhnull	310C>T	Gln104Ter	 
 ToDo	RHAG	RHAG	RHAG*01N.18	Rhnull	Rhnull	Rhnull	790C>T	Arg264Ter	 
 ToDo	RHAG	RHAG	RHAG*02	RHAG:2 or Ol(a+)	RHAG:2	RHAG:2	680C>T	Ser227Leu	 
@@ -802,7 +802,7 @@ ToDo	RHCE	RHCE	RHCE*03N.02	#N/A	#N/A	#N/A	676G>C 907delC	Ala226Pro Leu303Ter
 ToDo	RHCE	RHCE	RHCE*04	#N/A	#N/A	#N/A	336-2849_336-2848insTGAGCTATGATTGTACCACTGGGAAGTGACAAAGGGCACCCTGGGGGATTTCAAATGGTGGTGGCCCTGGTTTGGTGTTGCTGCCAGGTGAGTCCTTAAGCTATAGCAA 48G>C 150C>T 178C>A 201A>G 203A>G 307C>T 676G>C	Trp16Cys Leu60Ile Asn68Ser Pro103Ser Ala226Pro	 
 ToDo	RHCE	RHCE	RHCE*04.01	#N/A	#N/A	#N/A	336-2849_336-2848insTGAGCTATGATTGTACCACTGGGAAGTGACAAAGGGCACCCTGGGGGATTTCAAATGGTGGTGGCCCTGGTTTGGTGTTGCTGCCAGGTGAGTCCTTAAGCTATAGCAA 48G>C 150C>T 178C>A 201A>G 203A>G 307C>T 676G>C 722C>T	Trp16Cys Leu60Ile Asn68Ser Pro103Ser Ala226Pro Thr241Ile	 
 ToDo	RHD	RHD	RHD*01	D or RH:1	D	D			36.48%
-ToDo	RHD	RHD	RHD*01N.01	#N/A	d	d	(?_-62)_(*1521_?)del	0	20.61%
+#ToDo	RHD	RHD	RHD*01N.01	#N/A	d	d	(?_-62)_(*1521_?)del	0	20.61%
 ToDo	RHD	RHD	RHD*10.00	DAU0	#N/A	#N/A	1136C>T	Thr379Met	16.85%
 ToDo	RHD	RHD	RHD*08N.01	#N/A	#N/A	#N/A	487-20insCTTACTGGGTTTTATTGCAGACAGACTACCACATGAA 609G>A 654G>C 667T>G 674C>T 807T>G	0	1.14%
 ToDo	RHD	RHD	RHD*10.03	DAU3	#N/A	#N/A	835G>A 1136C>T	Val279Met Thr379Met	0.92%
@@ -1195,7 +1195,7 @@ ToDo	JK	SLC14A1	JK*02N.07	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	896G
 ToDo	JK	SLC14A1	JK*02N.08	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	956C>T	Thr319Met	0.06%
 ToDo	JK	SLC14A1	JK*01N.09	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	27_50delAGTGGACAGCCCCACTATGGTTAG 838A>G	Val10_Arg17del Asn280Asp	0.04%
 ToDo	JK	SLC14A1	JK*02N.09	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	191G>A	Arg64Gln	0.04%
-ToDo	JK	SLC14A1	JK*01N.01	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	(?_-21)_(341_?)del	0	 
+#ToDo	JK	SLC14A1	JK*01N.01	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	(?_-21)_(341_?)del	0	 
 ToDo	JK	SLC14A1	JK*01N.02	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	202C>T 838A>G	Gln68Ter	 
 ToDo	JK	SLC14A1	JK*01N.03	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	582C>G 838A>G	Tyr194Ter	 
 ToDo	JK	SLC14A1	JK*01N.04	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	838A>G 956C>T	Asn280Asp Thr319Met	 
@@ -1248,11 +1248,11 @@ ToDo	VEL	SMIM1	VEL*01	Vel+	Vel+	Vel+			99.96%
 ToDo	VEL	SMIM1	VEL*-01	Vel–	Vel–	Vel–	64_80delAGCCTAGGGGCTGTGTC	Ser22Glnfs*?	 
 ToDo	VEL	SMIM1	VEL*01W.01	Velweak	Vel weak	Vel weak	152T>A	Met51Lys	 
 ToDo	VEL	SMIM1	VEL*01W.02	Velweak/Vel–	Vel weak/Vel–	Vel weak/Vel–	152T>G	Met51Arg	 
-ToDo	XG	XG	XG*01	Xga	Xga	Xga			95.60%
+#ToDo	XG	XG	XG*01	Xga	Xga	Xga			95.60%
 ToDo	XK	XK	XK*01	Xg(?)	Xg(?)	Xg(?)			99.92%
-ToDo	XK	XK	XK*N.01	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_-82)_(*3668_?)del	del exons 1-3	 
-ToDo	XK	XK	XK*N.02	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_-82)_(245_?)del	del exon 1	 
-ToDo	XK	XK	XK*N.04	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_246)_(508_?)del	del 82-170	 
+#ToDo	XK	XK	XK*N.01	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_-82)_(*3668_?)del	del exons 1-3	 
+#ToDo	XK	XK	XK*N.02	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_-82)_(245_?)del	del exon 1	 
+#ToDo	XK	XK	XK*N.04	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_246)_(508_?)del	del 82-170	 
 ToDo	XK	XK	XK*N.06	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	-272_119del	del 1-40fs	 
 ToDo	XK	XK	XK*N.07	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	172delG	Val58Tyrfs*72	 
 ToDo	XK	XK	XK*N.08	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	269delA	Tyr90Serfs*40	 
