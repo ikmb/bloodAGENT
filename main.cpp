@@ -338,6 +338,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         j["version"]=APP_VERSION_DEEPBLOOD;
         j["genome"]=arg_build;
         j["parameters"]["--target"]=arg_target_anno;
+        j["parameters"]["--trick"]=arg_trick;
         j["parameters"]["--variants"]=arg_isbt_SNPs;
         j["parameters"]["--gt2pt"]=arg_genotype_to_phenotype;
         j["parameters"]["--build"]=arg_build;
