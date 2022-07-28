@@ -349,7 +349,7 @@ ToDo	CO	AQP1	CO*01N.04	CO:-1,-2 or Co(a–b-)	Co(a–b-)	Co(a–b-)	232delG	Ala7
 ToDo	CO	AQP1	CO*01N.05	CO:-1,-2 or Co(a–b-)	Co(a–b-)	Co(a–b-)	112C>T	Pro38Ser	 
 ToDo	CO	AQP1	CO*01N.06	CO:-1,-2 or Co(a–b-)	Co(a–b-)	Co(a–b-)	601delG	Val201Ter	 
 ToDo	CO	AQP1	CO*M.01	CO:-1,-2,W3 or Co(a–b-) Co3+w	Co(a–b-) Co3+w	Co(a–b-) Co3+w	113C>T	Pro38Leu	 
-ToDo	CO	AQP1	CO*N.01	CO:-1,-2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	(?_-110)_(384_?)del	0	 
+#ToDo	CO	AQP1	CO*N.01	CO:-1,-2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	(?_-110)_(384_?)del	0	 
 ToDo	CO	AQP1	CO*N.02	CO:-1,-2 or Co(a–b–)	Co(a–b–)	Co(a–b–)	308_309insT	Ala105Glyfs*24	 
 ToDo	GIL	AQP3	GIL*01	GIL:1 or GIL+	GIL+	GIL+			99.72%
 ToDo	GIL	AQP3	GIL*01N.01	GIL:−1 or GIL−	GIL−	GIL−	710+1G>A	Phe165Aspfs*57	 
@@ -570,8 +570,8 @@ ToDo	GE	GYPC	GE*01.-03	GE:–2,–3,4 or Gerbich type	GE:–2,–3,4	GE:–2,–
 ToDo	GE	GYPC	GE*01.-11	GE :–11 or GEAT–	GE :–11	GE :–11	56A>T	Asp19Val	 
 ToDo	GE	GYPC	GE*01.-12	GE:–12 or GETI–	GE:–12	GE:–12	80C>T	Thr27Ile	 
 ToDo	GE	GYPC	GE*01.05	GE:5 or Wb+	GE:5	GE:5	23A>G	Asn8Ser	 
-ToDo	GE	GYPC	GE*01.06.01	GE:6 or Ls(a+)	GE:6	GE:6	(?_107)_(190_?)dup	in frame duplication	 
-ToDo	GE	GYPC	GE*01.06.02	GE:6 or Ls(a+)	GE:6	GE:6	(?_107)_(190_?)3	in frame triplication	 
+#ToDo	GE	GYPC	GE*01.06.01	GE:6 or Ls(a+)	GE:6	GE:6	(?_107)_(190_?)dup	in frame duplication	 
+#ToDo	GE	GYPC	GE*01.06.02	GE:6 or Ls(a+)	GE:6	GE:6	(?_107)_(190_?)3	in frame triplication	 
 ToDo	GE	GYPC	GE*01.07	GE:7 or An(a+)	GE:7	GE:7	67G>T	Ala23Ser	 
 ToDo	GE	GYPC	GE*01.08	GE:8 or Dh(a+)	GE:8	GE:8	40C>T	Leu14Phe	 
 ToDo	GE	GYPC	GE*01.09	GE:9 or GEIS+	GE:9	GE:9	95C>A	Thr32Asn	 
