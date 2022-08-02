@@ -1248,7 +1248,8 @@ ToDo	VEL	SMIM1	VEL*01	Vel+	Vel+	Vel+			99.96%
 ToDo	VEL	SMIM1	VEL*-01	Vel–	Vel–	Vel–	64_80delAGCCTAGGGGCTGTGTC	Ser22Glnfs*?	 
 ToDo	VEL	SMIM1	VEL*01W.01	Velweak	Vel weak	Vel weak	152T>A	Met51Lys	 
 ToDo	VEL	SMIM1	VEL*01W.02	Velweak/Vel–	Vel weak/Vel–	Vel weak/Vel–	152T>G	Met51Arg	 
-#ToDo	XG	XG	XG*01	Xga	Xga	Xga			95.60%
+ToDo	XG	XG	XG*01	Xg(a)	Xg(a)	Xg(a)			95.60%
+ToDo	XG	XG	XG*01N.01	Xg(a-)	Xg(a-)	Xg(a-)	-3932G>C		
 ToDo	XK	XK	XK*01	Xg(?)	Xg(?)	Xg(?)			99.92%
 #ToDo	XK	XK	XK*N.01	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_-82)_(*3668_?)del	del exons 1-3	 
 #ToDo	XK	XK	XK*N.02	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	(?_-82)_(245_?)del	del exon 1	 
