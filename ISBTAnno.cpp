@@ -51,8 +51,17 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
         do{
             ostringstream osr("");
             //osr << m_vanno["Chrom ("+m_build+")"] << '_' << m_vanno["Pos ("+m_build+")"];
+            // I have to skip the high impact marker "!" when I build my index. This I do here
+            // The fix starts here
+            int subIdx = 0;
+            string var = m_vanno["Transcript annotation short"];
+            if(var.size() > 0)
+                while(var[subIdx]=='!')
+                    subIdx++;
+            var = var.substr(subIdx);
+            // the fix ends here and is used in the next line
             osr << m_vanno["Chrom ("+m_build+")"] << '_' << m_vanno["Coordinate in VCF "+m_build+""];
-            m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]=m_entry_finder.size();
+            m_isbt_variant_to_index[m_vanno["system/gene"]][var]=m_entry_finder.size();
             m_entry_finder.insert(pair<string,int>(osr.str(),m_entry_finder.size()));
             if(m_strand.find(m_vanno["system/gene"]) == m_strand.end())
                 m_strand[m_vanno["system/gene"]]=m_vanno["strand ("+m_build+")"][0];

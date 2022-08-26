@@ -30,6 +30,7 @@ CIsbtVariant::CIsbtVariant()
 {
     m_vcf_snp = NULL;
     m_isbt_name = "";
+    m_high_impact_variant=false;
     m_chromosome = "";
     m_position = -1;
     m_strand = 'u';
@@ -51,6 +52,13 @@ CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const 
 {
     m_vcf_snp = NULL;
     m_isbt_name = lrg_anno;
+    if(m_isbt_name.size() > 1 && m_isbt_name[0] == '!')
+    {
+        m_high_impact_variant=true;
+        m_isbt_name = m_isbt_name.substr(1);
+    }
+    else
+        m_high_impact_variant=false;
     m_chromosome = chrom;
     m_position = pos;
     m_strand = strand;
@@ -70,6 +78,7 @@ CIsbtVariant::CIsbtVariant(const string& lrg_anno, const string& refBase, const 
 CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig) 
 {
     m_isbt_name = orig.m_isbt_name;
+    m_high_impact_variant=orig.m_high_impact_variant;
     m_lrg_position = orig.m_lrg_position;
     m_lrg_reference = orig.m_lrg_reference;
     m_lrg_alternative = orig.m_lrg_alternative;
@@ -89,6 +98,7 @@ CIsbtVariant::CIsbtVariant(const CIsbtVariant& orig)
 CIsbtVariant& CIsbtVariant::operator =(const CIsbtVariant& orig)
 {
     m_isbt_name = orig.m_isbt_name;
+    m_high_impact_variant=orig.m_high_impact_variant;
     m_lrg_position = orig.m_lrg_position;
     m_lrg_reference = orig.m_lrg_reference;
     m_lrg_alternative = orig.m_lrg_alternative;
@@ -118,6 +128,7 @@ nlohmann::json  CIsbtVariant::getSnpAsJson()const
     jRet["lrg_reference"]=lrgReference();
     jRet["lrg_alternative"]=lrgAlternative();
     jRet["gt_quality"]=getVcfGenotypeQuality();
+    jRet["high_impact"]=getImpact();
     return jRet;
 }
 

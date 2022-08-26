@@ -124,6 +124,8 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
     float fRet = 1.0f;
     pair<int,int> range_typed_not_in_anno=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_anno_not_in_typed=pair<int,int>(0,-1); // this is for normalizing values
+    pair<int,int> range_high_impact_matches=pair<int,int>(0,-1); // this is for normalizing values
+    pair<int,int> range_high_impact_mismatches=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_anno_in_typed_but_not_in_current_genotype=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_not_covered=pair<int,int>(0,-1); // this is for normalizing values
     for(auto& gt_scores:all_hits)
@@ -138,6 +140,8 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 range_anno_not_in_typed.second = std::max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
                 range_anno_in_typed_but_not_in_current_genotype.second = std::max(range_anno_in_typed_but_not_in_current_genotype.second,act_hit.m_anno_in_typed_but_not_in_current_genotype);
                 range_not_covered.second = std::max(range_not_covered.second,act_hit.m_not_covered);
+                range_high_impact_matches.second =std::max(range_high_impact_matches.second,act_hit.m_high_impact_match);
+                range_high_impact_mismatches.second =std::max(range_high_impact_mismatches.second,act_hit.m_high_impact_mismatch);
             }
         }
     }
@@ -161,6 +165,13 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 float normed_not_covered = 1.0f;
                 if(range_not_covered.first != range_not_covered.second)
                     normed_not_covered = 1.0f-static_cast<float>(act_hit.m_not_covered-range_not_covered.first)/static_cast<float>(range_not_covered.second-range_not_covered.first);
+                
+                [[maybe_unused]] float normed_high_impact_matches = 1.0f;
+                if(range_high_impact_matches.first != range_high_impact_matches.second)
+                    normed_high_impact_matches = static_cast<float>(act_hit.m_high_impact_match-range_high_impact_matches.first)/static_cast<float>(range_high_impact_matches.second-range_high_impact_matches.first);
+                [[maybe_unused]] float normed_high_impact_mismatches = 1.0f;
+                if(range_high_impact_mismatches.first != range_high_impact_mismatches.second)
+                    normed_high_impact_mismatches = 1.0f-static_cast<float>(act_hit.m_high_impact_mismatch-range_high_impact_mismatches.first)/static_cast<float>(range_high_impact_mismatches.second-range_high_impact_mismatches.first);
 
                 // harmonic mean
                 // weigh: anno_not_in_typed as 1/3 important
@@ -172,6 +183,14 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                     score = 0.0f;
                 else
                     score /= denominator;
+                // here comes the impact of m_high_impact_match
+                // pull up the score that for those that have high impact matches
+                if(range_high_impact_matches.first != range_high_impact_matches.second)
+                {
+                    for(int i = 0; i < act_hit.m_high_impact_match; i++)
+                        score = (score + 3.0f)/4.0f;
+                }
+                
                 act_hit.score(score);
                 //cout << "score of " << act_hit << endl;
                 fRet = std::max(fRet,score);
@@ -201,6 +220,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
         {
             if(a.size() == 0)
                 continue;
+            bool isHighImpactSnp = isbt_snps->getIsbtVariant(system,a).isHighImpactSNP();
             double act_variant_coverage = isbt_snps->getIsbtVariant(system,a).getCoverage();
             if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
             {
@@ -212,6 +232,10 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
                 actHit.m_anno_not_in_typed++;
                 if( static_cast<int>(act_variant_coverage+0.5) >= required_coverage )
                     actHit.m_anno_in_typed_but_not_in_current_genotype++;
+            }
+            else if( isHighImpactSnp )
+            {
+                actHit.m_high_impact_match++;
             }
         }
         for(const CIsbtVariant& i:isbtGtAllele.variantSet())
@@ -257,6 +281,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
                 break;
             allele["names"].push_back(act_hit.m_phenotype_allele.name());
             nlohmann::json metrics;
+            metrics["high_impact_snp_matches"] = act_hit.m_high_impact_match;
             metrics["typed_not_in_anno"] = act_hit.m_typed_not_in_anno;
             metrics["anno_not_in_typed"] = act_hit.m_anno_not_in_typed;
             metrics["anno_in_typed_but_not_in_current_genotype"] = act_hit.m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive, as it is well covered, typed but not in this genotype
@@ -304,7 +329,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
     {
         bool type_by_snps = true; // for example RHD: if coverage is 0 we do not type and set this to false
         bool is_RHD_DEL_HET = false;
-        // special RhD treatment
+        // special RhD treatment, trans_anno only has key if parameter Trick was set
         if(system.compare("RHD") == 0 && trans_anno.hasKey("RHD"))
         {
             double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr);

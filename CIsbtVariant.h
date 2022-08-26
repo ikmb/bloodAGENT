@@ -44,6 +44,7 @@ public:
         
     std::string chrom()const{return m_chromosome;}
     int         pos()const{return m_position;}
+    std::string getImpact()const{return (m_high_impact_variant ? "yes" : "no");}
        
     std::string lrgReference()const{return m_lrg_reference;}
     std::string lrgAlternative()const{return m_lrg_alternative;}
@@ -58,6 +59,7 @@ public:
     bool addCoverage(const CBigWigReader& bigWig);
     double getCoverage()const{if(m_coverage != m_coverage) return 0.0;return m_coverage;}
     bool isCovered(double limit = 0.0f)const;
+    bool isHighImpactSNP()const{return m_high_impact_variant;}
     
     bool isRefNClikeGRChNC()const{return !m_are_ref_and_alt_switched_in_GRCh;}
     
@@ -73,6 +75,7 @@ private:
     
     CVcfSnp*    m_vcf_snp;
     std::string m_isbt_name;
+    bool        m_high_impact_variant;
     std::string m_lrg_position;
     std::string m_lrg_reference;
     std::string m_lrg_alternative;
