@@ -188,7 +188,7 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
                 if(range_high_impact_matches.first != range_high_impact_matches.second)
                 {
                     for(int i = 0; i < act_hit.m_high_impact_match; i++)
-                        score = (score + 3.0f)/4.0f;
+                        score = (score + 1.0f)/2.0f;
                 }
                 
                 act_hit.score(score);
