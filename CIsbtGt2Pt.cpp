@@ -134,10 +134,13 @@ float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
     pair<int,int> range_high_impact_mismatches=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_anno_in_typed_but_not_in_current_genotype=pair<int,int>(0,-1); // this is for normalizing values
     pair<int,int> range_not_covered=pair<int,int>(0,-1); // this is for normalizing values
+    // map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>
     for(auto& gt_scores:all_hits)
     {
+        // map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
         for(auto& act_alleles:gt_scores.second)
         {
+            // vector<CIsbtGt2PtHit>
             for(auto& act_hit:act_alleles.second)
             {
                 //range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);

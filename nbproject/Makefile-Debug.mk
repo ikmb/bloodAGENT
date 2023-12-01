@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/CIsbtVariant.o \
 	${OBJECTDIR}/CMakeTrainingVcf.o \
 	${OBJECTDIR}/CMotifFinder.o \
+	${OBJECTDIR}/CScoreHaplotype.o \
 	${OBJECTDIR}/CTranscript.o \
 	${OBJECTDIR}/CTranscriptAnno.o \
 	${OBJECTDIR}/CVariantChain.o \
@@ -138,6 +139,11 @@ ${OBJECTDIR}/CMotifFinder.o: CMotifFinder.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMotifFinder.o CMotifFinder.cpp
+
+${OBJECTDIR}/CScoreHaplotype.o: CScoreHaplotype.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CScoreHaplotype.o CScoreHaplotype.cpp
 
 ${OBJECTDIR}/CTranscript.o: CTranscript.cpp
 	${MKDIR} -p ${OBJECTDIR}

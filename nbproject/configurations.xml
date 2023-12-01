@@ -15,6 +15,7 @@
       <itemPath>CIsbtVariant.h</itemPath>
       <itemPath>CMakeTrainingVcf.h</itemPath>
       <itemPath>CMotifFinder.h</itemPath>
+      <itemPath>CScoreHaplotype.h</itemPath>
       <itemPath>CTranscript.h</itemPath>
       <itemPath>CTranscriptAnno.h</itemPath>
       <itemPath>CVariantChain.h</itemPath>
@@ -43,6 +44,7 @@
       <itemPath>CIsbtVariant.cpp</itemPath>
       <itemPath>CMakeTrainingVcf.cpp</itemPath>
       <itemPath>CMotifFinder.cpp</itemPath>
+      <itemPath>CScoreHaplotype.cpp</itemPath>
       <itemPath>CTranscript.cpp</itemPath>
       <itemPath>CTranscriptAnno.cpp</itemPath>
       <itemPath>CVariantChain.cpp</itemPath>
@@ -156,6 +158,10 @@
       <item path="CMotifFinder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CMotifFinder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CScoreHaplotype.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CScoreHaplotype.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -295,6 +301,10 @@
       <item path="CMotifFinder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CMotifFinder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CScoreHaplotype.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CScoreHaplotype.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
       </item>
