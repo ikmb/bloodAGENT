@@ -19,7 +19,7 @@
 
 class CVariantChain {
 public:
-    CVariantChain(int maxThreads=5): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
+    CVariantChain(int maxThreads=2): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
     CVariantChain(CISBTAnno* isbtAnno, int maxThreads=5): m_isbt_anno(isbtAnno), m_maxThreads(maxThreads), m_activeThreads(0){}
     CVariantChain(const CVariantChain& orig);
     CVariantChain& operator=(const CVariantChain& orig);
