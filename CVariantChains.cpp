@@ -16,7 +16,10 @@
 #include <map>
 #include <string>
 #include <libgen.h>
-
+#include <thread>
+#include <functional>
+#include <mutex>
+#include <condition_variable>
 #include <regex>
 
 #include "mytools.h"
@@ -24,9 +27,13 @@
 #include "CVcf.h"
 #include "CVcfSnp.h"
 #include "CIsbtVariant.h"
+#include "CIsbtGtAllele.h"
+#include "CIsbtGt.h"
 #include "ISBTAnno.h"
 #include "CVariantChainVariation.h"
 #include "CVariantChain.h"
+
+
 
 #include "CVariantChains.h"
 

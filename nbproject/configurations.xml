@@ -110,7 +110,7 @@
               </makeArtifact>
             </linkerLibProjectItem>
           </linkerLibItems>
-          <commandLine>-lz -lhts -lBigWig</commandLine>
+          <commandLine>-lz -lhts -lBigWig -pthread</commandLine>
         </linkerTool>
       </compileType>
       <item path="CBigWigReader.cpp" ex="false" tool="1" flavor2="0">
@@ -249,7 +249,7 @@
             <linkerLibLibItem>hts</linkerLibLibItem>
             <linkerLibLibItem>BigWig</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-lz</commandLine>
+          <commandLine>-lz -pthread</commandLine>
         </linkerTool>
       </compileType>
       <item path="CBigWigReader.cpp" ex="false" tool="1" flavor2="0">

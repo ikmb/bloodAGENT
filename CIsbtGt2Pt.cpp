@@ -17,14 +17,20 @@
 #include <set>
 #include <string>
 #include <libgen.h>
+#include <thread>
+#include <functional>
+#include <mutex>
+#include <condition_variable>
 
 #include "mytools.h"
 #include "CBigWigReader.h"
 #include "vcf.h"
 #include "CVcf.h"
 #include "CVcfSnp.h"
+#include "CIsbtGt.h"
 #include "CIsbtVariant.h"
 #include "ISBTAnno.h"
+#include "CVariantChainVariation.h"
 #include "CVariantChain.h"
 #include "CVariantChains.h"
 #include "json/single_include/nlohmann/json.hpp"

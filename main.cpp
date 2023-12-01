@@ -15,6 +15,10 @@
 #include <vector>
 #include <string>
 #include <libgen.h>
+#include <thread>
+#include <functional>
+#include <mutex>
+#include <condition_variable>
 
 #include <regex>
 #include <iterator>
@@ -38,11 +42,15 @@
 #include "CVcf.h"
 #include "CVcfSnp.h"
 #include "CIsbtVariant.h"
+#include "CIsbtGtAllele.h"
+#include "CIsbtGt.h"
 #include "ISBTAnno.h"
+#include "CVariantChainVariation.h"
 #include "CVariantChain.h"
 #include "CVariantChains.h"
 #include "CTranscript.h"
 #include "CTranscriptAnno.h"
+
 
 #include "CMotifFinder.h"
 

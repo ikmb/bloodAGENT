@@ -82,7 +82,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ../MyTools/dist/Release/GN
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood ${OBJECTFILES} ${LDLIBSOPTIONS} -lz
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood ${OBJECTFILES} ${LDLIBSOPTIONS} -lz -pthread
 
 ${OBJECTDIR}/CBigWigReader.o: CBigWigReader.cpp
 	${MKDIR} -p ${OBJECTDIR}

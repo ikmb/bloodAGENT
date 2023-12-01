@@ -15,6 +15,10 @@
 #include <map>
 #include <string>
 #include <libgen.h>
+#include <thread>
+#include <functional>
+#include <mutex>
+#include <condition_variable>
 
 #include <regex>
 
@@ -23,9 +27,12 @@
 #include "CVcf.h"
 #include "CVcfSnp.h"
 #include "CIsbtVariant.h"
+#include "CIsbtGtAllele.h"
+#include "CIsbtGt.h"
 #include "ISBTAnno.h"
 #include "CVariantChainVariation.h"
 #include "CVariantChain.h"
+
 
 using namespace std;
 
@@ -34,12 +41,16 @@ using namespace std;
 CVariantChain::CVariantChain(const CVariantChain& orig) : m_isbt_anno(orig.m_isbt_anno)
 {
     m_chains  = orig.m_chains;
+    m_maxThreads =orig.m_maxThreads;
+    m_activeThreads=orig.m_activeThreads;
 }
 
 CVariantChain& CVariantChain::operator=(const CVariantChain& orig)
 {
     m_isbt_anno = orig.m_isbt_anno;
     m_chains  = orig.m_chains;
+    m_maxThreads =orig.m_maxThreads;
+    m_activeThreads=orig.m_activeThreads;
     return *this;
 }
 
@@ -134,7 +145,7 @@ std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()const
 {
     std::set<CIsbtGt> sRet;
     map<string,set<CVariantChainVariation>>::const_iterator i = m_chains.begin();
-    
+        
     if(i == m_chains.end())
     {
         CIsbtGt newGt;
@@ -144,13 +155,24 @@ std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()const
     }
     else
     {
-        getPossibleGenotypes(sRet, CIsbtGtAllele(), CIsbtGtAllele(),i);
-        getPossibleGenotypes(sRet, CIsbtGtAllele(), CIsbtGtAllele(),i,1);
+        // This declaration and definition is necessary because getPossibleGenotypesMT is not a static function
+        auto func = [this](std::set<CIsbtGt>& sRet, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
+                     std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,int type) mutable {
+                getPossibleGenotypesMT(sRet, allele_A, allele_B, iter, type);
+            };
+            
+        runInThread(func, sRet, CIsbtGtAllele(), CIsbtGtAllele(),i,0);
+        runInThread(func, sRet, CIsbtGtAllele(), CIsbtGtAllele(),i,1);
+        // Warten Sie darauf, dass alle Threads beendet sind
+        waitForCompletion();
+
+        //getPossibleGenotypes(sRet, CIsbtGtAllele(), CIsbtGtAllele(),i);
+        //getPossibleGenotypes(sRet, CIsbtGtAllele(), CIsbtGtAllele(),i,1);
     }
     return sRet;
 }
 
-void CVariantChain::getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allA, CIsbtGtAllele allB,
+void CVariantChain::getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllele allA, CIsbtGtAllele allB,
         map<string,set<CVariantChainVariation>>::const_iterator iter, int type)const
 {
     if(type == 0)
@@ -182,8 +204,8 @@ void CVariantChain::getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele 
         vars.insert(newGt);
         return;
     }
-    getPossibleGenotypes(vars, allA, allB,iter);
-    getPossibleGenotypes(vars, allA, allB,iter,1);
+    getPossibleGenotypesMT(vars, allA, allB,iter);
+    getPossibleGenotypesMT(vars, allA, allB,iter,1);
 }
 
 

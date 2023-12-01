@@ -14,17 +14,13 @@
 #ifndef CVARIANTCHAIN_H
 #define CVARIANTCHAIN_H
 
-#include "CIsbtGtAllele.h"
-#include "CIsbtGt.h"
-#include "ISBTAnno.h"
-#include "CVcf.h"
-#include "CVariantChainVariation.h"
+
 
 
 class CVariantChain {
 public:
-    CVariantChain(): m_isbt_anno(NULL){}
-    CVariantChain(CISBTAnno* isbtAnno): m_isbt_anno(isbtAnno){}
+    CVariantChain(int maxThreads=5): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
+    CVariantChain(CISBTAnno* isbtAnno, int maxThreads=5): m_isbt_anno(isbtAnno), m_maxThreads(maxThreads), m_activeThreads(0){}
     CVariantChain(const CVariantChain& orig);
     CVariantChain& operator=(const CVariantChain& orig);
     virtual ~CVariantChain();
@@ -45,13 +41,47 @@ public:
     
     std::map<std::string,set<CVariantChainVariation>>& getChains(){return m_chains;}
     
+    
 private:
     
-    void getPossibleGenotypes(std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B, 
+    // std::set<CIsbtGt>&, CIsbtGtAllele, CIsbtGtAllele,map<string,set<CVariantChainVariation>>::const_iterator, int
+    void getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B, 
             map<string,set<CVariantChainVariation>>::const_iterator iter, int type = 0)const;
+   
+    void runInThread(
+        std::function<void(std::set<CIsbtGt>&, CIsbtGtAllele, CIsbtGtAllele,
+                           std::map<std::string, std::set<CVariantChainVariation>>::const_iterator, int)> func,
+        std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
+        std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
+        int type = 0) const { // Hinzugefügtes const für runInThread
+        std::unique_lock<std::mutex> lock(m_mutex);
+
+        // Warten, bis die Anzahl der aktiven Threads kleiner als m_maxThreads ist
+        m_condition.wait(lock, [this] { return m_activeThreads < m_maxThreads; });
+
+        // Erhöhen Sie die Anzahl der aktiven Threads
+        ++m_activeThreads;
+
+        // Starten Sie einen neuen Thread, um die Funktion auszuführen
+        std::thread([this, func, &vars, allele_A, allele_B, iter, type]() {
+            func(vars, allele_A, allele_B, iter, type);
+
+            // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
+            std::unique_lock<std::mutex> lock(m_mutex);
+            --m_activeThreads;
+            m_condition.notify_one();
+        }).detach();
+    }
+    void waitForCompletion()const {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        m_condition.wait(lock, [this] { return m_activeThreads == 0; });
+    }
     
     CISBTAnno* m_isbt_anno;
-    
+    mutable int m_maxThreads;
+    mutable int m_activeThreads;
+    mutable std::mutex m_mutex;
+    mutable std::condition_variable m_condition;
     /// key is the phasing chain id with two presets
     /// ha == homozygous for the alternative
     /// hr == homozygous for the reference
