@@ -35,8 +35,11 @@ int CScoreHaplotype::performAlignment(){
     const int typicalMismatchPenalty = -1; // Typische Strafe für Nicht-Übereinstimmungen
     const int specialMismatchPenalty = -2; // Höhere Strafe, wenn "A" involviert
 
-    const int rows = m_haplotype1.size() + 1;
-    const int cols = m_haplotype2.size() + 1;
+    vector<CIsbtVariant> haplotype1,haplotype2;
+    haplotype1.assign(m_haplotype1.begin(), m_haplotype1.end());
+    haplotype2.assign(m_haplotype2.begin(), m_haplotype2.end());
+    const int rows = haplotype1.size() + 1;
+    const int cols = haplotype2.size() + 1;
 
     // Initialisiere die Matrix für die dynamische Programmierung
     std::vector<std::vector<int>> dp(rows, std::vector<int>(cols, 0));
@@ -48,10 +51,10 @@ int CScoreHaplotype::performAlignment(){
     // Fülle die Matrix und finde den maximalen Score
     for (int i = 1; i < rows; ++i) {
         for (int j = 1; j < cols; ++j) {
-            int gapPenalty = (m_haplotype1[i - 1].isHighImpactSNP() || m_haplotype2[j - 1].isHighImpactSNP()) ? specialGapPenalty : typicalGapPenalty;
-            int mismatchPenalty = (m_haplotype1[i - 1].isHighImpactSNP() || m_haplotype2[j - 1].isHighImpactSNP()) ? specialMismatchPenalty : typicalMismatchPenalty;
+            int gapPenalty = (haplotype1[i - 1].isHighImpactSNP() || haplotype2[j - 1].isHighImpactSNP()) ? specialGapPenalty : typicalGapPenalty;
+            int mismatchPenalty = (haplotype1[i - 1].isHighImpactSNP() || haplotype2[j - 1].isHighImpactSNP()) ? specialMismatchPenalty : typicalMismatchPenalty;
 
-            int scoreDiagonal = dp[i - 1][j - 1] + (m_haplotype1[i - 1] == m_haplotype2[j - 1] ? matchScore : mismatchPenalty);
+            int scoreDiagonal = dp[i - 1][j - 1] + (haplotype1[i - 1] == haplotype2[j - 1] ? matchScore : mismatchPenalty);
             int scoreUp = dp[i - 1][j] + gapPenalty;
             int scoreLeft = dp[i][j - 1] + gapPenalty;
 
@@ -66,7 +69,7 @@ int CScoreHaplotype::performAlignment(){
     }
 
     // Hier kannst du den maximalen Score oder die ausgerichteten Sequenzen weiterverarbeiten
-    std::cout << "Maximaler Score: " << maxScore << std::endl;
+    std::cerr << "Maximaler Score: " << maxScore << std::endl;
 
     /*
     // Beispiel: Ausgabe der ausgerichteten Sequenzen

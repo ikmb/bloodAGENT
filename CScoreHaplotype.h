@@ -15,7 +15,7 @@
 
 class CScoreHaplotype {
 public:
-    CScoreHaplotype(const std::vector<CIsbtVariant>& haplotype1, const std::vector<CIsbtVariant>& haplotype2)
+    CScoreHaplotype(const std::set<CIsbtVariant>& haplotype1, const std::set<CIsbtVariant>& haplotype2)
         : m_haplotype1(haplotype1), m_haplotype2(haplotype2) {}
     CScoreHaplotype(const CScoreHaplotype& other)
         : m_haplotype1(other.m_haplotype1), m_haplotype2(other.m_haplotype2) {}
@@ -24,8 +24,8 @@ public:
     
     int performAlignment();
 private:
-    std::vector<CIsbtVariant> m_haplotype1; // ISBT
-    std::vector<CIsbtVariant> m_haplotype2; // SAMPLE
+    const std::set<CIsbtVariant>& m_haplotype1; // ISBT
+    const std::set<CIsbtVariant>& m_haplotype2; // SAMPLE
 };
 
 #endif /* CSCOREHAPLOTYPE_H */
