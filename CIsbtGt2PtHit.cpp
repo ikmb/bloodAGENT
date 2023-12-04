@@ -33,6 +33,7 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtPtAllele& allele) : m_phenotype_allele(a
     m_high_impact_anno_not_in_typed = 0;
     m_high_impact_typed_not_in_anno = 0;
     m_match = 0;
+    m_null_variants=0;
 }
 
 CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig)  : m_phenotype_allele(orig.m_phenotype_allele)
@@ -47,6 +48,7 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig)  : m_phenotype_allele(or
     m_high_impact_anno_not_in_typed = orig.m_high_impact_anno_not_in_typed;
     m_high_impact_typed_not_in_anno = orig.m_high_impact_typed_not_in_anno;
     m_match = orig.m_match;
+    m_null_variants=orig.m_null_variants;
 }
 
 CIsbtGt2PtHit::~CIsbtGt2PtHit() 
@@ -89,7 +91,7 @@ bool CIsbtGt2PtHit::sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2P
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2PtHit& me)
 {
-    os << "score: " << std::fixed << std::setprecision(5)  << me.m_score << " for " << me.m_phenotype_allele << " e1: " << me.m_anno_in_typed_but_not_in_current_genotype << " e2: " << me.m_anno_not_in_typed << " e3: " << me.m_typed_not_in_anno;
+    os << "score: " << std::fixed << std::setprecision(5)  << me.m_score << " for " << me.m_phenotype_allele << " e1: " << me.m_high_impact_anno_not_in_typed << " e2: " << me.m_anno_not_in_typed << " e3: " << me.m_typed_not_in_anno;
     return os;
 }
 

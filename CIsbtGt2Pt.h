@@ -19,6 +19,7 @@
 #include "CIsbtPtAllele.h"
 #include "CIsbtGtAllele.h"
 #include "CIsbtGt2PtHit.h"
+#include "ISBTAnno.h"
 
 class CIsbtGt2Pt {
 public:
@@ -54,7 +55,7 @@ public:
 private:
     
     void init(const std::string& filename);
-    float scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&);
+    void scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&, const string& system,const CISBTAnno* isbt_anno);
     float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     static bool sort_by_space_separated_entries_asc(const string& a,const string& b);

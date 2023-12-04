@@ -49,10 +49,8 @@ public:
     int m_high_impact_not_covered;  // number of SNPs that are not covered
     int m_high_impact_match;
     int m_high_impact_mismatch;
-    int m_high_impact_not_covered;
-    int m_high_impact_anno_not_in_typed;
-    int m_high_impact_typed_not_in_anno;
     int m_match;
+    int m_null_variants;
     CIsbtPtAllele m_phenotype_allele;
     
     
