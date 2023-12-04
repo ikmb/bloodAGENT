@@ -29,12 +29,30 @@ public:
     static bool sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 );
     
     int errurSum()const{return m_typed_not_in_anno+m_anno_not_in_typed;}
+    /**
+    * An ISBT allele relevant base change detected, but this one is not relevant for the current allele
+    */
     int m_typed_not_in_anno;
+    /**
+    * An ISBT allele relevant base change detected, but this one is not relevant for the current allele. And it is a high impact SNP
+    */
+    int m_high_impact_typed_not_in_anno;
+    /**
+    * An ISBT base change which characterizes this allele is not present
+    */
     int m_anno_not_in_typed;
-    int m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive, as it is well covered, typed but not in this genotype
+    /**
+    * An ISBT base change which characterizes this allele is not present. And it is a high impact SNP
+    */
+    int m_high_impact_anno_not_in_typed;
     int m_not_covered;  // number of SNPs that are not covered
+    int m_high_impact_not_covered;  // number of SNPs that are not covered
     int m_high_impact_match;
     int m_high_impact_mismatch;
+    int m_high_impact_not_covered;
+    int m_high_impact_anno_not_in_typed;
+    int m_high_impact_typed_not_in_anno;
+    int m_match;
     CIsbtPtAllele m_phenotype_allele;
     
     

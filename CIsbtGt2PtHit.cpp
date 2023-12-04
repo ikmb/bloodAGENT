@@ -25,22 +25,28 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtPtAllele& allele) : m_phenotype_allele(a
 {
     m_typed_not_in_anno = 0;
     m_anno_not_in_typed = 0;
-    m_anno_in_typed_but_not_in_current_genotype = 0;
     m_not_covered = 0;
     m_high_impact_match=0;
     m_high_impact_mismatch=0;
     m_score = 0.0f;
+    m_high_impact_not_covered = 0;
+    m_high_impact_anno_not_in_typed = 0;
+    m_high_impact_typed_not_in_anno = 0;
+    m_match = 0;
 }
 
 CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig)  : m_phenotype_allele(orig.m_phenotype_allele)
 {
     m_typed_not_in_anno = orig.m_typed_not_in_anno;
     m_anno_not_in_typed = orig.m_anno_not_in_typed;
-    m_anno_in_typed_but_not_in_current_genotype = orig.m_anno_in_typed_but_not_in_current_genotype;
     m_high_impact_match=orig.m_high_impact_match;
     m_high_impact_mismatch=orig.m_high_impact_match;
     m_not_covered = orig.m_not_covered;
     m_score = orig.m_score;
+    m_high_impact_not_covered = orig.m_high_impact_not_covered;
+    m_high_impact_anno_not_in_typed = orig.m_high_impact_anno_not_in_typed;
+    m_high_impact_typed_not_in_anno = orig.m_high_impact_typed_not_in_anno;
+    m_match = orig.m_match;
 }
 
 CIsbtGt2PtHit::~CIsbtGt2PtHit() 
@@ -54,17 +60,25 @@ bool CIsbtGt2PtHit::sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2P
         return true;
     if(c1.m_high_impact_mismatch > c2.m_high_impact_mismatch)
         return false;
-    if(c1.m_anno_in_typed_but_not_in_current_genotype < c2.m_anno_in_typed_but_not_in_current_genotype)
+    if(c1.m_high_impact_typed_not_in_anno < c2.m_high_impact_typed_not_in_anno)
         return true;
-    if(c1.m_anno_in_typed_but_not_in_current_genotype > c2.m_anno_in_typed_but_not_in_current_genotype)
+    if(c1.m_high_impact_typed_not_in_anno > c2.m_high_impact_typed_not_in_anno)
         return false;
     if(c1.m_typed_not_in_anno < c2.m_typed_not_in_anno)
         return true;
     if(c1.m_typed_not_in_anno > c2.m_typed_not_in_anno)
         return false;
+    if(c1.m_high_impact_anno_not_in_typed < c2.m_high_impact_anno_not_in_typed)
+        return true;
+    if(c1.m_high_impact_anno_not_in_typed > c2.m_high_impact_anno_not_in_typed)
+        return false;
     if(c1.m_anno_not_in_typed < c2.m_anno_not_in_typed)
         return true;
     if(c1.m_anno_not_in_typed > c2.m_anno_not_in_typed)
+        return false;
+    if(c1.m_high_impact_not_covered < c2.m_high_impact_not_covered)
+        return true;
+    if(c1.m_high_impact_not_covered > c2.m_high_impact_not_covered)
         return false;
     return c1.m_not_covered < c2.m_not_covered; 
 }

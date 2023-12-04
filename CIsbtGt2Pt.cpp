@@ -84,11 +84,18 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
 {
     map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
+    // !!!!!!!!!!!!!!!!!!!!!
+    // Hier alle Allele Des systems holen und dann gegen alle theoretical_genotypes abgleichen
+    // Und zwar direkt unten im For loop
+    // Am beste ich übergebde der Klasse ISBTAnno Objekte von CIsbtPtAllele und er wandelt diese objekte
+    // in ein set oder Vector von CIsbtVariant um. Dann habe ich auch alle Infos ob high impact variant
+    // dann kann ich das scoring laufen lassen
     // go through all heterozygous genetoypes
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
         //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
         std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
+        // !!!!!!!!!!!! hier //////////////////
         //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
         // evaluate each allele if it fits to the current genotype
         for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
@@ -234,23 +241,37 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
             if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
             {
                 // incomplete covered
-                actHit.m_not_covered++;
+                if(isHighImpactSnp)
+                    actHit.m_high_impact_not_covered++;
+                else
+                    actHit.m_not_covered++;
             }
             if( !isbtGtAllele.contains(a) )
             {
-                actHit.m_anno_not_in_typed++;
-                if( static_cast<int>(act_variant_coverage+0.5) >= required_coverage )
-                    actHit.m_anno_in_typed_but_not_in_current_genotype++;
+                if(isHighImpactSnp)
+                    actHit.m_high_impact_anno_not_in_typed++;
+                else
+                    actHit.m_anno_not_in_typed++;
             }
-            else if( isHighImpactSnp )
+            else 
             {
-                actHit.m_high_impact_match++;
+                if( isHighImpactSnp )
+                    actHit.m_high_impact_match++;
+                else
+                    actHit.m_match++;
             }
         }
+        // Go through ISBT annotation
         for(const CIsbtVariant& i:isbtGtAllele.variantSet())
         {
+            
             if(!anno.containsBaseChange(i.name()))
-                actHit.m_typed_not_in_anno++;
+            {
+                if(isHighImpactSnp)
+                    actHit.m_high_impact_typed_not_in_anno++;
+                else
+                    actHit.m_typed_not_in_anno++;
+            }
         }
         //cout << actHit << endl;
         vRet.push_back(actHit);
