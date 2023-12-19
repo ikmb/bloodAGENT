@@ -10,6 +10,13 @@
  * Created on December 1, 2023, 3:28 PM
  */
 
+
+/**************************
+ 
+ NOT IN USE!!!
+ 
+ **************************/
+
 #ifndef CSCOREHAPLOTYPE_H
 #define CSCOREHAPLOTYPE_H
 
