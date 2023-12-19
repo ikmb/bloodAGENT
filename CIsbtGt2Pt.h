@@ -27,7 +27,7 @@ public:
     CIsbtGt2Pt(const CIsbtGt2Pt& orig);
     virtual ~CIsbtGt2Pt();
     
-    typedef std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>> typing_result;
+    typedef std::map<CIsbtGt,std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>> typing_result;
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
     
@@ -55,8 +55,8 @@ public:
 private:
     
     void init(const std::string& filename);
-    void scoreHits(std::map<CIsbtGt,std::map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>&, const string& system,const CISBTAnno* isbt_anno);
-    float getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
+    void scoreHits(CIsbtGt2Pt::typing_result&, const string& system,const CISBTAnno* isbt_anno);
+    float getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     static bool sort_by_space_separated_entries_asc(const string& a,const string& b);
     void findAlleTaggingBaseChanges();
@@ -64,7 +64,7 @@ private:
     
     /// set phenotype to true to get the phenotype, otherwise you get the allele
     //std::string getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool phenotype = true)const;
-    nlohmann::json getJsonOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const;
+    nlohmann::json getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const;
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector_redundant;

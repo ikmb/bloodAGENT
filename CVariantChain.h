@@ -15,7 +15,7 @@
 #define CVARIANTCHAIN_H
 
 
-
+// This is the variant chain red from the vcf file
 
 class CVariantChain {
 public:

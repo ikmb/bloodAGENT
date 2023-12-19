@@ -74,7 +74,7 @@ bool CIsbtGt::operator ==(const CIsbtGt& orig)const
 
 bool CIsbtGt::add(const CIsbtGtAllele& var)
 {
-    return m_gt.insert(var).second;
+    return m_gt.insert(var) != m_gt.end();
 }
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt& me)

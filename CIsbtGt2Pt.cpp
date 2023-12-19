@@ -82,7 +82,8 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
 
 CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants, int required_coverage)
 {
-    map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
+    // map<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
+    CIsbtGt2Pt::typing_result mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
     // !!!!!!!!!!!!!!!!!!!!!
     // Hier alle Allele Des systems holen und dann gegen alle theoretical_genotypes abgleichen
@@ -94,7 +95,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
         //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
-        std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
+        std::multiset<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
         // !!!!!!!!!!!! hier //////////////////
         //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
         // evaluate each allele if it fits to the current genotype
@@ -120,7 +121,16 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
             }
             else
             {
-                mRet[*possible_sample_genotypes][possible_sample_allele]=gt2pt;
+                // map<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>
+                typing_result::iterator iterA = mRet.find(*possible_sample_genotypes);
+                if(iterA == mRet.end())
+                {
+                    multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>> mTmp;
+                    iterA = mRet.insert(pair<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>(*possible_sample_genotypes,mTmp)).first;
+                }
+                iterA->second.insert(pair<CIsbtGtAllele,vector<CIsbtGt2PtHit>>(possible_sample_allele,gt2pt));
+                              
+                
                 //cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotypes][possible_sample_allele][0] << endl;
             }
         }
@@ -132,7 +142,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     return mRet;
 }
 
-void CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>& all_hits, const string& system,const CISBTAnno* isbt_anno)
+void CIsbtGt2Pt::scoreHits(CIsbtGt2Pt::typing_result& all_hits, const string& system,const CISBTAnno* isbt_anno)
 {
     float system_var_count = static_cast<float>(isbt_anno->getIsbtVariantCount(system));
     for(auto& gt_scores:all_hits)
@@ -240,7 +250,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
-nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
+nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
 {
     nlohmann::json jRet;
     
@@ -483,7 +493,7 @@ bool CIsbtGt2Pt::sort_by_space_separated_entries_asc(const string& a,const strin
     
 }
 
-float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
+float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
 {
     float fRet = 0.0f;
     for(auto& act_allele:allele_calls)
