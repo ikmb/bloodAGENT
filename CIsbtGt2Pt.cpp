@@ -180,7 +180,7 @@ void CIsbtGt2Pt::scoreHits(CIsbtGt2Pt::typing_result& all_hits, const string& sy
                 if(act_hit_malus > system_var_count)
                     act_hit.score(0.0f);
                 else
-                    act_hit.score(100.0f/system_var_count*(system_var_count-act_hit_malus));
+                    act_hit.score(0.5f/system_var_count*(system_var_count-act_hit_malus));
                 //cout << "score of " << act_hit << endl;
              }
         }

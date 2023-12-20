@@ -19,8 +19,8 @@
 
 class CVariantChain {
 public:
-    CVariantChain(int maxThreads=2): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
-    CVariantChain(CISBTAnno* isbtAnno, int maxThreads=5): m_isbt_anno(isbtAnno), m_maxThreads(maxThreads), m_activeThreads(0){}
+    CVariantChain(int maxThreads=8): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
+    CVariantChain(CISBTAnno* isbtAnno, int maxThreads=8): m_isbt_anno(isbtAnno), m_maxThreads(maxThreads), m_activeThreads(0){}
     CVariantChain(const CVariantChain& orig);
     CVariantChain& operator=(const CVariantChain& orig);
     virtual ~CVariantChain();
@@ -61,7 +61,7 @@ private:
 
         // Erhöhen Sie die Anzahl der aktiven Threads
         ++m_activeThreads;
-
+        //cout << "threads " << m_activeThreads << endl;
         // Starten Sie einen neuen Thread, um die Funktion auszuführen
         std::thread([this, func, &vars, allele_A, allele_B, iter, type]() {
             func(vars, allele_A, allele_B, iter, type);
@@ -81,6 +81,7 @@ private:
     mutable int m_maxThreads;
     mutable int m_activeThreads;
     mutable std::mutex m_mutex;
+    mutable std::mutex m_setMutex;
     mutable std::condition_variable m_condition;
     /// key is the phasing chain id with two presets
     /// ha == homozygous for the alternative

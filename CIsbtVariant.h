@@ -99,5 +99,7 @@ private:
 
 };
 
+
+
 #endif /* CISBTVARIANT_H */
 
