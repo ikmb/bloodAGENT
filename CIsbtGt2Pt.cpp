@@ -92,6 +92,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     // in ein set oder Vector von CIsbtVariant um. Dann habe ich auch alle Infos ob high impact variant
     // dann kann ich das scoring laufen lassen
     // go through all heterozygous genetoypes
+    cout << "evaluate" << endl;
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
         //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
@@ -129,59 +130,71 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
                     iterA = mRet.insert(pair<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>(*possible_sample_genotypes,mTmp)).first;
                 }
                 iterA->second.insert(pair<CIsbtGtAllele,vector<CIsbtGt2PtHit>>(possible_sample_allele,gt2pt));
-                              
-                
+                size_t a = mRet.size();
+                size_t b = iterA->second.size();
+                size_t c = iterA->second.find(possible_sample_allele)->second.size();
+                cout << a << " * " << b << " * " << c << " = " << a*b*c << endl;
                 //cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotypes][possible_sample_allele][0] << endl;
             }
         }
-        
     }
-    scoreHits(mRet,system,variants.isbtSnps());
-    sort(mRet);
+    //cout << "score" << endl;
+    //scoreHits(mRet,system,variants.isbtSnps());
+    //cout << "sort" << endl;
+    //sort(mRet);
+    //cout << "done" << endl;
     m_typing_results[system]=mRet;
     return mRet;
 }
 
-void CIsbtGt2Pt::scoreHits(CIsbtGt2Pt::typing_result& all_hits, const string& system,const CISBTAnno* isbt_anno)
+void CIsbtGt2Pt::scoreHit(CIsbtGt2PtHit& act_hit, const string& system,const CISBTAnno* isbt_anno)
 {
     float system_var_count = static_cast<float>(isbt_anno->getIsbtVariantCount(system));
+    float act_hit_malus = 0.0f;
+    
+    /**
+    * An ISBT allele relevant base change detected, but this one is not relevant for the current allele
+    -2 m_typed_not_in_anno;
+    * An ISBT allele relevant base change detected, but this one is not relevant for the current allele. And it is a high impact SNP
+    -4 m_high_impact_typed_not_in_anno;
+    * An ISBT base change which characterizes this allele but is not present in the sample
+    -2 m_anno_not_in_typed;
+    * An ISBT base change which characterizes this allele but is not present in the sample. And it is a high impact SNP
+    -4 m_high_impact_anno_not_in_typed;
+    -1 m_not_covered;  // number of SNPs that are not covered
+    -4 m_high_impact_not_covered;  // number of SNPs that are not covered
+    +2 m_high_impact_match;
+    -4 m_high_impact_mismatch;
+    int m_null_variants;
+    */
+    
+    system_var_count += act_hit.m_high_impact_match;
+    act_hit_malus+= act_hit.m_typed_not_in_anno*2.0f +
+                    act_hit.m_high_impact_typed_not_in_anno*4.0f +
+                    act_hit.m_anno_not_in_typed*2.0f +
+                    act_hit.m_high_impact_anno_not_in_typed * 4.0f +
+                    act_hit.m_not_covered*1.0f +
+                    act_hit.m_high_impact_not_covered*4.0f + 
+                    act_hit.m_high_impact_mismatch*4.0f;
+
+    if(act_hit_malus > system_var_count)
+        act_hit.score(0.0f);
+    else
+        act_hit.score(0.5f/system_var_count*(system_var_count-act_hit_malus));
+    //cout << "score of " << act_hit << endl;
+}
+
+void CIsbtGt2Pt::scoreHits(CIsbtGt2Pt::typing_result& all_hits, const string& system,const CISBTAnno* isbt_anno)
+{
     for(auto& gt_scores:all_hits)
     {
+        // multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
         for(auto& act_alleles:gt_scores.second)
         {
+            // vector<CIsbtGt2PtHit>
             for(auto& act_hit:act_alleles.second)
             {
-                
-                /**
-                * An ISBT allele relevant base change detected, but this one is not relevant for the current allele
-                -2 m_typed_not_in_anno;
-                * An ISBT allele relevant base change detected, but this one is not relevant for the current allele. And it is a high impact SNP
-                -4 m_high_impact_typed_not_in_anno;
-                * An ISBT base change which characterizes this allele but is not present in the sample
-                -2 m_anno_not_in_typed;
-                * An ISBT base change which characterizes this allele but is not present in the sample. And it is a high impact SNP
-                -4 m_high_impact_anno_not_in_typed;
-                -1 m_not_covered;  // number of SNPs that are not covered
-                -4 m_high_impact_not_covered;  // number of SNPs that are not covered
-                +2 m_high_impact_match;
-                -4 m_high_impact_mismatch;
-                int m_null_variants;
-                */
-                float act_hit_malus = 0.0f;
-                system_var_count += act_hit.m_high_impact_match;
-                act_hit_malus+= act_hit.m_typed_not_in_anno*2.0f +
-                                act_hit.m_high_impact_typed_not_in_anno*4.0f +
-                                act_hit.m_anno_not_in_typed*2.0f +
-                                act_hit.m_high_impact_anno_not_in_typed * 4.0f +
-                                act_hit.m_not_covered*1.0f +
-                                act_hit.m_high_impact_not_covered*4.0f + 
-                                act_hit.m_high_impact_mismatch*4.0f;
-                
-                if(act_hit_malus > system_var_count)
-                    act_hit.score(0.0f);
-                else
-                    act_hit.score(0.5f/system_var_count*(system_var_count-act_hit_malus));
-                //cout << "score of " << act_hit << endl;
+                scoreHit(act_hit, system,isbt_anno);
              }
         }
     }
@@ -244,9 +257,10 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
             }
         }
         //cout << actHit << endl;
+        scoreHit(actHit, system,isbt_snps);
         vRet.push_back(actHit);
     }
-    std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_errors_asc);
+    std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);
     return vRet;
 }
 

@@ -198,7 +198,6 @@ void CVariantChain::getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllel
     iter++;
     if(iter == m_chains.end())
     {
-        cout << allA << " - " << allB << endl;
         CIsbtGt newGt;
         newGt.add(allA);
         newGt.add(allB);

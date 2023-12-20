@@ -56,6 +56,7 @@ private:
     
     void init(const std::string& filename);
     void scoreHits(CIsbtGt2Pt::typing_result&, const string& system,const CISBTAnno* isbt_anno);
+    void scoreHit(CIsbtGt2PtHit&, const string& system,const CISBTAnno* isbt_anno);
     float getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     static bool sort_by_space_separated_entries_asc(const string& a,const string& b);
