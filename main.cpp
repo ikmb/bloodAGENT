@@ -374,12 +374,12 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
             cerr << isbTyper << endl;
         if(out_file.is_open())
         {
-            out_file << j.dump();
+            out_file << j.dump(2);
             if(arg_verbose >= 2)
                 cerr << "results written to " << outfile << endl;
         }
         else
-            cout  << j.dump();
+            cout  << j.dump(2);
         if(out_file.is_open())
             out_file.close();
     }
