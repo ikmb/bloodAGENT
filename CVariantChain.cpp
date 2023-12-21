@@ -210,14 +210,20 @@ void CVariantChain::getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllel
                 getPossibleGenotypesMT(sRet, allele_A, allele_B, iter, type);
             };
             
-    if(m_activeThreads < m_maxThreads)    
-        runInThread(func, vars, allA, allB,iter);
-    else
-        getPossibleGenotypesMT(vars, allA, allB,iter);
-    if(m_activeThreads < m_maxThreads)    
-        runInThread(func, vars, allA, allB,iter,1);
-    else
-        getPossibleGenotypesMT(vars, allA, allB,iter,1);
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        if(m_activeThreads < m_maxThreads)    
+            runInThread(func, vars, allA, allB,iter);
+        else
+            getPossibleGenotypesMT(vars, allA, allB,iter);
+    }
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        if(m_activeThreads < m_maxThreads)    
+            runInThread(func, vars, allA, allB,iter,1);
+        else
+            getPossibleGenotypesMT(vars, allA, allB,iter,1);
+    }
 }
 
 void CVariantChain::runInThread(

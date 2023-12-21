@@ -597,17 +597,15 @@ void CIsbtGt2Pt::runInThread(
 
     // Erhöhen Sie die Anzahl der aktiven Threads
     ++m_activeThreads;
-    cout << "threads matches " << m_activeThreads << endl;
+    //cout << "threads matches " << m_activeThreads << endl;
     // Starten Sie einen neuen Thread, um die Funktion auszuführen
     std::thread([this, func, &system,&mRet, &variants,possible_sample_genotypes, 
         required_coverage,&highest_score,score_range]() {
         func(system,mRet,variants,possible_sample_genotypes, 
         required_coverage,highest_score,score_range);
-        {
             // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
-            std::unique_lock<std::mutex> lock(m_mutex);
-            --m_activeThreads;
-        }
+        std::unique_lock<std::mutex> lock(m_mutex);
+        --m_activeThreads;
         m_condition.notify_one();
     }).detach();
 }
