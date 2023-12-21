@@ -55,6 +55,7 @@ CIsbtGt2Pt::CIsbtGt2Pt(const CIsbtGt2Pt& orig)
     m_allele_vector = orig.m_allele_vector;
     m_allele_vector_redundant = orig.m_allele_vector_redundant;
     m_typing_results=orig.m_typing_results;
+    std::unique_lock<std::mutex> lock(m_mutex);
     m_maxThreads =orig.m_maxThreads;
     m_activeThreads=orig.m_activeThreads;
 }
@@ -168,7 +169,6 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
         //doTheMatching(system,mRet,variants,possible_sample_genotypes,
         //              required_coverage,highest_score,score_range);
     }
-    cout << "waiting for completion, threads = "<< m_activeThreads << endl;
     waitForCompletion();
     //cout << "score" << endl;
     //scoreHits(mRet,system,variants.isbtSnps());

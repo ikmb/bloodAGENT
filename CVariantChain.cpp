@@ -41,6 +41,7 @@ using namespace std;
 CVariantChain::CVariantChain(const CVariantChain& orig) : m_isbt_anno(orig.m_isbt_anno)
 {
     m_chains  = orig.m_chains;
+    std::unique_lock<std::mutex> lock(m_mutex);
     m_maxThreads =orig.m_maxThreads;
     m_activeThreads=orig.m_activeThreads;
 }
@@ -49,6 +50,7 @@ CVariantChain& CVariantChain::operator=(const CVariantChain& orig)
 {
     m_isbt_anno = orig.m_isbt_anno;
     m_chains  = orig.m_chains;
+    std::unique_lock<std::mutex> lock(m_mutex);
     m_maxThreads =orig.m_maxThreads;
     m_activeThreads=orig.m_activeThreads;
     return *this;
