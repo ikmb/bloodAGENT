@@ -53,25 +53,8 @@ private:
                            std::map<std::string, std::set<CVariantChainVariation>>::const_iterator, int)> func,
         std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
         std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
-        int type = 0) const { // Hinzugefügtes const für runInThread
-        std::unique_lock<std::mutex> lock(m_mutex);
-
-        // Warten, bis die Anzahl der aktiven Threads kleiner als m_maxThreads ist
-        m_condition.wait(lock, [this] { return m_activeThreads < m_maxThreads; });
-
-        // Erhöhen Sie die Anzahl der aktiven Threads
-        ++m_activeThreads;
-        //cout << "threads " << m_activeThreads << endl;
-        // Starten Sie einen neuen Thread, um die Funktion auszuführen
-        std::thread([this, func, &vars, allele_A, allele_B, iter, type]() {
-            func(vars, allele_A, allele_B, iter, type);
-
-            // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
-            std::unique_lock<std::mutex> lock(m_mutex);
-            --m_activeThreads;
-            m_condition.notify_one();
-        }).detach();
-    }
+        int type = 0) const ;
+    
     void waitForCompletion()const {
         std::unique_lock<std::mutex> lock(m_mutex);
         m_condition.wait(lock, [this] { return m_activeThreads == 0; });

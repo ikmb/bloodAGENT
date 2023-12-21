@@ -21,8 +21,8 @@
 
 class CVariantChains {
 public:
-    CVariantChains();
-    CVariantChains(CISBTAnno* isbt);
+    CVariantChains(int maxThreads=8);
+    CVariantChains(CISBTAnno* isbt,int maxThreads=8);
     CVariantChains(const CVariantChains& orig);
     virtual ~CVariantChains();
     
@@ -45,6 +45,7 @@ private:
     void addReferenceSnps();
 
     CISBTAnno* m_isbt;
+    int m_maxThreads;
     map<string,CVariantChain> m_variant_chains;
     
 };

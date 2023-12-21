@@ -23,7 +23,7 @@
 
 class CIsbtGt2Pt {
 public:
-    CIsbtGt2Pt(const std::string& filename);
+    CIsbtGt2Pt(const std::string& filename,int maxThreads=8);
     CIsbtGt2Pt(const CIsbtGt2Pt& orig);
     virtual ~CIsbtGt2Pt();
     
@@ -32,7 +32,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
-    typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10);
+    typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10, float score_range = 1.0f);
+    void doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,set<CIsbtGt>::const_iterator&  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range);
      
     void sort(typing_result& var);
     
@@ -72,6 +73,24 @@ private:
     
     std::map<std::string,typing_result> m_typing_results;
 
+    
+    
+    void runInThread(
+        std::function<void(const std::string& ,CIsbtGt2Pt::typing_result& , const CVariantChains& , 
+                           set<CIsbtGt>::const_iterator& ,int , float& , float )> func,
+        const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
+        set<CIsbtGt>::const_iterator&  possible_sample_genotypes,int required_coverage, float& highest_score, float score_range) const ;
+    
+    void waitForCompletion()const {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        m_condition.wait(lock, [this] { return m_activeThreads == 0; });
+    }
+    
+    mutable int m_maxThreads;
+    mutable int m_activeThreads;
+    mutable std::mutex m_mutex;
+    mutable std::mutex m_objectMutex;
+    mutable std::condition_variable m_condition;
 };
 
 #endif /* CISBTGT2PT_H */

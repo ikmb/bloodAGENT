@@ -65,7 +65,7 @@ using namespace std;
 
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
-        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "");
+        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1);
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
@@ -118,6 +118,7 @@ int main(int argc, char** argv)
             cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
         if(tc_jobType.getValue().compare("phenotype") == 0)
         {
+            unsigned int numCores = std::thread::hardware_concurrency();
             /*
              "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
              */
@@ -141,7 +142,9 @@ int main(int argc, char** argv)
             cmdjob.add(tc_motifs);
             TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call.",false,10,"int");
             cmdjob.add(tc_coverage);
-            TCLAP::ValueArg<float> tc_tophits("r","scoreRange","Value between 0.0 and 1.0. After genotyping multiply the best score with this value and report all genotypes better than the resulting value.",false,1.0,"int");
+            TCLAP::ValueArg<int> tc_cores("p","parallel-threads","The number of parallel treads.",false,numCores,"int");
+            cmdjob.add(tc_cores);
+            TCLAP::ValueArg<float> tc_tophits("r","scoreRange","Value between 0.0 and 1.0. After genotyping multiply the best score with this value and report all genotypes better than the resulting value.",false,0.99,"int");
             cmdjob.add(tc_tophits);
             TCLAP::SwitchArg tc_isInSilico("i","insilicovcf","If the input vcf is in silico generated VCF file, this trigger must be set! If not, the differences between LRG and GRCh are always analyzed resulting in wrong calls.",false);
             cmdjob.add(tc_isInSilico);
@@ -155,6 +158,12 @@ int main(int argc, char** argv)
             if(tc_trick_calling.getValue() == true && !tc_abo_target_annotation.isSet())
             {
                 throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
+            }
+            
+            if(tc_cores.getValue() < 1 || tc_cores > numCores)
+            {
+                throw CMyException(string("Invalid value for parameter ")+tc_cores.getFlag()+". It must be between 1 and the number of available cores. Default setting is available cores, which is "+
+                                  std::to_string(numCores)+" at your machine. You have set "+std::to_string(tc_cores.getValue()));
             }
             
             // ln -s ../mnts/sftp\:host\=ikmbhead.rz.uni-kiel.de\,user\=sukko545/ifs/data/nfs_share/sukko545/haemo/DZHK/190233/190233.hg19.bwa.variants.ISBT.vcf.gz SNPs.vcf.gz
@@ -256,7 +265,7 @@ int main(int argc, char** argv)
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
-               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile)
+               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile, const int cores)
 {
     try
     {
@@ -274,7 +283,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CISBTAnno  isbt(arg_isbt_SNPs,arg_build);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
-        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
+        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
         CVcf vcf_file(arg_vcf_file);
@@ -337,7 +346,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         {
             if( arg_locus.length() == 0 || arg_loci_set.find(locus) != arg_loci_set.end() )
             {
-                isbTyper.type(locus,vcs,arg_coverage);
+                isbTyper.type(locus,vcs,arg_coverage,arg_top_hits);
                 nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;
             }
@@ -409,7 +418,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CISBTAnno  isbt(arg_isbt_SNPs);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
-        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype);
+        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
             

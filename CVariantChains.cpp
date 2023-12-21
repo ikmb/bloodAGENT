@@ -39,17 +39,17 @@
 
 using namespace std;
 
-CVariantChains::CVariantChains()
+CVariantChains::CVariantChains(int maxThreads) : m_maxThreads(maxThreads)
 {
     m_isbt = NULL;
 }
 
-CVariantChains::CVariantChains(CISBTAnno* isbt) : m_isbt(isbt)
+CVariantChains::CVariantChains(CISBTAnno* isbt,int maxThreads) : m_isbt(isbt), m_maxThreads(maxThreads)
 {
     init();
 }
 
-CVariantChains::CVariantChains(const CVariantChains& orig) : m_isbt(orig.m_isbt)
+CVariantChains::CVariantChains(const CVariantChains& orig) : m_isbt(orig.m_isbt),m_maxThreads(orig.m_maxThreads)
 {
     m_variant_chains = orig.m_variant_chains;
 }
@@ -67,7 +67,7 @@ bool CVariantChains::init()
     
     set<string> loci = m_isbt->loci();
     for(set<string>::iterator locusIter = loci.begin(); locusIter != loci.end(); locusIter++)
-        m_variant_chains[*locusIter]=CVariantChain(m_isbt);
+        m_variant_chains[*locusIter]=CVariantChain(m_isbt,m_maxThreads);
     addReferenceSnps();
     return true;
 }
