@@ -118,7 +118,7 @@ int main(int argc, char** argv)
             cerr << "job type " << tc_jobType.getValue() << ". looking for required parameters ..." << endl;
         if(tc_jobType.getValue().compare("phenotype") == 0)
         {
-            unsigned int numCores = std::thread::hardware_concurrency();
+            int numCores = std::thread::hardware_concurrency();
             /*
              "${OUTPUT_PATH}" -j anchor -a "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/anchors.bed" -b "/home/mwittig/data/Genotypisierung/Haemocarta/NGS/Paralogs/homolgous_parts.bed" -i "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.bam" -p "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.meets.bam" -f "/home/mwittig/data/tmp/Blood/G06322.hg38.PEonly.fails.bam"
              */
@@ -160,7 +160,7 @@ int main(int argc, char** argv)
                 throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
             }
             
-            if(tc_cores.getValue() < 1 || tc_cores > numCores)
+            if(tc_cores.getValue() < 1 || tc_cores.getValue() > numCores)
             {
                 throw CMyException(string("Invalid value for parameter ")+tc_cores.getFlag()+". It must be between 1 and the number of available cores. Default setting is available cores, which is "+
                                   std::to_string(numCores)+" at your machine. You have set "+std::to_string(tc_cores.getValue()));
@@ -190,7 +190,8 @@ int main(int argc, char** argv)
                     tc_isInSilico.getValue(),
                     tc_Id.getValue(),
                     tc_hg.getValue(),
-                    tc_output.getValue());
+                    tc_output.getValue(),
+                    tc_cores.getValue());
             exit(EXIT_SUCCESS);
         }
         else if(tc_jobType.getValue().compare("vcf") == 0)
@@ -418,7 +419,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CISBTAnno  isbt(arg_isbt_SNPs);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
-        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
+        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,1);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
             

@@ -33,7 +33,7 @@ public:
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
     typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10, float score_range = 1.0f);
-    void doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,set<CIsbtGt>::const_iterator&  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range);
+    void doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,set<CIsbtGt>::const_iterator  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range);
      
     void sort(typing_result& var);
     
@@ -77,9 +77,9 @@ private:
     
     void runInThread(
         std::function<void(const std::string& ,CIsbtGt2Pt::typing_result& , const CVariantChains& , 
-                           set<CIsbtGt>::const_iterator& ,int , float& , float )> func,
+                           set<CIsbtGt>::const_iterator ,int , float& , float )> func,
         const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
-        set<CIsbtGt>::const_iterator&  possible_sample_genotypes,int required_coverage, float& highest_score, float score_range) const ;
+        set<CIsbtGt>::const_iterator  possible_sample_genotypes,int required_coverage, float& highest_score, float score_range) const ;
     
     void waitForCompletion()const {
         std::unique_lock<std::mutex> lock(m_mutex);

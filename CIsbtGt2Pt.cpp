@@ -84,7 +84,7 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
 }
 
 void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,
-        set<CIsbtGt>::const_iterator&  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range)
+        set<CIsbtGt>::const_iterator  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range)
 {
     //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
     std::multiset<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
@@ -158,7 +158,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     {
         
         auto func = [this](const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
-                           set<CIsbtGt>::const_iterator&  possible_sample_genotypes, 
+                           set<CIsbtGt>::const_iterator  possible_sample_genotypes, 
                            int required_coverage, float& highest_score, float score_range) mutable {
                 doTheMatching(system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
@@ -586,9 +586,9 @@ string CIsbtGt2Pt::systemOf(const string& allele)const
 
 void CIsbtGt2Pt::runInThread(
         std::function<void(const std::string& ,CIsbtGt2Pt::typing_result& , const CVariantChains& , 
-                           set<CIsbtGt>::const_iterator& ,int , float& , float )> func,
+                           set<CIsbtGt>::const_iterator ,int , float& , float )> func,
         const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
-        set<CIsbtGt>::const_iterator&  possible_sample_genotypes,int required_coverage, float& highest_score, float score_range) const
+        set<CIsbtGt>::const_iterator  possible_sample_genotypes,int required_coverage, float& highest_score, float score_range) const
 {
     std::unique_lock<std::mutex> lock(m_mutex);
 
@@ -599,14 +599,15 @@ void CIsbtGt2Pt::runInThread(
     ++m_activeThreads;
     cout << "threads matches " << m_activeThreads << endl;
     // Starten Sie einen neuen Thread, um die Funktion auszuführen
-    std::thread([this, func, &system,&mRet, &variants,&possible_sample_genotypes, 
+    std::thread([this, func, &system,&mRet, &variants,possible_sample_genotypes, 
         required_coverage,&highest_score,score_range]() {
         func(system,mRet,variants,possible_sample_genotypes, 
         required_coverage,highest_score,score_range);
-
-        // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
-        std::unique_lock<std::mutex> lock(m_mutex);
-        --m_activeThreads;
+        {
+            // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
+            std::unique_lock<std::mutex> lock(m_mutex);
+            --m_activeThreads;
+        }
         m_condition.notify_one();
     }).detach();
 }
