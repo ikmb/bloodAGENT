@@ -15,12 +15,12 @@
 #define CVARIANTCHAIN_H
 
 
-
+// This is the variant chain red from the vcf file
 
 class CVariantChain {
 public:
-    CVariantChain(int maxThreads=2): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
-    CVariantChain(CISBTAnno* isbtAnno, int maxThreads=5): m_isbt_anno(isbtAnno), m_maxThreads(maxThreads), m_activeThreads(0){}
+    CVariantChain(int maxThreads=8): m_isbt_anno(NULL), m_maxThreads(maxThreads), m_activeThreads(0) {}
+    CVariantChain(CISBTAnno* isbtAnno, int maxThreads=8): m_isbt_anno(isbtAnno), m_maxThreads(maxThreads), m_activeThreads(0){}
     CVariantChain(const CVariantChain& orig);
     CVariantChain& operator=(const CVariantChain& orig);
     virtual ~CVariantChain();
@@ -53,25 +53,8 @@ private:
                            std::map<std::string, std::set<CVariantChainVariation>>::const_iterator, int)> func,
         std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
         std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
-        int type = 0) const { // Hinzugefügtes const für runInThread
-        std::unique_lock<std::mutex> lock(m_mutex);
-
-        // Warten, bis die Anzahl der aktiven Threads kleiner als m_maxThreads ist
-        m_condition.wait(lock, [this] { return m_activeThreads < m_maxThreads; });
-
-        // Erhöhen Sie die Anzahl der aktiven Threads
-        ++m_activeThreads;
-
-        // Starten Sie einen neuen Thread, um die Funktion auszuführen
-        std::thread([this, func, &vars, allele_A, allele_B, iter, type]() {
-            func(vars, allele_A, allele_B, iter, type);
-
-            // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
-            std::unique_lock<std::mutex> lock(m_mutex);
-            --m_activeThreads;
-            m_condition.notify_one();
-        }).detach();
-    }
+        int type = 0) const ;
+    
     void waitForCompletion()const {
         std::unique_lock<std::mutex> lock(m_mutex);
         m_condition.wait(lock, [this] { return m_activeThreads == 0; });
@@ -81,6 +64,7 @@ private:
     mutable int m_maxThreads;
     mutable int m_activeThreads;
     mutable std::mutex m_mutex;
+    mutable std::mutex m_setMutex;
     mutable std::condition_variable m_condition;
     /// key is the phasing chain id with two presets
     /// ha == homozygous for the alternative

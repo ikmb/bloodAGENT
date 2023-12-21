@@ -40,8 +40,10 @@
 
 using namespace std;
 
-CIsbtGt2Pt::CIsbtGt2Pt(const string& filename) 
+CIsbtGt2Pt::CIsbtGt2Pt(const string& filename,int maxThreads) 
 {
+    m_maxThreads = maxThreads;
+    m_activeThreads=0;
     if(!CMyTools::file_exists(filename))
         throw(CMyException("File does not exist: ")+filename);
     init(filename);
@@ -53,6 +55,8 @@ CIsbtGt2Pt::CIsbtGt2Pt(const CIsbtGt2Pt& orig)
     m_allele_vector = orig.m_allele_vector;
     m_allele_vector_redundant = orig.m_allele_vector_redundant;
     m_typing_results=orig.m_typing_results;
+    m_maxThreads =orig.m_maxThreads;
+    m_activeThreads=orig.m_activeThreads;
 }
 
 CIsbtGt2Pt::~CIsbtGt2Pt() {
@@ -79,134 +83,153 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
     }
 }
 
-
-CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants, int required_coverage)
+void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,
+        set<CIsbtGt>::const_iterator  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range)
 {
-    map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
+    //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
+    std::multiset<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
+    // !!!!!!!!!!!! hier //////////////////
+    //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
+    // evaluate each allele if it fits to the current genotype
+    for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
+    {
+        vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+        if(gt2pt.size() == 0)
+        {
+            //cout << possible_sample_genotypes << " has no result " << endl;
+            //act_hits.clear();
+            break;
+        }
+        else
+        {
+            // map<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>
+            std::lock_guard<std::mutex> lock(m_objectMutex);
+            typing_result::iterator iterA = mRet.find(*possible_sample_genotypes);
+            if(iterA == mRet.end())
+            {
+                multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>> mTmp;
+                iterA = mRet.insert(pair<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>(*possible_sample_genotypes,mTmp)).first;
+            }
+            iterA->second.insert(pair<CIsbtGtAllele,vector<CIsbtGt2PtHit>>(possible_sample_allele,gt2pt));
+            /*
+            size_t a = mRet.size();
+            size_t b = iterA->second.size();
+            size_t c = iterA->second.find(possible_sample_allele)->second.size();
+            cout << a << " * " << b << " * " << c << " = " << a*b*c << endl;
+            *///cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotypes][possible_sample_allele][0] << endl;
+        }
+    }
+    std::lock_guard<std::mutex> lock(m_objectMutex);
+    typing_result::iterator iterA = mRet.find(*possible_sample_genotypes);
+    if(iterA != mRet.end())
+    {
+        float act_score = getPredictedScoreOfGenotype(iterA->second);
+        highest_score = std::max(act_score,highest_score);
+        for(CIsbtGt2Pt::typing_result::iterator i = mRet.begin(); i != mRet.end(); )
+        {
+            act_score = getPredictedScoreOfGenotype(i->second);
+            if(act_score < highest_score*score_range)
+                i= mRet.erase(i);
+            else
+                i++;
+        }
+    }
+                
+}
+
+
+
+CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantChains& variants, int required_coverage, float score_range)
+{
+    // map<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>  mRet;
+    CIsbtGt2Pt::typing_result mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
+    float highest_score = 0.0f;
+    //cout << "typing " << m_activeThreads << endl;
+    
+    // !!!!!!!!!!!!!!!!!!!!!
+    // Hier alle Allele Des systems holen und dann gegen alle theoretical_genotypes abgleichen
+    // Und zwar direkt unten im For loop
+    // Am beste ich übergebde der Klasse ISBTAnno Objekte von CIsbtPtAllele und er wandelt diese objekte
+    // in ein set oder Vector von CIsbtVariant um. Dann habe ich auch alle Infos ob high impact variant
+    // dann kann ich das scoring laufen lassen
     // go through all heterozygous genetoypes
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
-        //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
-        std::set<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
-        //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
-        // evaluate each allele if it fits to the current genotype
-        for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
-        {
-            vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
-            //for(auto i : gt2pt)
-            //    cout << i << endl;
-            /*if(
-                gt2pt.size() != 0 && iterSampleAlleles->variantCount() < gt2pt[0].errurSum()
-              )
-            {
-                //cout << possible_sample_genotypes << " has to many errors in " << gt2pt[0] << endl;
-                //act_hits.clear();
-                break;
-            }
-            else*/
-            if(gt2pt.size() == 0)
-            {
-                //cout << possible_sample_genotypes << " has no result " << endl;
-                //act_hits.clear();
-                break;
-            }
-            else
-            {
-                mRet[*possible_sample_genotypes][possible_sample_allele]=gt2pt;
-                //cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotypes][possible_sample_allele][0] << endl;
-            }
-        }
         
+        auto func = [this](const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
+                           set<CIsbtGt>::const_iterator  possible_sample_genotypes, 
+                           int required_coverage, float& highest_score, float score_range) mutable {
+                doTheMatching(system,mRet,variants,possible_sample_genotypes,
+                      required_coverage,highest_score,score_range);
+            };
+        runInThread(func, system,mRet,variants,possible_sample_genotypes,
+                      required_coverage,highest_score,score_range);
+        //doTheMatching(system,mRet,variants,possible_sample_genotypes,
+        //              required_coverage,highest_score,score_range);
     }
-    scoreHits(mRet);
-    sort(mRet);
+    cout << "waiting for completion, threads = "<< m_activeThreads << endl;
+    waitForCompletion();
+    //cout << "score" << endl;
+    //scoreHits(mRet,system,variants.isbtSnps());
+    //cout << "sort" << endl;
+    //sort(mRet);
+    //cout << "done" << endl;
     m_typing_results[system]=mRet;
     return mRet;
 }
 
-float CIsbtGt2Pt::scoreHits(map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>& all_hits)
+void CIsbtGt2Pt::scoreHit(CIsbtGt2PtHit& act_hit, const string& system,const CISBTAnno* isbt_anno)
 {
-    float fRet = 1.0f;
-    pair<int,int> range_typed_not_in_anno=pair<int,int>(0,-1); // this is for normalizing values
-    pair<int,int> range_anno_not_in_typed=pair<int,int>(0,-1); // this is for normalizing values
-    pair<int,int> range_high_impact_matches=pair<int,int>(0,-1); // this is for normalizing values
-    pair<int,int> range_high_impact_mismatches=pair<int,int>(0,-1); // this is for normalizing values
-    pair<int,int> range_anno_in_typed_but_not_in_current_genotype=pair<int,int>(0,-1); // this is for normalizing values
-    pair<int,int> range_not_covered=pair<int,int>(0,-1); // this is for normalizing values
-    // map<CIsbtGt,map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>
+    float system_var_count = static_cast<float>(isbt_anno->getIsbtVariantCount(system));
+    float act_hit_malus = 0.0f;
+    
+    /**
+    * An ISBT allele relevant base change detected, but this one is not relevant for the current allele
+    -2 m_typed_not_in_anno;
+    * An ISBT allele relevant base change detected, but this one is not relevant for the current allele. And it is a high impact SNP
+    -4 m_high_impact_typed_not_in_anno;
+    * An ISBT base change which characterizes this allele but is not present in the sample
+    -2 m_anno_not_in_typed;
+    * An ISBT base change which characterizes this allele but is not present in the sample. And it is a high impact SNP
+    -4 m_high_impact_anno_not_in_typed;
+    -1 m_not_covered;  // number of SNPs that are not covered
+    -4 m_high_impact_not_covered;  // number of SNPs that are not covered
+    +2 m_high_impact_match;
+    -4 m_high_impact_mismatch;
+    int m_null_variants;
+    */
+    
+    system_var_count += act_hit.m_high_impact_match;
+    act_hit_malus+= act_hit.m_typed_not_in_anno*2.0f +
+                    act_hit.m_high_impact_typed_not_in_anno*4.0f +
+                    act_hit.m_anno_not_in_typed*2.0f +
+                    act_hit.m_high_impact_anno_not_in_typed * 4.0f +
+                    act_hit.m_not_covered*1.0f +
+                    act_hit.m_high_impact_not_covered*4.0f + 
+                    act_hit.m_high_impact_mismatch*4.0f;
+
+    if(act_hit_malus > system_var_count)
+        act_hit.score(0.0f);
+    else
+        act_hit.score(0.5f/system_var_count*(system_var_count-act_hit_malus));
+    //cout << "score of " << act_hit << endl;
+}
+
+void CIsbtGt2Pt::scoreHits(CIsbtGt2Pt::typing_result& all_hits, const string& system,const CISBTAnno* isbt_anno)
+{
     for(auto& gt_scores:all_hits)
     {
-        // map<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
+        // multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>
         for(auto& act_alleles:gt_scores.second)
         {
             // vector<CIsbtGt2PtHit>
             for(auto& act_hit:act_alleles.second)
             {
-                //range_typed_not_in_anno.first = min(range_typed_not_in_anno.first,act_hit.m_typed_not_in_anno);
-                range_typed_not_in_anno.second = std::max(range_typed_not_in_anno.second,act_hit.m_typed_not_in_anno);
-                //range_anno_not_in_typed.first = min(range_anno_not_in_typed.first,act_hit.m_anno_not_in_typed);
-                range_anno_not_in_typed.second = std::max(range_anno_not_in_typed.second,act_hit.m_anno_not_in_typed);
-                range_anno_in_typed_but_not_in_current_genotype.second = std::max(range_anno_in_typed_but_not_in_current_genotype.second,act_hit.m_anno_in_typed_but_not_in_current_genotype);
-                range_not_covered.second = std::max(range_not_covered.second,act_hit.m_not_covered);
-                range_high_impact_matches.second =std::max(range_high_impact_matches.second,act_hit.m_high_impact_match);
-                range_high_impact_mismatches.second =std::max(range_high_impact_mismatches.second,act_hit.m_high_impact_mismatch);
-            }
+                scoreHit(act_hit, system,isbt_anno);
+             }
         }
     }
-    if(range_typed_not_in_anno.first == -1)
-        return fRet;
-    for(auto& gt_scores:all_hits)
-    {
-        for(auto& act_alleles:gt_scores.second)
-        {
-            for(auto& act_hit:act_alleles.second)
-            {
-                float normed_typed_not_in_anno = 1.0f;
-                if(range_typed_not_in_anno.first != range_typed_not_in_anno.second)
-                    normed_typed_not_in_anno = 1.0f-static_cast<float>(act_hit.m_typed_not_in_anno-range_typed_not_in_anno.first)/static_cast<float>(range_typed_not_in_anno.second-range_typed_not_in_anno.first);
-                float normed_anno_not_in_typed = 1.0f;
-                if(range_anno_not_in_typed.first != range_anno_not_in_typed.second)
-                    normed_anno_not_in_typed = 1.0f-static_cast<float>(act_hit.m_anno_not_in_typed-range_anno_not_in_typed.first)/static_cast<float>(range_anno_not_in_typed.second-range_anno_not_in_typed.first);
-                float normed_anno_in_typed_but_not_in_current_genotype = 1.0f;
-                if(range_anno_in_typed_but_not_in_current_genotype.first != range_anno_in_typed_but_not_in_current_genotype.second)
-                    normed_anno_in_typed_but_not_in_current_genotype = 1.0f-static_cast<float>(act_hit.m_anno_in_typed_but_not_in_current_genotype-range_anno_in_typed_but_not_in_current_genotype.first)/static_cast<float>(range_anno_in_typed_but_not_in_current_genotype.second-range_anno_in_typed_but_not_in_current_genotype.first);
-                float normed_not_covered = 1.0f;
-                if(range_not_covered.first != range_not_covered.second)
-                    normed_not_covered = 1.0f-static_cast<float>(act_hit.m_not_covered-range_not_covered.first)/static_cast<float>(range_not_covered.second-range_not_covered.first);
-                
-                [[maybe_unused]] float normed_high_impact_matches = 1.0f;
-                if(range_high_impact_matches.first != range_high_impact_matches.second)
-                    normed_high_impact_matches = static_cast<float>(act_hit.m_high_impact_match-range_high_impact_matches.first)/static_cast<float>(range_high_impact_matches.second-range_high_impact_matches.first);
-                [[maybe_unused]] float normed_high_impact_mismatches = 1.0f;
-                if(range_high_impact_mismatches.first != range_high_impact_mismatches.second)
-                    normed_high_impact_mismatches = 1.0f-static_cast<float>(act_hit.m_high_impact_mismatch-range_high_impact_mismatches.first)/static_cast<float>(range_high_impact_mismatches.second-range_high_impact_mismatches.first);
-
-                // harmonic mean
-                // weigh: anno_not_in_typed as 1/3 important
-                //cout << "ranges typed_not_in_anno: " << range_typed_not_in_anno.first << " - " << range_typed_not_in_anno.second << endl;
-                //cout << "ranges anno_not_in_typed: " << range_anno_not_in_typed.first << " - " << range_anno_not_in_typed.second << endl;
-                float score = ((2.0f+1.0f+5.0f+1.0f)*normed_anno_not_in_typed*normed_typed_not_in_anno*normed_anno_in_typed_but_not_in_current_genotype*normed_not_covered); // numerator
-                float denominator = ((2.0f*normed_anno_not_in_typed)+(1.0f*normed_typed_not_in_anno)+(5.0f*normed_anno_in_typed_but_not_in_current_genotype)+(1.0f*normed_not_covered));
-                if(denominator == 0.0f)
-                    score = 0.0f;
-                else
-                    score /= denominator;
-                // here comes the impact of m_high_impact_match
-                // pull up the score that for those that have high impact matches
-                if(range_high_impact_matches.first != range_high_impact_matches.second)
-                {
-                    for(int i = 0; i < act_hit.m_high_impact_match; i++)
-                        score = (score + 1.0f)/2.0f;
-                }
-                
-                act_hit.score(score);
-                //cout << "score of " << act_hit << endl;
-                fRet = std::max(fRet,score);
-            }
-        }
-    }
-    return fRet;
 }
 
 vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
@@ -234,32 +257,46 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
             if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
             {
                 // incomplete covered
-                actHit.m_not_covered++;
+                if(isHighImpactSnp)
+                    actHit.m_high_impact_not_covered++;
+                else
+                    actHit.m_not_covered++;
             }
             if( !isbtGtAllele.contains(a) )
             {
-                actHit.m_anno_not_in_typed++;
-                if( static_cast<int>(act_variant_coverage+0.5) >= required_coverage )
-                    actHit.m_anno_in_typed_but_not_in_current_genotype++;
+                if(isHighImpactSnp)
+                    actHit.m_high_impact_anno_not_in_typed++;
+                else
+                    actHit.m_anno_not_in_typed++;
             }
-            else if( isHighImpactSnp )
+            else 
             {
-                actHit.m_high_impact_match++;
+                if( isHighImpactSnp )
+                    actHit.m_high_impact_match++;
+                else
+                    actHit.m_match++;
             }
         }
+        // Go through ISBT annotation
         for(const CIsbtVariant& i:isbtGtAllele.variantSet())
         {
             if(!anno.containsBaseChange(i.name()))
-                actHit.m_typed_not_in_anno++;
+            {
+                if(i.isHighImpactSNP())
+                    actHit.m_high_impact_typed_not_in_anno++;
+                else
+                    actHit.m_typed_not_in_anno++;
+            }
         }
         //cout << actHit << endl;
+        scoreHit(actHit, system,isbt_snps);
         vRet.push_back(actHit);
     }
-    std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_errors_asc);
+    std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);
     return vRet;
 }
 
-nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
+nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
 {
     nlohmann::json jRet;
     
@@ -290,11 +327,15 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::ma
                 break;
             allele["names"].push_back(act_hit.m_phenotype_allele.name());
             nlohmann::json metrics;
-            metrics["high_impact_snp_matches"] = act_hit.m_high_impact_match;
             metrics["typed_not_in_anno"] = act_hit.m_typed_not_in_anno;
-            metrics["anno_not_in_typed"] = act_hit.m_anno_not_in_typed;
-            metrics["anno_in_typed_but_not_in_current_genotype"] = act_hit.m_anno_in_typed_but_not_in_current_genotype; // this is a strong indicator for a false positive, as it is well covered, typed but not in this genotype
+            metrics["m_anno_not_in_typed"] = act_hit.m_anno_not_in_typed;
+            metrics["high_impact_snp_matches"] = act_hit.m_high_impact_match;
+            metrics["m_high_impact_mismatch"] = act_hit.m_high_impact_mismatch;
+            metrics["m_high_impact_typed_not_in_anno"] = act_hit.m_high_impact_typed_not_in_anno;
+            metrics["m_high_impact_anno_not_in_typed"] = act_hit.m_high_impact_anno_not_in_typed;
             metrics["not_covered"] = act_hit.m_not_covered;
+            metrics["m_high_impact_not_covered"] = act_hit.m_not_covered;
+            metrics["m_null_variants"] = act_hit.m_null_variants;
             allele["issues"].push_back(metrics);
             phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
             flat_phenotype.push_back(act_hit.m_phenotype_allele.flatPhenotype());
@@ -498,7 +539,7 @@ bool CIsbtGt2Pt::sort_by_space_separated_entries_asc(const string& a,const strin
     
 }
 
-float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
+float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const
 {
     float fRet = 0.0f;
     for(auto& act_allele:allele_calls)
@@ -543,6 +584,33 @@ string CIsbtGt2Pt::systemOf(const string& allele)const
     return "";
 }
 
+void CIsbtGt2Pt::runInThread(
+        std::function<void(const std::string& ,CIsbtGt2Pt::typing_result& , const CVariantChains& , 
+                           set<CIsbtGt>::const_iterator ,int , float& , float )> func,
+        const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
+        set<CIsbtGt>::const_iterator  possible_sample_genotypes,int required_coverage, float& highest_score, float score_range) const
+{
+    std::unique_lock<std::mutex> lock(m_mutex);
+
+    // Warten, bis die Anzahl der aktiven Threads kleiner als m_maxThreads ist
+    m_condition.wait(lock, [this] { return m_activeThreads < m_maxThreads; });
+
+    // Erhöhen Sie die Anzahl der aktiven Threads
+    ++m_activeThreads;
+    cout << "threads matches " << m_activeThreads << endl;
+    // Starten Sie einen neuen Thread, um die Funktion auszuführen
+    std::thread([this, func, &system,&mRet, &variants,possible_sample_genotypes, 
+        required_coverage,&highest_score,score_range]() {
+        func(system,mRet,variants,possible_sample_genotypes, 
+        required_coverage,highest_score,score_range);
+        {
+            // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
+            std::unique_lock<std::mutex> lock(m_mutex);
+            --m_activeThreads;
+        }
+        m_condition.notify_one();
+    }).detach();
+}
 
 std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me)
 {

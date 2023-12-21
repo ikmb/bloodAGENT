@@ -201,13 +201,50 @@ void CVariantChain::getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllel
         CIsbtGt newGt;
         newGt.add(allA);
         newGt.add(allB);
+        std::lock_guard<std::mutex> lock(m_setMutex);
         vars.insert(newGt);
         return;
     }
-    getPossibleGenotypesMT(vars, allA, allB,iter);
-    getPossibleGenotypesMT(vars, allA, allB,iter,1);
+    auto func = [this](std::set<CIsbtGt>& sRet, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
+                     std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,int type) mutable {
+                getPossibleGenotypesMT(sRet, allele_A, allele_B, iter, type);
+            };
+            
+    if(m_activeThreads < m_maxThreads)    
+        runInThread(func, vars, allA, allB,iter);
+    else
+        getPossibleGenotypesMT(vars, allA, allB,iter);
+    if(m_activeThreads < m_maxThreads)    
+        runInThread(func, vars, allA, allB,iter,1);
+    else
+        getPossibleGenotypesMT(vars, allA, allB,iter,1);
 }
 
+void CVariantChain::runInThread(
+        std::function<void(std::set<CIsbtGt>&, CIsbtGtAllele, CIsbtGtAllele,
+                           std::map<std::string, std::set<CVariantChainVariation>>::const_iterator, int)> func,
+        std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
+        std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
+        int type) const 
+{ // Hinzugefügtes const für runInThread
+    std::unique_lock<std::mutex> lock(m_mutex);
+
+    // Warten, bis die Anzahl der aktiven Threads kleiner als m_maxThreads ist
+    m_condition.wait(lock, [this] { return m_activeThreads < m_maxThreads; });
+
+    // Erhöhen Sie die Anzahl der aktiven Threads
+    ++m_activeThreads;
+    //cout << "threads genotypes " << m_activeThreads << endl;
+    // Starten Sie einen neuen Thread, um die Funktion auszuführen
+    std::thread([this, func, &vars, allele_A, allele_B, iter, type]() {
+        func(vars, allele_A, allele_B, iter, type);
+
+        // Reduzieren Sie die Anzahl der aktiven Threads und benachrichtigen Sie andere Threads
+        std::unique_lock<std::mutex> lock(m_mutex);
+        --m_activeThreads;
+        m_condition.notify_one();
+    }).detach();
+}
 
 std::ostream& operator<<(std::ostream& os, const CVariantChain& me)
 {

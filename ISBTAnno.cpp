@@ -163,6 +163,16 @@ std::vector<CISBTAnno::variation>  CISBTAnno::getIsbtVariants(const string& syst
     return vRet;
 }
 
+size_t  CISBTAnno::getIsbtVariantCount(const string& system)const
+{
+    std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);
+    if(i != m_isbt_variant_to_index.end())
+    {
+        return i->second.size();
+    }   
+    return 0;
+}
+
 CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string& isbt_var)const
 {
     std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);

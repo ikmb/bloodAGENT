@@ -16,6 +16,7 @@
       <itemPath>CMakeTrainingVcf.h</itemPath>
       <itemPath>CMotifFinder.h</itemPath>
       <itemPath>CScoreHaplotype.h</itemPath>
+      <itemPath>CSyncedScoreVector.h</itemPath>
       <itemPath>CTranscript.h</itemPath>
       <itemPath>CTranscriptAnno.h</itemPath>
       <itemPath>CVariantChain.h</itemPath>
@@ -163,6 +164,8 @@
       </item>
       <item path="CScoreHaplotype.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CSyncedScoreVector.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CTranscript.h" ex="false" tool="3" flavor2="0">
@@ -305,6 +308,8 @@
       <item path="CScoreHaplotype.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CScoreHaplotype.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CSyncedScoreVector.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CTranscript.cpp" ex="false" tool="1" flavor2="0">
       </item>

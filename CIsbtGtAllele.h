@@ -39,7 +39,6 @@ public:
     std::set<CIsbtVariant>  variantSet()const{return m_gt;}
     size_t  variantCount()const{return m_gt.size();}
     
-    
     /// returns true if the CIsbtVariant is new
     bool add(const CIsbtVariant& var);
     
