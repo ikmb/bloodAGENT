@@ -54,6 +54,12 @@ private:
         std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
         std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
         int type = 0) const ;
+    void runInThreadRecursive(
+        std::function<void(std::set<CIsbtGt>&, CIsbtGtAllele, CIsbtGtAllele,
+                           std::map<std::string, std::set<CVariantChainVariation>>::const_iterator, int)> func,
+        std::set<CIsbtGt>& vars, CIsbtGtAllele allele_A, CIsbtGtAllele allele_B,
+        std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
+        int type = 0) const ;
     
     void waitForCompletion()const {
         std::unique_lock<std::mutex> lock(m_mutex);

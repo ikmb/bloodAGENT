@@ -86,6 +86,12 @@ string getArgumentList(TCLAP::CmdLine& args);
  
   "${OUTPUT_PATH}"  --job vcf --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat 
                     --gt2pt /home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat -a "RHD*01EL.24" -b "RHD*01W.72"
+  
+  
+// valgrind --tool=helgrind --read-var-info=yes /home/mwittig/coding/cpp/deepBlood/dist/Debug/GNU-Linux/deepblood --job phenotype --target /home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg38.abotarget.txt --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat --gt2pt /home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat --vcf /home/mwittig/ramDisk/FOC00131.hg38.bwa.variants.vcf.gz --bigwig /home/mwittig/ramDisk/FOC00131.hg38.bwa.bw --coverage 10 --verbose 2 --scoreRange 0.98 --out /home/mwittig/ramDisk/FOC00131_typing.json --build hg38 > helgrind.txt 2>&1
+// valgrind --leak-check=full /home/mwittig/coding/cpp/deepBlood/dist/Debug/GNU-Linux/deepblood --job phenotype --target /home/mwittig/coding/cpp/deepBlood/data/config/exonic_annotation.hg38.abotarget.txt --variants /home/mwittig/coding/cpp/deepBlood/data/config/variation_annotation.dat --gt2pt /home/mwittig/coding/cpp/deepBlood/data/config/genotype_to_phenotype_annotation.dat --vcf /home/mwittig/ramDisk/FOC00131.hg38.bwa.variants.vcf.gz --bigwig /home/mwittig/ramDisk/FOC00131.hg38.bwa.bw --coverage 10 --verbose 2 --scoreRange 0.98 --out /home/mwittig/ramDisk/FOC00131_typing.json --build hg38 > valgrind.txt 2>&1
+
+
  */
 
 
