@@ -277,7 +277,7 @@ void CVariantChain::runInThreadRecursive(
         std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,
         int type) const 
 { // Hinzugefügtes const für runInThread
-    cout << "threads genotypes " << m_activeThreads << endl;
+    //cout << "threads genotypes " << m_activeThreads << endl;
     // Starten Sie einen neuen Thread, um die Funktion auszuführen
     std::thread([this, func, &vars, allele_A, allele_B, iter, type]() {
         func(vars, allele_A, allele_B, iter, type);
