@@ -211,7 +211,6 @@ void CVariantChain::getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllel
                      std::map<std::string, std::set<CVariantChainVariation>>::const_iterator iter,int type) mutable {
                 getPossibleGenotypesMT(sRet, allele_A, allele_B, iter, type);
             };
-
     {
         m_mutex.lock();
         if(m_activeThreads < m_maxThreads)
@@ -241,7 +240,8 @@ void CVariantChain::getPossibleGenotypesMT(std::set<CIsbtGt>& vars, CIsbtGtAllel
             m_mutex.unlock();
             getPossibleGenotypesMT(vars, allA, allB,iter,1);
         }
-    }        
+    }  
+    //*/      
 }
 
 void CVariantChain::runInThread(

@@ -85,31 +85,33 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
 }
 
 void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,
-        set<CIsbtGt>::const_iterator  possible_sample_genotypes, int required_coverage, float& highest_score, float score_range)
+        set<CIsbtGt>::const_iterator  possible_sample_genotype, int required_coverage, float& highest_score, float score_range)
 {
-    //cout << "typing " << *possible_sample_genotypes << endl; // output the genotype 
-    std::multiset<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotypes->getAlleles();
+    //cout << "typing " << *possible_sample_genotype << endl; // output the genotype 
+    std::multiset<CIsbtGtAllele> possible_sample_alleles = possible_sample_genotype->getAlleles();
     // !!!!!!!!!!!! hier //////////////////
     //std::set<CIsbtGtAllele>::const_iterator iterSampleAlleles = possible_sample_alleles.begin();
     // evaluate each allele if it fits to the current genotype
     for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
     {
         vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+        //cout << possible_sample_alleles.size() << " with " << possible_sample_allele << " " << gt2pt.size() << endl;
         if(gt2pt.size() == 0)
         {
-            //cout << possible_sample_genotypes << " has no result " << endl;
+            //cout << *possible_sample_genotype << " has no result " << endl;
             //act_hits.clear();
             break;
         }
         else
         {
+            //cout << *possible_sample_genotype << " has " << gt2pt.size() << endl;
             // map<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>
             std::lock_guard<std::mutex> lock(m_objectMutex);
-            typing_result::iterator iterA = mRet.find(*possible_sample_genotypes);
+            typing_result::iterator iterA = mRet.find(*possible_sample_genotype);
             if(iterA == mRet.end())
             {
                 multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>> mTmp;
-                iterA = mRet.insert(pair<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>(*possible_sample_genotypes,mTmp)).first;
+                iterA = mRet.insert(pair<CIsbtGt,multimap<CIsbtGtAllele,vector<CIsbtGt2PtHit>>>(*possible_sample_genotype,mTmp)).first;
             }
             iterA->second.insert(pair<CIsbtGtAllele,vector<CIsbtGt2PtHit>>(possible_sample_allele,gt2pt));
             /*
@@ -117,23 +119,17 @@ void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_resu
             size_t b = iterA->second.size();
             size_t c = iterA->second.find(possible_sample_allele)->second.size();
             cout << a << " * " << b << " * " << c << " = " << a*b*c << endl;
-            *///cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotypes][possible_sample_allele][0] << endl;
+            *///cout << gt2pt[0] << " -------- " << mRet[*possible_sample_genotype][possible_sample_allele][0] << endl;
         }
     }
+    
     std::lock_guard<std::mutex> lock(m_objectMutex);
-    typing_result::iterator iterA = mRet.find(*possible_sample_genotypes);
+    typing_result::iterator iterA = mRet.find(*possible_sample_genotype);
     if(iterA != mRet.end())
     {
         float act_score = getPredictedScoreOfGenotype(iterA->second);
         highest_score = std::max(act_score,highest_score);
-        for(CIsbtGt2Pt::typing_result::iterator i = mRet.begin(); i != mRet.end(); )
-        {
-            act_score = getPredictedScoreOfGenotype(i->second);
-            if(act_score < highest_score*score_range)
-                i= mRet.erase(i);
-            else
-                i++;
-        }
+        
     }
                 
 }
@@ -155,9 +151,14 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     // in ein set oder Vector von CIsbtVariant um. Dann habe ich auch alle Infos ob high impact variant
     // dann kann ich das scoring laufen lassen
     // go through all heterozygous genetoypes
+    int counter = 0;
+    
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
-        
+        /*
+        doTheMatching(system,mRet,variants,possible_sample_genotypes,
+                      required_coverage,highest_score,score_range);
+        */
         auto func = [this](const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
                            set<CIsbtGt>::const_iterator  possible_sample_genotypes, 
                            int required_coverage, float& highest_score, float score_range) mutable {
@@ -166,6 +167,25 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
             };
         runInThread(func, system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
+        
+        bool doCleaning = false;
+        {
+            std::lock_guard<std::mutex> lock(m_objectMutex);
+            doCleaning = ++counter%m_maxThreads == 0;
+        }
+        if(doCleaning)
+        {
+            waitForCompletion();
+            std::unique_lock<std::mutex> lock(m_mutex);
+            for(CIsbtGt2Pt::typing_result::iterator i = mRet.begin(); i != mRet.end(); )
+            {
+                float act_score = getPredictedScoreOfGenotype(i->second);
+                if(act_score < highest_score*score_range)
+                    i= mRet.erase(i);
+                else
+                    i++;
+            }
+        }
         //doTheMatching(system,mRet,variants,possible_sample_genotypes,
         //              required_coverage,highest_score,score_range);
     }
@@ -597,7 +617,7 @@ void CIsbtGt2Pt::runInThread(
 
     // Erhöhen Sie die Anzahl der aktiven Threads
     ++m_activeThreads;
-    //cout << "threads matches " << m_activeThreads << endl;
+    cout << "threads matches " << m_activeThreads << endl;
     // Starten Sie einen neuen Thread, um die Funktion auszuführen
     std::thread([this, func, &system,&mRet, &variants,possible_sample_genotypes, 
         required_coverage,&highest_score,score_range]() {
