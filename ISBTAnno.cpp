@@ -173,6 +173,18 @@ size_t  CISBTAnno::getIsbtVariantCount(const string& system)const
     return 0;
 }
 
+int CISBTAnno::getIsbtVariantIndex(const string& system,const string& isbt_var)const
+{
+    std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);
+    if(i != m_isbt_variant_to_index.end())
+    {
+        std::map<std::string,int>::const_iterator j = i->second.find(isbt_var);
+        if(j != i->second.end())
+            return j->second;
+    }
+    return -1;
+}
+
 CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string& isbt_var)const
 {
     std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);

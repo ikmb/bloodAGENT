@@ -108,7 +108,8 @@ void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_resu
     // evaluate each allele if it fits to the current genotype
     for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
     {
-        vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+        //vector<CIsbtGt2PtHit> gt2pt = findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+         vector<CIsbtGt2PtHit> gt2pt= cosineSimilarityMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
         //cout << possible_sample_alleles.size() << " with " << possible_sample_allele << " " << gt2pt.size() << endl;
         if(gt2pt.size() == 0)
         {
@@ -204,6 +205,26 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     return mRet;
 }
 
+    
+void CIsbtGt2Pt::scoreCosineSimilarity(CIsbtGt2PtHit& act_hit,const vector<float>& typedSNV, const vector<float>& insilicoSNV, const vector<float>& weights)
+{
+    float dotProduct = 0.0;
+    float normA = 0.0;
+    float normB = 0.0;
+    
+    for (size_t i = 0; i < typedSNV.size(); ++i) {
+        dotProduct += typedSNV[i] * insilicoSNV[i] * weights[i]; // Gewichte einbeziehen
+        normA += typedSNV[i] * typedSNV[i] * weights[i]; // Gewichtete Norm
+        normB += insilicoSNV[i] * insilicoSNV[i] * weights[i];
+    }
+
+    // Vermeidung der Division durch Null
+    if (normA == 0 || normB == 0) 
+        act_hit.score(0.0f);
+    else
+        act_hit.score(dotProduct / (sqrt(normA) * sqrt(normB)));
+}
+
 void CIsbtGt2Pt::scoreHit(CIsbtGt2PtHit& act_hit, const string& system,const CISBTAnno* isbt_anno)
 {
     float system_var_count = static_cast<float>(isbt_anno->getIsbtVariantCount(system));
@@ -279,7 +300,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
                 continue;
             bool isHighImpactSnp = isbt_snps->getIsbtVariant(system,a).isHighImpactSNP();
             double act_variant_coverage = isbt_snps->getIsbtVariant(system,a).getCoverage();
-            if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
+            if(static_cast<int>(act_variant_coverage) < required_coverage)
             {
                 // incomplete covered
                 if(isHighImpactSnp)
@@ -315,6 +336,61 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
         }
         //cout << actHit << endl;
         scoreHit(actHit, system,isbt_snps);
+        vRet.push_back(actHit);
+    }
+    std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);
+    return vRet;
+}
+
+vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string& system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
+{
+    // this is a theoretical (in silico) ISBT Allele with its variants. I check if the measured SNVs fit with this one
+    std::set<CIsbtVariant>  theoretical_allele = isbtGtAllele.variantSet();
+    // This is the measured SNVs. One of the potential haplotypes
+    std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
+    if(iterSys == m_allele_vector.end())
+        return vector<CIsbtGt2PtHit>();
+    
+    vector<CISBTAnno::variation> allSystemVariations = isbt_snps->getAllVariations(system);
+    int systemVarCount = allSystemVariations.size();
+    
+    vector<CIsbtGt2PtHit> vRet;
+    // calculate matching parameters for each annotated allele, 
+    for(const CIsbtPtAllele& sequenced_SNV:iterSys->second)
+    {
+        // set all SNVs to reference allele and all weights to 1.0f
+        vector<float> typedSNV(systemVarCount, 0.0f);
+        vector<float> insilicoSNV(systemVarCount, 0.0f);
+        vector<float> weights(systemVarCount, 1.0f);
+    
+        CIsbtGt2PtHit actHit(sequenced_SNV);
+        // for each annotated base change 
+        for(const string& a:sequenced_SNV.baseChanges())
+        {
+            if(a.size() == 0)
+                continue;
+            int idx = isbt_snps->getIsbtVariantIndex(system,a);
+            if(idx != -1)
+                typedSNV[idx] = 1.0f;
+        }    
+        // in silico build allele
+        for(const CIsbtVariant& a:theoretical_allele)
+        {
+            
+            int idx = isbt_snps->getIsbtVariantIndex(system,a.name());
+            if(idx != -1)
+                insilicoSNV[idx] = 1.0f;
+        }  
+        int idx = 0;
+        for(CISBTAnno::variation var:allSystemVariations)
+        {
+            if(var.isHighImpactSNP())
+                weights[idx]=2.0f;
+            if(static_cast<int>(var.getCoverage()) < required_coverage)
+                typedSNV[idx]=insilicoSNV[idx]=0.5f;
+            idx++;
+        }
+        scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
         vRet.push_back(actHit);
     }
     std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);

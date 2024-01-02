@@ -32,6 +32,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
+    std::vector<CIsbtGt2PtHit> cosineSimilarityMatches(const string& system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage);
     typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10, float score_range = 1.0f);
     void doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,set<CIsbtGt>::const_iterator  possible_sample_genotype, int required_coverage, float& highest_score, float score_range);
     void doCleaning(CIsbtGt2Pt::typing_result& mRet, float highest_score, float score_range);
@@ -59,6 +60,7 @@ private:
     void init(const std::string& filename);
     void scoreHits(CIsbtGt2Pt::typing_result&, const string& system,const CISBTAnno* isbt_anno);
     void scoreHit(CIsbtGt2PtHit&, const string& system,const CISBTAnno* isbt_anno);
+    void scoreCosineSimilarity(CIsbtGt2PtHit& act_hit,const vector<float>& typedSNV, const vector<float>& insilicoSNV, const vector<float>& weights);
     float getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     static bool sort_by_space_separated_entries_asc(const string& a,const string& b);
