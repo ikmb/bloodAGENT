@@ -84,6 +84,20 @@ void CIsbtGt2Pt::sort(CIsbtGt2Pt::typing_result& var)
     }
 }
 
+void CIsbtGt2Pt::doCleaning(CIsbtGt2Pt::typing_result& mRet, float highest_score, float score_range)
+{
+    waitForCompletion();
+    std::unique_lock<std::mutex> lock(m_mutex);
+    for(CIsbtGt2Pt::typing_result::iterator i = mRet.begin(); i != mRet.end(); )
+    {
+        float act_score = getPredictedScoreOfGenotype(i->second);
+        if(act_score < highest_score*score_range)
+            i= mRet.erase(i);
+        else
+            i++;
+    }
+}
+
 void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,
         set<CIsbtGt>::const_iterator  possible_sample_genotype, int required_coverage, float& highest_score, float score_range)
 {
@@ -168,28 +182,19 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
         runInThread(func, system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
         
-        bool doCleaning = false;
+        bool clean_up = false;
         {
             std::lock_guard<std::mutex> lock(m_objectMutex);
-            doCleaning = ++counter%m_maxThreads == 0;
+            clean_up = ++counter%m_maxThreads == 0;
         }
-        if(doCleaning)
+        if(clean_up)
         {
-            waitForCompletion();
-            std::unique_lock<std::mutex> lock(m_mutex);
-            for(CIsbtGt2Pt::typing_result::iterator i = mRet.begin(); i != mRet.end(); )
-            {
-                float act_score = getPredictedScoreOfGenotype(i->second);
-                if(act_score < highest_score*score_range)
-                    i= mRet.erase(i);
-                else
-                    i++;
-            }
+            doCleaning(mRet,highest_score,score_range);
         }
         //doTheMatching(system,mRet,variants,possible_sample_genotypes,
         //              required_coverage,highest_score,score_range);
     }
-    waitForCompletion();
+    doCleaning(mRet,highest_score,score_range);
     //cout << "score" << endl;
     //scoreHits(mRet,system,variants.isbtSnps());
     //cout << "sort" << endl;
@@ -617,7 +622,7 @@ void CIsbtGt2Pt::runInThread(
 
     // Erhöhen Sie die Anzahl der aktiven Threads
     ++m_activeThreads;
-    cout << "threads matches " << m_activeThreads << endl;
+    //cout << "threads matches " << m_activeThreads << endl;
     // Starten Sie einen neuen Thread, um die Funktion auszuführen
     std::thread([this, func, &system,&mRet, &variants,possible_sample_genotypes, 
         required_coverage,&highest_score,score_range]() {
