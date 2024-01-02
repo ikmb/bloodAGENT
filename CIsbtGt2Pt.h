@@ -32,7 +32,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const CIsbtGt2Pt& me);
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
-    std::vector<CIsbtGt2PtHit> cosineSimilarityMatches(const string& system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage);
+    std::vector<CIsbtGt2PtHit> cosineSimilarityMatches(const string system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage);
     typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10, float score_range = 1.0f);
     void doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,set<CIsbtGt>::const_iterator  possible_sample_genotype, int required_coverage, float& highest_score, float score_range);
     void doCleaning(CIsbtGt2Pt::typing_result& mRet, float highest_score, float score_range);
@@ -93,6 +93,7 @@ private:
     mutable int m_activeThreads;
     mutable std::mutex m_mutex;
     mutable std::mutex m_objectMutex;
+    mutable std::mutex m_debugMutex;
     mutable std::condition_variable m_condition;
 };
 

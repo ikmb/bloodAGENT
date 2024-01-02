@@ -109,7 +109,7 @@ void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_resu
     for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
     {
         //vector<CIsbtGt2PtHit> gt2pt = findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
-         vector<CIsbtGt2PtHit> gt2pt= cosineSimilarityMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+        vector<CIsbtGt2PtHit> gt2pt= cosineSimilarityMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
         //cout << possible_sample_alleles.size() << " with " << possible_sample_allele << " " << gt2pt.size() << endl;
         if(gt2pt.size() == 0)
         {
@@ -173,7 +173,8 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
         /*
         doTheMatching(system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
-        */
+        //*/
+        
         auto func = [this](const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
                            set<CIsbtGt>::const_iterator  possible_sample_genotypes, 
                            int required_coverage, float& highest_score, float score_range) mutable {
@@ -182,7 +183,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
             };
         runInThread(func, system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
-        
+        //*/
         bool clean_up = false;
         {
             std::lock_guard<std::mutex> lock(m_objectMutex);
@@ -342,8 +343,13 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
-vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string& system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
+vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
 {
+    {
+        std::unique_lock<std::mutex> lock(m_debugMutex);
+        static size_t counter = 0;
+        cout << "round " << ++counter << endl;
+    }
     // this is a theoretical (in silico) ISBT Allele with its variants. I check if the measured SNVs fit with this one
     std::set<CIsbtVariant>  theoretical_allele = isbtGtAllele.variantSet();
     // This is the measured SNVs. One of the potential haplotypes
@@ -382,14 +388,17 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string& system, 
                 insilicoSNV[idx] = 1.0f;
         }  
         int idx = 0;
-        for(CISBTAnno::variation var:allSystemVariations)
+        cout << system << " with " << allSystemVariations.size() << "variations" << endl;
+        for(CISBTAnno::variation& var:allSystemVariations)
         {
             if(var.isHighImpactSNP())
                 weights[idx]=2.0f;
             if(static_cast<int>(var.getCoverage()) < required_coverage)
                 typedSNV[idx]=insilicoSNV[idx]=0.5f;
+            cout << idx << " -> " << flush;
             idx++;
         }
+        cout << endl;
         scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
         vRet.push_back(actHit);
     }

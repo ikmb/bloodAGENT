@@ -329,11 +329,11 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         {
             CVcfSnp act_snp = vcf_file.get_record();
             //cerr << act_snp << endl;
-            bool adding_successfull = vcs.add(act_snp);
-            if(!adding_successfull && arg_verbose >= 3)
+            string act_snp_system = vcs.add(act_snp);
+            if(act_snp_system.size() == 0 && arg_verbose >= 3)
                 cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
-            else if(adding_successfull && arg_verbose >= 2)
-                cerr << act_snp << "\tISBT relevant SNP added" << endl;
+            else if(act_snp_system.size() != 0 && arg_verbose >= 2)
+                cerr << act_snp << "\t" << act_snp_system << ", ISBT relevant SNP added" << endl;
         };
         vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
         
@@ -353,6 +353,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         {
             if( arg_locus.length() == 0 || arg_loci_set.find(locus) != arg_loci_set.end() )
             {
+                cout << locus << endl;
                 isbTyper.type(locus,vcs,arg_coverage,arg_top_hits);
                 nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;
