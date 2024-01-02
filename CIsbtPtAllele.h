@@ -23,6 +23,7 @@ public:
     CIsbtPtAllele(std::string name, std::string phenotype,const std::string& flat_phenotype_name, std::string base_changes, std::string acid_changes, std::string incidence);
     CIsbtPtAllele(std::string name, std::string phenotype,const std::string& flat_phenotype_name, std::string base_changes, std::string acid_changes, float incidence);
     CIsbtPtAllele(const CIsbtPtAllele& orig);
+    CIsbtPtAllele& operator=(const CIsbtPtAllele& other);
     virtual ~CIsbtPtAllele();
     
     friend std::ostream& operator<<(std::ostream& os, const CIsbtPtAllele& me);

@@ -47,10 +47,29 @@ CIsbtPtAllele::CIsbtPtAllele(const CIsbtPtAllele& orig)
 {
     m_name = orig.m_name;
     m_phenotype_name = orig.m_phenotype_name;
-    m_base_changes = orig.m_base_changes; // ISBT naming like 261delG or 85A>G, ...
-    m_acid_changes = orig.m_acid_changes; // ISBT naming like Ile60Leu or Ser230Ile, ...
+    m_base_changes.insert(orig.m_base_changes.begin(),orig.m_base_changes.end());
+    m_acid_changes.insert(orig.m_acid_changes.begin(),orig.m_acid_changes.end());
     m_incidence = orig.m_incidence;
     m_flat_phenotype_name = orig.m_flat_phenotype_name;
+}
+
+CIsbtPtAllele& CIsbtPtAllele::operator=(const CIsbtPtAllele& other) 
+{
+    // Selbstzuweisungsschutz
+    if (this == &other) {
+        return *this;
+    }
+
+    // Kopiere die Daten
+    m_name = other.m_name;
+    m_phenotype_name = other.m_phenotype_name;
+    m_flat_phenotype_name = other.m_flat_phenotype_name;
+    m_base_changes.insert(other.m_base_changes.begin(),other.m_base_changes.end());
+    m_acid_changes.insert(other.m_acid_changes.begin(),other.m_acid_changes.end());
+    m_incidence = other.m_incidence;
+
+    // Gebe eine Referenz auf das aktuelle Objekt zurück
+    return *this;
 }
 
 CIsbtPtAllele::~CIsbtPtAllele() 

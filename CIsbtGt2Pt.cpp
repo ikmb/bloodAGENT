@@ -157,6 +157,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     CIsbtGt2Pt::typing_result mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
     float highest_score = 0.0f;
+    int cleaning_counter=0;
     //cout << "typing " << m_activeThreads << endl;
     
     // !!!!!!!!!!!!!!!!!!!!!
@@ -166,14 +167,9 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     // in ein set oder Vector von CIsbtVariant um. Dann habe ich auch alle Infos ob high impact variant
     // dann kann ich das scoring laufen lassen
     // go through all heterozygous genetoypes
-    int counter = 0;
-    
+     
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
-        /*
-        doTheMatching(system,mRet,variants,possible_sample_genotypes,
-                      required_coverage,highest_score,score_range);
-        //*/
         
         auto func = [this](const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
                            set<CIsbtGt>::const_iterator  possible_sample_genotypes, 
@@ -183,25 +179,20 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
             };
         runInThread(func, system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
-        //*/
+        //
         bool clean_up = false;
         {
             std::lock_guard<std::mutex> lock(m_objectMutex);
-            clean_up = ++counter%m_maxThreads == 0;
+            clean_up = ++cleaning_counter%m_maxThreads == 0;
         }
         if(clean_up)
         {
             doCleaning(mRet,highest_score,score_range);
         }
-        //doTheMatching(system,mRet,variants,possible_sample_genotypes,
-        //              required_coverage,highest_score,score_range);
+        //*/
+        //doTheMatching(system,mRet,variants,possible_sample_genotypes,required_coverage,highest_score,score_range);
     }
     doCleaning(mRet,highest_score,score_range);
-    //cout << "score" << endl;
-    //scoreHits(mRet,system,variants.isbtSnps());
-    //cout << "sort" << endl;
-    //sort(mRet);
-    //cout << "done" << endl;
     m_typing_results[system]=mRet;
     return mRet;
 }
@@ -345,60 +336,56 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
 
 vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
 {
-    {
-        std::unique_lock<std::mutex> lock(m_debugMutex);
-        static size_t counter = 0;
-        cout << "round " << ++counter << endl;
-    }
-    // this is a theoretical (in silico) ISBT Allele with its variants. I check if the measured SNVs fit with this one
-    std::set<CIsbtVariant>  theoretical_allele = isbtGtAllele.variantSet();
-    // This is the measured SNVs. One of the potential haplotypes
     std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
     if(iterSys == m_allele_vector.end())
         return vector<CIsbtGt2PtHit>();
+    vector<CIsbtGt2PtHit> vRet;
     
-    vector<CISBTAnno::variation> allSystemVariations = isbt_snps->getAllVariations(system);
+    
+     // this is a possible Genotype combination derived from the VCF file
+    std::set<CIsbtVariant>  potential_haplotype = isbtGtAllele.variantSet();
+    // This is the genotype_to_phenotype_annotation from the ISBT. 
+    // ToDo	ABO	ABO	ABO*O.01.01	O	O	O	261delG	Thr88Profs*31	28.41%
+    
+    // this is a list of all variation from this system
+    vector<CISBTAnno::variation> allSystemVariations= isbt_snps->getAllVariations(system);
     int systemVarCount = allSystemVariations.size();
     
-    vector<CIsbtGt2PtHit> vRet;
     // calculate matching parameters for each annotated allele, 
-    for(const CIsbtPtAllele& sequenced_SNV:iterSys->second)
+    for(const CIsbtPtAllele& allele_specific_SNV:iterSys->second)
     {
         // set all SNVs to reference allele and all weights to 1.0f
         vector<float> typedSNV(systemVarCount, 0.0f);
         vector<float> insilicoSNV(systemVarCount, 0.0f);
         vector<float> weights(systemVarCount, 1.0f);
     
-        CIsbtGt2PtHit actHit(sequenced_SNV);
+        CIsbtGt2PtHit actHit(allele_specific_SNV);
         // for each annotated base change 
-        for(const string& a:sequenced_SNV.baseChanges())
+        for(const string& a:allele_specific_SNV.baseChanges())
         {
             if(a.size() == 0)
                 continue;
             int idx = isbt_snps->getIsbtVariantIndex(system,a);
             if(idx != -1)
-                typedSNV[idx] = 1.0f;
+                insilicoSNV[idx] = 1.0f;
         }    
         // in silico build allele
-        for(const CIsbtVariant& a:theoretical_allele)
+        for(const CIsbtVariant& a:potential_haplotype)
         {
             
             int idx = isbt_snps->getIsbtVariantIndex(system,a.name());
             if(idx != -1)
-                insilicoSNV[idx] = 1.0f;
+                typedSNV[idx] = 1.0f;
         }  
         int idx = 0;
-        cout << system << " with " << allSystemVariations.size() << "variations" << endl;
         for(CISBTAnno::variation& var:allSystemVariations)
         {
             if(var.isHighImpactSNP())
                 weights[idx]=2.0f;
             if(static_cast<int>(var.getCoverage()) < required_coverage)
                 typedSNV[idx]=insilicoSNV[idx]=0.5f;
-            cout << idx << " -> " << flush;
             idx++;
         }
-        cout << endl;
         scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
         vRet.push_back(actHit);
     }
