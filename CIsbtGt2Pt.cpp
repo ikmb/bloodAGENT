@@ -334,6 +334,25 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
+void CIsbtGt2Pt::outPutCosineSim(const string& allelea,const CIsbtGtAllele& isbtGtAllele, vector<float> a, vector<float> b, vector<float> c)
+{
+    std::unique_lock<std::mutex> lock(m_debugMutex);
+    cout << "Haplotype: " << isbtGtAllele << endl;
+    cout << "Allele:    " << allelea << endl;
+    for (const float &element : a) {
+        std::cout << std::setprecision(1) << std::setw(3) << element;
+    }
+    std::cout << std::endl;
+    for (const float &element : b) {
+        std::cout << std::setprecision(1) << std::setw(3) << element;
+    }
+    std::cout << std::endl;
+    for (const float &element : c) {
+        std::cout << std::setprecision(1) << std::setw(3) << element;
+    }
+    std::cout << std::endl;
+}
+
 vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
 {
     std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
@@ -349,14 +368,18 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
     
     // this is a list of all variation from this system
     vector<CISBTAnno::variation> allSystemVariations= isbt_snps->getAllVariations(system);
+    map<std::string,int> allSystemVariationsIdx;
+    int idx = 0;
+    for(CISBTAnno::variation& var:allSystemVariations)
+        allSystemVariationsIdx[var.name()]=idx++;
     int systemVarCount = allSystemVariations.size();
     
     // calculate matching parameters for each annotated allele, 
     for(const CIsbtPtAllele& allele_specific_SNV:iterSys->second)
     {
         // set all SNVs to reference allele and all weights to 1.0f
-        vector<float> typedSNV(systemVarCount, 0.0f);
-        vector<float> insilicoSNV(systemVarCount, 0.0f);
+        vector<float> typedSNV(systemVarCount, -1.0f);
+        vector<float> insilicoSNV(systemVarCount, -1.0f);
         vector<float> weights(systemVarCount, 1.0f);
     
         CIsbtGt2PtHit actHit(allele_specific_SNV);
@@ -365,17 +388,16 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
         {
             if(a.size() == 0)
                 continue;
-            int idx = isbt_snps->getIsbtVariantIndex(system,a);
-            if(idx != -1)
-                insilicoSNV[idx] = 1.0f;
+            map<std::string,int>::iterator i = allSystemVariationsIdx.find(a);
+            if(i != allSystemVariationsIdx.end())
+                insilicoSNV[i->second] = 1.0f;
         }    
         // in silico build allele
         for(const CIsbtVariant& a:potential_haplotype)
         {
-            
-            int idx = isbt_snps->getIsbtVariantIndex(system,a.name());
-            if(idx != -1)
-                typedSNV[idx] = 1.0f;
+            map<std::string,int>::iterator i = allSystemVariationsIdx.find(a.name());
+            if(i != allSystemVariationsIdx.end())
+                typedSNV[i->second] = 1.0f;
         }  
         int idx = 0;
         for(CISBTAnno::variation& var:allSystemVariations)
@@ -383,11 +405,12 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
             if(var.isHighImpactSNP())
                 weights[idx]=2.0f;
             if(static_cast<int>(var.getCoverage()) < required_coverage)
-                typedSNV[idx]=insilicoSNV[idx]=0.5f;
+                typedSNV[idx]=insilicoSNV[idx]=0.0f;
             idx++;
         }
         scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
         vRet.push_back(actHit);
+        outPutCosineSim(allele_specific_SNV.name(),isbtGtAllele,typedSNV,insilicoSNV,weights);
     }
     std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);
     return vRet;

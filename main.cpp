@@ -198,7 +198,7 @@ int main(int argc, char** argv)
                     tc_hg.getValue(),
                     tc_output.getValue(),
                     tc_cores.getValue());
-            exit(EXIT_SUCCESS);
+            return EXIT_SUCCESS;
         }
         else if(tc_jobType.getValue().compare("vcf") == 0)
         {
@@ -222,13 +222,13 @@ int main(int argc, char** argv)
                     tc_alleleB.getValue(),
                     tc_makeHaplotypes.getValue(),
                     tc_verbose.getValue());
-            exit(EXIT_SUCCESS);
+            return EXIT_SUCCESS;
             
         }
         else
         {
             cerr << "job " << tc_jobType.getValue() << " not implemented." << endl;
-            exit(EXIT_SUCCESS);
+            return EXIT_SUCCESS;
         }
     }
     catch(const TCLAP::ArgException& err)
@@ -265,7 +265,7 @@ int main(int argc, char** argv)
     //*/
     //* ********************
     // ON MWMOB
-    return 0;
+    return EXIT_SUCCESS;
 }
         
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw

@@ -33,6 +33,7 @@ public:
     
     std::vector<CIsbtGt2PtHit> findMatches(const std::string& system, const CIsbtGtAllele& IsbtGt, const CISBTAnno* isbt_snps, int required_coverage);
     std::vector<CIsbtGt2PtHit> cosineSimilarityMatches(const string system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage);
+    void outPutCosineSim(const std::string& allelea,const CIsbtGtAllele& isbtGtAllele,std::vector<float> a, std::vector<float> b, std::vector<float> c);
     typing_result type(const string& system, const CVariantChains& variants, int required_coverage = 10, float score_range = 1.0f);
     void doTheMatching(const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants,set<CIsbtGt>::const_iterator  possible_sample_genotype, int required_coverage, float& highest_score, float score_range);
     void doCleaning(CIsbtGt2Pt::typing_result& mRet, float highest_score, float score_range);
