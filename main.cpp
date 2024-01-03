@@ -353,7 +353,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         {
             if( arg_locus.length() == 0 || arg_loci_set.find(locus) != arg_loci_set.end() )
             {
-                cout << locus << endl;
+                //cout << locus << endl;
                 isbTyper.type(locus,vcs,arg_coverage,arg_top_hits);
                 nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;

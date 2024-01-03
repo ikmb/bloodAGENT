@@ -410,7 +410,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
         }
         scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
         vRet.push_back(actHit);
-        outPutCosineSim(allele_specific_SNV.name(),isbtGtAllele,typedSNV,insilicoSNV,weights);
+        //outPutCosineSim(allele_specific_SNV.name(),isbtGtAllele,typedSNV,insilicoSNV,weights);
     }
     std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);
     return vRet;
