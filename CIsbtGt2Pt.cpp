@@ -38,6 +38,12 @@
 #include "CTranscriptAnno.h"
 #include "CIsbtGt2Pt.h"
 
+#define VAL_COSINE_REF_ALLELE -1.0f
+#define VAL_COSINE_ALT_ALLELE 1.0f
+#define VAL_COSINE_COV_FAILED_ALLELE 0.0f
+#define VAL_COSINE_STANDARD_WEIGHT 1.0f
+#define VAL_COSINE_HIGH_IMPACT_WEIGHT 2.0f
+
 using namespace std;
 
 CIsbtGt2Pt::CIsbtGt2Pt(const string& filename,int maxThreads) 
@@ -374,13 +380,14 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
         allSystemVariationsIdx[var.name()]=idx++;
     int systemVarCount = allSystemVariations.size();
     
+    
     // calculate matching parameters for each annotated allele, 
     for(const CIsbtPtAllele& allele_specific_SNV:iterSys->second)
     {
         // set all SNVs to reference allele and all weights to 1.0f
-        vector<float> typedSNV(systemVarCount, -1.0f);
-        vector<float> insilicoSNV(systemVarCount, -1.0f);
-        vector<float> weights(systemVarCount, 1.0f);
+        vector<float> typedSNV(systemVarCount, VAL_COSINE_REF_ALLELE);
+        vector<float> insilicoSNV(systemVarCount, VAL_COSINE_REF_ALLELE);
+        vector<float> weights(systemVarCount, VAL_COSINE_STANDARD_WEIGHT);
     
         CIsbtGt2PtHit actHit(allele_specific_SNV);
         // for each annotated base change 
@@ -390,22 +397,55 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
                 continue;
             map<std::string,int>::iterator i = allSystemVariationsIdx.find(a);
             if(i != allSystemVariationsIdx.end())
-                insilicoSNV[i->second] = 1.0f;
+                insilicoSNV[i->second] = VAL_COSINE_ALT_ALLELE;
         }    
         // in silico build allele
         for(const CIsbtVariant& a:potential_haplotype)
         {
             map<std::string,int>::iterator i = allSystemVariationsIdx.find(a.name());
             if(i != allSystemVariationsIdx.end())
-                typedSNV[i->second] = 1.0f;
+                typedSNV[i->second] = VAL_COSINE_ALT_ALLELE;
         }  
         int idx = 0;
         for(CISBTAnno::variation& var:allSystemVariations)
         {
             if(var.isHighImpactSNP())
-                weights[idx]=2.0f;
+                weights[idx]=VAL_COSINE_HIGH_IMPACT_WEIGHT;
             if(static_cast<int>(var.getCoverage()) < required_coverage)
-                typedSNV[idx]=insilicoSNV[idx]=0.0f;
+            {
+                typedSNV[idx]=insilicoSNV[idx]=VAL_COSINE_COV_FAILED_ALLELE;
+                if(var.isHighImpactSNP())
+                    actHit.m_high_impact_not_covered++;
+                else
+                    actHit.m_not_covered++;
+            }
+            // now we count the issues
+            if(typedSNV[idx]!=insilicoSNV[idx])
+            {
+                // an ISBT SNP which is not detected in the sample but described for this potential allele
+                if(typedSNV[idx] == VAL_COSINE_REF_ALLELE)
+                {
+                    if(var.isHighImpactSNP())
+                        actHit.m_high_impact_anno_not_in_typed++;
+                    else
+                        actHit.m_anno_not_in_typed++;
+                }
+                // an ISBT SNP which is detected in the sample but not a SNP that is needed for this potential allele
+                else if(insilicoSNV[idx] == VAL_COSINE_REF_ALLELE)
+                {
+                    if(var.isHighImpactSNP())
+                        actHit.m_high_impact_typed_not_in_anno++;
+                    else
+                        actHit.m_typed_not_in_anno++;
+                }
+            }
+            else if(typedSNV[idx] !=  VAL_COSINE_COV_FAILED_ALLELE)
+            {
+                if(var.isHighImpactSNP())
+                    actHit.m_high_impact_match++;
+                else
+                    actHit.m_match++;
+            }
             idx++;
         }
         scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
@@ -548,7 +588,8 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                     nlohmann::json jAct = getJsonOfTypingResult(act_gt.first,act_gt.second);
                     if(!uncovered_target_variants_list.empty())
                         jAct["score"] = 0.0;
-                    if(system.compare("RHD") == 0 && is_RHD_DEL_HET && jAct["alleles"].size() == 1)
+                    //if(system.compare("RHD") == 0 && is_RHD_DEL_HET && jAct["alleles"].size() == 1)
+                    if(system.compare("RHD") == 0 && is_RHD_DEL_HET)
                     {
                         nlohmann::json allele;
                         allele["names"].push_back("RHD*01N.01");
