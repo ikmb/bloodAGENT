@@ -63,6 +63,7 @@ private:
     void scoreHit(CIsbtGt2PtHit&, const string& system,const CISBTAnno* isbt_anno);
     void scoreCosineSimilarity(CIsbtGt2PtHit& act_hit,const vector<float>& typedSNV, const vector<float>& insilicoSNV, const vector<float>& weights);
     float getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele_calls)const;
+    float getPredictedScoreOfAllele(const std::pair<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele)const;
     float getTopPredictedScoreOfAllGenotypes(const typing_result& genotype_calls)const;
     static bool sort_by_space_separated_entries_asc(const string& a,const string& b);
     void findAlleTaggingBaseChanges();
@@ -70,7 +71,7 @@ private:
     
     /// set phenotype to true to get the phenotype, otherwise you get the allele
     //std::string getStringOfTypingResult(const CIsbtGt& gt,const std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool phenotype = true)const;
-    nlohmann::json getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const;
+    nlohmann::json getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool homozygous_only = false)const;
     
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector;
     std::map<std::string,vector<CIsbtPtAllele>> m_allele_vector_redundant;

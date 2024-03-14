@@ -40,7 +40,7 @@
 
 #define VAL_COSINE_REF_ALLELE -1.0f
 #define VAL_COSINE_ALT_ALLELE 1.0f
-#define VAL_COSINE_COV_FAILED_ALLELE 0.0f
+#define VAL_COSINE_COV_FAILED_ALLELE 0.25f
 #define VAL_COSINE_STANDARD_WEIGHT 1.0f
 #define VAL_COSINE_HIGH_IMPACT_WEIGHT 2.0f
 
@@ -413,11 +413,14 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
                 weights[idx]=VAL_COSINE_HIGH_IMPACT_WEIGHT;
             if(static_cast<int>(var.getCoverage()) < required_coverage)
             {
-                typedSNV[idx]=insilicoSNV[idx]=VAL_COSINE_COV_FAILED_ALLELE;
+                //typedSNV[idx]=insilicoSNV[idx]=VAL_COSINE_COV_FAILED_ALLELE;
                 if(var.isHighImpactSNP())
                     actHit.m_high_impact_not_covered++;
                 else
+                {
+                    //cout << var << endl;
                     actHit.m_not_covered++;
+                }
             }
             // now we count the issues
             if(typedSNV[idx]!=insilicoSNV[idx])
@@ -456,7 +459,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
     return vRet;
 }
 
-nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
+nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool homozygous_only)const
 {
     nlohmann::json jRet;
     
@@ -470,6 +473,8 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
             genotypes.push_back(genotype);
         }
         haplotypes["genotypes"].push_back(genotypes);
+        if(homozygous_only) // used for RhD for example, when I discover heterozygous RhD deletion from coverage analysis, I expect only a single second allele
+            break;
     }
     jRet["haplotypes"]=haplotypes;
     nlohmann::json alleles;
@@ -503,6 +508,8 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
         alleles.push_back(allele);
         phenotypes.push_back(phenotype);
         flat_phenotypes.push_back(flat_phenotype);
+        if(homozygous_only) // used for RhD for example, when I discover heterozygous RhD deletion from coverage analysis, I expect only a single second allele
+            break;
     }
     jRet["alleles"]=alleles;
     jRet["phenotypes"]=phenotypes;
@@ -592,6 +599,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                     if(system.compare("RHD") == 0 && is_RHD_DEL_HET)
                     {
                         nlohmann::json allele;
+                        jAct = getJsonOfTypingResult(act_gt.first,act_gt.second,true);
                         allele["names"].push_back("RHD*01N.01");
                         jAct["alleles"].push_back(allele);
                     }
@@ -706,10 +714,19 @@ float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,
     for(auto& act_allele:allele_calls)
     {
         if(!act_allele.second.empty())
-            fRet+=act_allele.second.front().score();
+            fRet+=getPredictedScoreOfAllele(act_allele);
     }
     if(allele_calls.size()==1) // is homozygous?
         fRet+=fRet;
+    return fRet;
+}
+
+float CIsbtGt2Pt::getPredictedScoreOfAllele(const std::pair<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele)const
+{
+    float fRet = 0.0f;
+    if(!allele.second.empty()){
+        fRet+=allele.second.front().score();
+    }
     return fRet;
 }
 

@@ -220,10 +220,10 @@
           <standard>11</standard>
           <incDir>
             <pElem>../MyTools</pElem>
-            <pElem>../htslib/htslib</pElem>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
-            <pElem>tclap/include</pElem>
+            <pElem>../../fremd/htslib</pElem>
+            <pElem>../../fremd/htslib/htslib</pElem>
+            <pElem>../../fremd/libBigWig</pElem>
+            <pElem>../../fremd/tclap/include</pElem>
           </incDir>
           <warningLevel>2</warningLevel>
         </ccTool>
@@ -235,12 +235,15 @@
         </asmTool>
         <linkerTool>
           <linkerAddLib>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
+            <pElem>/usr/lib/x86_64-linux-gnu</pElem>
+            <pElem>../../fremd/htslib</pElem>
+            <pElem>../../fremd/libBigWig</pElem>
+            <pElem>../../fremd/htslib/htslib</pElem>
           </linkerAddLib>
           <linkerDynSerch>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
+            <pElem>../../fremd/libBigWig</pElem>
+            <pElem>../../fremd/htslib</pElem>
+            <pElem>../../fremd/htslib/htslib</pElem>
           </linkerDynSerch>
           <linkerLibItems>
             <linkerLibProjectItem>
@@ -255,10 +258,8 @@
                             OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmytools.a">
               </makeArtifact>
             </linkerLibProjectItem>
-            <linkerLibLibItem>hts</linkerLibLibItem>
-            <linkerLibLibItem>BigWig</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-lz -pthread</commandLine>
+          <commandLine>-lz -lhts -lBigWig -lpthread</commandLine>
         </linkerTool>
       </compileType>
       <item path="CBigWigReader.cpp" ex="false" tool="1" flavor2="0">
