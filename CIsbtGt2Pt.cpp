@@ -583,7 +583,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             }
             //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
         }
-        if(type_by_snps)
+        if(type_by_snps) // we skip that if we did RhD typing by coverage nd detected dd or a complete coverage fail for RhDCE
         {
             // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
             const CIsbtGt2Pt::typing_result& typing = iRes->second;

@@ -89,8 +89,14 @@ map<string,vector<CISBTAnno::variation> > CISBTAnno::getReferenceVariations()
     if(m_vanno.First())
     {
         do{
+            //cout << m_vanno.line() << endl;
             if(m_vanno["is transcript_NC == "+m_build+"_NC"].compare("FALSE")==0)
-                mRet[m_vanno["system/gene"]].push_back(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]]);
+            {
+                std::string snp_short = m_vanno["Transcript annotation short"];
+                while(!snp_short.empty() && snp_short[0]=='!')
+                    snp_short.erase(snp_short.begin());
+                mRet[m_vanno["system/gene"]].push_back(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][snp_short]]);
+            }
             i++;
         }while(m_vanno.Next());
     }

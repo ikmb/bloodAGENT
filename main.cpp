@@ -166,6 +166,11 @@ int main(int argc, char** argv)
                 throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
             }
             
+            if(tc_tophits.getValue() <= 0.0f || tc_tophits.getValue() > 1.0f)
+            {
+                throw CMyException("Parameter -r/-scoreRange has to have a value ]0,1]. It is a multiplier and all results that are >= max score times multiplier are displayed (separate for each locus).");
+            }
+            
             if(tc_cores.getValue() < 1 || tc_cores.getValue() > numCores)
             {
                 throw CMyException(string("Invalid value for parameter ")+tc_cores.getFlag()+". It must be between 1 and the number of available cores. Default setting is available cores, which is "+
