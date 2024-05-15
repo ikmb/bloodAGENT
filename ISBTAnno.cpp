@@ -89,8 +89,14 @@ map<string,vector<CISBTAnno::variation> > CISBTAnno::getReferenceVariations()
     if(m_vanno.First())
     {
         do{
+            //cout << m_vanno.line() << endl;
             if(m_vanno["is transcript_NC == "+m_build+"_NC"].compare("FALSE")==0)
-                mRet[m_vanno["system/gene"]].push_back(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][m_vanno["Transcript annotation short"]]]);
+            {
+                std::string snp_short = m_vanno["Transcript annotation short"];
+                while(!snp_short.empty() && snp_short[0]=='!')
+                    snp_short.erase(snp_short.begin());
+                mRet[m_vanno["system/gene"]].push_back(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][snp_short]]);
+            }
             i++;
         }while(m_vanno.Next());
     }
@@ -171,6 +177,18 @@ size_t  CISBTAnno::getIsbtVariantCount(const string& system)const
         return i->second.size();
     }   
     return 0;
+}
+
+int CISBTAnno::getIsbtVariantIndex(const string& system,const string& isbt_var)const
+{
+    std::map<std::string,std::map<std::string,int>>::const_iterator i = m_isbt_variant_to_index.find(system);
+    if(i != m_isbt_variant_to_index.end())
+    {
+        std::map<std::string,int>::const_iterator j = i->second.find(isbt_var);
+        if(j != i->second.end())
+            return j->second;
+    }
+    return -1;
 }
 
 CISBTAnno::variation CISBTAnno::getIsbtVariant(const string& system,const string& isbt_var)const

@@ -63,6 +63,7 @@ public:
     
     
     variation                           getIsbtVariant(const std::string& system,const std::string& isbt_var)const;
+    int                                 getIsbtVariantIndex(const std::string& system,const std::string& isbt_var)const;
     std::vector<variation>              getIsbtVariants(const string& system)const;
     size_t                              getIsbtVariantCount(const string& system)const;
     

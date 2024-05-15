@@ -38,6 +38,12 @@
 #include "CTranscriptAnno.h"
 #include "CIsbtGt2Pt.h"
 
+#define VAL_COSINE_REF_ALLELE -1.0f
+#define VAL_COSINE_ALT_ALLELE 1.0f
+#define VAL_COSINE_COV_FAILED_ALLELE 0.25f
+#define VAL_COSINE_STANDARD_WEIGHT 1.0f
+#define VAL_COSINE_HIGH_IMPACT_WEIGHT 2.0f
+
 using namespace std;
 
 CIsbtGt2Pt::CIsbtGt2Pt(const string& filename,int maxThreads) 
@@ -108,7 +114,8 @@ void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_resu
     // evaluate each allele if it fits to the current genotype
     for(const CIsbtGtAllele& possible_sample_allele:possible_sample_alleles)
     {
-        vector<CIsbtGt2PtHit> gt2pt =  findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+        //vector<CIsbtGt2PtHit> gt2pt = findMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
+        vector<CIsbtGt2PtHit> gt2pt= cosineSimilarityMatches(system,possible_sample_allele,variants.isbtSnps(),required_coverage);
         //cout << possible_sample_alleles.size() << " with " << possible_sample_allele << " " << gt2pt.size() << endl;
         if(gt2pt.size() == 0)
         {
@@ -156,6 +163,7 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     CIsbtGt2Pt::typing_result mRet;
     std::set<CIsbtGt> theoretical_genotypes = variants.getPossibleGenotypes(system);
     float highest_score = 0.0f;
+    int cleaning_counter=0;
     //cout << "typing " << m_activeThreads << endl;
     
     // !!!!!!!!!!!!!!!!!!!!!
@@ -165,14 +173,10 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
     // in ein set oder Vector von CIsbtVariant um. Dann habe ich auch alle Infos ob high impact variant
     // dann kann ich das scoring laufen lassen
     // go through all heterozygous genetoypes
-    int counter = 0;
-    
+     
     for(set<CIsbtGt>::const_iterator possible_sample_genotypes = theoretical_genotypes.begin(); possible_sample_genotypes != theoretical_genotypes.end(); possible_sample_genotypes++)
     {
-        /*
-        doTheMatching(system,mRet,variants,possible_sample_genotypes,
-                      required_coverage,highest_score,score_range);
-        */
+        
         auto func = [this](const std::string& system,CIsbtGt2Pt::typing_result& mRet, const CVariantChains& variants, 
                            set<CIsbtGt>::const_iterator  possible_sample_genotypes, 
                            int required_coverage, float& highest_score, float score_range) mutable {
@@ -181,27 +185,42 @@ CIsbtGt2Pt::typing_result CIsbtGt2Pt::type(const string& system, const CVariantC
             };
         runInThread(func, system,mRet,variants,possible_sample_genotypes,
                       required_coverage,highest_score,score_range);
-        
+        //
         bool clean_up = false;
         {
             std::lock_guard<std::mutex> lock(m_objectMutex);
-            clean_up = ++counter%m_maxThreads == 0;
+            clean_up = ++cleaning_counter%m_maxThreads == 0;
         }
         if(clean_up)
         {
             doCleaning(mRet,highest_score,score_range);
         }
-        //doTheMatching(system,mRet,variants,possible_sample_genotypes,
-        //              required_coverage,highest_score,score_range);
+        //*/
+        //doTheMatching(system,mRet,variants,possible_sample_genotypes,required_coverage,highest_score,score_range);
     }
     doCleaning(mRet,highest_score,score_range);
-    //cout << "score" << endl;
-    //scoreHits(mRet,system,variants.isbtSnps());
-    //cout << "sort" << endl;
-    //sort(mRet);
-    //cout << "done" << endl;
     m_typing_results[system]=mRet;
     return mRet;
+}
+
+    
+void CIsbtGt2Pt::scoreCosineSimilarity(CIsbtGt2PtHit& act_hit,const vector<float>& typedSNV, const vector<float>& insilicoSNV, const vector<float>& weights)
+{
+    float dotProduct = 0.0;
+    float normA = 0.0;
+    float normB = 0.0;
+    
+    for (size_t i = 0; i < typedSNV.size(); ++i) {
+        dotProduct += typedSNV[i] * insilicoSNV[i] * weights[i]; // Gewichte einbeziehen
+        normA += typedSNV[i] * typedSNV[i] * weights[i]; // Gewichtete Norm
+        normB += insilicoSNV[i] * insilicoSNV[i] * weights[i];
+    }
+
+    // Vermeidung der Division durch Null
+    if (normA == 0 || normB == 0) 
+        act_hit.score(0.0f);
+    else
+        act_hit.score(dotProduct / (sqrt(normA) * sqrt(normB)));
 }
 
 void CIsbtGt2Pt::scoreHit(CIsbtGt2PtHit& act_hit, const string& system,const CISBTAnno* isbt_anno)
@@ -279,7 +298,7 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
                 continue;
             bool isHighImpactSnp = isbt_snps->getIsbtVariant(system,a).isHighImpactSNP();
             double act_variant_coverage = isbt_snps->getIsbtVariant(system,a).getCoverage();
-            if(static_cast<int>(act_variant_coverage+0.5) < required_coverage)
+            if(static_cast<int>(act_variant_coverage) < required_coverage)
             {
                 // incomplete covered
                 if(isHighImpactSnp)
@@ -321,7 +340,126 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
     return vRet;
 }
 
-nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results)const
+void CIsbtGt2Pt::outPutCosineSim(const string& allelea,const CIsbtGtAllele& isbtGtAllele, vector<float> a, vector<float> b, vector<float> c)
+{
+    std::unique_lock<std::mutex> lock(m_debugMutex);
+    cout << "Haplotype: " << isbtGtAllele << endl;
+    cout << "Allele:    " << allelea << endl;
+    for (const float &element : a) {
+        std::cout << std::setprecision(1) << std::setw(3) << element;
+    }
+    std::cout << std::endl;
+    for (const float &element : b) {
+        std::cout << std::setprecision(1) << std::setw(3) << element;
+    }
+    std::cout << std::endl;
+    for (const float &element : c) {
+        std::cout << std::setprecision(1) << std::setw(3) << element;
+    }
+    std::cout << std::endl;
+}
+
+vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, const CIsbtGtAllele& isbtGtAllele, const CISBTAnno* isbt_snps, int required_coverage)
+{
+    std::map<std::string,vector<CIsbtPtAllele>>::const_iterator iterSys = m_allele_vector.find(system);
+    if(iterSys == m_allele_vector.end())
+        return vector<CIsbtGt2PtHit>();
+    vector<CIsbtGt2PtHit> vRet;
+    
+    
+     // this is a possible Genotype combination derived from the VCF file
+    std::set<CIsbtVariant>  potential_haplotype = isbtGtAllele.variantSet();
+    // This is the genotype_to_phenotype_annotation from the ISBT. 
+    // ToDo	ABO	ABO	ABO*O.01.01	O	O	O	261delG	Thr88Profs*31	28.41%
+    
+    // this is a list of all variation from this system
+    vector<CISBTAnno::variation> allSystemVariations= isbt_snps->getAllVariations(system);
+    map<std::string,int> allSystemVariationsIdx;
+    int idx = 0;
+    for(CISBTAnno::variation& var:allSystemVariations)
+        allSystemVariationsIdx[var.name()]=idx++;
+    int systemVarCount = allSystemVariations.size();
+    
+    
+    // calculate matching parameters for each annotated allele, 
+    for(const CIsbtPtAllele& allele_specific_SNV:iterSys->second)
+    {
+        // set all SNVs to reference allele and all weights to 1.0f
+        vector<float> typedSNV(systemVarCount, VAL_COSINE_REF_ALLELE);
+        vector<float> insilicoSNV(systemVarCount, VAL_COSINE_REF_ALLELE);
+        vector<float> weights(systemVarCount, VAL_COSINE_STANDARD_WEIGHT);
+    
+        CIsbtGt2PtHit actHit(allele_specific_SNV);
+        // for each annotated base change 
+        for(const string& a:allele_specific_SNV.baseChanges())
+        {
+            if(a.size() == 0)
+                continue;
+            map<std::string,int>::iterator i = allSystemVariationsIdx.find(a);
+            if(i != allSystemVariationsIdx.end())
+                insilicoSNV[i->second] = VAL_COSINE_ALT_ALLELE;
+        }    
+        // in silico build allele
+        for(const CIsbtVariant& a:potential_haplotype)
+        {
+            map<std::string,int>::iterator i = allSystemVariationsIdx.find(a.name());
+            if(i != allSystemVariationsIdx.end())
+                typedSNV[i->second] = VAL_COSINE_ALT_ALLELE;
+        }  
+        int idx = 0;
+        for(CISBTAnno::variation& var:allSystemVariations)
+        {
+            if(var.isHighImpactSNP())
+                weights[idx]=VAL_COSINE_HIGH_IMPACT_WEIGHT;
+            if(static_cast<int>(var.getCoverage()) < required_coverage)
+            {
+                //typedSNV[idx]=insilicoSNV[idx]=VAL_COSINE_COV_FAILED_ALLELE;
+                if(var.isHighImpactSNP())
+                    actHit.m_high_impact_not_covered++;
+                else
+                {
+                    //cout << var << endl;
+                    actHit.m_not_covered++;
+                }
+            }
+            // now we count the issues
+            if(typedSNV[idx]!=insilicoSNV[idx])
+            {
+                // an ISBT SNP which is not detected in the sample but described for this potential allele
+                if(typedSNV[idx] == VAL_COSINE_REF_ALLELE)
+                {
+                    if(var.isHighImpactSNP())
+                        actHit.m_high_impact_anno_not_in_typed++;
+                    else
+                        actHit.m_anno_not_in_typed++;
+                }
+                // an ISBT SNP which is detected in the sample but not a SNP that is needed for this potential allele
+                else if(insilicoSNV[idx] == VAL_COSINE_REF_ALLELE)
+                {
+                    if(var.isHighImpactSNP())
+                        actHit.m_high_impact_typed_not_in_anno++;
+                    else
+                        actHit.m_typed_not_in_anno++;
+                }
+            }
+            else if(typedSNV[idx] !=  VAL_COSINE_COV_FAILED_ALLELE)
+            {
+                if(var.isHighImpactSNP())
+                    actHit.m_high_impact_match++;
+                else
+                    actHit.m_match++;
+            }
+            idx++;
+        }
+        scoreCosineSimilarity(actHit, typedSNV,insilicoSNV,weights);
+        vRet.push_back(actHit);
+        //outPutCosineSim(allele_specific_SNV.name(),isbtGtAllele,typedSNV,insilicoSNV,weights);
+    }
+    std::sort(vRet.begin(),vRet.end(),CIsbtGt2PtHit::sort_by_score_desc);
+    return vRet;
+}
+
+nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::multimap<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& results, bool homozygous_only)const
 {
     nlohmann::json jRet;
     
@@ -335,6 +473,8 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
             genotypes.push_back(genotype);
         }
         haplotypes["genotypes"].push_back(genotypes);
+        if(homozygous_only) // used for RhD for example, when I discover heterozygous RhD deletion from coverage analysis, I expect only a single second allele
+            break;
     }
     jRet["haplotypes"]=haplotypes;
     nlohmann::json alleles;
@@ -368,6 +508,8 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
         alleles.push_back(allele);
         phenotypes.push_back(phenotype);
         flat_phenotypes.push_back(flat_phenotype);
+        if(homozygous_only) // used for RhD for example, when I discover heterozygous RhD deletion from coverage analysis, I expect only a single second allele
+            break;
     }
     jRet["alleles"]=alleles;
     jRet["phenotypes"]=phenotypes;
@@ -441,7 +583,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             }
             //cout << "RHD\t- & -\tRhD-/RhD-\t2\t-" << endl;
         }
-        if(type_by_snps)
+        if(type_by_snps) // we skip that if we did RhD typing by coverage nd detected dd or a complete coverage fail for RhDCE
         {
             // std::map<CIsbtGt,std::map<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>>
             const CIsbtGt2Pt::typing_result& typing = iRes->second;
@@ -453,9 +595,11 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                     nlohmann::json jAct = getJsonOfTypingResult(act_gt.first,act_gt.second);
                     if(!uncovered_target_variants_list.empty())
                         jAct["score"] = 0.0;
-                    if(system.compare("RHD") == 0 && is_RHD_DEL_HET && jAct["alleles"].size() == 1)
+                    //if(system.compare("RHD") == 0 && is_RHD_DEL_HET && jAct["alleles"].size() == 1)
+                    if(system.compare("RHD") == 0 && is_RHD_DEL_HET)
                     {
                         nlohmann::json allele;
+                        jAct = getJsonOfTypingResult(act_gt.first,act_gt.second,true);
                         allele["names"].push_back("RHD*01N.01");
                         jAct["alleles"].push_back(allele);
                     }
@@ -570,10 +714,19 @@ float CIsbtGt2Pt::getPredictedScoreOfGenotype(const std::multimap<CIsbtGtAllele,
     for(auto& act_allele:allele_calls)
     {
         if(!act_allele.second.empty())
-            fRet+=act_allele.second.front().score();
+            fRet+=getPredictedScoreOfAllele(act_allele);
     }
     if(allele_calls.size()==1) // is homozygous?
         fRet+=fRet;
+    return fRet;
+}
+
+float CIsbtGt2Pt::getPredictedScoreOfAllele(const std::pair<CIsbtGtAllele,std::vector<CIsbtGt2PtHit>>& allele)const
+{
+    float fRet = 0.0f;
+    if(!allele.second.empty()){
+        fRet+=allele.second.front().score();
+    }
     return fRet;
 }
 

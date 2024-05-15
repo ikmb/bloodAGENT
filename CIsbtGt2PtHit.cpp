@@ -36,8 +36,9 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtPtAllele& allele) : m_phenotype_allele(a
     m_null_variants=0;
 }
 
-CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig)  : m_phenotype_allele(orig.m_phenotype_allele)
+CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig) 
 {
+    m_phenotype_allele = orig.m_phenotype_allele;
     m_typed_not_in_anno = orig.m_typed_not_in_anno;
     m_anno_not_in_typed = orig.m_anno_not_in_typed;
     m_high_impact_match=orig.m_high_impact_match;

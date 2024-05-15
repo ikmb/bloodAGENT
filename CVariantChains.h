@@ -29,7 +29,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const CVariantChains& me);
     
     bool init();
-    bool add(const CVcfSnp& act_snp);
+    std::string add(const CVcfSnp& act_snp);
     
     std::set<CIsbtGt> getPossibleGenotypes(const string& system)const;
     

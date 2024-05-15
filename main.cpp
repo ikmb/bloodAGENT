@@ -166,6 +166,11 @@ int main(int argc, char** argv)
                 throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
             }
             
+            if(tc_tophits.getValue() <= 0.0f || tc_tophits.getValue() > 1.0f)
+            {
+                throw CMyException("Parameter -r/-scoreRange has to have a value ]0,1]. It is a multiplier and all results that are >= max score times multiplier are displayed (separate for each locus).");
+            }
+            
             if(tc_cores.getValue() < 1 || tc_cores.getValue() > numCores)
             {
                 throw CMyException(string("Invalid value for parameter ")+tc_cores.getFlag()+". It must be between 1 and the number of available cores. Default setting is available cores, which is "+
@@ -198,7 +203,7 @@ int main(int argc, char** argv)
                     tc_hg.getValue(),
                     tc_output.getValue(),
                     tc_cores.getValue());
-            exit(EXIT_SUCCESS);
+            return EXIT_SUCCESS;
         }
         else if(tc_jobType.getValue().compare("vcf") == 0)
         {
@@ -222,13 +227,13 @@ int main(int argc, char** argv)
                     tc_alleleB.getValue(),
                     tc_makeHaplotypes.getValue(),
                     tc_verbose.getValue());
-            exit(EXIT_SUCCESS);
+            return EXIT_SUCCESS;
             
         }
         else
         {
             cerr << "job " << tc_jobType.getValue() << " not implemented." << endl;
-            exit(EXIT_SUCCESS);
+            return EXIT_SUCCESS;
         }
     }
     catch(const TCLAP::ArgException& err)
@@ -265,7 +270,7 @@ int main(int argc, char** argv)
     //*/
     //* ********************
     // ON MWMOB
-    return 0;
+    return EXIT_SUCCESS;
 }
         
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
@@ -329,11 +334,11 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         {
             CVcfSnp act_snp = vcf_file.get_record();
             //cerr << act_snp << endl;
-            bool adding_successfull = vcs.add(act_snp);
-            if(!adding_successfull && arg_verbose >= 3)
+            string act_snp_system = vcs.add(act_snp);
+            if(act_snp_system.size() == 0 && arg_verbose >= 3)
                 cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
-            else if(adding_successfull && arg_verbose >= 2)
-                cerr << act_snp << "\tISBT relevant SNP added" << endl;
+            else if(act_snp_system.size() != 0 && arg_verbose >= 2)
+                cerr << act_snp << "\t" << act_snp_system << ", ISBT relevant SNP added" << endl;
         };
         vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
         
@@ -353,6 +358,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         {
             if( arg_locus.length() == 0 || arg_loci_set.find(locus) != arg_loci_set.end() )
             {
+                //cout << locus << endl;
                 isbTyper.type(locus,vcs,arg_coverage,arg_top_hits);
                 nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;

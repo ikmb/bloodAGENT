@@ -121,18 +121,18 @@ void CVariantChains::removeReferenceSnps()
 }
 
 
-bool CVariantChains::add(const CVcfSnp& act_snp)
+string CVariantChains::add(const CVcfSnp& act_snp)
 {
     if(!m_isbt)
-        return false;
+        return "";
     
     string the_act_system = m_isbt->getSystemAt(act_snp.chrom(),act_snp.pos());
     if(!the_act_system.empty())
     {
         m_variant_chains[the_act_system].add(act_snp);
-        return true;
+        return the_act_system;
     }
-    return false;
+    return "";
 }
 
 std::set<CIsbtGt> CVariantChains::getPossibleGenotypes(const string& system)const
