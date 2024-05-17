@@ -515,7 +515,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
     jRet["phenotypes"]=phenotypes;
     jRet["flat_phenotypes"]=flat_phenotypes;
     jRet["score"]=getPredictedScoreOfGenotype(results);
-    jRet["wobble_score"]=jRet["score"];
+    jRet["weak_score"]=jRet["score"];
     
     return jRet;
 }
@@ -560,7 +560,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                 js["phenotypes"].push_back("n.a.");
                 js["flat_phenotypes"].push_back("n.a.");
                 js["score"]=0.0f;
-                js["wobble_score"]=0.0f;
+                js["weak_score"]=0.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
             }
@@ -573,7 +573,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
                 js["phenotypes"].push_back("RHD*01N.01");
                 js["flat_phenotypes"].push_back("RHD*01N.01");
                 js["score"]=2.0f;
-                js["wobble_score"]=2.0f;
+                js["weak_score"]=2.0f;
                 j["calls"].push_back(js);
                 type_by_snps = false;
             }
