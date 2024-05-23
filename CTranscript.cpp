@@ -24,11 +24,12 @@
 
 using namespace std;
 
-CTranscript::CTranscript(const std::string& chrom, const std::string& txStart, const std::string& txEnd, const std::string& exonStarts, const std::string& exonEnds) 
+CTranscript::CTranscript(const std::string& chrom, const std::string& strand, const std::string& txStart, const std::string& txEnd, const std::string& exonStarts, const std::string& exonEnds) 
 {
     m_txStart = txStart;
     m_txEnd = txEnd;
     m_chrom = chrom;
+    m_strand = strand;
     vector<string> parsed = CMyTools::GetParsedLine(exonStarts,",");
     for(auto x:parsed)
     {
@@ -48,6 +49,7 @@ CTranscript::CTranscript(const CTranscript& orig)
     m_txStart = orig.m_txStart;
     m_txEnd = orig.m_txEnd;
     m_chrom = orig.m_chrom;
+    m_strand = orig.m_strand;
     m_exonStarts = orig.m_exonStarts;
     m_exonEnds = orig.m_exonEnds;
 }

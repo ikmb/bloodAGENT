@@ -529,7 +529,15 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
     for(auto a : vl)
         uncovered_target_variants_list.push_back(a.name());
     j["coverage_failed_variants"]=uncovered_target_variants_list;
-          
+    
+    vector<double> cov = trans_anno.getCoverages(system,bwr);
+    if(!cov.empty())
+    {
+        j["mean_coverage"]["cds"]=cov[0];
+        for(size_t i = 1; i < cov.size();i++)
+            j["mean_coverage"]["exons"].push_back(cov[i]);
+    }
+    
     std::vector<CISBTAnno::variation> all_variations = isbt_anno.getAllVariations(system);
     nlohmann::json all_target_variants_list;
     for(auto a : all_variations)
