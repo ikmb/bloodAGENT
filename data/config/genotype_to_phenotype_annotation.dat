@@ -1278,8 +1278,8 @@ ToDo	XK	XK	XK*N.26	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	509-1G>A	Alternative splicing
 ToDo	XK	XK	XK*N.27	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	664C>G	Arg222Gly	 
 ToDo	XK	XK	XK*N.28	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	880T>C	Cys294Arg	 
 ToDo	XK	XK	XK*N.29	XK:-1 kx-	XK:-1 kx-	XK:-1 kx-	979G>A	Glu327Lys	 
-ToDo	FUT2	FUT2	FUT2	secretor	#N/A	secretor			 
-ToDo	FUT2	FUT2	FUT2	non-secretor	#N/A	non-secretor	461G>A	Trp154Ter	 
+ToDo	FUT2	FUT2	secretor	secretor	secretor	secretor			 
+ToDo	FUT2	FUT2	non-secretor	non-secretor	non-secretor	non-secretor	461G>A	Trp154Ter	 
 ToDo	LE	LE	FUT3	FUT3	FUT3	FUT3			56.13%
 ToDo	LE	LE	FUT3 1049T	FUT3 1049T	FUT3 1049T	FUT3 1049T	1049A>T	Tyr350Phe	 
 ToDo	LE	LE	FUT3 104A	FUT3 104A	FUT3 104A	FUT3 104A	104G>A	Arg35His	 
