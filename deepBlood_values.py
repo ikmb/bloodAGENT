@@ -6,7 +6,7 @@ import sys
 json_files = sys.argv[1:]
 
 # Ausgabe der Header
-print("Sample_ID\tLocus\tCall_0_Names\tCall_1_Names\tCall_0_Score\tCall_0_weak_Score\tHaplotypes_0_Variations\tHaplotypes_1_Variations\tno. of relevant_variants\tno. of coverage_failed_variants\tcoverage_failed_variants\trequired_coverage")
+print("Sample_ID\tLocus\tCall_0_Names\tCall_1_Names\tCall_0_Score\tCall_0_weak_Score\tHaplotypes_0_Variations\tHaplotypes_1_Variations\tno. of relevant_variants\tno. of coverage_failed_variants\tcoverage_failed_variants\trequired_coverage\tmean_coverage_CDS\tmean_coverage_exons")
 
 # Iterieren über die JSON-Dateien
 for json_file in json_files:
@@ -62,9 +62,17 @@ for json_file in json_files:
                     coverage_failed_variants = ",".join(locus_data["coverage_failed_variants"])
                     no_coverage_failed_variants = len(locus_data["coverage_failed_variants"])
                 
+                mean_coverage_cds = "-"
+                mean_coverage_exons = "-"
+                if "mean_coverage" in locus_data and locus_data["mean_coverage"]:
+                    if "CDS" in locus_data["mean_coverage"]:
+                        mean_coverage_cds = "{:.1f}".format(str(locus_data["mean_coverage"]["CDS"]))
+                    if "exons" in locus_data["mean_coverage"]:
+                        mean_coverage_exons = ",".join([f"{round(exon, 1)}" for exon in locus_data["mean_coverage"]["exons"]])
+
                 # Ausgabe der Zeile
-                print(f"{sample_id}\t{locus}\t{call_0_names}\t{call_1_names}\t{call_score}\t{call_weak_score}\t{haplotypes_0_variations}\t{haplotypes_1_variations}\t{no_relevant_variants}\t{no_coverage_failed_variants}\t{coverage_failed_variants}\t{coverage_threshold}")
+                print(f"{sample_id}\t{locus}\t{call_0_names}\t{call_1_names}\t{call_0_score}\t{call_0_weak_score}\t{haplotypes_0_variations}\t{haplotypes_1_variations}\t{no_relevant_variants}\t{no_coverage_failed_variants}\t{coverage_failed_variants}\t{coverage_threshold}\t{mean_coverage_cds}\t{mean_coverage_exons}")
         else:
             # Wenn keine Anrufe vorhanden sind, geben Sie leere Werte aus
-            print(f"{sample_id}\t{locus}\t\t\t\t\t\t\t")
+            print(f"{sample_id}\t{locus}\t\t\t\t\t\t\t\t\t")
 
