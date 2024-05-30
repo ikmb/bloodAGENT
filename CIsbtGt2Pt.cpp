@@ -616,6 +616,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
             }
         }
     }
+    cout << j << endl;
     return j;
 }
 

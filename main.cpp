@@ -282,16 +282,9 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
     try
     {
         
-        CTranscriptAnno trans_anno;
-        if(arg_trick)
-        {
-            // see special RhD treatment in function CIsbtGt2Pt::getCallAsJson()
-            // to understand the following assignment.
-            // in brief. We do special calling based on transcript coverage for some loci if the user defined that
-            trans_anno = CTranscriptAnno(arg_target_anno);
-            if(arg_verbose >= 2)
+        CTranscriptAnno trans_anno = CTranscriptAnno(arg_target_anno);
+        if(arg_verbose >= 2)
                 cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
-        }
         CISBTAnno  isbt(arg_isbt_SNPs,arg_build);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
