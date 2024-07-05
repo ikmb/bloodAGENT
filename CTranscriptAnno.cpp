@@ -19,6 +19,7 @@
 #include <libgen.h>
 #include <iostream>
 #include <cstring>
+#include <algorithm>
 
 #include "mytools.h"
 #include "CTranscript.h"
@@ -34,8 +35,8 @@ CTranscriptAnno::CTranscriptAnno(const string& filename)
     CParsedTextfile anno(filename,"\t","refGene.name2",0, true,  "#");
     if(anno.First())
         do{
-            CTranscript act_entry(anno["refGene.chrom"],anno["refGene.txStart"],anno["refGene.txEnd"],anno["refGene.exonStarts"],anno["refGene.exonEnds"]);
-            m_transcripts.insert(pair<std::string,CTranscript>(anno["refGene.name2"],act_entry));
+            CTranscript act_entry(anno["refGene.chrom"],anno["refGene.strand"],anno["refGene.txStart"],anno["refGene.txEnd"],anno["refGene.exonStarts"],anno["refGene.exonEnds"]);
+            m_transcripts.insert(pair<std::string,CTranscript>(anno["System"],act_entry));
         }while(anno.Next());
 }
 
@@ -66,7 +67,7 @@ CTranscript CTranscriptAnno::getTranscript(const std::string& name)
     std::map<std::string,CTranscript>::const_iterator i =  m_transcripts.find(name);
     if(i!=m_transcripts.end())
         return i->second;
-    return CTranscript("","","","","");
+    return CTranscript("","","","","","");
     
 }
 
@@ -93,5 +94,36 @@ double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigRea
     }
     return dRet;
 }
+
+vector<double> CTranscriptAnno::getCoverages(const string& target, const CBigWigReader& bw)const
+{
+    vector<double> dRet;
+    dRet.push_back(0.0);
+    
+    std::map<std::string,CTranscript>::const_iterator i =  m_transcripts.find(target);
+    size_t base_count = 0;
+    if(i!=m_transcripts.end())
+    {
+        const CTranscript& trans = i->second;
+        for(int i = 0; i < trans.exonCount(); i++)
+        {
+            int start = trans.exonStart(i);
+            int end = trans.exonEnd(i);
+            string chrom = trans.getChrom();
+            
+            double act_cov =  bw.getSumCoverage(chrom,start,end);
+            dRet[0]+=(act_cov == act_cov ? act_cov : 0); // is not nan?
+            act_cov = (act_cov == act_cov ? act_cov/static_cast<double>((end-start)+1) : 0); // is not nan?
+            dRet.push_back(act_cov);
+            base_count+=(end-start)+1;
+        }
+        dRet[0]/=static_cast<double>(base_count);
+        if(i->second.getStrand().compare("-")==0 && i->second.exonStarts().size()>1)
+            std::reverse(dRet.begin()+1,dRet.end());
+    }
+    
+    return dRet;
+}
+
 
 

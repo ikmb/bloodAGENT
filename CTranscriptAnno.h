@@ -33,6 +33,9 @@ public:
     bool hasKey(const std::string& v)const{return m_transcripts.find(v)!=m_transcripts.end();}
     
     double getExonicCoverage(const string& target, const CBigWigReader& bw)const;
+    
+    vector<double> getCoverages(const string& target, const CBigWigReader& bw)const;
+    
 private:
     
     std::map<std::string,CTranscript>  m_transcripts;

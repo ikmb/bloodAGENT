@@ -20,7 +20,7 @@
 
 class CTranscript {
 public:
-    CTranscript(const std::string& chrom, const std::string& txStart, const std::string& txEnd, const std::string& exonStarts, const std::string& exonEnds);
+    CTranscript(const std::string& chrom, const std::string& strand, const std::string& txStart, const std::string& txEnd, const std::string& exonStarts, const std::string& exonEnds);
     CTranscript(const CTranscript& orig);
     virtual ~CTranscript();
     
@@ -30,11 +30,13 @@ public:
     int exonStart(int idx)const{return m_exonStarts[idx];}
     int exonEnd(int idx)const{return m_exonEnds[idx];}
     std::string getChrom()const{return m_chrom;}
+    std::string getStrand()const{return m_strand;}
     
 private:
     std::string m_txStart;
     std::string m_txEnd;
     std::string m_chrom;
+    std::string m_strand;
     std::vector<int> m_exonStarts;
     std::vector<int> m_exonEnds;
 };

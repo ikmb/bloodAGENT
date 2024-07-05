@@ -220,10 +220,10 @@
           <standard>11</standard>
           <incDir>
             <pElem>../MyTools</pElem>
-            <pElem>../../fremd/htslib</pElem>
-            <pElem>../../fremd/htslib/htslib</pElem>
-            <pElem>../../fremd/libBigWig</pElem>
-            <pElem>../../fremd/tclap/include</pElem>
+            <pElem>../htslib/htslib</pElem>
+            <pElem>../htslib</pElem>
+            <pElem>../libBigWig</pElem>
+            <pElem>tclap/include</pElem>
           </incDir>
           <warningLevel>2</warningLevel>
         </ccTool>
