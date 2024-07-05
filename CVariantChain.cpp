@@ -147,7 +147,7 @@ std::set<CIsbtGt> CVariantChain::getPossibleGenotypes()const
 {
     std::set<CIsbtGt> sRet;
     map<string,set<CVariantChainVariation>>::const_iterator i = m_chains.begin();
-        
+    
     if(i == m_chains.end())
     {
         CIsbtGt newGt;
