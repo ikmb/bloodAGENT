@@ -42,7 +42,7 @@ CIsbtGt2PtHit::CIsbtGt2PtHit(const CIsbtGt2PtHit& orig)
     m_typed_not_in_anno = orig.m_typed_not_in_anno;
     m_anno_not_in_typed = orig.m_anno_not_in_typed;
     m_high_impact_match=orig.m_high_impact_match;
-    m_high_impact_mismatch=orig.m_high_impact_match;
+    m_high_impact_mismatch=orig.m_high_impact_mismatch;
     m_not_covered = orig.m_not_covered;
     m_score = orig.m_score;
     m_high_impact_not_covered = orig.m_high_impact_not_covered;
