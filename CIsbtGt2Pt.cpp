@@ -16,6 +16,8 @@
 #include <map>
 #include <set>
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include <libgen.h>
 #include <thread>
 #include <functional>
@@ -225,6 +227,7 @@ void CIsbtGt2Pt::scoreCosineSimilarity(CIsbtGt2PtHit& act_hit,const vector<float
 
 void CIsbtGt2Pt::scoreHit(CIsbtGt2PtHit& act_hit, const string& system,const CISBTAnno* isbt_anno)
 {
+    // NOT In Use. We use scoreCosineSimilarity
     float system_var_count = static_cast<float>(isbt_anno->getIsbtVariantCount(system));
     float act_hit_malus = 0.0f;
     
@@ -514,7 +517,11 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
     jRet["alleles"]=alleles;
     jRet["phenotypes"]=phenotypes;
     jRet["flat_phenotypes"]=flat_phenotypes;
-    jRet["score"]=getPredictedScoreOfGenotype(results);
+    
+    double val = getPredictedScoreOfGenotype(results);
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(3) << val;
+    jRet["score"]=stream.str();
     jRet["weak_score"]=jRet["score"];
     
     return jRet;
