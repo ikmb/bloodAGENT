@@ -22,8 +22,8 @@ for json_file in json_files:
         if "calls" in locus_data and len(locus_data["calls"]) > 0:
             for call_data in locus_data["calls"]:
                 call_0_names = ",".join(call_data["alleles"][0]["names"])
-                call_0_score = "{:.3f}".format(call_data["score"])
-                call_0_weak_score = "{:.3f}".format(call_data["weak_score"])
+                call_0_score = "{:.3f}".format(float(call_data["score"]))
+                call_0_weak_score = "{:.3f}".format(float(call_data["weak_score"]))
                 
                 if len(call_data["alleles"]) > 1:
                     call_1_names = ",".join(call_data["alleles"][1]["names"])
