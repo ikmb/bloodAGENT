@@ -123,7 +123,7 @@ void CIsbtGt2Pt::doTheMatching(const std::string& system,CIsbtGt2Pt::typing_resu
         {
             //cout << *possible_sample_genotype << " has no result " << endl;
             //act_hits.clear();
-            break;
+            continue;
         }
         else
         {
@@ -502,7 +502,7 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
             metrics["m_high_impact_typed_not_in_anno"] = act_hit.m_high_impact_typed_not_in_anno;
             metrics["m_high_impact_anno_not_in_typed"] = act_hit.m_high_impact_anno_not_in_typed;
             metrics["not_covered"] = act_hit.m_not_covered;
-            metrics["m_high_impact_not_covered"] = act_hit.m_not_covered;
+            metrics["m_high_impact_not_covered"] = act_hit.m_high_impact_not_covered;
             metrics["m_null_variants"] = act_hit.m_null_variants;
             allele["issues"].push_back(metrics);
             phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
