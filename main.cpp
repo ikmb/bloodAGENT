@@ -138,7 +138,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_gt2pt);
             TCLAP::ValueArg<string> tc_hg("u","build","Human genome build [hg19|hg38]",true,"hg38","string");
             cmdjob.add(tc_hg);
-            TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt.",true,"","string");
+            TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt. This parameter can take a list of comma separated vcf files, too. Useful if SNV and SVs are in different vcf files.",true,"","string");
             cmdjob.add(tc_vcf);
             TCLAP::ValueArg<string> tc_bigwig("b","bigwig","The big wig or wig file that contains the coverage data..",true,"","string");
             cmdjob.add(tc_bigwig);

@@ -14,7 +14,8 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
- 
+#include <sstream>
+
 #include "CVcf.h"
 
 using namespace std;
@@ -22,14 +23,23 @@ using namespace std;
 
 CVcf::CVcf(const string& filename, bool verbose ) 
 {
-    m_inf = NULL;
-    m_hdr = NULL;
-    m_rec = bcf_init();
-    m_verbose = verbose;
-    if(!CMyTools::file_exists(filename))
-        throw(CMyException("File does not exist: ")+filename);
-    if(open(filename) && read_header())
-        read_sequences();
+ 
+    std::stringstream test(filename);
+    std::string segment;
+    std::vector<std::string> seglist;
+    while(std::getline(test, segment, ','))
+    {
+        m_inf = NULL;
+        m_hdr = NULL;
+        m_rec = bcf_init();
+        m_verbose = verbose;
+
+
+        if(!CMyTools::file_exists(segment))
+            throw(CMyException("File does not exist: ")+segment);
+        if(open(segment) && read_header())
+            read_sequences();
+    }
 }
 
 CVcf::CVcf(const CVcf& orig) 
@@ -99,8 +109,13 @@ bool CVcf::limit_to_sample(const std::string& samplename)
     // limit the VCF data to the sample name passed in
     if(m_hdr)
     {
-        bcf_hdr_set_samples(m_hdr, samplename.c_str(), 0);
-        if (bcf_hdr_nsamples(m_hdr) != 1) {
+        int retVal = bcf_hdr_set_samples(m_hdr, samplename.c_str(), 0);
+        if(retVal == -1)
+        {
+            fprintf(stderr, "Unknown ERROR: reading samples.from vcf file.\n");
+                return false;
+        }
+        if (retVal > 0 || bcf_hdr_nsamples(m_hdr) != 1) {
                 fprintf(stderr, "ERROR: please limit to a single sample\n");
                 return false;
         }
