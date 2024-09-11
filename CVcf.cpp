@@ -14,7 +14,6 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
-#include <sstream>
 
 #include "CVcf.h"
 
@@ -23,23 +22,17 @@ using namespace std;
 
 CVcf::CVcf(const string& filename, bool verbose ) 
 {
- 
-    std::stringstream test(filename);
-    std::string segment;
-    std::vector<std::string> seglist;
-    while(std::getline(test, segment, ','))
-    {
-        m_inf = NULL;
-        m_hdr = NULL;
-        m_rec = bcf_init();
-        m_verbose = verbose;
+
+    m_inf = NULL;
+    m_hdr = NULL;
+    m_rec = bcf_init();
+    m_verbose = verbose;
 
 
-        if(!CMyTools::file_exists(segment))
-            throw(CMyException("File does not exist: ")+segment);
-        if(open(segment) && read_header())
-            read_sequences();
-    }
+    if(!CMyTools::file_exists(filename))
+        throw(CMyException("File does not exist: ")+filename);
+    if(open(filename) && read_header())
+        read_sequences();
 }
 
 CVcf::CVcf(const CVcf& orig) 

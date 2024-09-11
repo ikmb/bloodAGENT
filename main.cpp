@@ -291,9 +291,6 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
-        CVcf vcf_file(arg_vcf_file);
-        if(arg_verbose >= 2)
-            cerr << "VCF file loaded from:"  << arg_vcf_file << endl;
         CBigWigReader bwr(arg_bigWig);
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
@@ -323,16 +320,26 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         if(arg_is_in_silico)
             vcs.removeReferenceSnps();
         //CVcf vcf_file(argv[3]);
-        while(vcf_file.read_record())
+        
+        
+        std::stringstream test(arg_vcf_file);
+        std::string segment;
+        while(std::getline(test, segment, ','))
         {
-            CVcfSnp act_snp = vcf_file.get_record();
-            //cerr << act_snp << endl;
-            string act_snp_system = vcs.add(act_snp);
-            if(act_snp_system.size() == 0 && arg_verbose >= 3)
-                cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
-            else if(act_snp_system.size() != 0 && arg_verbose >= 2)
-                cerr << act_snp << "\t" << act_snp_system << ", ISBT relevant SNP added" << endl;
-        };
+            CVcf vcf_file(segment);
+            if(arg_verbose >= 2)
+                cerr << "VCF file loaded from:"  << segment << endl;
+            while(vcf_file.read_record())
+            {
+                CVcfSnp act_snp = vcf_file.get_record();
+                //cerr << act_snp << endl;
+                string act_snp_system = vcs.add(act_snp);
+                if(act_snp_system.size() == 0 && arg_verbose >= 3)
+                    cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
+                else if(act_snp_system.size() != 0 && arg_verbose >= 2)
+                    cerr << act_snp << "\t" << act_snp_system << ", ISBT relevant SNP added" << endl;
+            };
+        }
         vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
         
         
