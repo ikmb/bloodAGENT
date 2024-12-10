@@ -65,7 +65,7 @@ using namespace std;
 
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
-        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1);
+        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1, bool arg_break = false);
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose);
 string getArgumentList(TCLAP::CmdLine& args);
 
@@ -160,7 +160,9 @@ int main(int argc, char** argv)
             cmdjob.add(tc_Id);
             TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"","string");
             cmdjob.add(tc_output);
-
+            TCLAP::SwitchArg tc_breaks("x","crack","This breaks the hapltype information so that every variation gets recombined",false);
+            cmdjob.add(tc_breaks);
+            
             if(tc_trick_calling.getValue() == true && !tc_abo_target_annotation.isSet())
             {
                 throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
@@ -202,7 +204,8 @@ int main(int argc, char** argv)
                     tc_Id.getValue(),
                     tc_hg.getValue(),
                     tc_output.getValue(),
-                    tc_cores.getValue());
+                    tc_cores.getValue(),
+                    tc_breaks.getValue());
             return EXIT_SUCCESS;
         }
         else if(tc_jobType.getValue().compare("vcf") == 0)
@@ -272,12 +275,12 @@ int main(int argc, char** argv)
     // ON MWMOB
     return EXIT_SUCCESS;
 }
-        
+
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
-               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile, const int cores)
+               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile, const int cores, bool arg_break)
 {
     try
     {
@@ -316,6 +319,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
          }
         // generate VCF Test Data
         CVariantChains vcs(&isbt);
+        vcs.setBreakPhasingVariable(arg_break);
         /// if you analyze simulated VCF do the following on your CVariantChains object
         if(arg_is_in_silico)
             vcs.removeReferenceSnps();
