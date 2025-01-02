@@ -132,7 +132,9 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
     if(vcv != CVariantChainVariation())
     {
         if(var.isPhased() && !break_phasing)
+        {
             m_chains[to_string(var.phasingID())].insert(vcv);
+        }
         else
         {
             m_chains[string("no_").append(std::to_string(unique_unphased_id++))].insert(vcv);

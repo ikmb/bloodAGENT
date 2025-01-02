@@ -345,7 +345,8 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
             };
         }
         vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
-        
+        if(arg_verbose >= 2 && arg_break)
+            cerr << "Phasing information will be ignored. (parameter -x/--crack) "<< endl;   
         
         if(arg_verbose >= 3)
             cerr << "Variant chains of current sample: " << vcs << endl;   
