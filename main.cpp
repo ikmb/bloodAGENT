@@ -146,7 +146,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_fastqgz);
             TCLAP::ValueArg<string> tc_motifs("m","motif","Configuration file that lists specific sequence motifs. These motifs identify SNPs that usually are not present in vcf files",false,"","string");
             cmdjob.add(tc_motifs);
-            TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call.",false,10,"int");
+            TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call. Default is 10 and and a value of 0 ignores coverage information.",false,10,"int");
             cmdjob.add(tc_coverage);
             TCLAP::ValueArg<int> tc_cores("p","parallel-threads","The number of parallel treads.",false,numCores,"int");
             cmdjob.add(tc_cores);

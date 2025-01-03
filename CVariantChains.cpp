@@ -97,7 +97,7 @@ void CVariantChains::removeUncoveredSnps(double limit, int verbose)
         {
            for(set<CVariantChainVariation>::iterator iVchainVar = iChains->second.begin(); iVchainVar != iChains->second.end();)
            {
-               if( !iVchainVar->first_variant.isCovered(limit) && !iVchainVar->second_variant.isCovered(limit))
+               if( !iVchainVar->first_variant.isCovered(limit) && !iVchainVar->second_variant.isCovered(limit) && limit > 0)
                {
                    if(verbose >= 1)
                        cerr << i->first << ": deleting too low covered variant " << iVchainVar->first_variant << '/' << iVchainVar->second_variant << endl;
