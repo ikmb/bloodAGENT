@@ -21,6 +21,7 @@
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+#include <random>
 
 #include "mytools.h"
 #include "vcf.h"
@@ -88,7 +89,7 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
     return osr.str();
 }
 
-std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno, bool phased)
+std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno, bool phased, int dropout_prob)
 {
     ostringstream osr("");
     std::set<std::string> variationsA = alleleA.baseChanges();
@@ -110,6 +111,10 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
         bool hetA =  isInA && !isInB;
         bool hetB =  !isInA && isInB;
         bool homo =  isInA && isInB;
+        
+        // Simulate genotyping drop outs
+        if(getRandomInteger(1,100) <= dropout_prob )
+            continue;
         
         if(!hetA && !hetB && !homo)
         {
@@ -175,5 +180,17 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
 }
 
 
+int CMakeTrainingVcf::getRandomInteger(const int start, const int end)
+{
+    std::random_device rd;
 
+    // Use a Mersenne Twister random number generator
+    std::mt19937 gen(rd());
+
+    // Define the range [0, 100]
+    std::uniform_int_distribution<> distrib(start, end);
+
+    // Generate a random number in the range and output it
+    return distrib(gen);
+}
 

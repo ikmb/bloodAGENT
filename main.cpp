@@ -66,7 +66,7 @@ using namespace std;
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
         bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1, bool arg_break = false);
-void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose);
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose, int dropout_prob);
 string getArgumentList(TCLAP::CmdLine& args);
 
 /*
@@ -220,6 +220,8 @@ int main(int argc, char** argv)
             cmdjob.add(tc_alleleB);
             TCLAP::SwitchArg tc_makeHaplotypes("p","phased","Create solid haplotypes or unphased. Set this parameter if you want phased vcf",false);
             cmdjob.add(tc_makeHaplotypes);
+            TCLAP::ValueArg<int> tc_dropout_probability("o","dropout","The probability that a SNP drops out",false,0,"int");;
+            cmdjob.add(tc_dropout_probability);
             
             cmdjob.parse(argc,argv);
             if(tc_verbose.getValue() >= 2)
@@ -229,7 +231,8 @@ int main(int argc, char** argv)
                     tc_alleleA.getValue(),
                     tc_alleleB.getValue(),
                     tc_makeHaplotypes.getValue(),
-                    tc_verbose.getValue());
+                    tc_verbose.getValue(),
+                    tc_dropout_probability.getValue());
             return EXIT_SUCCESS;
             
         }
@@ -429,7 +432,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
 */
 
 
-void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose)
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose, int dropout_prob)
 {
     try
     {
@@ -449,7 +452,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CIsbtPtAllele alleleA = isbTyper.alleleOf(arg_allele_A);
         CIsbtPtAllele alleleB = isbTyper.alleleOf(arg_allele_B);
         
-        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt,arg_phased);
+        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt,arg_phased,dropout_prob);
         
     }
     catch(const CMyException& err)
