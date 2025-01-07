@@ -149,9 +149,7 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             cerr << "skipping unassigned " << actVar << " of " << alleleA << '/' << alleleB << endl;
             continue;
         }
-        if(count++ != 0)
-            osr << endl;
-        else
+        if(count++ == 0)
             phase_id=actVar.pos();
         
         if( !(homo && !actVar.isRefNClikeGRChNC()) )
@@ -165,23 +163,23 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             if(hetA)
             {
                 if(actVar.isRefNClikeGRChNC())
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id<<endl;
                 else
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id<<endl;
             }
             if(hetB)
             {
                 if(actVar.isRefNClikeGRChNC())
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id<<endl;
                 else
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id<<endl;
             }
            if(homo)
            {
                if(actVar.isRefNClikeGRChNC())
-                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
+                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:10,10:20:48:471,48,0"<<endl;
                //else
-               //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
+               //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:10,10:20:48:471,48,0"<<endl;
            }
         }
         else
@@ -189,30 +187,28 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             // UNPHASED
             if(hetA)
             {
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:0,20:20:48:471,48,0";
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:10,10:20:48:471,48,0"<<endl;
             }
             if(hetB)
             {
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:0,20:20:48:471,48,0";
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:10,10:20:48:471,48,0"<<endl;
             }
             if(homo)
             {
                 if(actVar.isRefNClikeGRChNC())
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:10,10:20:48:471,48,0"<<endl;
                 //else
-                //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:0,20:20:48:471,48,0";
+                //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:10,10:20:48:471,48,0"<<endl;
             }
         }
     }
     for(set<CISBTAnno::variation>::iterator i = LrgNotIsbtSet.begin(); i != LrgNotIsbtSet.end(); i++)
     {
-        if(count++ != 0)
-            osr << endl;
         osr << i->chrom() << '\t'
             << i->vcfCoordinate() << "\t.\t"
             << i->vcfReference() << '\t'
             << i->vcfAlternative() << '\t'
-            << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
+            << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:10,10:20:48:471,48,0"<<endl;
     }
     return osr.str();
 }

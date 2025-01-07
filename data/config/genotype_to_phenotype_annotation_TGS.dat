@@ -1195,7 +1195,8 @@ ToDo	JK	SLC14A1	JK*02N.07	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	896G
 ToDo	JK	SLC14A1	JK*02N.08	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	956C>T	Thr319Met	0.06%
 ToDo	JK	SLC14A1	JK*01N.09	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	27_50delAGTGGACAGCCCCACTATGGTTAG 838A>G	Val10_Arg17del Asn280Asp	0.04%
 ToDo	JK	SLC14A1	JK*02N.09	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	191G>A	Arg64Gln	0.04%
-ToDo	JK	SLC14A1	JK*01N.01	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	(?_-21)_(341_?)del	0	 
+#not able to parse variant description (?_-21)_(341_?)del. So it is treated like JK*02 (no variation). Solution: provide a clear variant annotation
+#ToDo	JK	SLC14A1	JK*01N.01	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	(?_-21)_(341_?)del	0	 
 ToDo	JK	SLC14A1	JK*01N.02	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	202C>T 838A>G	Gln68Ter	 
 ToDo	JK	SLC14A1	JK*01N.03	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	582C>G 838A>G	Tyr194Ter	 
 ToDo	JK	SLC14A1	JK*01N.04	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	838A>G 956C>T	Asn280Asp Thr319Met	 
@@ -1214,7 +1215,8 @@ ToDo	JK	SLC14A1	JK*02N.05	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	723d
 ToDo	JK	SLC14A1	JK*02N.10	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	194G>A	Gly65Asp	 
 ToDo	JK	SLC14A1	JK*02N.11	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	499A>G 512G>A	Met167Val Trp171Ter	 
 ToDo	JK	SLC14A1	JK*02N.12	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	437T>C 499A>G	Leu146Pro Met167Val	 
-ToDo	JK	SLC14A1	JK*02N.13	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	499A>G 536C>G	Met167Val Pro179Arg	 
+ToDo	JK	SLC14A1	JK*02N.13	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	499A>G 536C>G	Met167Val Pro179Arg	
+#The same variant annotation exists for  JK*02N.07
 #ToDo	JK	SLC14A1	JK*02N.14	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	896G>A	Gly299Glu	 
 ToDo	JK	SLC14A1	JK*02W.01	Jk(b+w)	Jk(b+w)	Jk(b+w)	548C>T	Ala183Val	 
 ToDo	JK	SLC14A1	JK*02W.02	Jk(b+w)	Jk(b+w)	Jk(b+w)	718T>A	Trp240Arg	 

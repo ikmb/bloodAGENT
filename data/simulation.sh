@@ -21,7 +21,7 @@ json_file=$(mktemp --suffix=".json")
 sed 1D "$allele_table" | cut -f2  | sort | uniq | shuf -n 1 > "$unique_file"
 selected_key=$(cat "$unique_file")
 ####################################
-selected_key="JK"
+#selected_key="JK"
 
 # 2. Zeilen mit demselben Wert in Spalte 2 filtern
 grep -v '^#' "$allele_table" | awk -v key="$selected_key" '$2 == key'  > "$filtered_file"
