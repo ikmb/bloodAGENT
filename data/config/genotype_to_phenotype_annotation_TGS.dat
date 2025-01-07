@@ -507,7 +507,7 @@ ToDo	H	FUT1	FUT1*01W.21	H+weak	H+weak	H+weak	235G>C	Gly79Arg
 ToDo	H	FUT1	FUT1*01W.22	H+weak	H+weak	H+weak	991C>A	Pro331Thr	 
 ToDo	H	FUT1	FUT1*01W.23	H+weak	H+weak	H+weak	424C>T	Arg142Trp	 
 ToDo	H	FUT1	FUT1*01W.24	H+weak	H+weak	H+weak	649G>T	Val217Phe	 
-ToDo	H	FUT1	FUT1*01W.25	H+weak	H+weak	H+weak	235G>C	Gly79Arg	 
+#ToDo	H	FUT1	FUT1*01W.25	H+weak	H+weak	H+weak	235G>C	Gly79Arg	 
 ToDo	H	FUT1	FUT1*01W.26	H+weak	H+weak	H+weak	545G>A	Arg182His	 
 ToDo	H	FUT1	FUT1*01W.27	H+weak	H+weak	H+weak	958G>A	Gly320Arg	 
 ToDo	H	FUT1	FUT1*01W.28	H+weak	H+weak	H+weak	896A>C	Gln299Pro	 
@@ -1215,7 +1215,7 @@ ToDo	JK	SLC14A1	JK*02N.10	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	194G
 ToDo	JK	SLC14A1	JK*02N.11	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	499A>G 512G>A	Met167Val Trp171Ter	 
 ToDo	JK	SLC14A1	JK*02N.12	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	437T>C 499A>G	Leu146Pro Met167Val	 
 ToDo	JK	SLC14A1	JK*02N.13	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	499A>G 536C>G	Met167Val Pro179Arg	 
-ToDo	JK	SLC14A1	JK*02N.14	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	896G>A	Gly299Glu	 
+#ToDo	JK	SLC14A1	JK*02N.14	JK:–3 or Jk(a–b–)	Jk(a–b–)	Jk(a–b–)	896G>A	Gly299Glu	 
 ToDo	JK	SLC14A1	JK*02W.01	Jk(b+w)	Jk(b+w)	Jk(b+w)	548C>T	Ala183Val	 
 ToDo	JK	SLC14A1	JK*02W.02	Jk(b+w)	Jk(b+w)	Jk(b+w)	718T>A	Trp240Arg	 
 ToDo	AUG	SLC29A1	AUG*01	At(a+) or AUG:1,2,−3	At(a+) or AUG:1,2,−3	At(a+) or AUG:1,2,−3			98.48%

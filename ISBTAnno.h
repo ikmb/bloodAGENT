@@ -50,8 +50,11 @@ public:
     /// return blood group system for this genomic position
     std::string getSystemAt(std::string chrom, int pos)const;
     
-    /// return all variations between LRG sequence and std GRCh reference ...
+    /// return all variations between where LRG sequence and std GRCh reference differ ...
     std::map<std::string,std::vector<CISBTAnno::variation> > getReferenceVariations();
+    
+    /// return all variations between where LRG sequence and std GRCh reference differ 
+    std::set<CISBTAnno::variation> getReferenceVariations(const std::string& system);
     
     /// return strand +/-/u
     char strand(const std::string& system)const{if(m_strand.find(system) != m_strand.end())return m_strand.find(system)->second;return 'u';}

@@ -70,7 +70,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
 string getArgumentList(TCLAP::CmdLine& args);
 
 /*
- * export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
+ * export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
  * ln -s ../mnts/gvfs/sftp\:host\=medcluster.medfdm.uni-kiel.de\,user\=sukko545/work_ifs/sukko545/haemo/PacBio PacBio
  * 
  * StatusPlus

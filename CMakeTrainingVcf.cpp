@@ -89,14 +89,32 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
     return osr.str();
 }
 
-std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno, bool phased, int dropout_prob)
+void CMakeTrainingVcf::removeEmptyStringsFromSet(std::set<std::string>& variations)
+{
+    for (auto it = variations.begin(); it != variations.end(); ) {
+        if (it->empty()) {
+            it = variations.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, CISBTAnno& anno, bool phased, int dropout_prob)
 {
     ostringstream osr("");
     std::set<std::string> variationsA = alleleA.baseChanges();
     std::set<std::string> variationsB = alleleB.baseChanges();
  
-    set<CISBTAnno::variation> varSet;
+    removeEmptyStringsFromSet(variationsA);
+    removeEmptyStringsFromSet(variationsB);
     
+    set<CISBTAnno::variation> varSet;
+    set<CISBTAnno::variation> LrgNotIsbtSet = anno.getReferenceVariations(system);
+    set<string>               LrgNotIsbtStringSet;
+    for(auto& var:LrgNotIsbtSet)
+        LrgNotIsbtStringSet.insert(var.name());
+                
     for(auto& var:variationsA)
         varSet.insert(anno.getIsbtVariant(system,var));
     for(auto& var:variationsB)
@@ -116,6 +134,16 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
         if(getRandomInteger(1,100) <= dropout_prob )
             continue;
         
+        // The variation is one where LRG and ref-genome variants are swapped
+        // and it is homozygous. This requires the vcf entry to be droped out
+        // as the variation is represented by the reference sequence
+        for(set<CISBTAnno::variation>::iterator i = LrgNotIsbtSet.begin(); i != LrgNotIsbtSet.end(); i++)
+            if(*i == actVar)
+            {
+                LrgNotIsbtSet.erase(i);
+                break;
+            }
+                
         if(!hetA && !hetB && !homo)
         {
             cerr << "skipping unassigned " << actVar << " of " << alleleA << '/' << alleleB << endl;
@@ -125,10 +153,12 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             osr << endl;
         else
             phase_id=actVar.pos();
+        
         osr << actVar.chrom() << '\t'
             << actVar.vcfCoordinate() << "\t.\t"
             << actVar.vcfReference() << '\t'
             << actVar.vcfAlternative() << '\t';
+        
         if(phased)
         {
             if(hetA)
@@ -149,8 +179,8 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
            {
                if(actVar.isRefNClikeGRChNC())
                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
-               else
-                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
+               //else
+               //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
            }
         }
         else
@@ -168,15 +198,22 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             {
                 if(actVar.isRefNClikeGRChNC())
                     osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
-                else
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:0,20:20:48:471,48,0";
+                //else
+                //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:0,20:20:48:471,48,0";
             }
         }
-        
-       
-        
     }
-     return osr.str();
+    for(set<CISBTAnno::variation>::iterator i = LrgNotIsbtSet.begin(); i != LrgNotIsbtSet.end(); i++)
+    {
+        if(count++ != 0)
+            osr << endl;
+        osr << i->chrom() << '\t'
+            << i->vcfCoordinate() << "\t.\t"
+            << i->vcfReference() << '\t'
+            << i->vcfAlternative() << '\t'
+            << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
+    }
+    return osr.str();
 }
 
 

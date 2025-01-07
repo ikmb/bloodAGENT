@@ -22,9 +22,9 @@ public:
     
     
     static std::string getHomEntries(const std::string& system, const CIsbtPtAllele& allele, const CISBTAnno& anno);
-    static std::string getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno, bool phased, int dropout_prob);
+    static std::string getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, CISBTAnno& anno, bool phased, int dropout_prob);
     static int         getRandomInteger(const int start, const int end);
-    
+    static void        removeEmptyStringsFromSet(std::set<std::string>& variations);
     
 private:
 
