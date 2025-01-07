@@ -154,10 +154,11 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
         else
             phase_id=actVar.pos();
         
-        osr << actVar.chrom() << '\t'
-            << actVar.vcfCoordinate() << "\t.\t"
-            << actVar.vcfReference() << '\t'
-            << actVar.vcfAlternative() << '\t';
+        if( !(homo && !actVar.isRefNClikeGRChNC()) )
+            osr << actVar.chrom() << '\t'
+                << actVar.vcfCoordinate() << "\t.\t"
+                << actVar.vcfReference() << '\t'
+                << actVar.vcfAlternative() << '\t';
         
         if(phased)
         {
