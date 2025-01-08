@@ -562,7 +562,7 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
         bool type_by_snps = true; // for example RHD: if coverage is 0 we do not type and set this to false
         bool is_RHD_DEL_HET = false;
         // special RhD treatment, trans_anno only has key if parameter Trick was set
-        if(system.compare("RHD") == 0 && trans_anno.hasKey("RHD"))
+        if(system.compare("RHD") == 0 && trans_anno.hasKey("RHD") && !phenotype)
         {
             double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr);
             double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr);

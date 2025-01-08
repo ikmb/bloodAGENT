@@ -372,7 +372,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
             {
                 //cout << locus << endl;
                 isbTyper.type(locus,vcs,arg_coverage,arg_top_hits);
-                nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
+                nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,!arg_trick,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;
             }
         }
@@ -465,7 +465,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
     }
     catch(...)
     {
-        throw(CMyException("Unexpected Error in phenotype function"));
+        throw(CMyException("Unexpected Error in inSilicoVCF function"));
     }
 }
 
