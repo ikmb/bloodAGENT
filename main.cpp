@@ -324,8 +324,12 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CVariantChains vcs(&isbt);
         vcs.setBreakPhasingVariable(arg_break);
         /// if you analyze simulated VCF do the following on your CVariantChains object
+        // Its deprecated !!!
         if(arg_is_in_silico)
-            vcs.removeReferenceSnps();
+        {
+            //vcs.removeReferenceSnps();
+            cerr << "INFORMATION: i/--insilicovcf is not in use any more and so it is ignored. This was a workaround as \"--job vcf\" generated inaccurate vcf files. This is soved now." << endl;
+        }
         //CVcf vcf_file(argv[3]);
         
         
