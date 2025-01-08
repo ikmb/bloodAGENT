@@ -173,7 +173,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         //                      in vcf: T/TC
         // another exception would be KEL with G for k+,A for K+ and C for Kmod at rs8176058
         if( (equal_counter == allele_counter || // alleles match perfect 
-           abs(mRange.second->second - mRange.first->second) == 1 ) &&  // only one entry
+           distance(mRange.first, mRange.second) == 1 ) &&  // only one entry
            vcfsnp.refAllele().compare(varParsed.vcfReference()) == 0   )
             return m_parsed_isbt_variant[it->second];
     }
