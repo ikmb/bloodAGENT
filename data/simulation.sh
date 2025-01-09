@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#####################################################################
+#### Excel help
+#### =MAX(SUM(NOT(ISERR(FIND(B1,E1))),NOT(ISERR(FIND(C1,F1)))),SUM(NOT(ISERR(FIND(B1,F1))),NOT(ISERR(FIND(C1,E1)))))
+#####################################################################
+
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
 
 # Datei mit den Daten
@@ -52,7 +58,7 @@ cat /home/mwittig/coding/cpp/deepBlood/data/simulation_vcf_header.vcf > $vcf_fil
                   --verbose 2 \
                   --scoreRange 0.99 \
                   --out $json_file \
-                  --build hg38 -k --id "Simulation" --locus "$selected_key"
+                  --build hg38 --id "Simulation" --locus "$selected_key"
                   
 RESULT=$(deepBlood_values.py $json_file | grep Simulation | cut -f 2-4)
 
