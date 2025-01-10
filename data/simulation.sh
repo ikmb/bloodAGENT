@@ -7,6 +7,7 @@
 #####################################################################
 
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_beegfs/${USER}/software/MyTools/dist/Debug/GNU-Linux/:/work_beegfs/${USER}/software/htslib:/work_beegfs/${USER}/software/libBigWig
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
 
 ROOTPATH="/home/mwittig/coding/cpp/deepBlood"
@@ -28,7 +29,7 @@ json_file=$(mktemp --suffix=".json")
 
 
 # 1. Spalte 2 einzigartig machen und zufälligen Eintrag auswählen
-sed 1D "$allele_table" | cut -f2  | sort | uniq | shuf -n 1 > "$unique_file"
+sed 1D "$allele_table" | grep -v -P "^#" | cut -f2  | sort | uniq | shuf -n 1 > "$unique_file"
 selected_key=$(cat "$unique_file")
 ####################################
 #selected_key="JK"

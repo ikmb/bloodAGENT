@@ -100,7 +100,7 @@ void CMakeTrainingVcf::removeEmptyStringsFromSet(std::set<std::string>& variatio
     }
 }
 
-std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, CISBTAnno& anno, bool phased, int dropout_prob)
+std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, CISBTAnno& anno, bool phased, int dropout_prob, int haplotype_crack)
 {
     ostringstream osr("");
     std::set<std::string> variationsA = alleleA.baseChanges();
@@ -158,7 +158,8 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
                 << actVar.vcfReference() << '\t'
                 << actVar.vcfAlternative() << '\t';
         
-        if(phased)
+        if(phased && 
+            !(getRandomInteger(1,100) <= haplotype_crack && !homo) )// Simulate haplotype phasing cracks
         {
             if(hetA)
             {

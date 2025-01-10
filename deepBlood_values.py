@@ -8,13 +8,13 @@ json_files = sys.argv[1:]
 # Ausgabe der Header
 print("Sample_ID\tLocus\tCall_0_Names\tCall_1_Names\tCall_0_Score\tCall_0_weak_Score\tHaplotypes_0_Variations\tHaplotypes_1_Variations\tno. of relevant_variants\tno. of coverage_failed_variants\tcoverage_failed_variants\trequired_coverage\tmean_coverage_CDS\tmean_coverage_exons\tnon_isbt_variants_count\tnon_isbt_variants")
 
-# Iterieren über die JSON-Dateien
+# Iterieren ueber die JSON-Dateien
 for json_file in json_files:
     # Laden der JSON-Daten
     with open(json_file, 'r') as f:
         data = json.load(f)
     
-    # Iterieren über die Loci
+    # Iterieren ueber die Loci
     for locus, locus_data in data["loci"].items():
         sample_id = data.get("sample_id", "")
         coverage_threshold = data["parameters"].get("--coverage", "")
