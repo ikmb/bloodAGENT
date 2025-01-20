@@ -1256,7 +1256,8 @@ ToDo	DI	SLC4A1	DI*02.17	DI:17 or Jn(a+)	Jn(a+)	Jn(a+)	1696C>T	Pro566Ser
 ToDo	DI	SLC4A1	DI*02.18	DI:18 or KREP+	KREP+	KREP+	1696C>G	Pro566Ala	 
 ToDo	DI	SLC4A1	DI*02.19	DI:19 or Tr(a+)	Tr(a+)	Tr(a+)	1653G>C	Lys551Asn	 
 ToDo	DI	SLC4A1	DI*02.20	DI:20 or Fr(a+)	Fr(a+)	Fr(a+)	1438G>A	Glu480Lys	 
-ToDo	DI	SLC4A1	DI*02.21	DI:21 or SW1+	SW1+	SW1+	1936C>T	Arg646Trp	 
+#DI*02.21 has identical annotation to DI*02.14.02
+#ToDo	DI	SLC4A1	DI*02.21	DI:21 or SW1+	SW1+	SW1+	1936C>T	Arg646Trp	 
 ToDo	DI	SLC4A1	DI*02N.01	Di(a–b–)	Di(a–b–),Wr(a-b+)	Di(a–b–),Wr(a-b+)	1462G>A	Val488Met	 
 ToDo	VEL	SMIM1	VEL*01	Vel+	Vel+	Vel+			99.96%
 ToDo	VEL	SMIM1	VEL*-01	Vel–	Vel–	Vel–	64_80delAGCCTAGGGGCTGTGTC	Ser22Glnfs*?	 

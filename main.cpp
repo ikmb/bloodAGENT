@@ -24,6 +24,11 @@
 #include <iterator>
 #include <experimental/filesystem>
 
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
+
 //#include "api/BamIndex.h"
 //#include "api/BamReader.h"
 //#include "api/BamMultiReader.h"
@@ -68,6 +73,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1, bool arg_break = false);
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose, int dropout_prob, int haplotype_crack);
 string getArgumentList(TCLAP::CmdLine& args);
+string getCurrentDateTime();
 
 /*
  * export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
@@ -382,6 +388,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         j["sample_id"]=sampleId;
         j["version"]=APP_VERSION_DEEPBLOOD;
         j["genome"]=arg_build;
+        j["date"]=getCurrentDateTime();
         j["parameters"]["--target"]=arg_target_anno;
         j["parameters"]["--trick"]=arg_trick;
         j["parameters"]["--variants"]=arg_isbt_SNPs;
@@ -484,4 +491,15 @@ string getArgumentList(TCLAP::CmdLine& args)
     return osr.str();
 }
 
+
+std::string getCurrentDateTime() {
+    // Hole die aktuelle Zeit
+    std::time_t now = std::time(nullptr);
+    std::tm localTime = *std::localtime(&now); // Lokale Zeit holen
+
+    // Stringstream für die Formatierung
+    std::ostringstream oss;
+    oss << std::put_time(&localTime, "%H:%M %Y-%m-%d");
+    return oss.str();
+}
 

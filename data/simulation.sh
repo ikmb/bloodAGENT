@@ -6,7 +6,6 @@
 #### =(LEN(LOWER(E1)) - LEN(LOWER(SUBSTITUTE(E1, ","&A1, ""))))/(LEN(A1)+1)+(LEN(LOWER(F1)) - LEN(LOWER(SUBSTITUTE(F1, ","&A1, ""))))/(LEN(A1)+1)
 #####################################################################
 
-
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_beegfs/${USER}/software/MyTools/dist/Debug/GNU-Linux/:/work_beegfs/${USER}/software/htslib:/work_beegfs/${USER}/software/libBigWig
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
 
@@ -50,7 +49,7 @@ ${ROOTPATH}/dist/Debug/GNU-Linux/deepblood --job vcf \
           --variants ${ROOTPATH}/data/config/variation_annotation_TGS.dat \
           --gt2pt ${ROOTPATH}/data/config/genotype_to_phenotype_annotation_TGS.dat -a "$allele_one" -b "$allele_two" \
           --phased \
-          --dropout ${drop} 1>> $vcf_file
+          --dropout ${drop} --crack 50 1>> $vcf_file
 
 
 ${ROOTPATH}/dist/Debug/GNU-Linux/deepblood -j phenotype \
