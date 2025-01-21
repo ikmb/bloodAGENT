@@ -228,7 +228,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_makeHaplotypes);
             TCLAP::ValueArg<int> tc_dropout_probability("o","dropout","The probability that a SNP drops out",false,0,"int");
             cmdjob.add(tc_dropout_probability);
-            TCLAP::ValueArg<int>  tc_breaks("x","crack","This the probability in percent ([0..100]) that a haplotype breaks at an heterozygous SNV",false,0,"int");
+            TCLAP::ValueArg<int>  tc_breaks("x","crack,"This the probability in percent ([0..100]) that a haplotype breaks at an heterozygous SNV",false,0,"int");
             cmdjob.add(tc_breaks);
             
             cmdjob.parse(argc,argv);
