@@ -28,7 +28,7 @@ def main():
     parser = argparse.ArgumentParser(description="Calculate coverage and CN state for RHCE exon 2.")
     parser.add_argument("-c", "--coverage", required=True, help="Path to BigWig file.")
     parser.add_argument("-b", "--build", required=True, help="genome build (hg38 or hg19)")
-    parser.add_argument("-p", "--pipeline", required=True, help="What kind of secondary analysis pipeline is used? (GATK, TGS, Dragen")
+    parser.add_argument("-p", "--pipeline", required=True, help="What kind of secondary analysis pipeline is used? (GATK, TGS, Dragen, HGDP")
     parser.add_argument("-o", "--out", required=True, help="Path to output VCF file.")
     parser.add_argument("-a", "--annotation", required=True, help="Path to annotation file.")
 
@@ -52,6 +52,12 @@ def main():
 
     match args.pipeline:
         case "GATK":
+            REF_Allele = "G"
+            ALT_Allele = "GAGCTATGATTGTACCACTGGGAAGTGACAAAGGGCACCCTGGGGGATTTCAAATGGTGGTGGCCCTGGTTTGGTGTTGCTGCCAGGTGAGTCCTTAAGCTATAGCAA"
+            POS_Allele = 25405596
+            if args.build == "hg19":
+                POS_Allele = 25732079
+        case "HGDP":
             REF_Allele = "G"
             ALT_Allele = "GAGCTATGATTGTACCACTGGGAAGTGACAAAGGGCACCCTGGGGGATTTCAAATGGTGGTGGCCCTGGTTTGGTGTTGCTGCCAGGTGAGTCCTTAAGCTATAGCAA"
             POS_Allele = 25405596
