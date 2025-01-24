@@ -125,6 +125,17 @@ def main():
         out_vcf.write("##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase set identifier\">\n")
         out_vcf.write("##FORMAT=<ID=RGQ,Number=1,Type=Integer,Description=\"Unconditional reference genotype confidence, encoded as a phred quality -10*log10 p(genotype call is wrong)\">\n")
         out_vcf.write("##FORMAT=<ID=SB,Number=4,Type=Integer,Description=\"Per-sample component statistics which comprise the Fisher's Exact Test to detect strand bias.\">\n")
+        out_vcf.write("##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Allele count in genotypes\">\n")
+        out_vcf.write("##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency of alternate alleles\">\n")
+        out_vcf.write("##INFO=<ID=AN,Number=1,Type=Integer,Description=\"Total number of alleles in called genotypes\">\n")
+        out_vcf.write("##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Read depth for the site\">\n")
+        out_vcf.write("##INFO=<ID=ExcessHet,Number=1,Type=Float,Description=\"Excess heterozygosity statistic\">\n")
+        out_vcf.write("##INFO=<ID=FS,Number=1,Type=Float,Description=\"Phred-scaled p-value of Fisher's exact test for strand bias\">\n")
+        out_vcf.write("##INFO=<ID=MLEAC,Number=A,Type=Integer,Description=\"Maximum likelihood estimate of the allele count\">\n")
+        out_vcf.write("##INFO=<ID=MLEAF,Number=A,Type=Float,Description=\"Maximum likelihood estimate of the allele frequency\">\n")
+        out_vcf.write("##INFO=<ID=MQ,Number=1,Type=Float,Description=\"RMS mapping quality\">\n")
+        out_vcf.write("##INFO=<ID=QD,Number=1,Type=Float,Description=\"Variant confidence divided by unfiltered depth\">\n")
+        out_vcf.write("##INFO=<ID=SOR,Number=1,Type=Float,Description=\"Symmetric Odds Ratio of 2x2 contingency table to detect strand bias\">
         out_vcf.write("##contig=<ID=chr1,length=249250621>\n")
         out_vcf.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tUnnamedSample\n")
         
