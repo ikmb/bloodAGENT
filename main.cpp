@@ -27,6 +27,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <chrono>
 #include <sstream>
 
 //#include "api/BamIndex.h"
@@ -74,6 +75,8 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
 void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose, int dropout_prob, int haplotype_crack);
 string getArgumentList(TCLAP::CmdLine& args);
 string getCurrentDateTime();
+long long getCurrentTimeMillis();
+
 
 /*
  * export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
@@ -296,7 +299,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
 {
     try
     {
-        
+        long long startTime = getCurrentTimeMillis();
         CTranscriptAnno trans_anno = CTranscriptAnno(arg_target_anno);
         if(arg_verbose >= 2)
                 cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
@@ -309,6 +312,8 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CBigWigReader bwr(arg_bigWig);
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
+        
+        long long configEndTime = getCurrentTimeMillis();
         /*if(!arg_motifs.empty())
         {
             CMotifFinder mf(arg_motifs,arg_fastqgz,arg_verbose);
@@ -316,6 +321,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
             if(arg_verbose >= 2)
                 cerr << "Motif SNPs defined in " << arg_motifs << " looked up in "  << arg_fastqgz << endl;
         }*/
+        
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
         
@@ -363,6 +369,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
         if(arg_verbose >= 2 && arg_break)
             cerr << "Phasing information will be ignored. (parameter -x/--crack) "<< endl;   
+        long long inputFileEndTime = getCurrentTimeMillis();
         
         if(arg_verbose >= 3)
             cerr << "Variant chains of current sample: " << vcs << endl;   
@@ -385,6 +392,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
                 j["loci"][locus]=jCall;
             }
         }
+        long long endTime = getCurrentTimeMillis();
         j["sample_id"]=sampleId;
         j["version"]=APP_VERSION_DEEPBLOOD;
         j["genome"]=arg_build;
@@ -403,6 +411,10 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         j["parameters"]["--insilicovcf"]=arg_is_in_silico;
         j["parameters"]["--id"]=sampleId;
         j["parameters"]["--out"]=outfile;
+        j["runtime"]["read configuration (in ms)"]=configEndTime-startTime;
+        j["runtime"]["read sample data (in ms)"]=inputFileEndTime-configEndTime;
+        j["runtime"]["do calculations (in ms)"]=endTime-inputFileEndTime;
+        j["runtime"]["overall runtime (in ms)"]=endTime-startTime;
         
         if(arg_verbose >= 3)
             cerr << isbTyper << endl;
@@ -501,5 +513,13 @@ std::string getCurrentDateTime() {
     std::ostringstream oss;
     oss << std::put_time(&localTime, "%H:%M %Y-%m-%d");
     return oss.str();
+}
+
+
+// Funktion, um die aktuelle Zeit in Millisekunden zu erhalten
+long long getCurrentTimeMillis() {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
+    return duration.count();
 }
 
