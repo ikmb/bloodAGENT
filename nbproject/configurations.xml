@@ -15,17 +15,25 @@
       <itemPath>CIsbtVariant.h</itemPath>
       <itemPath>CMakeTrainingVcf.h</itemPath>
       <itemPath>CMotifFinder.h</itemPath>
+      <itemPath>CMultiFasta.h</itemPath>
+      <itemPath>CMyException.h</itemPath>
+      <itemPath>CRefGeneEntry.h</itemPath>
+      <itemPath>CRefGeneTable.h</itemPath>
       <itemPath>CScoreHaplotype.h</itemPath>
       <itemPath>CSyncedScoreVector.h</itemPath>
       <itemPath>CTranscript.h</itemPath>
       <itemPath>CTranscriptAnno.h</itemPath>
+      <itemPath>CTwoBit.h</itemPath>
       <itemPath>CVariantChain.h</itemPath>
       <itemPath>CVariantChainVariation.h</itemPath>
       <itemPath>CVariantChains.h</itemPath>
       <itemPath>CVcf.h</itemPath>
       <itemPath>CVcfSnp.h</itemPath>
       <itemPath>ISBTAnno.h</itemPath>
+      <itemPath>MyTools.h</itemPath>
+      <itemPath>ParsedTextfile.h</itemPath>
       <itemPath>gzstream.h</itemPath>
+      <itemPath>mytools.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -45,15 +53,22 @@
       <itemPath>CIsbtVariant.cpp</itemPath>
       <itemPath>CMakeTrainingVcf.cpp</itemPath>
       <itemPath>CMotifFinder.cpp</itemPath>
+      <itemPath>CMultiFasta.cpp</itemPath>
+      <itemPath>CMyException.cpp</itemPath>
+      <itemPath>CRefGeneEntry.cpp</itemPath>
+      <itemPath>CRefGeneTable.cpp</itemPath>
       <itemPath>CScoreHaplotype.cpp</itemPath>
       <itemPath>CTranscript.cpp</itemPath>
       <itemPath>CTranscriptAnno.cpp</itemPath>
+      <itemPath>CTwoBit.cpp</itemPath>
       <itemPath>CVariantChain.cpp</itemPath>
       <itemPath>CVariantChainVariation.cpp</itemPath>
       <itemPath>CVariantChains.cpp</itemPath>
       <itemPath>CVcf.cpp</itemPath>
       <itemPath>CVcfSnp.cpp</itemPath>
       <itemPath>ISBTAnno.cpp</itemPath>
+      <itemPath>MyTools.cpp</itemPath>
+      <itemPath>ParsedTextfile.cpp</itemPath>
       <itemPath>gzstream.C</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -81,7 +96,6 @@
         <ccTool>
           <standard>11</standard>
           <incDir>
-            <pElem>../MyTools</pElem>
             <pElem>../htslib/htslib</pElem>
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
@@ -99,20 +113,6 @@
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
           </linkerDynSerch>
-          <linkerLibItems>
-            <linkerLibProjectItem>
-              <makeArtifact PL="../MyTools"
-                            CT="2"
-                            CN="Debug"
-                            AC="true"
-                            BL="true"
-                            WD="../MyTools"
-                            BC="${MAKE}  -f Makefile CONF=Debug"
-                            CC="${MAKE}  -f Makefile CONF=Debug clean"
-                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libMyTools.${CND_DLIB_EXT}">
-              </makeArtifact>
-            </linkerLibProjectItem>
-          </linkerLibItems>
           <commandLine>-lz -lhts -lBigWig -pthread</commandLine>
         </linkerTool>
       </compileType>
@@ -160,6 +160,22 @@
       </item>
       <item path="CMotifFinder.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CMultiFasta.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMultiFasta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CMyException.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMyException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CRefGeneEntry.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CRefGeneEntry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CRefGeneTable.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CRefGeneTable.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CScoreHaplotype.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CScoreHaplotype.h" ex="false" tool="3" flavor2="0">
@@ -173,6 +189,10 @@
       <item path="CTranscriptAnno.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CTranscriptAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTwoBit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTwoBit.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CVariantChain.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -198,11 +218,21 @@
       </item>
       <item path="ISBTAnno.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MyTools.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MyTools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ParsedTextfile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ParsedTextfile.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="gzstream.C" ex="false" tool="1" flavor2="0">
       </item>
       <item path="gzstream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="mytools.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -219,7 +249,6 @@
           <developmentMode>6</developmentMode>
           <standard>11</standard>
           <incDir>
-            <pElem>../MyTools</pElem>
             <pElem>../htslib/htslib</pElem>
             <pElem>../htslib</pElem>
             <pElem>../libBigWig</pElem>
@@ -245,20 +274,6 @@
             <pElem>../../fremd/htslib</pElem>
             <pElem>../../fremd/htslib/htslib</pElem>
           </linkerDynSerch>
-          <linkerLibItems>
-            <linkerLibProjectItem>
-              <makeArtifact PL="../MyTools"
-                            CT="3"
-                            CN="Release"
-                            AC="false"
-                            BL="true"
-                            WD="../MyTools"
-                            BC="${MAKE}  -f Makefile CONF=Release"
-                            CC="${MAKE}  -f Makefile CONF=Release clean"
-                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmytools.a">
-              </makeArtifact>
-            </linkerLibProjectItem>
-          </linkerLibItems>
           <commandLine>-lz -lhts -lBigWig -lpthread</commandLine>
         </linkerTool>
       </compileType>
@@ -306,6 +321,22 @@
       </item>
       <item path="CMotifFinder.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="CMultiFasta.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMultiFasta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CMyException.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CMyException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CRefGeneEntry.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CRefGeneEntry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CRefGeneTable.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CRefGeneTable.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="CScoreHaplotype.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CScoreHaplotype.h" ex="false" tool="3" flavor2="0">
@@ -319,6 +350,10 @@
       <item path="CTranscriptAnno.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CTranscriptAnno.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTwoBit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTwoBit.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CVariantChain.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -344,11 +379,21 @@
       </item>
       <item path="ISBTAnno.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MyTools.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MyTools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ParsedTextfile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ParsedTextfile.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="gzstream.C" ex="false" tool="1" flavor2="0">
       </item>
       <item path="gzstream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="mytools.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

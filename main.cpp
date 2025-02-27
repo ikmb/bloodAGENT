@@ -29,6 +29,7 @@
 #include <ctime>
 #include <chrono>
 #include <sstream>
+#include <set>
 
 //#include "api/BamIndex.h"
 //#include "api/BamReader.h"
@@ -165,9 +166,9 @@ int main(int argc, char** argv)
             cmdjob.add(tc_isInSilico);
             TCLAP::ValueArg<string> tc_locus("l","locus","Get typing of specific loci only. Provide a comma separated list without spaces E.g. ABO,RHD, ...",false,"","string");
             cmdjob.add(tc_locus);
-            TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"","string");
+            TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"unknown","string");
             cmdjob.add(tc_Id);
-            TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"","string");
+            TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"bloodAGENT.json","string");
             cmdjob.add(tc_output);
             TCLAP::SwitchArg tc_breaks("x","crack","This breaks the hapltype information so that every variation gets recombined",false);
             cmdjob.add(tc_breaks);
