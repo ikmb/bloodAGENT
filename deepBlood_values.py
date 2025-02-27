@@ -8,13 +8,13 @@ json_files = sys.argv[1:]
 # Ausgabe der Header
 print("Sample_ID\tLocus\tCall_0_Names\tCall_1_Names\tCall_0_Score\tCall_0_weak_Score\tHaplotypes_0_Variations\tHaplotypes_1_Variations\tno. of relevant_variants\tno. of coverage_failed_variants\tcoverage_failed_variants\trequired_coverage\tmean_coverage_CDS\tmean_coverage_exons\tnon_isbt_variants_count\tnon_isbt_variants")
 
-# Iterieren über die JSON-Dateien
+# Iterieren ueber die JSON-Dateien
 for json_file in json_files:
     # Laden der JSON-Daten
     with open(json_file, 'r') as f:
         data = json.load(f)
     
-    # Iterieren über die Loci
+    # Iterieren ueber die Loci
     for locus, locus_data in data["loci"].items():
         sample_id = data.get("sample_id", "")
         coverage_threshold = data["parameters"].get("--coverage", "")
@@ -22,8 +22,8 @@ for json_file in json_files:
         if "calls" in locus_data and len(locus_data["calls"]) > 0:
             for call_data in locus_data["calls"]:
                 call_0_names = ",".join(call_data["alleles"][0]["names"])
-                call_0_score = "{:.3f}".format(call_data["score"])
-                call_0_weak_score = "{:.3f}".format(call_data["weak_score"])
+                call_0_score = "{:.3f}".format(float(call_data["score"]))
+                call_0_weak_score = "{:.3f}".format(float(call_data["weak_score"]))
                 
                 if len(call_data["alleles"]) > 1:
                     call_1_names = ",".join(call_data["alleles"][1]["names"])

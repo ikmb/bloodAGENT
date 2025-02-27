@@ -82,6 +82,28 @@ bool CISBTAnno::isVcfAlleleAnIsbtVariant(const std::string& allele, const std::s
     return var.reference().compare(allele) == 0;
 }
 
+std::set<CISBTAnno::variation> CISBTAnno::getReferenceVariations(const std::string& system)
+{
+    set<CISBTAnno::variation> sRet;
+    int i = 0;
+    if(m_vanno.First())
+    {
+        do{
+            if(m_vanno["system/gene"].compare(system)!=0)
+                continue;
+            if(m_vanno["is transcript_NC == "+m_build+"_NC"].compare("FALSE")==0)
+            {
+                std::string snp_short = m_vanno["Transcript annotation short"];
+                while(!snp_short.empty() && snp_short[0]=='!')
+                    snp_short.erase(snp_short.begin());
+                sRet.insert(m_parsed_isbt_variant[m_isbt_variant_to_index[m_vanno["system/gene"]][snp_short]]);
+            }
+            i++;
+        }while(m_vanno.Next());
+    }
+    return sRet;
+}
+
 map<string,vector<CISBTAnno::variation> > CISBTAnno::getReferenceVariations()
 {
     map<string,vector<CISBTAnno::variation> > mRet;
@@ -151,7 +173,7 @@ CISBTAnno::variation CISBTAnno::getCorrespondingIsbtVariation(CVcfSnp vcfsnp)con
         //                      in vcf: T/TC
         // another exception would be KEL with G for k+,A for K+ and C for Kmod at rs8176058
         if( (equal_counter == allele_counter || // alleles match perfect 
-           abs(mRange.second->second - mRange.first->second) == 1 ) &&  // only one entry
+           distance(mRange.first, mRange.second) == 1 ) &&  // only one entry
            vcfsnp.refAllele().compare(varParsed.vcfReference()) == 0   )
             return m_parsed_isbt_variant[it->second];
     }

@@ -122,7 +122,7 @@ CVcfSnp::~CVcfSnp() {
 std::vector<std::string>  CVcfSnp::indelalleles()const
 {
     // ToDO:
-    // Seltener Fall eineszum SNP benachbarten indels mit Freebyas gecallt
+    // Seltener Fall eines zum SNP benachbarten indels mit Freebyas gecallt
     // Soll sein G/A, reportiert aber mit Freebayes als:
     // 6       31106499        .       GTCCCCCCCA      ATCCCCCCA       271.543
     vector<std::string> vRet = m_alleles;

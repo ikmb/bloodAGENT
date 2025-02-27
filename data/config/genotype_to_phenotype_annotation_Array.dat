@@ -1,0 +1,7 @@
+PureSystem	MySystemKey	System	Allele	Phenotype_PDF_Table	Phenotype	Phenotype_flat	base_change	acid_change	incidence
+ToDo	ABO	ABO	ABO*O.01.01	O	O	O	261delG	Thr88Profs*31	28.41%
+ToDo	ABO	ABO	ABO*O.01.24	O	O	O	261delG 803G>C	Thr88Profs*31 Gly268Ala	0.82%
+ToDo	ABO	ABO	ABO*O.02.01	O	O	O	802G>A	Gly268Arg	0.76%
+ToDo	ABO	ABO	ABO*BW.18	O	O	O	802G>A 803G>C	Gly268Thr	???
+ToDo	ABO	ABO	ABO*B.01	B	B	B	803G>C	Gly268Ala	14.16%
+ToDo	ABO	ABO	ABO*A1.01	A1	A1	A1			9.54%

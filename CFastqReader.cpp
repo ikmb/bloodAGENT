@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <set>
 
 #include "gzstream.h"
 #include "mytools.h"

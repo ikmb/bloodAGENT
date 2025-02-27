@@ -42,16 +42,19 @@ using namespace std;
 CVariantChains::CVariantChains(int maxThreads) : m_maxThreads(maxThreads)
 {
     m_isbt = NULL;
+    m_break_phasing = false;
 }
 
 CVariantChains::CVariantChains(CISBTAnno* isbt,int maxThreads) : m_isbt(isbt), m_maxThreads(maxThreads)
 {
     init();
+    m_break_phasing = false;
 }
 
 CVariantChains::CVariantChains(const CVariantChains& orig) : m_isbt(orig.m_isbt),m_maxThreads(orig.m_maxThreads)
 {
     m_variant_chains = orig.m_variant_chains;
+    m_break_phasing = orig.m_break_phasing;
 }
 
 CVariantChains::~CVariantChains() 
@@ -63,7 +66,7 @@ CVariantChains::~CVariantChains()
 bool CVariantChains::init()
 {
     if(!m_isbt)
-        return false;
+        throw CMyException("Can not init CVariantChains object without an CISBTAnno object");
     
     set<string> loci = m_isbt->loci();
     for(set<string>::iterator locusIter = loci.begin(); locusIter != loci.end(); locusIter++)
@@ -94,7 +97,7 @@ void CVariantChains::removeUncoveredSnps(double limit, int verbose)
         {
            for(set<CVariantChainVariation>::iterator iVchainVar = iChains->second.begin(); iVchainVar != iChains->second.end();)
            {
-               if( !iVchainVar->first_variant.isCovered(limit) && !iVchainVar->second_variant.isCovered(limit))
+               if( !iVchainVar->first_variant.isCovered(limit) && !iVchainVar->second_variant.isCovered(limit) && limit > 0)
                {
                    if(verbose >= 1)
                        cerr << i->first << ": deleting too low covered variant " << iVchainVar->first_variant << '/' << iVchainVar->second_variant << endl;
@@ -129,7 +132,7 @@ string CVariantChains::add(const CVcfSnp& act_snp)
     string the_act_system = m_isbt->getSystemAt(act_snp.chrom(),act_snp.pos());
     if(!the_act_system.empty())
     {
-        m_variant_chains[the_act_system].add(act_snp);
+        m_variant_chains[the_act_system].add(act_snp,m_break_phasing);
         return the_act_system;
     }
     return "";

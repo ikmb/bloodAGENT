@@ -32,7 +32,7 @@ public:
     /// these SNPs are always homozyguous for the alternative allele
     void addHA(const CIsbtVariant& var);
     //void addHR(const CIsbtVariant& var);
-    bool add(const CVcfSnp& var);
+    bool add(const CVcfSnp& var, bool break_phasing = false);
     
     std::set<CIsbtGt> getPossibleGenotypes()const;
     

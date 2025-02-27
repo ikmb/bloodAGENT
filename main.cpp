@@ -24,6 +24,13 @@
 #include <iterator>
 #include <experimental/filesystem>
 
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <chrono>
+#include <sstream>
+#include <set>
+
 //#include "api/BamIndex.h"
 //#include "api/BamReader.h"
 //#include "api/BamMultiReader.h"
@@ -65,12 +72,15 @@ using namespace std;
 
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
-        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1);
-void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose);
+        bool arg_is_in_silico = false, const string& sampleId = "",const string& build = "hg38", const string& outfile = "", const int cores=1, bool arg_break = false);
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose, int dropout_prob, int haplotype_crack);
 string getArgumentList(TCLAP::CmdLine& args);
+string getCurrentDateTime();
+long long getCurrentTimeMillis();
+
 
 /*
- * export LD_LIBRARY_PATH=LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
+ * export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mwittig/coding/cpp/MyTools/dist/Debug/GNU-Linux/:/home/mwittig/coding/fremd/htslib:/home/mwittig/coding/fremd/libBigWig
  * ln -s ../mnts/gvfs/sftp\:host\=medcluster.medfdm.uni-kiel.de\,user\=sukko545/work_ifs/sukko545/haemo/PacBio PacBio
  * 
  * StatusPlus
@@ -138,7 +148,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_gt2pt);
             TCLAP::ValueArg<string> tc_hg("u","build","Human genome build [hg19|hg38]",true,"hg38","string");
             cmdjob.add(tc_hg);
-            TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt.",true,"","string");
+            TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt. This parameter can take a list of comma separated vcf files, too. Useful if SNV and SVs are in different vcf files.",true,"","string");
             cmdjob.add(tc_vcf);
             TCLAP::ValueArg<string> tc_bigwig("b","bigwig","The big wig or wig file that contains the coverage data..",true,"","string");
             cmdjob.add(tc_bigwig);
@@ -146,7 +156,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_fastqgz);
             TCLAP::ValueArg<string> tc_motifs("m","motif","Configuration file that lists specific sequence motifs. These motifs identify SNPs that usually are not present in vcf files",false,"","string");
             cmdjob.add(tc_motifs);
-            TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call.",false,10,"int");
+            TCLAP::ValueArg<int> tc_coverage("c","coverage","The minimum required coverage for a solid call. Default is 10 and and a value of 0 ignores coverage information.",false,10,"int");
             cmdjob.add(tc_coverage);
             TCLAP::ValueArg<int> tc_cores("p","parallel-threads","The number of parallel treads.",false,numCores,"int");
             cmdjob.add(tc_cores);
@@ -156,11 +166,13 @@ int main(int argc, char** argv)
             cmdjob.add(tc_isInSilico);
             TCLAP::ValueArg<string> tc_locus("l","locus","Get typing of specific loci only. Provide a comma separated list without spaces E.g. ABO,RHD, ...",false,"","string");
             cmdjob.add(tc_locus);
-            TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"","string");
+            TCLAP::ValueArg<string> tc_Id("f","id","provide a sample identifier that will be used for result output",false,"unknown","string");
             cmdjob.add(tc_Id);
-            TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"","string");
+            TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"bloodAGENT.json","string");
             cmdjob.add(tc_output);
-
+            TCLAP::SwitchArg tc_breaks("x","crack","This breaks the hapltype information so that every variation gets recombined",false);
+            cmdjob.add(tc_breaks);
+            
             if(tc_trick_calling.getValue() == true && !tc_abo_target_annotation.isSet())
             {
                 throw CMyException("Please provide parameter -t/--target. If switch -k/--trick is set to true it is mandatory to set parameter -t/--target.");
@@ -202,7 +214,8 @@ int main(int argc, char** argv)
                     tc_Id.getValue(),
                     tc_hg.getValue(),
                     tc_output.getValue(),
-                    tc_cores.getValue());
+                    tc_cores.getValue(),
+                    tc_breaks.getValue());
             return EXIT_SUCCESS;
         }
         else if(tc_jobType.getValue().compare("vcf") == 0)
@@ -217,6 +230,10 @@ int main(int argc, char** argv)
             cmdjob.add(tc_alleleB);
             TCLAP::SwitchArg tc_makeHaplotypes("p","phased","Create solid haplotypes or unphased. Set this parameter if you want phased vcf",false);
             cmdjob.add(tc_makeHaplotypes);
+            TCLAP::ValueArg<int> tc_dropout_probability("o","dropout","The probability that a SNP drops out",false,0,"int");
+            cmdjob.add(tc_dropout_probability);
+            TCLAP::ValueArg<int>  tc_breaks("x","crack","This the probability in percent ([0..100]) that a haplotype breaks at an heterozygous SNV",false,0,"int");
+            cmdjob.add(tc_breaks);
             
             cmdjob.parse(argc,argv);
             if(tc_verbose.getValue() >= 2)
@@ -226,7 +243,9 @@ int main(int argc, char** argv)
                     tc_alleleA.getValue(),
                     tc_alleleB.getValue(),
                     tc_makeHaplotypes.getValue(),
-                    tc_verbose.getValue());
+                    tc_verbose.getValue(),
+                    tc_dropout_probability.getValue(),
+                    tc_breaks.getValue());
             return EXIT_SUCCESS;
             
         }
@@ -272,16 +291,16 @@ int main(int argc, char** argv)
     // ON MWMOB
     return EXIT_SUCCESS;
 }
-        
+
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.abotarget.bw coverage.bw
 // ln -s ~/coding/cpp/deepBlood/data/example/bc1001.asm20.hg19.ccs.5passes.phased.phenotype.SNPs.vcf.gz SNPs.vcf.gz
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,
                const string& arg_bigWig,const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits, const string& arg_locus, 
-               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile, const int cores)
+               bool arg_is_in_silico,const string& sampleId,const string& arg_build, const string& outfile, const int cores, bool arg_break)
 {
     try
     {
-        
+        long long startTime = getCurrentTimeMillis();
         CTranscriptAnno trans_anno = CTranscriptAnno(arg_target_anno);
         if(arg_verbose >= 2)
                 cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
@@ -291,12 +310,11 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
-        CVcf vcf_file(arg_vcf_file);
-        if(arg_verbose >= 2)
-            cerr << "VCF file loaded from:"  << arg_vcf_file << endl;
         CBigWigReader bwr(arg_bigWig);
         if(arg_verbose >= 2)
             cerr << "BigWig file loaded from:"  << arg_bigWig << endl;
+        
+        long long configEndTime = getCurrentTimeMillis();
         /*if(!arg_motifs.empty())
         {
             CMotifFinder mf(arg_motifs,arg_fastqgz,arg_verbose);
@@ -304,6 +322,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
             if(arg_verbose >= 2)
                 cerr << "Motif SNPs defined in " << arg_motifs << " looked up in "  << arg_fastqgz << endl;
         }*/
+        
         isbt.addCoverage(bwr,arg_coverage);
         std::set<string> loci = isbt.loci();
         
@@ -319,22 +338,39 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
          }
         // generate VCF Test Data
         CVariantChains vcs(&isbt);
+        vcs.setBreakPhasingVariable(arg_break);
         /// if you analyze simulated VCF do the following on your CVariantChains object
+        // Its deprecated !!!
         if(arg_is_in_silico)
-            vcs.removeReferenceSnps();
-        //CVcf vcf_file(argv[3]);
-        while(vcf_file.read_record())
         {
-            CVcfSnp act_snp = vcf_file.get_record();
-            //cerr << act_snp << endl;
-            string act_snp_system = vcs.add(act_snp);
-            if(act_snp_system.size() == 0 && arg_verbose >= 3)
-                cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
-            else if(act_snp_system.size() != 0 && arg_verbose >= 2)
-                cerr << act_snp << "\t" << act_snp_system << ", ISBT relevant SNP added" << endl;
-        };
-        vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
+            //vcs.removeReferenceSnps();
+            cerr << "INFORMATION: i/--insilicovcf is not in use any more and so it is ignored. This was a workaround as \"--job vcf\" generated inaccurate vcf files. This is soved now." << endl;
+        }
+        //CVcf vcf_file(argv[3]);
         
+        
+        std::stringstream test(arg_vcf_file);
+        std::string segment;
+        while(std::getline(test, segment, ','))
+        {
+            CVcf vcf_file(segment);
+            if(arg_verbose >= 2)
+                cerr << "VCF file loaded from:"  << segment << endl;
+            while(vcf_file.read_record())
+            {
+                CVcfSnp act_snp = vcf_file.get_record();
+                //cerr << act_snp << endl;
+                string act_snp_system = vcs.add(act_snp);
+                if(act_snp_system.size() == 0 && arg_verbose >= 3)
+                    cerr << act_snp << "\tSNP not added as it is not ISBT relevant" << endl;
+                else if(act_snp_system.size() != 0 && arg_verbose >= 2)
+                    cerr << act_snp << "\t" << act_snp_system << ", ISBT relevant SNP added" << endl;
+            };
+        }
+        vcs.removeUncoveredSnps(static_cast<double>(arg_coverage),arg_verbose);
+        if(arg_verbose >= 2 && arg_break)
+            cerr << "Phasing information will be ignored. (parameter -x/--crack) "<< endl;   
+        long long inputFileEndTime = getCurrentTimeMillis();
         
         if(arg_verbose >= 3)
             cerr << "Variant chains of current sample: " << vcs << endl;   
@@ -353,13 +389,15 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
             {
                 //cout << locus << endl;
                 isbTyper.type(locus,vcs,arg_coverage,arg_top_hits);
-                nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,false,arg_top_hits,arg_coverage);
+                nlohmann::json jCall = isbTyper.getCallAsJson(isbt,trans_anno,bwr,locus,!arg_trick,arg_top_hits,arg_coverage);
                 j["loci"][locus]=jCall;
             }
         }
+        long long endTime = getCurrentTimeMillis();
         j["sample_id"]=sampleId;
         j["version"]=APP_VERSION_DEEPBLOOD;
         j["genome"]=arg_build;
+        j["date"]=getCurrentDateTime();
         j["parameters"]["--target"]=arg_target_anno;
         j["parameters"]["--trick"]=arg_trick;
         j["parameters"]["--variants"]=arg_isbt_SNPs;
@@ -374,6 +412,10 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         j["parameters"]["--insilicovcf"]=arg_is_in_silico;
         j["parameters"]["--id"]=sampleId;
         j["parameters"]["--out"]=outfile;
+        j["runtime"]["read configuration (in ms)"]=configEndTime-startTime;
+        j["runtime"]["read sample data (in ms)"]=inputFileEndTime-configEndTime;
+        j["runtime"]["do calculations (in ms)"]=endTime-inputFileEndTime;
+        j["runtime"]["overall runtime (in ms)"]=endTime-startTime;
         
         if(arg_verbose >= 3)
             cerr << isbTyper << endl;
@@ -417,7 +459,7 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
 */
 
 
-void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose)
+void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_allele_A,const string& arg_allele_B, bool arg_phased, int arg_verbose, int dropout_prob, int haplotype_crack)
 {
     try
     {
@@ -437,7 +479,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CIsbtPtAllele alleleA = isbTyper.alleleOf(arg_allele_A);
         CIsbtPtAllele alleleB = isbTyper.alleleOf(arg_allele_B);
         
-        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt,arg_phased);
+        cout << CMakeTrainingVcf::getHetEntries(systemA,alleleA,alleleB,isbt,arg_phased,dropout_prob,haplotype_crack);
         
     }
     catch(const CMyException& err)
@@ -446,7 +488,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
     }
     catch(...)
     {
-        throw(CMyException("Unexpected Error in phenotype function"));
+        throw(CMyException("Unexpected Error in inSilicoVCF function"));
     }
 }
 
@@ -462,4 +504,23 @@ string getArgumentList(TCLAP::CmdLine& args)
     return osr.str();
 }
 
+
+std::string getCurrentDateTime() {
+    // Hole die aktuelle Zeit
+    std::time_t now = std::time(nullptr);
+    std::tm localTime = *std::localtime(&now); // Lokale Zeit holen
+
+    // Stringstream für die Formatierung
+    std::ostringstream oss;
+    oss << std::put_time(&localTime, "%H:%M %Y-%m-%d");
+    return oss.str();
+}
+
+
+// Funktion, um die aktuelle Zeit in Millisekunden zu erhalten
+long long getCurrentTimeMillis() {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
+    return duration.count();
+}
 

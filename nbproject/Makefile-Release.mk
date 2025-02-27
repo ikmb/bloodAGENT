@@ -46,15 +46,22 @@ OBJECTFILES= \
 	${OBJECTDIR}/CIsbtVariant.o \
 	${OBJECTDIR}/CMakeTrainingVcf.o \
 	${OBJECTDIR}/CMotifFinder.o \
+	${OBJECTDIR}/CMultiFasta.o \
+	${OBJECTDIR}/CMyException.o \
+	${OBJECTDIR}/CRefGeneEntry.o \
+	${OBJECTDIR}/CRefGeneTable.o \
 	${OBJECTDIR}/CScoreHaplotype.o \
 	${OBJECTDIR}/CTranscript.o \
 	${OBJECTDIR}/CTranscriptAnno.o \
+	${OBJECTDIR}/CTwoBit.o \
 	${OBJECTDIR}/CVariantChain.o \
 	${OBJECTDIR}/CVariantChainVariation.o \
 	${OBJECTDIR}/CVariantChains.o \
 	${OBJECTDIR}/CVcf.o \
 	${OBJECTDIR}/CVcfSnp.o \
 	${OBJECTDIR}/ISBTAnno.o \
+	${OBJECTDIR}/MyTools.o \
+	${OBJECTDIR}/ParsedTextfile.o \
 	${OBJECTDIR}/gzstream.o \
 	${OBJECTDIR}/main.o
 
@@ -73,13 +80,11 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -L../../fremd/htslib -L../../fremd/libBigWig -L../../fremd/htslib/htslib -Wl,-rpath,'../../fremd/libBigWig' -Wl,-rpath,'../../fremd/htslib' -Wl,-rpath,'../../fremd/htslib/htslib' ../MyTools/dist/Release/GNU-Linux/libmytools.a
+LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -L../../fremd/htslib -L../../fremd/libBigWig -L../../fremd/htslib/htslib -Wl,-rpath,'../../fremd/libBigWig' -Wl,-rpath,'../../fremd/htslib' -Wl,-rpath,'../../fremd/htslib/htslib'
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood
-
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ../MyTools/dist/Release/GNU-Linux/libmytools.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
@@ -88,116 +93,150 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ${OBJECTFILES}
 ${OBJECTDIR}/CBigWigReader.o: CBigWigReader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CBigWigReader.o CBigWigReader.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CBigWigReader.o CBigWigReader.cpp
 
 ${OBJECTDIR}/CFastqCreator.o: CFastqCreator.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqCreator.o CFastqCreator.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqCreator.o CFastqCreator.cpp
 
 ${OBJECTDIR}/CFastqReader.o: CFastqReader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqReader.o CFastqReader.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastqReader.o CFastqReader.cpp
 
 ${OBJECTDIR}/CIsbtGt.o: CIsbtGt.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGt.o CIsbtGt.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGt.o CIsbtGt.cpp
 
 ${OBJECTDIR}/CIsbtGt2Pt.o: CIsbtGt2Pt.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGt2Pt.o CIsbtGt2Pt.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGt2Pt.o CIsbtGt2Pt.cpp
 
 ${OBJECTDIR}/CIsbtGt2PtHit.o: CIsbtGt2PtHit.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGt2PtHit.o CIsbtGt2PtHit.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGt2PtHit.o CIsbtGt2PtHit.cpp
 
 ${OBJECTDIR}/CIsbtGtAllele.o: CIsbtGtAllele.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGtAllele.o CIsbtGtAllele.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtGtAllele.o CIsbtGtAllele.cpp
 
 ${OBJECTDIR}/CIsbtPtAllele.o: CIsbtPtAllele.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtPtAllele.o CIsbtPtAllele.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtPtAllele.o CIsbtPtAllele.cpp
 
 ${OBJECTDIR}/CIsbtVariant.o: CIsbtVariant.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtVariant.o CIsbtVariant.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CIsbtVariant.o CIsbtVariant.cpp
 
 ${OBJECTDIR}/CMakeTrainingVcf.o: CMakeTrainingVcf.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMakeTrainingVcf.o CMakeTrainingVcf.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMakeTrainingVcf.o CMakeTrainingVcf.cpp
 
 ${OBJECTDIR}/CMotifFinder.o: CMotifFinder.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMotifFinder.o CMotifFinder.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMotifFinder.o CMotifFinder.cpp
+
+${OBJECTDIR}/CMultiFasta.o: CMultiFasta.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMultiFasta.o CMultiFasta.cpp
+
+${OBJECTDIR}/CMyException.o: CMyException.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CMyException.o CMyException.cpp
+
+${OBJECTDIR}/CRefGeneEntry.o: CRefGeneEntry.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CRefGeneEntry.o CRefGeneEntry.cpp
+
+${OBJECTDIR}/CRefGeneTable.o: CRefGeneTable.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CRefGeneTable.o CRefGeneTable.cpp
 
 ${OBJECTDIR}/CScoreHaplotype.o: CScoreHaplotype.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CScoreHaplotype.o CScoreHaplotype.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CScoreHaplotype.o CScoreHaplotype.cpp
 
 ${OBJECTDIR}/CTranscript.o: CTranscript.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTranscript.o CTranscript.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTranscript.o CTranscript.cpp
 
 ${OBJECTDIR}/CTranscriptAnno.o: CTranscriptAnno.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTranscriptAnno.o CTranscriptAnno.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTranscriptAnno.o CTranscriptAnno.cpp
+
+${OBJECTDIR}/CTwoBit.o: CTwoBit.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTwoBit.o CTwoBit.cpp
 
 ${OBJECTDIR}/CVariantChain.o: CVariantChain.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVariantChain.o CVariantChain.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVariantChain.o CVariantChain.cpp
 
 ${OBJECTDIR}/CVariantChainVariation.o: CVariantChainVariation.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVariantChainVariation.o CVariantChainVariation.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVariantChainVariation.o CVariantChainVariation.cpp
 
 ${OBJECTDIR}/CVariantChains.o: CVariantChains.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVariantChains.o CVariantChains.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVariantChains.o CVariantChains.cpp
 
 ${OBJECTDIR}/CVcf.o: CVcf.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVcf.o CVcf.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVcf.o CVcf.cpp
 
 ${OBJECTDIR}/CVcfSnp.o: CVcfSnp.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVcfSnp.o CVcfSnp.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CVcfSnp.o CVcfSnp.cpp
 
 ${OBJECTDIR}/ISBTAnno.o: ISBTAnno.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ISBTAnno.o ISBTAnno.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ISBTAnno.o ISBTAnno.cpp
+
+${OBJECTDIR}/MyTools.o: MyTools.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MyTools.o MyTools.cpp
+
+${OBJECTDIR}/ParsedTextfile.o: ParsedTextfile.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParsedTextfile.o ParsedTextfile.cpp
 
 ${OBJECTDIR}/gzstream.o: gzstream.C
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gzstream.o gzstream.C
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/gzstream.o gzstream.C
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Wall -I../MyTools -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O3 -Wall -I../htslib/htslib -I../htslib -I../libBigWig -Itclap/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
-	cd ../MyTools && ${MAKE}  -f Makefile CONF=Release
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
@@ -205,7 +244,6 @@ ${OBJECTDIR}/main.o: main.cpp
 
 # Subprojects
 .clean-subprojects:
-	cd ../MyTools && ${MAKE}  -f Makefile CONF=Release clean
 
 # Enable dependency checking
 .dep.inc: .depcheck-impl

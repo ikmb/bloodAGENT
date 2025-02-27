@@ -21,6 +21,7 @@
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+#include <random>
 
 #include "mytools.h"
 #include "vcf.h"
@@ -88,14 +89,32 @@ std::string CMakeTrainingVcf::getHomEntries(const std::string& system, const CIs
     return osr.str();
 }
 
-std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, const CISBTAnno& anno, bool phased)
+void CMakeTrainingVcf::removeEmptyStringsFromSet(std::set<std::string>& variations)
+{
+    for (auto it = variations.begin(); it != variations.end(); ) {
+        if (it->empty()) {
+            it = variations.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIsbtPtAllele& alleleA, const CIsbtPtAllele& alleleB, CISBTAnno& anno, bool phased, int dropout_prob, int haplotype_crack)
 {
     ostringstream osr("");
     std::set<std::string> variationsA = alleleA.baseChanges();
     std::set<std::string> variationsB = alleleB.baseChanges();
  
-    set<CISBTAnno::variation> varSet;
+    removeEmptyStringsFromSet(variationsA);
+    removeEmptyStringsFromSet(variationsB);
     
+    set<CISBTAnno::variation> varSet;
+    set<CISBTAnno::variation> LrgNotIsbtSet = anno.getReferenceVariations(system);
+    set<string>               LrgNotIsbtStringSet;
+    for(auto& var:LrgNotIsbtSet)
+        LrgNotIsbtStringSet.insert(var.name());
+                
     for(auto& var:variationsA)
         varSet.insert(anno.getIsbtVariant(system,var));
     for(auto& var:variationsB)
@@ -111,41 +130,57 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
         bool hetB =  !isInA && isInB;
         bool homo =  isInA && isInB;
         
+        // Simulate genotyping drop outs
+        if(getRandomInteger(1,100) <= dropout_prob )
+            continue;
+        
+        // The variation is one where LRG and ref-genome variants are swapped
+        // and it is homozygous. This requires the vcf entry to be droped out
+        // as the variation is represented by the reference sequence
+        for(set<CISBTAnno::variation>::iterator i = LrgNotIsbtSet.begin(); i != LrgNotIsbtSet.end(); i++)
+            if(*i == actVar)
+            {
+                LrgNotIsbtSet.erase(i);
+                break;
+            }
+                
         if(!hetA && !hetB && !homo)
         {
             cerr << "skipping unassigned " << actVar << " of " << alleleA << '/' << alleleB << endl;
             continue;
         }
-        if(count++ != 0)
-            osr << endl;
-        else
+        if(count++ == 0)
             phase_id=actVar.pos();
-        osr << actVar.chrom() << '\t'
-            << actVar.vcfCoordinate() << "\t.\t"
-            << actVar.vcfReference() << '\t'
-            << actVar.vcfAlternative() << '\t';
-        if(phased)
+        
+        if( !(homo && !actVar.isRefNClikeGRChNC()) )
+            osr << actVar.chrom() << '\t'
+                << actVar.vcfCoordinate() << "\t.\t"
+                << actVar.vcfReference() << '\t'
+                << actVar.vcfAlternative() << '\t';
+        
+        if(phased && 
+            !(getRandomInteger(1,100) <= haplotype_crack && !homo) )// Simulate haplotype phasing cracks
         {
             if(hetA)
             {
                 if(actVar.isRefNClikeGRChNC())
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id<<endl;
                 else
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id<<endl;
             }
             if(hetB)
             {
                 if(actVar.isRefNClikeGRChNC())
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t0|1:0,20:20:48:471,48,0:"<<phase_id<<endl;
                 else
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id;
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL:PS\t1|0:0,20:20:48:471,48,0:"<<phase_id<<endl;
             }
            if(homo)
            {
                if(actVar.isRefNClikeGRChNC())
-                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:0,20:20:48:471,48,0";
-               else
-                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:0,20:20:48:471,48,0";
+                   osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1|1:10,10:20:48:471,48,0"<<endl;
+               //else
+               //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0|0:10,10:20:48:471,48,0"<<endl;
            }
         }
         else
@@ -153,27 +188,44 @@ std::string CMakeTrainingVcf::getHetEntries(const std::string& system, const CIs
             // UNPHASED
             if(hetA)
             {
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:0,20:20:48:471,48,0";
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:10,10:20:48:471,48,0"<<endl;
             }
             if(hetB)
             {
-                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:0,20:20:48:471,48,0";
+                osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/1:10,10:20:48:471,48,0"<<endl;
             }
             if(homo)
             {
                 if(actVar.isRefNClikeGRChNC())
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:0,20:20:48:471,48,0";
-                else
-                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:0,20:20:48:471,48,0";
+                    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:10,10:20:48:471,48,0"<<endl;
+                //else
+                //    osr << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t0/0:10,10:20:48:471,48,0"<<endl;
             }
         }
-        
-       
-        
     }
-     return osr.str();
+    for(set<CISBTAnno::variation>::iterator i = LrgNotIsbtSet.begin(); i != LrgNotIsbtSet.end(); i++)
+    {
+        osr << i->chrom() << '\t'
+            << i->vcfCoordinate() << "\t.\t"
+            << i->vcfReference() << '\t'
+            << i->vcfAlternative() << '\t'
+            << "450.0\t.\tAC=2;AF=1.0;AN=2;DP=20;ExcessHet=3.0103;FS=0.0;MLEAC=2;MLEAF=1.0;MQ=59.69;QD=28.56;SOR=0.941\tGT:AD:DP:GQ:PL\t1/1:10,10:20:48:471,48,0"<<endl;
+    }
+    return osr.str();
 }
 
 
+int CMakeTrainingVcf::getRandomInteger(const int start, const int end)
+{
+    std::random_device rd;
 
+    // Use a Mersenne Twister random number generator
+    std::mt19937 gen(rd());
+
+    // Define the range [0, 100]
+    std::uniform_int_distribution<> distrib(start, end);
+
+    // Generate a random number in the range and output it
+    return distrib(gen);
+}
 

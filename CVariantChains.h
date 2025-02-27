@@ -31,6 +31,8 @@ public:
     bool init();
     std::string add(const CVcfSnp& act_snp);
     
+    void setBreakPhasingVariable(bool v){m_break_phasing=v;}
+    
     std::set<CIsbtGt> getPossibleGenotypes(const string& system)const;
     
     // this is required in our test data generator. Avoid calling this method!!!
@@ -47,6 +49,7 @@ private:
     CISBTAnno* m_isbt;
     int m_maxThreads;
     map<string,CVariantChain> m_variant_chains;
+    bool m_break_phasing;
     
 };
 

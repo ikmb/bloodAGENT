@@ -200,8 +200,9 @@ CIsbtVariant::~CIsbtVariant()
 bool CIsbtVariant::parseIsbtVariant()
 {
     smatch m;
-    regex e ("^[0-9_+-]{1,}");
-    
+    //regex e ("^[0-9_+-]{1,}");
+    regex e ("^[0-9_+-?*)(]{1,}");
+
     regex_search(m_isbt_name,m,e);
     for (auto x:m)
         m_lrg_position = x;
