@@ -65,11 +65,11 @@ Additionally, three configuration files are needed:
 Different secondary analysis pipelines may produce varying VCF file entries. However, it is of critical importance that the representation of ISBT variants in the VCF is correctly annotated. Currently, the differences are limited to the representation of the 109bp insertion of RHCE*02, but additional discrepancies cannot be ruled out.
 
 Pipeline settings:
-HGDP    **The original HGDP Project secondary analysis pipeline**
-TGSGATK **For third generation sequencing using pbmm2 and GATK**
-TGSPBSV **For third generation sequencing using pbmm2 and assuming we use pbsv for detecting the RHCE 109bp insertion**
-Dragen  **For data coming out of the Dragen platform**
-TGS     **For third generation sequencing using pbmm2 and deepVariant** 
+- **HGDP**    The original HGDP Project secondary analysis pipeline
+- **TGSGATK** For third generation sequencing using pbmm2 and GATK
+- **TGSPBSV** For third generation sequencing using pbmm2 and assuming we use pbsv for detecting the RHCE 109bp insertion
+- **Dragen**  For data coming out of the Dragen platform
+- **TGS**     For third generation sequencing using pbmm2 and deepVariant
 
 ## Cosine Similarity Scoring
 bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from the International Society of Blood Transfusion (ISBT). The score ranges from **0 to 2**, where:
