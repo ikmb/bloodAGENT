@@ -59,9 +59,17 @@ bloodAGENT requires two main input files:
 - **BigWig files**: Provide sequencing coverage information to determine the sequencing depth of SNVs that are not listed in the VCF file
 
 Additionally, three configuration files are needed:
-- **./data/config/exonic_annotation.${build}.BGStarget.txt**: Transcript annotation for blood group targets.
-- **./data/config/variation_annotation_${Sec.Analysis.Pipeline}.dat**: Variant annotation for GATK-based pipelines.
-- **./data/config/genotype_to_phenotype_annotation_${Sec.Analysis.Pipeline}.dat**: Genotype-to-phenotype mapping for GATK.
+- **./data/config/exonic_annotation.${build}.BGStarget.txt**: Transcript annotation for blood group targets. A separate file for each genome build.
+- **./data/config/variation_annotation_${Sec.Analysis.Pipeline}.dat**: Variant annotation for different pipelines. Pipelines means the combination of read aligner and variant caller.
+- **./data/config/genotype_to_phenotype_annotation_${Sec.Analysis.Pipeline}.dat**: Genotype-to-phenotype mapping for different pipelines. Pipelines means the combination of read aligner and variant caller.
+Different secondary analysis pipelines may produce varying VCF file entries. However, it is of critical importance that the representation of ISBT variants in the VCF is correctly annotated. Currently, the differences are limited to the representation of the 109bp insertion of RHCE*02, but additional discrepancies cannot be ruled out.
+
+Pipeline settings:
+HGDP    **The original HGDP Project secondary analysis pipeline**
+TGSGATK **For third generation sequencing using pbmm2 and GATK**
+TGSPBSV **For third generation sequencing using pbmm2 and assuming we use pbsv for detecting the RHCE 109bp insertion**
+Dragen  **For data coming out of the Dragen platform**
+TGS     **For third generation sequencing using pbmm2 and deepVariant** 
 
 ## Cosine Similarity Scoring
 bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from the International Society of Blood Transfusion (ISBT). The score ranges from **0 to 2**, where:
