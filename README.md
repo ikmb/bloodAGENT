@@ -1,93 +1,184 @@
-# Description 
-DeepBlood is a genomic analysis tool that translates genotype data into blood group alleles. The software operates by accessing the ISBT database dump, containing a detailed description of blood group alleles and their underlying genomic variations. Eventually, it is a transcript of the ISBT pdf documentation (ISBT Blood Group Allele Tables). A second, self-made configuration file connects the ISBT variation annotation with the corresponding VCF file entries. The ISBT entries are annotated on specific cDNA sequences, which can differ from the human reference genome sequence. In addition, the VCF file is related to the human genome reference sequence and follows the left-aligned variation annotation, which is not necessarily the case for the ISBT entries. The mandatory input files are VCF, and genome wide coverage, all stored efficiently, like the configuration files as well, as C++ objects in-memory for swift accessibility. The coverage information could be generated from a BAM file, but we decided to do it with UCSC Genome browser tools and provide it as a separate input, as it is just a little extra step during secondary data analysis and the size is relatively small. That would it make easier to provide DeepBlood as a web service.
+# bloodAGENT
 
-## Key Features:
+## Introduction
+**bloodAGENT** (Blood Antigen GENo Typer) is an open-source software tool designed for the determination of blood group alleles based on genetic markers. By analyzing genomic data from Next-Generation Sequencing (NGS) and Third-Generation Sequencing (TGS), bloodAGENT resolves blood group alleles and provides insights into genomic variations.
 
-The software recombines measured genotypes/haplotypes and compares the derived haplotypes with the ISBT DB entries.
+## Key Features
+- **High accuracy** in allele determination under typical conditions.
+- **Modular and flexible architecture**, allowing for future adaptations.
+- **Uses cosine similarity scoring** to determine the best haplotype match.
+- **Supports VCF and BigWig file formats** for variant and coverage data.
+- **Open-source** for transparency and community collaboration.
 
-### Real-time Genotype Data Access: 
-All configuration data (ISBT related input files) is stored as C++ objects in-memory, accessible through dedicated functions. The same counts for the individual genome data, but the dataset is reduced to the data points required for the ISBT lookup.
+## System Requirements
+**Supported platforms:** Windows, Mac, Linux
+**Dependencies:** 
+- GCC or Clang compiler
+- `libhts` library: `https://github.com/samtools/htslib` (for vcf file reading)
+- `libBigWig` library https://github.com/dpryan79/libBigWig.git` (for coverage file reading)
+- `MyTools` library `https://github.com/ikmb/BfxCppClasses` (for file parsing functionality)
+- Python (for parsing output files)
+- `https://github.com/mirror/tclap.git` (for command-line argument parsing)
+- `https://github.com/nlohmann/json` (for JSON output generation)
 
-### Automated Analysis and Allele Determination:
-DeepBlood scores the matches between the recombined haplotypes and the ISBT DB entries. Implementing a custom scoring algorithm is straightforward.
+## Installation
+1. Clone the repository:
+   ```sh
+   git clone --recurse-submodules https://github.com/ikmb/bloodAGENT.git
+   cd bloodAGENT
+   git submodule update --init --recursive
+   ```
+2. Navigate to the project folder (if not already there):
+   ```sh
+   cd bloodAGENT
+   ```
+3. Build the software:
+   ```sh
+   cd external/htslib
+   make
+   cd ../libBigWig
+   make
+   cd ../
+   make
+   ```
+4. Setup environment
+   ```
+   # find the two external libraries
+   find . -iname "libhts.so" -o -iname "libBigWig.so"
+   # add them to the LD_LIBRARY_PATH variable
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<PATH to libhts.so.>:<PATH to libBigWig.so.>
+   ```
+5. Verify installation (e.g.):
+   ```sh
+   ./dist/Release/GNU-Linux/deepblood --help
+   ```
 
-### Efficiency: 
-Quick, efficient, and multi-threading capable.
+## Input Data Format
+bloodAGENT requires two main input files:
+- **VCF files**: Represent genomic variants (compatible with hg19 and hg38 reference genomes).
+- **BigWig files**: Provide sequencing coverage information to determine the sequencing depth of SNVs that are not listed in the VCF file
 
-### Flexibility:
-Object-oriented design enables easy adaptation to personal preferences. 
+Additionally, three configuration files are needed:
+- **./data/config/exonic_annotation.${build}.BGStarget.txt**: Transcript annotation for blood group targets.
+- **./data/config/variation_annotation_${Sec.Analysis.Pipeline}.dat**: Variant annotation for GATK-based pipelines.
+- **./data/config/genotype_to_phenotype_annotation_${Sec.Analysis.Pipeline}.dat**: Genotype-to-phenotype mapping for GATK.
 
-# Installation
-There are some dependencies that I solve in a special way. So I do not implement everything by submodules but clone repositories next to each other. 
+## Cosine Similarity Scoring
+bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from the International Society of Blood Transfusion (ISBT). The score ranges from **0 to 2**, where:
+- **1 per haplotype** is the theoretical maximum.
+- **2** is the best possible match for a diploid genome.
 
-## Installing the tool at the ikmbhead.uni-kiel.de
+However, due to varying numbers of relevant SNPs across blood groups and alleles, **scores between different blood groups or individuals are not directly comparable**. A score of **1.9 vs. 1.8 does not necessarily indicate a better result** unless both results refer to the same blood group and allele.
 
-Setup environment first
+## Running bloodAGENT
+### Job Type: Phenotype Analysis
+A typical command:
+```sh
+bloodagent --job phenotype \
+  --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
+  --variants ./data/config/variation_annotation_GATK.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_GATK.dat \
+  --vcf ./sample.GATK.phased.vcf.gz \
+  --bigwig ./sample.BGStarget.bw \
+  --coverage 12 --verbose 2 --scoreRange 1 \
+  --out sampleA.json \
+  --build hg38 -k --id "sample123"
+```
 
-`module load gcc/8.3.0`
+#### Parameters for `phenotype` Job
+## Command-Line Parameters
 
-To install this pipeline, clone the following repositories and build the libraries and executable by copy&paste the following commands:
-
-`git clone git@github.com:ikmb/BfxCppClasses.git MyTools`
-
-`cd MyTools`
-
-`make all`
-
-`cd ..`
-
-MyTools libs created
-
-`git clone git@github.com:samtools/htslib.git`
-
-`cd htslib`
-
-`git submodule update --init --recursive`
-
-`make`
-
-`cd ..`
-
-htslib created
-
-`git clone git@github.com:dpryan79/libBigWig.git`
-
-`cd libBigWig`
-
-`make`
-
-`cd ..`
-
-libBigWig created
-
-`git clone --recursive git@github.com:ikmb/deepBlood.git`
-
-`cd deepBlood`
-
-Optional: `git submodule update --init --recursive`
-
-If needed, create library symlinks. MyTools library is in the subfolder dist/[Release|Debug]/GNU-Linux/. htslib and libbigwig in their root folder: `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/work_ifs/sukko545/haemo/tool/`
-
-`make all`
-
-`cd ..`
-
-ngsblood created
+| Short Code | Long Code | Description | Data Type | Required | Default Value |
+|------------|------------|--------------|----------|----------|--------------|
+| `-j` | `--job phenotype` | Runs bloodAGENT to determine blood group phenotypes. | String | Yes | - |
+| `-t` | `--target <file>` | Annotation file containing transcript information for blood group targets. | File | Yes | - |
+| `-s` | `--variants <file>` | Variant annotation file for ISBT blood group typing. | File | Yes | - |
+| `-g` | `--gt2pt <file>` | Mapping file from genotype to phenotype. | File | Yes | - |
+| `-v` | `--vcf <file>` | VCF file containing phased genetic variants. | File | Yes | - |
+| `-b` | `--bigwig <file>` | BigWig file for coverage data. | File | No | - |
+| `-c` | `--coverage <int>` | Minimum sequencing coverage required for reliable results. | Integer | No | `10` |
+| `-d` | `--verbose <int>` | Level of verbosity (0: none, 1: warnings, 2: status, 3: detailed logs). | Integer | No | `1` |
+| `-r` | `--scoreRange <float>` | Score threshold multiplier for reporting matches. | Float | No | - |
+| `-o` | `--out <file>` | Output file in JSON format. | File | No | "bloodAGENT.json" |
+| `-u` | `--build <hg19|hg38>` | Specifies genome reference build. | String | Yes | - |
+| `-k` | -trick | Enables coverage-based typing of RhD instead of variant-based typing. | Boolean (Flag) | No | `false` |
+| `-f` | `--id <string>` | Sample identifier. | String | No | `unknown` |
 
 
-# setup environment and run
+### Job Type: Simulated Data Generation
+A typical command:
+```sh
+deepblood --job vcf \
+  --variants ./data/config/variation_annotation_TGS.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O1.01" \
+  --phased \
+  --dropout 0.1 --crack 0.05
+```
 
-`export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<PATH to libhts.so.2> #/ifs/data/nfs_share/sukko545/software/htslib`
+#### Parameters for `vcf` Job
+## Command-Line Parameters
 
-`./dist/Release/GNU-Linux/deepBlood`
+| Short Code | Long Code | Description | Data Type | Required | Default Value |
+|------------|------------|--------------|----------|----------|--------------|
+| `-j` | `--job vcf` | Generates simulated genetic data in VCF format. | String | Yes | - |
+| `-s` | `--variants <file>` | Variant annotation file for TGS-based analysis. | File | Yes | - |
+| `-g` | `--gt2pt <file>` | Genotype-to-phenotype mapping file. | File | Yes | - |
+| `-a` | `--alleleA <string>` | First allele for in silico simulation. | String | Yes | - |
+| `-b` | `--alleleB <string>` | Second allele for in silico simulation. | String | Yes | - |
+| `-p` | `--phased` | Ensures output includes phased haplotypes. | Boolean (Flag) | No | `false` |
+| `-o` | `--dropout <float>` | Probability of SNP dropout (0.0–1.0). | Float | No | - |
+| `-x` | `--crack <float>` | Probability of haplotype breakage at heterozygous sites (0.0–1.0). | Float | No | - |
 
-run blood typing example:
+
+## Output Format
+bloodAGENT produces results in JSON format
+For simulated data (`--job vcf`), the output is the data lines of an vcf file written to stdout.
 
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-Components of this project are licensed under different licenses
+### JSON File Structure
 
+#### General
+- **genome**: Specifies the genome build (e.g., hg38).
+- **sample_id**: Specifies the sample id given by the user.
+- **version**: bloodAGENT version
+
+#### Parameter Section
+- **command line parameters** List of all command line parameters and their values.
+
+#### Data Section
+- **loci**: Contains blood group systems.
+  - **System Name (e.g., ABO)**:
+    - **calls**: List of genotype and phenotype determinations.
+      - **alleles**: List of detected alleles.
+        - **names**: Names of identified alleles.
+        - **issues**: Quality and coverage issues related to each allele.
+    - **haplotypes**: Genotype data.
+    - **phenotypes**: Predicted blood group phenotypes.
+    - **score**: Cosine similarity score: If ISBT-relevant SNV positions do not meet the coverage requirements (as defined by the --coverage parameter), this score is set to zero.
+    - **weak_score**: Cosine similarity score: This score remains unaffected if ISBT-relevant SNV positions do not meet the coverage requirements (as defined by the --coverage parameter). It represents the default score, disregarding coverage-failed variants.
+    - **coverage_failed_variants**: List of genetic variations with insufficient coverage.
+    - **mean_coverage**: Coverage statistics for different genomic regions.
+    - **relevant_variations**: List of all ISBT variants of this blood group system.
+      - **chrom**: Chromosome location.
+      - **position**: Position in the genome.
+      - **reference / alternative**: Reference and detected allele.
+      - **high_impact**: Whether the variation is of high impact.
+      - **is_covered**: Whether the variant has sufficient read coverage.
+      - **depth**: Sequencing depth at the variant position.
+
+This structure provides an overview of the key components within the JSON file, organizing metadata and data into a hierarchical format.
+
+
+```
+
+## Limitations
+- **Dropout effects**: Missing variants significantly impact allele determination. Accuracy drops below **50% at a 50% dropout rate**.
+- **Phasing information**: While its effect on ambiguity is minor, it remains important for resolving certain blood group systems (e.g., KEL, ABO, Duffy).
+- **Paralogous regions**: Some blood group alleles (e.g., RHCE) may be misclassified due to read alignment issues.
+
+
+
+The official [GitHub repository](https://github.com/ikmb/bloodAGENT).
 
 
