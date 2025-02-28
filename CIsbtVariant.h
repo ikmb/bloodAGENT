@@ -14,7 +14,7 @@
 #ifndef CISBTVARIANT_H
 #define CISBTVARIANT_H
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CBigWigReader.h"
 #include "vcf.h"
 #include "CVcfSnp.h"

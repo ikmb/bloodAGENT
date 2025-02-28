@@ -21,7 +21,7 @@
 #include <limits>
 
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CBigWigReader.h"
 
 using namespace std;

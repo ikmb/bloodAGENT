@@ -21,7 +21,7 @@
 #include <cstring>
 #include <algorithm>
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CTranscript.h"
 #include "CTranscriptAnno.h"
 

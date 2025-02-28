@@ -70,6 +70,7 @@ Pipeline settings:
 - **TGSPBSV** For third generation sequencing using pbmm2 and assuming we use pbsv for detecting the RHCE 109bp insertion
 - **Dragen**  For data coming out of the Dragen platform
 - **TGS**     For third generation sequencing using pbmm2 and deepVariant
+Our recommendation is TGSGATK where possible ...
 
 ## Cosine Similarity Scoring
 bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from the International Society of Blood Transfusion (ISBT). The score ranges from **0 to 2**, where:

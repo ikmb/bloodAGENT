@@ -14,7 +14,7 @@
 #ifndef CFASTQCREATOR_H
 #define CFASTQCREATOR_H
 
-#include "mytools.h"
+#include "meinetools.h"
 
 class CFastqCreator {
 public:

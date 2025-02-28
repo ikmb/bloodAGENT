@@ -19,7 +19,7 @@
 #include <iostream>
 #include <cstring>
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CTranscript.h"
 
 using namespace std;

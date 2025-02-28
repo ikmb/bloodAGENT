@@ -33,7 +33,7 @@
       <itemPath>MyTools.h</itemPath>
       <itemPath>ParsedTextfile.h</itemPath>
       <itemPath>gzstream.h</itemPath>
-      <itemPath>mytools.h</itemPath>
+      <itemPath>meinetools.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -83,8 +83,21 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
   </logicalFolder>
   <sourceRootList>
+    <Elem>external/htslib</Elem>
+    <Elem>external/libBigWig</Elem>
     <Elem>external/htslib</Elem>
     <Elem>external/libBigWig</Elem>
   </sourceRootList>
@@ -237,7 +250,7 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mytools.h" ex="false" tool="3" flavor2="0">
+      <item path="meinetools.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -396,7 +409,7 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mytools.h" ex="false" tool="3" flavor2="0">
+      <item path="meinetools.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

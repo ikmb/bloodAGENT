@@ -18,7 +18,7 @@
 #include "vcf.h"
 #include "CVcfSnp.h"
 #include "gzstream.h"
-#include "mytools.h"
+#include "meinetools.h"
 #include "CFastqReader.h"
 #include "CMotifFinder.h"
 

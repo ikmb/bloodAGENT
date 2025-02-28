@@ -17,7 +17,7 @@
 #include <string>
 #include <libgen.h>
 
-#include "mytools.h"
+#include "meinetools.h"
 
 #include "CIsbtPtAllele.h"
 

@@ -20,7 +20,7 @@
 #include <regex>
 #include <iterator>
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CFastqCreator.h"
 
 using namespace std;

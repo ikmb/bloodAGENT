@@ -1,5 +1,5 @@
 /* 
- * File:   mytools.h
+ * File:   meinetools.h
  * Author: mwittig
  *
  * Created on October 28, 2016, 10:04 AM
