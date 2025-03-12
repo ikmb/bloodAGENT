@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Build-Output vom vorherigen Schritt kopieren
-COPY --from=builder /app/dist/Release/GNU-Linux/deepblood /app/bloodAGENT
+COPY --from=builder /app/dist/Release/GNU-Linux/bloodAGENT /app/bloodAGENT
 COPY --from=builder /app/external/htslib/libhts.so /app/libhts.so
 RUN ln -s /app/libhts.so /app/libhts.so.3
 COPY --from=builder /app/external/libBigWig/libBigWig.so /app/libBigWig.so

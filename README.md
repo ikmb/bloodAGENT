@@ -50,7 +50,7 @@
    ```
 5. Verify installation (e.g.):
    ```sh
-   ./dist/Release/GNU-Linux/deepblood --help
+   ./dist/Release/GNU-Linux/bloodAGENT --help
    ```
 
 ## Input Data Format
@@ -117,7 +117,7 @@ bloodagent --job phenotype \
 ### Job Type: Simulated Data Generation
 A typical command:
 ```sh
-deepblood --job vcf \
+bloodAGENT --job vcf \
   --variants ./data/config/variation_annotation_TGS.dat \
   --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O1.01" \
   --phased \

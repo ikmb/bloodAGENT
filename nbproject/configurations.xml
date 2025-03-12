@@ -122,7 +122,7 @@
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
-          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood</output>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bloodAGENT</output>
           <linkerAddLib>
             <pElem>external/htslib</pElem>
             <pElem>external/libBigWig</pElem>
@@ -282,6 +282,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bloodAGENT</output>
           <linkerAddLib>
             <pElem>external/htslib</pElem>
             <pElem>external/libBigWig</pElem>

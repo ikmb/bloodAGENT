@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=deepblood
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/deepblood
+CND_ARTIFACT_NAME_Debug=bloodAGENT
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/bloodAGENT
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=deepblood.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/deepblood.tar
+CND_PACKAGE_NAME_Debug=bloodagent.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/bloodagent.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
-CND_ARTIFACT_NAME_Release=deepblood
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/deepblood
+CND_ARTIFACT_NAME_Release=bloodAGENT
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/bloodAGENT
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
-CND_PACKAGE_NAME_Release=deepblood.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/deepblood.tar
+CND_PACKAGE_NAME_Release=bloodagent.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/bloodagent.tar
 #
 # include compiler specific variables
 #
