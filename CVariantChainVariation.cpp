@@ -18,7 +18,7 @@
 
 #include <regex>
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "vcf.h"
 #include "CVcf.h"
 #include "CVcfSnp.h"

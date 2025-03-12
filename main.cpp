@@ -43,7 +43,7 @@
 #include "json/single_include/nlohmann/json.hpp"
 #include <complex>
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CBigWigReader.h"
 #include "vcf.h"
 #include "CVcf.h"

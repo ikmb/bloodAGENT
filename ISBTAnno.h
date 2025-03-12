@@ -24,7 +24,7 @@
 #include <regex>
 #include <iterator>
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CVcfSnp.h"
 #include "CIsbtVariant.h"
 

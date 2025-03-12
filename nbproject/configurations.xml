@@ -33,7 +33,7 @@
       <itemPath>MyTools.h</itemPath>
       <itemPath>ParsedTextfile.h</itemPath>
       <itemPath>gzstream.h</itemPath>
-      <itemPath>mytools.h</itemPath>
+      <itemPath>meinetools.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -83,7 +83,24 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>external/htslib</Elem>
+    <Elem>external/libBigWig</Elem>
+    <Elem>external/htslib</Elem>
+    <Elem>external/libBigWig</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -94,24 +111,25 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <architecture>2</architecture>
           <standard>11</standard>
           <incDir>
-            <pElem>../htslib/htslib</pElem>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
             <pElem>tclap/include</pElem>
+            <pElem>external/libBigWig</pElem>
+            <pElem>external/htslib</pElem>
+            <pElem>external/htslib/htslib</pElem>
           </incDir>
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood</output>
           <linkerAddLib>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
+            <pElem>external/htslib</pElem>
+            <pElem>external/libBigWig</pElem>
           </linkerAddLib>
           <linkerDynSerch>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
+            <pElem>external/htslib</pElem>
+            <pElem>external/libBigWig</pElem>
           </linkerDynSerch>
           <commandLine>-lz -lhts -lBigWig -pthread</commandLine>
         </linkerTool>
@@ -232,7 +250,7 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mytools.h" ex="false" tool="3" flavor2="0">
+      <item path="meinetools.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -247,12 +265,13 @@
         </cTool>
         <ccTool>
           <developmentMode>6</developmentMode>
+          <architecture>2</architecture>
           <standard>11</standard>
           <incDir>
-            <pElem>../htslib/htslib</pElem>
-            <pElem>../htslib</pElem>
-            <pElem>../libBigWig</pElem>
             <pElem>tclap/include</pElem>
+            <pElem>external/htslib/htslib</pElem>
+            <pElem>external/htslib</pElem>
+            <pElem>external/libBigWig</pElem>
           </incDir>
           <warningLevel>2</warningLevel>
         </ccTool>
@@ -264,15 +283,12 @@
         </asmTool>
         <linkerTool>
           <linkerAddLib>
-            <pElem>/usr/lib/x86_64-linux-gnu</pElem>
-            <pElem>../../fremd/htslib</pElem>
-            <pElem>../../fremd/libBigWig</pElem>
-            <pElem>../../fremd/htslib/htslib</pElem>
+            <pElem>external/htslib</pElem>
+            <pElem>external/libBigWig</pElem>
           </linkerAddLib>
           <linkerDynSerch>
-            <pElem>../../fremd/libBigWig</pElem>
-            <pElem>../../fremd/htslib</pElem>
-            <pElem>../../fremd/htslib/htslib</pElem>
+            <pElem>external/htslib</pElem>
+            <pElem>external/libBigWig</pElem>
           </linkerDynSerch>
           <commandLine>-lz -lhts -lBigWig -lpthread</commandLine>
         </linkerTool>
@@ -393,7 +409,7 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="mytools.h" ex="false" tool="3" flavor2="0">
+      <item path="meinetools.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

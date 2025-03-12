@@ -16,7 +16,7 @@
 
 #include "vcf.h"
 
-#include "mytools.h"
+#include "meinetools.h"
 #include "CVcfSnp.h"
 
 class CVcf {

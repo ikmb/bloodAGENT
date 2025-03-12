@@ -16,7 +16,7 @@
 #include <set>
 
 #include "gzstream.h"
-#include "mytools.h"
+#include "meinetools.h"
 #include "CFastqReader.h"
 
 using namespace std;

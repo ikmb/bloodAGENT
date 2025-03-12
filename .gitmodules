@@ -4,3 +4,9 @@
 [submodule "json"]
 	path = json
 	url = https://github.com/nlohmann/json.git
+[submodule "external/htslib"]
+	path = external/htslib
+	url = https://github.com/samtools/htslib.git
+[submodule "external/libBigWig"]
+	path = external/libBigWig
+	url = https://github.com/dpryan79/libBigWig.git
