@@ -84,11 +84,11 @@ LDLIBSOPTIONS=-Lexternal/htslib -Lexternal/libBigWig -Wl,-rpath,'external/htslib
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bloodAGENT
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bloodAGENT: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/deepblood ${OBJECTFILES} ${LDLIBSOPTIONS} -lz -lhts -lBigWig -lpthread
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bloodAGENT ${OBJECTFILES} ${LDLIBSOPTIONS} -lz -lhts -lBigWig -lpthread
 
 ${OBJECTDIR}/CBigWigReader.o: CBigWigReader.cpp
 	${MKDIR} -p ${OBJECTDIR}
