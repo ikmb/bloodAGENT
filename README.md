@@ -23,7 +23,8 @@
 
 ## Installation
 1. Install all dependencies:
-   ```sudo apt-get update && sudo apt-get install -y \
+   ```sh
+   sudo apt-get update && sudo apt-get install -y \
     g++ \
     make \
     zlib1g-dev \
