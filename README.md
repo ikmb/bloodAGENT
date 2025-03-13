@@ -22,17 +22,27 @@
 - `https://github.com/nlohmann/json` (for JSON output generation)
 
 ## Installation
-1. Clone the repository:
+1. Install all dependencies:
+   ```sudo apt-get update && sudo apt-get install -y \
+    g++ \
+    make \
+    zlib1g-dev \
+    libbz2-dev \
+    git \
+    liblzma-dev \
+    libcurl4-openssl-dev \
+   ```
+2. Clone the repository:
    ```sh
    git clone --recurse-submodules https://github.com/ikmb/bloodAGENT.git
    cd bloodAGENT
    git submodule update --init --recursive
    ```
-2. Navigate to the project folder (if not already there):
+3. Navigate to the project folder (if not already there):
    ```sh
    cd bloodAGENT
    ```
-3. Build the software:
+4. Build the software:
    ```sh
    cd external/htslib
    make
@@ -41,14 +51,14 @@
    cd ../
    make
    ```
-4. Setup environment
+5. Setup environment
    ```
    # find the two external libraries
    find . -iname "libhts.so" -o -iname "libBigWig.so"
    # add them to the LD_LIBRARY_PATH variable
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<PATH to libhts.so.>:<PATH to libBigWig.so.>
    ```
-5. Verify installation (e.g.):
+6. Verify installation (e.g.):
    ```sh
    ./dist/Release/GNU-Linux/bloodAGENT --help
    ```
