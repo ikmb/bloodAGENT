@@ -500,21 +500,21 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
             for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
                 metrics["typed_not_in_anno"].push_back(var.getSnpAsJson());
             metrics["anno_not_in_typed_count"] = act_hit.m_anno_not_in_typed.size();
-            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+            for(CISBTAnno::variation var :act_hit.m_anno_not_in_typed)
                 metrics["anno_not_in_typed"].push_back(var.getSnpAsJson());
             metrics["high_impact_snp_matches"] = act_hit.m_high_impact_match;
             metrics["high_impact_mismatch_count"] = act_hit.m_high_impact_mismatch.size();
-            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+            for(CISBTAnno::variation var :act_hit.m_high_impact_mismatch)
                 metrics["high_impact_mismatch"].push_back(var.getSnpAsJson());
             metrics["high_impact_typed_not_in_anno_count"] = act_hit.m_high_impact_typed_not_in_anno.size();
-            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+            for(CISBTAnno::variation var :act_hit.m_high_impact_typed_not_in_anno)
                 metrics["high_impact_typed_not_in_anno"].push_back(var.getSnpAsJson());
             metrics["high_impact_anno_not_in_typed_count"] = act_hit.m_high_impact_anno_not_in_typed.size();
-            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+            for(CISBTAnno::variation var :act_hit.m_high_impact_anno_not_in_typed)
                 metrics["high_impact_anno_not_in_typed"].push_back(var.getSnpAsJson());
             metrics["not_covered"] = act_hit.m_not_covered;
-            metrics["m_high_impact_not_covered"] = act_hit.m_high_impact_not_covered;
-            metrics["m_null_variants"] = act_hit.m_null_variants;
+            metrics["high_impact_not_covered_count"] = act_hit.m_high_impact_not_covered;
+            metrics["null_variants_count"] = act_hit.m_null_variants;
             allele["issues"].push_back(metrics);
             phenotype.push_back(act_hit.m_phenotype_allele.phenotype());
             flat_phenotype.push_back(act_hit.m_phenotype_allele.flatPhenotype());
