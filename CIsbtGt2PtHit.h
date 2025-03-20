@@ -28,29 +28,31 @@ public:
     static bool sort_by_errors_asc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 );
     static bool sort_by_score_desc( const CIsbtGt2PtHit& c1, const CIsbtGt2PtHit& c2 );
     
-    int errurSum()const{return m_typed_not_in_anno+m_anno_not_in_typed;}
+    int errurSum()const{return m_typed_not_in_anno.size()+m_anno_not_in_typed.size();}
     /**
     * An ISBT allele relevant base change detected, but this one is not relevant for the current allele
     */
-    int m_typed_not_in_anno;
+    std::set<CISBTAnno::variation> m_typed_not_in_anno;
     /**
     * An ISBT allele relevant base change detected, but this one is not relevant for the current allele. And it is a high impact SNP
     */
-    int m_high_impact_typed_not_in_anno;
+    std::set<CISBTAnno::variation> m_high_impact_typed_not_in_anno;
     /**
     * An ISBT base change which characterizes this allele is not present
     */
-    int m_anno_not_in_typed;
+    std::set<CISBTAnno::variation> m_anno_not_in_typed;
     /**
     * An ISBT base change which characterizes this allele is not present. And it is a high impact SNP
     */
-    int m_high_impact_anno_not_in_typed;
+    std::set<CISBTAnno::variation> m_high_impact_anno_not_in_typed;
     int m_not_covered;  // number of SNPs that are not covered
     int m_high_impact_not_covered;  // number of SNPs that are not covered
     int m_high_impact_match;
-    int m_high_impact_mismatch;
+    std::set<CISBTAnno::variation> m_high_impact_mismatch;
     int m_match;
     int m_null_variants;
+    
+    
     CIsbtPtAllele m_phenotype_allele;
     
     

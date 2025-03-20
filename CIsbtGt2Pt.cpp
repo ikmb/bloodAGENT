@@ -248,13 +248,13 @@ void CIsbtGt2Pt::scoreHit(CIsbtGt2PtHit& act_hit, const string& system,const CIS
     */
     
     system_var_count += act_hit.m_high_impact_match;
-    act_hit_malus+= act_hit.m_typed_not_in_anno*2.0f +
-                    act_hit.m_high_impact_typed_not_in_anno*4.0f +
-                    act_hit.m_anno_not_in_typed*2.0f +
-                    act_hit.m_high_impact_anno_not_in_typed * 4.0f +
+    act_hit_malus+= act_hit.m_typed_not_in_anno.size()*2.0f +
+                    act_hit.m_high_impact_typed_not_in_anno.size()*4.0f +
+                    act_hit.m_anno_not_in_typed.size()*2.0f +
+                    act_hit.m_high_impact_anno_not_in_typed.size() * 4.0f +
                     act_hit.m_not_covered*1.0f +
                     act_hit.m_high_impact_not_covered*4.0f + 
-                    act_hit.m_high_impact_mismatch*4.0f;
+                    act_hit.m_high_impact_mismatch.size()*4.0f;
 
     if(act_hit_malus > system_var_count)
         act_hit.score(0.0f);
@@ -299,7 +299,8 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
         {
             if(a.size() == 0)
                 continue;
-            bool isHighImpactSnp = isbt_snps->getIsbtVariant(system,a).isHighImpactSNP();
+            CISBTAnno::variation var = isbt_snps->getIsbtVariant(system,a);
+            bool isHighImpactSnp = var.isHighImpactSNP();
             double act_variant_coverage = isbt_snps->getIsbtVariant(system,a).getCoverage();
             if(static_cast<int>(act_variant_coverage) < required_coverage)
             {
@@ -312,9 +313,9 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
             if( !isbtGtAllele.contains(a) )
             {
                 if(isHighImpactSnp)
-                    actHit.m_high_impact_anno_not_in_typed++;
+                    actHit.m_high_impact_anno_not_in_typed.insert(var);
                 else
-                    actHit.m_anno_not_in_typed++;
+                    actHit.m_anno_not_in_typed.insert(var);
             }
             else 
             {
@@ -330,9 +331,9 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::findMatches(const string& system, const CIsbtG
             if(!anno.containsBaseChange(i.name()))
             {
                 if(i.isHighImpactSNP())
-                    actHit.m_high_impact_typed_not_in_anno++;
+                    actHit.m_high_impact_typed_not_in_anno.insert(i);
                 else
-                    actHit.m_typed_not_in_anno++;
+                    actHit.m_typed_not_in_anno.insert(i);
             }
         }
         //cout << actHit << endl;
@@ -432,17 +433,17 @@ vector<CIsbtGt2PtHit> CIsbtGt2Pt::cosineSimilarityMatches(const string system, c
                 if(typedSNV[idx] == VAL_COSINE_REF_ALLELE)
                 {
                     if(var.isHighImpactSNP())
-                        actHit.m_high_impact_anno_not_in_typed++;
+                        actHit.m_high_impact_anno_not_in_typed.insert(var);
                     else
-                        actHit.m_anno_not_in_typed++;
+                        actHit.m_anno_not_in_typed.insert(var);
                 }
                 // an ISBT SNP which is detected in the sample but not a SNP that is needed for this potential allele
                 else if(insilicoSNV[idx] == VAL_COSINE_REF_ALLELE)
                 {
                     if(var.isHighImpactSNP())
-                        actHit.m_high_impact_typed_not_in_anno++;
+                        actHit.m_high_impact_typed_not_in_anno.insert(var);
                     else
-                        actHit.m_typed_not_in_anno++;
+                        actHit.m_typed_not_in_anno.insert(var);
                 }
             }
             else if(typedSNV[idx] !=  VAL_COSINE_COV_FAILED_ALLELE)
@@ -495,12 +496,22 @@ nlohmann::json CIsbtGt2Pt::getJsonOfTypingResult(const CIsbtGt& gt,const std::mu
                 break;
             allele["names"].push_back(act_hit.m_phenotype_allele.name());
             nlohmann::json metrics;
-            metrics["typed_not_in_anno"] = act_hit.m_typed_not_in_anno;
-            metrics["m_anno_not_in_typed"] = act_hit.m_anno_not_in_typed;
+            metrics["typed_not_in_anno_count"] = act_hit.m_typed_not_in_anno.size();
+            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+                metrics["typed_not_in_anno"].push_back(var.getSnpAsJson());
+            metrics["anno_not_in_typed_count"] = act_hit.m_anno_not_in_typed.size();
+            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+                metrics["anno_not_in_typed"].push_back(var.getSnpAsJson());
             metrics["high_impact_snp_matches"] = act_hit.m_high_impact_match;
-            metrics["m_high_impact_mismatch"] = act_hit.m_high_impact_mismatch;
-            metrics["m_high_impact_typed_not_in_anno"] = act_hit.m_high_impact_typed_not_in_anno;
-            metrics["m_high_impact_anno_not_in_typed"] = act_hit.m_high_impact_anno_not_in_typed;
+            metrics["high_impact_mismatch_count"] = act_hit.m_high_impact_mismatch.size();
+            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+                metrics["high_impact_mismatch"].push_back(var.getSnpAsJson());
+            metrics["high_impact_typed_not_in_anno_count"] = act_hit.m_high_impact_typed_not_in_anno.size();
+            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+                metrics["high_impact_typed_not_in_anno"].push_back(var.getSnpAsJson());
+            metrics["high_impact_anno_not_in_typed_count"] = act_hit.m_high_impact_anno_not_in_typed.size();
+            for(CISBTAnno::variation var :act_hit.m_typed_not_in_anno)
+                metrics["high_impact_anno_not_in_typed"].push_back(var.getSnpAsJson());
             metrics["not_covered"] = act_hit.m_not_covered;
             metrics["m_high_impact_not_covered"] = act_hit.m_high_impact_not_covered;
             metrics["m_null_variants"] = act_hit.m_null_variants;
