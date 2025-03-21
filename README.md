@@ -195,8 +195,9 @@ This structure provides an overview of the key components within the JSON file, 
 ## Limitations
 - **Dropout effects**: Missing variants significantly impact allele determination. Accuracy drops below **50% at a 50% dropout rate**.
 - **Phasing information**: While its effect on ambiguity is minor, it remains important for resolving certain blood group systems (e.g., KEL, ABO, Duffy).
-- **Paralogous regions**: Some blood group alleles (e.g., RHCE) may be misclassified due to read alignment issues.
+- **Paralogous regions**: Some blood group alleles (e.g., RHCE) may be misclassified due to read alignment issues, variant calling issues, annotation issues or any issue we are not aware of
 
+```
 
 ## Licensing
 
