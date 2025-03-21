@@ -198,6 +198,13 @@ This structure provides an overview of the key components within the JSON file, 
 - **Paralogous regions**: Some blood group alleles (e.g., RHCE) may be misclassified due to read alignment issues.
 
 
+## Licensing
+
+Third party licenses can be found at Third_Party_Licenses.md
+The docker/singularity container(s) include third-party components under various open source licenses.
+See the `/licenses` directory inside the image for details.
+
+The source code of this project is available at: 
 
 The official [GitHub repository](https://github.com/ikmb/bloodAGENT).
 
