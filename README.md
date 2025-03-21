@@ -83,6 +83,9 @@ Pipeline settings:
 - **TGS**     For third generation sequencing using pbmm2 and deepVariant
 Our recommendation is TGSGATK where possible ...
 
+### Testdata
+Data for testing can be found under ./data/testdata/. HGDP samples 001, 002 and 003. The complete HGDP dataset used for benchmarking in our original publication can be downloaded at: https://www.internationalgenome.org/data-portal/data-collection/hgdp
+
 ## Cosine Similarity Scoring
 bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from the International Society of Blood Transfusion (ISBT). The score ranges from **0 to 2**, where:
 - **1 per haplotype** is the theoretical maximum.
