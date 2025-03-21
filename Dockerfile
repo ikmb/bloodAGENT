@@ -43,7 +43,7 @@ COPY --from=builder /app/external/htslib/libhts.so /app/libhts.so
 RUN ln -s /app/libhts.so /app/libhts.so.3
 RUN mkdir /licenses
 COPY Third_Party_Licenses.md /licenses/
-COPY LICENCE /licenses/
+COPY LICENSE /licenses/
 COPY --from=builder /app/external/libBigWig/libBigWig.so /app/libBigWig.so
 
 # Setze LD_LIBRARY_PATH, damit die Shared Libraries gefunden werden

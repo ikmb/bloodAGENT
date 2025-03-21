@@ -54,7 +54,6 @@ int CScoreHaplotype::performAlignment(){
     [[maybe_unused]] int maxI = 0, maxJ = 0;
 
     // Fülle die Matrix und finde den maximalen Score
-    // Fülle die Matrix und finde den maximalen Score
     for (int i = 1; i < rows; ++i) {
         for (int j = 1; j < cols; ++j) {
             int gapPenalty = (haplotype1[i - 1].isHighImpactSNP() || haplotype2[j - 1].isHighImpactSNP()) ? specialGapPenalty : typicalGapPenalty;
