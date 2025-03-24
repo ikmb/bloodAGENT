@@ -109,7 +109,8 @@ bloodAGENT --job phenotype \
   --coverage 12 --verbose 2 --scoreRange 1 \
   --out HGDP00001.json \
   --build hg38 -k --id "HGDP00001"
-  
+```
+```sh
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
@@ -151,7 +152,8 @@ bloodAGENT --job vcf \
   --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O1.01.01" \
   --phased \
   --dropout 1 --crack 5
-  
+```
+```sh 
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job vcf \
   --variants ./data/config/variation_annotation_TGS.dat \
