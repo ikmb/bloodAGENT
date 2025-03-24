@@ -102,8 +102,8 @@ A typical command:
 ```sh
 bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/variation_annotation_GATK.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_GATK.dat \
+  --variants ./data/config/variation_annotation_TGSGATK.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGSGATK.dat \
   --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
   --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
@@ -114,8 +114,8 @@ bloodAGENT --job phenotype \
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/variation_annotation_GATK.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_GATK.dat \
+  --variants ./data/config/variation_annotation_TGSGATK.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGSGATK.dat \
   --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
   --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
