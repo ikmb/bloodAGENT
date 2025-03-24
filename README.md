@@ -11,7 +11,7 @@
 - **Open-source** for transparency and community collaboration.
 
 ## System Requirements
-**Supported platforms:** Windows, Mac, Linux
+**Supported platforms:** Compatible with Windows, macOS, and Linux through the Singularity image bloodagent.sif
 **Dependencies:** 
 - GCC or Clang compiler
 - `libhts` library: `https://github.com/samtools/htslib` (for vcf file reading)
@@ -100,7 +100,7 @@ However, due to varying numbers of relevant SNPs across blood groups and alleles
 ### Job Type: Phenotype Analysis
 A typical command:
 ```sh
-bloodagent --job phenotype \
+bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
   --variants ./data/config/variation_annotation_GATK.dat \
   --gt2pt ./data/config/genotype_to_phenotype_annotation_GATK.dat \

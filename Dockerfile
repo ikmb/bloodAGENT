@@ -40,6 +40,8 @@ WORKDIR /app
 # Build-Output vom vorherigen Schritt kopieren
 COPY --from=builder /app/dist/Release/GNU-Linux/bloodAGENT /app/bloodAGENT
 COPY --from=builder /app/external/htslib/libhts.so /app/libhts.so
+RUN ln -s /app/bloodAGENT ./bloodAGENT
+RUN ln -s /app/bloodAGENT ./bloodagent
 RUN ln -s /app/libhts.so /app/libhts.so.3
 RUN mkdir /licenses
 COPY Third_Party_Licenses.md /licenses/
