@@ -149,7 +149,7 @@ A typical command:
 ```sh
 bloodAGENT --job vcf \
   --variants ./data/config/variation_annotation_TGS.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O1.01.01" \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
   --phased \
   --dropout 1 --crack 5
 ```
@@ -157,7 +157,7 @@ bloodAGENT --job vcf \
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job vcf \
   --variants ./data/config/variation_annotation_TGS.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O1.01.01" \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
   --phased \
   --dropout 1 --crack 5
 ```
