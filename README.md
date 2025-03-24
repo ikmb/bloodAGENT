@@ -82,6 +82,9 @@ Pipeline settings:
 - **Dragen**  For data coming out of the Dragen platform
 - **TGS**     For third generation sequencing using pbmm2 and deepVariant
 Our recommendation is TGSGATK where possible ...
+All differences in these annotation files currently stem from the varying ways in which the 109bp insertion in RHCE is represented by different variant callers in the VCF files. One exception is HGDP, where all alleles for RHCE have been removed and replaced with the antigens C/c and E/e. In this case, identification of the C/c antigen requires the output from detect_RHCplusminus.py, while the E/e antigen is determined conventionally via the tagging SNV 676G>C.
+
+This structure is expected to change in the near future, as the current setup results in highly redundant annotation storage and requires corrections to be applied separately for each individual file across multiple systems — an inefficient and impractical solution.
 
 ### Testdata
 Data for testing can be found under ./data/testdata/. HGDP samples 001, 002 and 003. The complete HGDP dataset used for benchmarking in our original publication can be downloaded at: https://www.internationalgenome.org/data-portal/data-collection/hgdp

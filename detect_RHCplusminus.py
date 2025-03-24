@@ -28,7 +28,7 @@ def main():
     parser = argparse.ArgumentParser(description="Calculate coverage and CN state for RHCE exon 2.")
     parser.add_argument("-c", "--coverage", required=True, help="Path to BigWig file.")
     parser.add_argument("-b", "--build", required=True, help="genome build (hg38 or hg19)")
-    parser.add_argument("-p", "--pipeline", required=True, help="What kind of secondary analysis pipeline is used? (GATK, TGS, Dragen, HGDP")
+    parser.add_argument("-p", "--pipeline", required=True, help="What kind of secondary analysis pipeline is used? (GATK, TGS, DRAGEN, HGDP). This setting only affects how the 109bp insertion in RHCE is annotated in the VCF file. It is not intended to match the input data format correctly, as this coverage-based analysis of RHCE exon 2 does not make sense for long-read sequencing and should only be applied to short-read NGS data. Even targeted enrichment can render this script ineffective, as it may disrupt the balanced coverage of the target region.")
     parser.add_argument("-o", "--out", required=True, help="Path to output VCF file.")
     parser.add_argument("-a", "--annotation", required=True, help="Path to annotation file.")
 
