@@ -101,11 +101,11 @@ bloodagent --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
   --variants ./data/config/variation_annotation_GATK.dat \
   --gt2pt ./data/config/genotype_to_phenotype_annotation_GATK.dat \
-  --vcf ./sample.GATK.phased.vcf.gz \
-  --bigwig ./sample.BGStarget.bw \
+  --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
+  --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
-  --out sampleA.json \
-  --build hg38 -k --id "sample123"
+  --out HGDP00001.json \
+  --build hg38 -k --id "HGDP00001"
 ```
 
 #### Parameters for `phenotype` Job
