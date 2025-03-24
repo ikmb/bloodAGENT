@@ -12,6 +12,8 @@
 
 ## System Requirements
 **Supported platforms:** Compatible with Windows, macOS, and Linux through the Singularity image bloodagent.sif
+
+For advanced users who prefer to build the software from source, the following dependencies are required:
 **Dependencies:** 
 - GCC or Clang compiler
 - `libhts` library: `https://github.com/samtools/htslib` (for vcf file reading)
