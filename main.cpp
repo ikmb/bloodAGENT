@@ -170,7 +170,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_Id);
             TCLAP::ValueArg<string> tc_output("o","out","provide output file",false,"bloodAGENT.json","string");
             cmdjob.add(tc_output);
-            TCLAP::SwitchArg tc_breaks("x","crack","This breaks the hapltype information so that every variation gets recombined",false);
+            TCLAP::SwitchArg tc_breaks("x","crack","This breaks the hapltype information so that every variation gets recombined.",false);
             cmdjob.add(tc_breaks);
             
             if(tc_trick_calling.getValue() == true && !tc_abo_target_annotation.isSet())
@@ -230,9 +230,9 @@ int main(int argc, char** argv)
             cmdjob.add(tc_alleleB);
             TCLAP::SwitchArg tc_makeHaplotypes("p","phased","Create solid haplotypes or unphased. Set this parameter if you want phased vcf",false);
             cmdjob.add(tc_makeHaplotypes);
-            TCLAP::ValueArg<int> tc_dropout_probability("o","dropout","The probability that a SNP drops out",false,0,"int");
+            TCLAP::ValueArg<int> tc_dropout_probability("o","dropout","The probability that a SNP drops out. [0,100]",false,0,"int");
             cmdjob.add(tc_dropout_probability);
-            TCLAP::ValueArg<int>  tc_breaks("x","crack","This the probability in percent ([0..100]) that a haplotype breaks at an heterozygous SNV",false,0,"int");
+            TCLAP::ValueArg<int>  tc_breaks("x","crack","This the probability in percent ([0..100]) that a haplotype breaks at an heterozygous SNV. [0,100]",false,0,"int");
             cmdjob.add(tc_breaks);
             
             cmdjob.parse(argc,argv);
@@ -474,7 +474,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         string systemB = isbTyper.systemOf(arg_allele_B);
         
         if(systemA.compare(systemB) != 0)
-            throw CMyException(string("The system of both alleles must be the same. You have ")+arg_allele_A+"/"+arg_allele_B+" with '"+systemA+"'/'"+systemB+"'");
+            throw CMyException(string("The system of both alleles must be the same. You have ")+arg_allele_A+"/"+arg_allele_B+" with '"+systemA+"'/'"+systemB+"'."+ (systemA.empty() || systemB.empty() ? " One of your alleles may not exist in the annotation" : ""));
         
         CIsbtPtAllele alleleA = isbTyper.alleleOf(arg_allele_A);
         CIsbtPtAllele alleleB = isbTyper.alleleOf(arg_allele_B);
