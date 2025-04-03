@@ -207,7 +207,7 @@ singularity exec bloodagent.sif /app/bloodAGENT --job vcf \
 
 
 ## Output Format
-bloodAGENT produces results in JSON format
+bloodAGENT generates results in JSON format (`--job phenotype`). To extract the most important values in a tab-delimited table, you can use the provided script **deepblood_values.py**.
 For simulated data (`--job vcf`), the output is the data lines of an vcf file written to stdout.
 
 

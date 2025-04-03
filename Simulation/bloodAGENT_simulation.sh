@@ -42,14 +42,14 @@ allele_two=$(echo $selected_entries | cut -f 2 -d ' ')
 # Ausgabe der Ergebnisse
 cat ${ROOTPATH}/data/simulation_vcf_header.vcf > $vcf_file
 
-${ROOTPATH}/dist/Debug/GNU-Linux/deepblood --job vcf \
+${ROOTPATH}/dist/Debug/GNU-Linux/bloodAGENT --job vcf \
           --variants ${ROOTPATH}/data/config/variation_annotation_TGS.dat \
           --gt2pt ${ROOTPATH}/data/config/genotype_to_phenotype_annotation_TGS.dat -a "$allele_one" -b "$allele_two" \
           --phased \
           --dropout ${dropout_freq} --crack ${crack_freq} 1>> $vcf_file
 
 
-${ROOTPATH}/dist/Debug/GNU-Linux/deepblood -j phenotype \
+${ROOTPATH}/dist/Debug/GNU-Linux/bloodAGENT -j phenotype \
                   --target ${ROOTPATH}/data/config/exonic_annotation.hg38.BGStarget.txt \
                   --variants ${ROOTPATH}/data/config/variation_annotation_TGS.dat \
                   --gt2pt ${ROOTPATH}/data/config/genotype_to_phenotype_annotation_TGS.dat \
