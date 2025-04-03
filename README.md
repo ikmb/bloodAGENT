@@ -61,7 +61,7 @@ For advanced users who prefer to build the software from source, the following d
     libbz2-dev \
     git \
     liblzma-dev \
-    libcurl4-openssl-dev \
+    libcurl4-openssl-dev
    ```
 2. Clone the repository:
    ```sh
@@ -79,8 +79,8 @@ For advanced users who prefer to build the software from source, the following d
    make
    cd ../libBigWig
    make
-   cd ../
-   make
+   cd ../..
+   make CONF=Release
    ```
 5. Setup environment
    ```
