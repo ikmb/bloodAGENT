@@ -47,7 +47,6 @@ For advanced users who prefer to build the software from source, the following d
 - GCC or Clang compiler
 - `libhts` library: `https://github.com/samtools/htslib` (for vcf file reading)
 - `libBigWig` library https://github.com/dpryan79/libBigWig.git` (for coverage file reading)
-- `MyTools` library `https://github.com/ikmb/BfxCppClasses` (for file parsing functionality)
 - Python (for parsing output files)
 - `https://github.com/mirror/tclap.git` (for command-line argument parsing)
 - `https://github.com/nlohmann/json` (for JSON output generation)
@@ -291,7 +290,7 @@ We defined the "haplotypes" for the new simplified antigen detection logic.
 
 ## Running the Analysis
 
-Run the custom detection script on the sample data set using **HGDP** as pipeline parameter. This will generate a VCF file, which must be passed to the bloodAGENT tool as a second input VCF file, using comma separation.
+Run the custom detection script **detect_RHCplusminus.py** on the sample data set using **HGDP** as pipeline parameter. This will generate a VCF file, which must be passed to the bloodAGENT tool as a second input VCF file, using comma separation.
 
 
 ## Special Case: RHD
