@@ -1,4 +1,33 @@
 # bloodAGENT
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Key Features](#key-features)
+- [System Requirements](#system-requirements)
+- [Installation](#installation)
+- [Input Data Format](#input-data-format)
+  - [Testdata](#testdata)
+- [Cosine Similarity Scoring](#cosine-similarity-scoring)
+- [Running bloodAGENT](#running-bloodagent)
+  - [Job Type: Phenotype Analysis](#job-type-phenotype-analysis)
+  - [Parameters for `phenotype` Job](#parameters-for-phenotype-job)
+  - [Job Type: Simulated Data Generation](#job-type-simulated-data-generation)
+  - [Parameters for `vcf` Job](#parameters-for-vcf-job)
+- [Output Format](#output-format)
+  - [JSON File Structure](#json-file-structure)
+    - [General](#general)
+    - [Parameter Section](#parameter-section)
+    - [Data Section](#data-section)
+- [How to Run Custom Secondary Analysis Scripts](#how-to-run-custom-secondary-analysis-scripts)
+  - [RHCE Antigen Detection Strategy](#rhce-antigen-detection-strategy)
+  - [Step-by-Step Configuration](#step-by-step-configuration)
+  - [Running the Analysis](#running-the-analysis)
+- [Special Case: RHD](#special-case-rhd)
+  - [Interpretation Logic](#interpretation-logic)
+  - [Recommendation](#recommendation)
+- [Limitations](#limitations)
+- [Licensing](#licensing)
+
 
 ## Introduction
 **bloodAGENT** (Blood Antigen GENo Typer) is an open-source software tool designed for the determination of blood group alleles based on genetic markers. By analyzing genomic data from Next-Generation Sequencing (NGS) and Third-Generation Sequencing (TGS), bloodAGENT resolves blood group alleles and provides insights into genomic variations.
@@ -218,7 +247,70 @@ For simulated data (`--job vcf`), the output is the data lines of an vcf file wr
 This structure provides an overview of the key components within the JSON file, organizing metadata and data into a hierarchical format.
 
 
-```
+## How to Run Custom Secondary Analysis Scripts
+
+This guide demonstrates how to run a custom secondary analysis for the **RHCE antigens** using the example **HGDP dataset**. Unlike standard workflows, this analysis does **not detect all alleles directly** due to limitations in secondary data. Instead, we analyze **exon coverage** to infer antigen status.
+
+### RHCE Antigen Detection Strategy
+
+- **RHCE-Cc Antigen**  
+  Detection is based on **coverage analysis** of **Exon 2** in the *RHCE* gene. A lack of coverage at this location suggests a C-negative status.
+
+- **RHCE-Ee Antigen**  
+  Inferred using the **tagging SNP 676G>C**, which allows us to deduce the presence or absence of the E antigen.
+
+> Both antigens are reported **separately** in the final output.
+
+---
+
+## Step-by-Step Configuration
+
+### 1. Edit Configuration Files
+
+We have updated the following files for RHCE:
+
+- `genotype_to_phenotype_annotation_HGDP.dat`
+- `variation_annotation_HGDP.dat`
+
+### 2. Modify `variation_annotation_HGDP.dat`
+
+In the HGDP version of this file, we removed all existing *RHCE* entries and replace them with:
+
+- One entry for **RHCE-C**, characterized by the presence of a **109 bp insertion**, which will be detected later via coverage analysis.
+- One entry for **676G>C** as a **tagging SNP** for the Ee antigen.
+
+➡️ These entries are found in **lines 1019–1020** of `variation_annotation_HGDP.dat`.
+
+### 3. Edit `genotype_to_phenotype_annotation_HGDP.dat`
+
+We defined the "haplotypes" for the new simplified antigen detection logic.
+
+➡️ These entries are found in **lines 693–696**.
+
+---
+
+## Running the Analysis
+
+Run the custom detection script on the sample data set using **HGDP** as pipeline parameter. This will generate a VCF file, which must be passed to the bloodAGENT tool as a second input VCF file, using comma separation.
+
+
+## Special Case: RHD
+
+Although the annotation files include all ISBT-defined entries for **RHD**, secondary analysis tools struggle to **reliably detect RHD-specific variants**. This even applies to **RHD*01N.01**, a complete deletion of the RHD gene, which frequently fails to be identified correctly.
+
+To overcome this issue, a **coverage-based detection method for RHD** was introduced early on in the development of bloodAGENT. It can be activated using a specific parameter **-k/--trick**.
+
+If no deletion or only a heterozygous deletion is detected via coverage, the tool attempts to determine the specific allele. However, this result is often **not trustworthy**, and therefore the outcome is interpreted more generally as either **RhD positive** or **RhD negative**.
+
+### Interpretation Logic
+
+- A **homozygous RHD*01N.01 deletion** is interpreted as **RhD negative**
+- Any other allele combination (i.e., with at least one non-null allele) is interpreted as **RhD positive**
+
+### Recommendation
+
+We **strongly recommend** always enabling the **coverage-based detection mode** for RHD analysis, **unless a highly reliable secondary analysis pipeline is available**.
+
 
 ## Limitations
 - **Dropout effects**: Missing variants significantly impact allele determination. Accuracy drops below **50% at a 50% dropout rate**.

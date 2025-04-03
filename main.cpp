@@ -474,7 +474,7 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         string systemB = isbTyper.systemOf(arg_allele_B);
         
         if(systemA.compare(systemB) != 0)
-            throw CMyException(string("The system of both alleles must be the same. You have ")+arg_allele_A+"/"+arg_allele_B+" with '"+systemA+"'/'"+systemB+"'."+ (systemA.empty() || systemB.empty() ? " One of your alleles may not exist in the annotation" : ""));
+            throw CMyException(string("The system of both alleles must be the same. You have alleles ")+arg_allele_A+"/"+arg_allele_B+" from system(s) '"+systemA+"'/'"+systemB+"'."+ (systemA.empty() || systemB.empty() ? " Looks like one of your alleles isn't in the annotation – and that's probably what's causing the trouble." : ""));
         
         CIsbtPtAllele alleleA = isbTyper.alleleOf(arg_allele_A);
         CIsbtPtAllele alleleB = isbTyper.alleleOf(arg_allele_B);

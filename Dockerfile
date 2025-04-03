@@ -1,3 +1,5 @@
+LABEL description="Bloodagent development image"
+
 # Basis-Image mit Build-Tools
 FROM ubuntu:22.04 AS builder
 
