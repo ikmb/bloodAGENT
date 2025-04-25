@@ -132,8 +132,8 @@ A typical command:
 ```sh
 bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/variation_annotation_TGSGATK.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGSGATK.dat \
+  --variants ./data/config/variation_annotation_HGDP.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_HGDP.dat \
   --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
   --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
@@ -144,8 +144,8 @@ bloodAGENT --job phenotype \
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/variation_annotation_TGSGATK.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGSGATK.dat \
+  --variants ./data/config/variation_annotation_HGDP.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation_HGDP.dat \
   --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
   --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
@@ -168,7 +168,7 @@ singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
 | `-d` | `--verbose <int>` | Level of verbosity (0: none, 1: warnings, 2: status, 3: detailed logs). | Integer | No | `1` |
 | `-r` | `--scoreRange <float>` | Score threshold multiplier for reporting matches. | Float | No | - |
 | `-o` | `--out <file>` | Output file in JSON format. | File | No | "bloodAGENT.json" |
-| `-u` | `--build <hg19|hg38>` | Specifies genome reference build. | String | Yes | - |
+| `-u` | `--build <hg19\|hg38>` | Specifies genome reference build. | String | Yes | - |
 | `-k` | -trick | Enables coverage-based typing of RhD instead of variant-based typing. | Boolean (Flag) | No | `false` |
 | `-f` | `--id <string>` | Sample identifier. | String | No | `unknown` |
 >>>>>>> develop
