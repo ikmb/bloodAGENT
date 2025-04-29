@@ -74,8 +74,10 @@ def main(vcf_file, region_str):
             ALT_Allele = "A"
             POS_Allele = 25272447
             
-            out_vcf.write(f"chr1\t{POS_Allele}\t.\t{REF_Allele}\t{ALT_Allele}\t255.93\t.\tAC=2;AF=1;AN=2;DP=60;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.03;SOR=1.329\tGT:AD:DP:GQ:PL\t{gt_tuple[0]}/{gt_tuple[1]}:60,0:60:18:270,18,0\n")
-
+            if gt == "0/1" or gt == "1/0":
+                out_vcf.write(f"chr1\t{POS_Allele}\t.\t{REF_Allele}\t{ALT_Allele}\t255.93\t.\tAC=2;AF=1;AN=2;DP=60;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.03;SOR=1.329\tGT:AD:DP:GQ:PL\t{gt}:60,0:60:18:270,18,0\n")
+            else:
+                out_vcf.write(f"chr1\t{POS_Allele}\t.\t{REF_Allele}\t{ALT_Allele}\t255.93\t.\tAC=2;AF=1;AN=2;DP=60;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.03;SOR=1.329\tGT:AD:DP:GQ:PL\t{gt}:60,30:30:18:270,18,0\n")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Filter VCF CNVs by genomic region.")
