@@ -116,11 +116,11 @@ All differences in these annotation files currently stem from the varying ways i
 
 This structure is expected to change in the near future, as the current setup results in highly redundant annotation storage and requires corrections to be applied separately for each individual file across multiple systems — an inefficient and impractical solution.
 
-Variant Phasing:
+Variant Phasing:<br>
 For phasing, we typically use WhatsHap, as it determines haplotypes based on read data and SNP coverage. Since our focus is primarily on long reads, this is our preferred choice.
 In the supplementary methods of the original publication, we also discuss SHAPEIT5, which we applied to the short-read HGDP dataset. Our conclusion is that SHAPEIT5 is the better choice for short reads.
 
-However, it is important to ensure that the Phasing ID field in the VCF is set, SHAPEIT5 does not do this. For this purpose, we have added the script append_phasingID.py.
+However, it is important to ensure that the Phasing ID field in the VCF is set, SHAPEIT5 does not do this. For this purpose, we have added the script append_phasingID.py.<br>
 Note: To run SHAPEIT5, a multi-sample VCF must first be generated. SHAPEIT5 is then applied to this file. The fully phased VCF must be split back into single-sample VCFs, as bloodAGENT only works with single-sample files. The script append_phasingID.py should then be applied to each of these single-sample VCFs.
 
 
