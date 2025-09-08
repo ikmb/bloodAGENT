@@ -14,9 +14,7 @@
 #ifndef CTRANSCRIPT_H
 #define CTRANSCRIPT_H
 
-#include <vector>
 
-#include "CBigWigReader.h"
 
 class CTranscript {
 public:

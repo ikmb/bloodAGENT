@@ -13,6 +13,8 @@
 
 #ifndef CISBTVARIANT_H
 #define CISBTVARIANT_H
+#pragma once
+#include <htslib/sam.h>
 
 #include "meinetools.h"
 #include "CBigWigReader.h"

@@ -23,6 +23,7 @@
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+#include <htslib/sam.h>
 
 #include "meinetools.h"
 #include "CBigWigReader.h"

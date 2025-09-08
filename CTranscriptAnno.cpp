@@ -20,8 +20,10 @@
 #include <iostream>
 #include <cstring>
 #include <algorithm>
+#include <htslib/sam.h>
 
 #include "meinetools.h"
+#include "CBigWigReader.h"
 #include "CTranscript.h"
 #include "CTranscriptAnno.h"
 

@@ -36,7 +36,7 @@
 //#include "api/BamMultiReader.h"
 //#include "api/BamWriter.h"
 //#include "shared/bamtools_global.h"
-
+#include <htslib/sam.h>
 
 // command line parsing
 #include "tclap/CmdLine.h"
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
             cmdjob.add(tc_hg);
             TCLAP::ValueArg<string> tc_vcf("v","vcf","A vcf file with the variants of the sample. Please be aware of different genome build. This file should fit to the config files from parameters target, variants and gt2pt. This parameter can take a list of comma separated vcf files, too. Useful if SNV and SVs are in different vcf files.",true,"","string");
             cmdjob.add(tc_vcf);
-            TCLAP::ValueArg<string> tc_bigwig("b","bigwig","The big wig or wig file that contains the coverage data..",true,"","string");
+            TCLAP::ValueArg<string> tc_bigwig("b","bigwig","The big wig or wig file that contains the coverage data. It can be a bam file, too!",true,"","string");
             cmdjob.add(tc_bigwig);
             TCLAP::ValueArg<string> tc_fastqgz("z","fastq","The fastq.gz files comma separated",false,"","string");
             cmdjob.add(tc_fastqgz);

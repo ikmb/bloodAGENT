@@ -18,8 +18,11 @@
 #include <libgen.h>
 #include <iostream>
 #include <cstring>
+#include <vector>
+#include <htslib/sam.h>
 
 #include "meinetools.h"
+#include "CBigWigReader.h"
 #include "CTranscript.h"
 
 using namespace std;

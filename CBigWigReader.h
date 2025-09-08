@@ -26,8 +26,12 @@ public:
     virtual ~CBigWigReader();
     
     bool init(const std::string& filename);
-    bool ready()const{return (m_fp != NULL);}
+    bool initBam(const std::string& filename);
+    bool ready()const;
     
+    double getCoverageFromBam(const std::string& chrom, int start, int end, bwStatsType type) const;
+    double getPercentCoveredFromBam(const std::string& chrom, int start, int end) const;
+
     
     double getMinCoverage(const std::string& chrom, int start, int end)const;
     double getAverageCoverage(const std::string& chrom, int start, int end)const;
@@ -41,6 +45,10 @@ public:
 private:
     
     bigWigFile_t*               m_fp;
+    bool       m_useBam = false;      // true wenn BAM-Modus
+    samFile*   m_bam = nullptr;    // BAM handle
+    bam_hdr_t* m_bamHdr = nullptr; // BAM Header
+    hts_idx_t* m_bamIdx = nullptr; // BAM Index
     double getCoverage(const std::string& chrom, int start, int end, bwStatsType type)const;
 };
 

@@ -19,6 +19,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <htslib/sam.h>
 
 #include "CBigWigReader.h"
 #include "CIsbtVariant.h"

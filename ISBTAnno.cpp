@@ -15,6 +15,7 @@
 #include "CVcf.h"
 #include "CVcfSnp.h"
 #include <experimental/filesystem>
+#include <htslib/sam.h>
 
 #include "CBigWigReader.h"
 #include "CIsbtVariant.h"

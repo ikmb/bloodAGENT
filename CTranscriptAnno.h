@@ -14,10 +14,6 @@
 #ifndef CTRANSCRIPTANNO_H
 #define CTRANSCRIPTANNO_H
 
-#include <map>
-
-#include "CBigWigReader.h"
-#include "CTranscript.h"
 
 
 class CTranscriptAnno {
