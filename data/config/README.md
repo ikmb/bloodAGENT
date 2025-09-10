@@ -25,7 +25,7 @@ Example:
 ```sh
 --variants bloodAGENT/data/config/variation_annotation.dat,bloodAGENT/data/config/PacBio/variation_annotation_TGSGATK.dat
 --gt2pt bloodAGENT/data/config/genotype_to_phenotype_annotation.dat
-``
+```
 example:
 ```sh
 bloodAGENT --job phenotype \
@@ -39,13 +39,17 @@ bloodAGENT --job phenotype \
   --build hg38 -k --id "PacBioSample"
 ```
 - **DeepVariant secondary analysis with pbsv for larger insertions/deletions**  
+```sh
 --variants bloodAGENT/data/config/variation_annotation.dat,bloodAGENT/data/config/PacBio/variation_annotation_TGSPBSV.dat
 --gt2pt bloodAGENT/data/config/genotype_to_phenotype_annotation.dat
+```
 
 ### Oxford Nanopore (ONT)
 We analyzed the publicly available dataset using minimap2, Clair3, WhatsHap, and Sniffles2.  
+```sh
 --variants bloodAGENT/data/config/variation_annotation.dat,bloodAGENT/data/config/ONT/variation_annotation_MINIMAP2SNIFFLES.dat
 --gt2pt bloodAGENT/data/config/genotype_to_phenotype_annotation.dat
+```
 example:
 ```sh
 bloodAGENT --job phenotype \
