@@ -304,7 +304,8 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CTranscriptAnno trans_anno = CTranscriptAnno(arg_target_anno);
         if(arg_verbose >= 2)
                 cerr << "transcript annotation loaded from:"  << arg_target_anno << endl;
-        CISBTAnno  isbt(arg_isbt_SNPs,arg_build);
+        vector<string> parsedAno = CMyTools::GetParsedLine(arg_isbt_SNPs,",");
+        CISBTAnno  isbt(parsedAno,arg_build);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
@@ -463,7 +464,8 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
 {
     try
     {
-        CISBTAnno  isbt(arg_isbt_SNPs);
+        vector<string> parsedAno = CMyTools::GetParsedLine(arg_isbt_SNPs,",");
+        CISBTAnno  isbt(parsedAno);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
         CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,1);

@@ -21,12 +21,15 @@
 #include "CIsbtVariant.h"
 #include "ISBTAnno.h"
 
-CISBTAnno::CISBTAnno(const std::string& filename, const std::string build) 
+CISBTAnno::CISBTAnno(const std::vector<std::string> filename, const std::string build) 
 {
     m_build=build;
-    if(!CMyTools::file_exists(filename))
-        throw(CMyException("File does not exist: ")+filename);
-    m_data_red = readAnnotation(filename);
+    for(auto act : filename)
+    {
+        if(!CMyTools::file_exists(act))
+            throw(CMyException("File does not exist: ")+act);
+        m_data_red = readAnnotation(act);
+    }
 }
 
 CISBTAnno::CISBTAnno(const CISBTAnno& orig) 

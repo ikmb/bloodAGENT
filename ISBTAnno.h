@@ -35,7 +35,7 @@ public:
     /// pos has to be string due to intronic annotation (e.g. 1254-31))
     typedef CIsbtVariant variation;
     
-    CISBTAnno(const std::string& filename, const std::string build = "hg38" );
+    CISBTAnno(const std::vector<std::string> filename, const std::string build = "hg38" );
     CISBTAnno(const CISBTAnno& orig);
     virtual ~CISBTAnno();
     
