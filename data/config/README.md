@@ -3,7 +3,7 @@
 For the analysis of different datasets, several configuration files are provided. Currently, there are four groups:
 
 - **TGS - PacBio**
-- **OxfordNanopore - Oxford Nanopore**
+- **ONT - Oxford Nanopore**
 - **HGDP - The publicly available HGDP dataset as analyzed in Bergström A. et al. 2020**
 - **Dragen - NGS data generated with the Illumina Dragen pipeline**
 
@@ -22,8 +22,10 @@ Example:
 
 ### PacBio
 - **GATK secondary analysis**  
+```sh
 --variants bloodAGENT/data/config/variation_annotation.dat,bloodAGENT/data/config/PacBio/variation_annotation_TGSGATK.dat
 --gt2pt bloodAGENT/data/config/genotype_to_phenotype_annotation.dat
+``
 example:
 ```sh
 bloodAGENT --job phenotype \
