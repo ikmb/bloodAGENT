@@ -140,8 +140,8 @@ A typical command:
 ```sh
 bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/variation_annotation_HGDP.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_HGDP.dat \
+  --variants ./data/config/HGDP/variation_annotation_HGDP.dat \
+  --gt2pt ./data/config/HGDP/genotype_to_phenotype_annotation_HGDP.dat \
   --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
   --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
@@ -152,14 +152,24 @@ bloodAGENT --job phenotype \
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/variation_annotation_HGDP.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_HGDP.dat \
+  --variants ./data/config/HGDP/variation_annotation_HGDP.dat \
+  --gt2pt ./data/config/HGDP/genotype_to_phenotype_annotation_HGDP.dat \
   --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
   --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
   --out HGDP00001.json \
   --build hg38 -k --id "HGDP00001"
 ```
+
+## Configuration Files
+
+Configuration files are required for the analysis.  
+Why and under which circumstances a specific configuration is needed is described in detail here:  
+[workflows](data/config/README.md)
+
+Further details on how to generate your own configuration files can be found below in the section:  
+[How to Run Custom Secondary Analysis Scripts](#how-to-run-custom-secondary-analysis-scripts)
+
 
 #### Parameters for `phenotype` Job
 ## Command-Line Parameters
@@ -171,7 +181,7 @@ singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
 | `-s` | `--variants <file>` | Variant annotation file for ISBT blood group typing. | File | Yes | - |
 | `-g` | `--gt2pt <file>` | Mapping file from genotype to phenotype. | File | Yes | - |
 | `-v` | `--vcf <file>` | VCF file containing phased genetic variants. | File | Yes | - |
-| `-b` | `--bigwig <file>` | BigWig file for coverage data. | File | No | - |
+| `-b` | `--bigwig <file>` | BigWig file for coverage data. instead ob bigwig format it also accepts bam format. | File | No | - |
 | `-c` | `--coverage <int>` | Minimum sequencing coverage required for reliable results. | Integer | No | `10` |
 | `-d` | `--verbose <int>` | Level of verbosity (0: none, 1: warnings, 2: status, 3: detailed logs). | Integer | No | `1` |
 | `-r` | `--scoreRange <float>` | Score threshold multiplier for reporting matches. | Float | No | - |
@@ -179,23 +189,24 @@ singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
 | `-u` | `--build <hg19\|hg38>` | Specifies genome reference build. | String | Yes | - |
 | `-k` | -trick | Enables coverage-based typing of RhD instead of variant-based typing. | Boolean (Flag) | No | `false` |
 | `-f` | `--id <string>` | Sample identifier. | String | No | `unknown` |
->>>>>>> develop
+
+
 
 
 ### Job Type: Simulated Data Generation
 A typical command:
 ```sh
 bloodAGENT --job vcf \
-  --variants ./data/config/variation_annotation_TGS.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
+  --variants ./data/config/variation_annotation.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
   --phased \
   --dropout 1 --crack 5
 ```
 ```sh 
 ### Singularity:
 singularity exec bloodagent.sif /app/bloodAGENT --job vcf \
-  --variants ./data/config/variation_annotation_TGS.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation_TGS.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
+  --variants ./data/config/variation_annotation.dat \
+  --gt2pt ./data/config/genotype_to_phenotype_annotation.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
   --phased \
   --dropout 1 --crack 5
 ```

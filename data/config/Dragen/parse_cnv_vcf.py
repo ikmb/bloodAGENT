@@ -81,8 +81,8 @@ def main(vcf_file, region_str):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Filter VCF CNVs by genomic region.")
-    parser.add_argument('vcf_file', help="Pfad zur VCF-Datei (.vcf oder .vcf.gz)")
-    parser.add_argument('-p', '--region', required=True, help="Region im Format chr:start-end (z.B. chr1:25272509-25330445)")
+    parser.add_argument('vcf_file', help="Path to VCF-file (.vcf oder .vcf.gz)")
+    parser.add_argument('-p', '--region', required=True, help="region in Format chr:start-end (z.B. chr1:25272509-25330445)")
     parser.add_argument("-o", "--out", required=True, help="Path to output VCF file.")
     
     args = parser.parse_args()
