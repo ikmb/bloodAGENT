@@ -83,7 +83,7 @@ public:
 private:
     bool m_data_red;
     bool readAnnotation(const std::string& filename);
-    
+    bool generateIndex();
     
     
     CParsedTextfile m_vanno;

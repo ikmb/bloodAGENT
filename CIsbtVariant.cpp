@@ -245,7 +245,7 @@ bool CIsbtVariant::parseIsbtVariant()
     }
     else 
     {
-        cerr << "Can not parse this variant annotation: " << m_lrg_position << " o" << actBaseChange << endl;
+        cerr << "Can not parse this variant annotation: " << m_isbt_name << " at " << m_lrg_position << ", basechange: " << actBaseChange << endl;
     }
     //cout << vRet.first << " o " << m_lrg_reference << " o " << m_lrg_alternative << endl;
     return true;

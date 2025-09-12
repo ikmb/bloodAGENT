@@ -184,8 +184,8 @@ std::set<std::string> CMotifFinder::getSystems()const
 std::ostream& operator<<(std::ostream& os, const CMotifFinder& me)
 {
     bool line_feed = false;
-    for(const auto s : me.getSystems())
-        for(const auto e : me.getSystemsMotifSnps(s))
+    for(const auto& s : me.getSystems())
+        for(const auto& e : me.getSystemsMotifSnps(s))
         {
             os << (line_feed ? "\n" : "") << s << '\t' << e.second;
             line_feed=true;

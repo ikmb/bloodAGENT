@@ -23,7 +23,7 @@
 
 class CIsbtGt2Pt {
 public:
-    CIsbtGt2Pt(const std::string& filename,int maxThreads=8);
+    CIsbtGt2Pt(const std::vector<std::string> filename,int maxThreads=8);
     CIsbtGt2Pt(const CIsbtGt2Pt& orig);
     virtual ~CIsbtGt2Pt();
     

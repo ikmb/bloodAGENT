@@ -308,7 +308,8 @@ void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_i
         CISBTAnno  isbt(parsedAno,arg_build);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
-        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,cores);
+        parsedAno = CMyTools::GetParsedLine(arg_genotype_to_phenotype,",");
+        CIsbtGt2Pt isbTyper(parsedAno,cores);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
         CBigWigReader bwr(arg_bigWig);
@@ -468,7 +469,9 @@ void inSilicoVCF(const string& arg_isbt_SNPs,const string& arg_genotype_to_pheno
         CISBTAnno  isbt(parsedAno);
         if(arg_verbose >= 2)
             cerr << "ISBT variations loaded from:"  << arg_isbt_SNPs << endl;
-        CIsbtGt2Pt isbTyper(arg_genotype_to_phenotype,1);
+        
+        parsedAno = CMyTools::GetParsedLine(arg_genotype_to_phenotype,",");
+        CIsbtGt2Pt isbTyper(parsedAno,1);
         if(arg_verbose >= 2)
             cerr << "ISBT genotype to phenotype translation loaded from:"  << arg_genotype_to_phenotype << endl;
             

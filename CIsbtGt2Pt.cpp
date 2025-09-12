@@ -49,13 +49,16 @@
 
 using namespace std;
 
-CIsbtGt2Pt::CIsbtGt2Pt(const string& filename,int maxThreads) 
+CIsbtGt2Pt::CIsbtGt2Pt(const std::vector<std::string> filename,int maxThreads) 
 {
     m_maxThreads = maxThreads;
     m_activeThreads=0;
-    if(!CMyTools::file_exists(filename))
-        throw(CMyException("File does not exist: ")+filename);
-    init(filename);
+    for(auto act : filename)
+    {
+        if(!CMyTools::file_exists(act))
+            throw(CMyException("File does not exist: ")+act);
+        init(act);
+    }
     findAlleTaggingBaseChanges();
 }
 

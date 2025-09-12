@@ -30,6 +30,7 @@ CISBTAnno::CISBTAnno(const std::vector<std::string> filename, const std::string 
             throw(CMyException("File does not exist: ")+act);
         m_data_red = readAnnotation(act);
     }
+    generateIndex();
 }
 
 CISBTAnno::CISBTAnno(const CISBTAnno& orig) 
@@ -46,9 +47,8 @@ CISBTAnno::CISBTAnno(const CISBTAnno& orig)
 CISBTAnno::~CISBTAnno() {
 }
 
-bool CISBTAnno::readAnnotation(const std::string& filename)
+bool CISBTAnno::generateIndex()
 {
-    m_vanno = CParsedTextfile(filename,"\t",-1,0,true,"#");
     m_entry_finder.clear();
     if(m_vanno.First())
     {
@@ -79,6 +79,22 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
     }
     return false;
 }
+
+bool CISBTAnno::readAnnotation(const std::string& filename)
+{
+    CParsedTextfile parsed(filename,"\t",-1,0,true,"#");
+    if(m_vanno.size() == 0)
+    {
+        m_vanno = parsed;
+    }
+    else if(parsed.First())
+    {
+        do{
+            m_vanno.add(parsed.lineObject());
+        }while(parsed.Next());
+    }
+    return true;
+  }
 
 bool CISBTAnno::isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system)
 {

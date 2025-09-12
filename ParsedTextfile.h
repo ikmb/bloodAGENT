@@ -93,6 +93,8 @@ public:
         size_t rowCount()const{return vctLines.size();}
         size_t colCount()const{return cursor->size();}
         
+        string getActSeparator(){return m_strValidSeparator;}
+        
 	
 private:
 	
