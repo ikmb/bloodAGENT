@@ -28,12 +28,13 @@ Example:
 ```
 example:
 ```sh
-bloodAGENT --job phenotype \
+# assuming you are at the bllodAGENT root directory
+./dist/Release/GNU-Linux/bloodAGENT  --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
   --variants ./data/config/variation_annotation.dat,./data/config/PacBio/variation_annotation_TGSGATK.dat \
   --gt2pt ./data/config/genotype_to_phenotype_annotation.dat \
-  --vcf ./data/testdata/PacBioSample/PacBioSample.phased.vcf.gz \
-  --bigwig ./data/testdata/PacBioSample/PacBioSample.BGStarget.bw \
+  --vcf ./data/testdata/NA24143/NA24143.GATK.phased.vcf.gz \
+  --bigwig ./data/testdata/NA24143/NA24143.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
   --out PacBioSample.json \
   --build hg38 -k --id "PacBioSample"
