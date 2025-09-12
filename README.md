@@ -109,7 +109,7 @@ Pipeline settings:
 - **HGDP**    The original HGDP Project secondary analysis pipeline
 - **PacBio**  For third generation sequencing using pbmm2 and GATK or another variant caller like deepVariant and pbsv for insertions/deletions
 - **ONT**     For Oxford nanopore sequencing. Using mm2, clair3 and sniffles for dtecting the RHCE 109bp insertion
-- **Dragen**  For data coming out of the Dragen platform
+- **Dragen**  For data coming out of the Dragen platform<br>
 All Details about howto choose the correct setting can be found here: [pipeline settings](data/config/README.md)
 
 Variant Phasing:<br>
