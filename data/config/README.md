@@ -53,6 +53,7 @@ We analyzed the publicly available dataset using minimap2, Clair3, WhatsHap, and
 ```
 example:
 ```sh
+# currently just an example, real testdata will we included soon
 bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
   --variants ./data/config/variation_annotation.dat,./data/config/ONT/variation_annotation_MINIMAP2SNIFFLES.dat \
@@ -95,6 +96,7 @@ The script `parse_cnv_vcf.py` must be applied to the CNV VCF file from the secon
 The required `variation_annotation` and `genotype_to_phenotype_annotation` files are in: bloodAGENT/data/config/Dragen
 example:
 ```sh
+# currently just an example, real testdata will we included soon
 bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
   --variants bloodAGENT/data/config/Dragen/variation_annotation_Dragen.dat \
