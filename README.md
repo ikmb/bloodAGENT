@@ -107,14 +107,10 @@ Different secondary analysis pipelines may produce varying VCF file entries. How
 
 Pipeline settings:
 - **HGDP**    The original HGDP Project secondary analysis pipeline
-- **TGSGATK** For third generation sequencing using pbmm2 and GATK
-- **TGSPBSV** For third generation sequencing using pbmm2 and assuming we use pbsv for detecting the RHCE 109bp insertion
+- **PacBio**  For third generation sequencing using pbmm2 and GATK or another variant caller like deepVariant and pbsv for insertions/deletions
+- **ONT**     For Oxford nanopore sequencing. Using mm2, clair3 and sniffles for dtecting the RHCE 109bp insertion
 - **Dragen**  For data coming out of the Dragen platform
-- **TGS**     For third generation sequencing using pbmm2 and deepVariant. Our recommendation is TGSGATK where possible ...<br>
-
-All differences in these annotation files currently stem from the varying ways in which the 109bp insertion in RHCE is represented by different variant callers in the VCF files. One exception is HGDP, where all alleles for RHCE have been removed and replaced with the antigens C/c and E/e. In this case, identification of the C/c antigen requires the output from detect_RHCplusminus.py, while the E/e antigen is determined conventionally via the tagging SNV 676G>C.<br><br>
-
-This structure is expected to change in the near future, as the current setup results in highly redundant annotation storage and requires corrections to be applied separately for each individual file across multiple systems — an inefficient and impractical solution.
+All Details about howto choose the correct setting can be found here: [pipeline settings](data/config/README.md)
 
 Variant Phasing:<br>
 For phasing, we typically use WhatsHap, as it determines haplotypes based on read data and SNP coverage. Since our focus is primarily on long reads, this is our preferred choice.
