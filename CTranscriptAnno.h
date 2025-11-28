@@ -28,7 +28,7 @@ public:
     CTranscript getTranscript(const std::string& name);
     bool hasKey(const std::string& v)const{return m_transcripts.find(v)!=m_transcripts.end();}
     
-    double getExonicCoverage(const string& target, const CBigWigReader& bw)const;
+    double getExonicCoverage(const string& target, const CBigWigReader& bw, const int skip)const;
     
     vector<double> getCoverages(const string& target, const CBigWigReader& bw)const;
     

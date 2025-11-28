@@ -73,7 +73,7 @@ CTranscript CTranscriptAnno::getTranscript(const std::string& name)
     
 }
 
-double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigReader& bw)const
+double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigReader& bw, const int skip = 1)const
 {
     double dRet = 0.0;
     size_t base_count = 0;
@@ -84,6 +84,8 @@ double CTranscriptAnno::getExonicCoverage(const string& target, const CBigWigRea
         const CTranscript& trans = i->second;
         for(int i = 0; i < trans.exonCount(); i++)
         {
+            if(i == skip)
+                continue;
             int start = trans.exonStart(i);
             int end = trans.exonEnd(i);
             string chrom = trans.getChrom();

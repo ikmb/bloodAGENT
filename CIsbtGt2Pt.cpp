@@ -579,8 +579,8 @@ nlohmann::json CIsbtGt2Pt::getCallAsJson(const CISBTAnno& isbt_anno, const CTran
         // special RhD treatment
         if(system.compare("RHD") == 0 && trans_anno.hasKey("RHD") && !phenotype)
         {
-            double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr);
-            double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr);
+            double rhd_cov  = trans_anno.getExonicCoverage("RHD",bwr,1); // do not include exon 2 (index 1)
+            double rhce_cov = trans_anno.getExonicCoverage("RHCE",bwr,8);  // do not include exon 2 (index 8)
             if(rhce_cov == 0.0)
             {
                 nlohmann::json js;
