@@ -120,6 +120,7 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
     CVariantChainVariation vcv;
     for(size_t i = 0; i < 2 && i < alleles.size(); i++)
     {
+        cerr << "compare" << endl << "anno: " << isbv.alternative() << endl << "vcf:  "  << alleles[i] << endl << "----" << endl;
         if(isbv.alternative().compare(alleles[i]) == 0)
         {
             if(i == 0)
