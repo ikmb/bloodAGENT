@@ -1,4 +1,37 @@
 # bloodAGENT
+
+## Bioscope Internal Fork
+
+This is Bioscope's internal fork of [ikmb/bloodAGENT](https://github.com/ikmb/bloodAGENT). It is used by the `genomics-blood-type-processor` service in `platform-services` to determine blood group alleles from WGS data.
+
+### Changes from upstream
+
+- Removed `-m64` compiler flag from `nbproject/Makefile-Release.mk` and `nbproject/Makefile-Debug.mk` to enable native ARM64 compilation (the flag was x86-specific and unnecessary on any 64-bit system)
+- Added `Dockerfile` for building the binary in a reproducible container
+- Added `build_for_platform.sh` script to extract pre-built artifacts for platform-services
+
+### Building for platform-services
+
+The `genomics-blood-type-processor` package in platform-services uses pre-built bloodAGENT binaries. To rebuild after updating this fork:
+
+```bash
+./build_for_platform.sh ~/Desktop/platform-services
+```
+
+This builds bloodAGENT in Docker, then copies the binary, shared libraries, config data, and licenses into `platform-services/packages/genomics_blood_type_processor/`. Commit the updated artifacts in platform-services.
+
+### Updating from upstream
+
+```bash
+git remote add upstream https://github.com/ikmb/bloodAGENT.git
+git fetch upstream
+git merge upstream/main
+```
+
+Test locally, then re-run `build_for_platform.sh` to update the pre-built artifacts.
+
+---
+
 ## Table of Contents
 
 - [Introduction](#introduction)
