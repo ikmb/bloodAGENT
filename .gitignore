@@ -22,3 +22,23 @@ nbproject/*
 ./dist/
 ./Publication
 
+# Local pre-V15 backups created by data/source/v15/tools/apply_to_config.sh
+*.pre-v15.bak
+
+# V15 raw API dumps (reproducible via data/source/v15/tools/fetch_isbt_v15.sh)
+data/source/v15/raw/alleles/
+data/source/v15/raw/allele_ids.txt
+data/source/v15/raw/missing_ids.txt
+data/source/v15/raw/rate_limited.txt
+data/source/v15/raw/phenotype.json
+data/source/v15/raw/variant.json
+data/source/v15/raw/allele.json
+data/source/v15/raw/antigen.json
+data/source/v15/raw/publication.json
+data/source/v15/raw/genbank.json
+# Large derived .dat files (reproducible from raw via tools/build_*.py)
+data/source/v15/derived/variation_annotation.v15.dat
+data/source/v15/derived/genotype_to_phenotype_annotation.v15.dat
+data/source/v15/derived/pipeline/
+data/source/v15/derived/allele_to_variants.tsv
+

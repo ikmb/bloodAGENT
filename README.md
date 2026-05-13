@@ -32,6 +32,8 @@
 ## Introduction
 **bloodAGENT** (Blood Antigen GENo Typer) is an open-source software tool designed for the determination of blood group alleles based on genetic markers. By analyzing genomic data from Next-Generation Sequencing (NGS) and Third-Generation Sequencing (TGS), bloodAGENT resolves blood group alleles and provides insights into genomic variations.
 
+> **Reference data:** ISBT Blood Group Database **V15** (released 2026-05-01) — 48 blood group systems, 57 genes, 397 antigens, 2 036 alleles, 1 828 variants. The full V15 snapshot was fetched from the public REST API at `https://blooddatabase.isbtweb.org/api/` and converted to bloodAGENT's `.dat` schema. Provenance, source dumps, conversion scripts, and per-system diff vs. the previous PDF-era tables live under `data/source/v15/`. To reproduce or refresh after a future ISBT release, run `data/source/v15/tools/fetch_isbt_v15.sh` then `build_variation_annotation.py` / `build_gt2pt.py` / `build_pipeline_gt2pt.py` / `apply_to_config.sh`. The `Phenotype_PDF_Table` column in `genotype_to_phenotype_annotation_*.dat` is retained for backward compatibility but now holds the V15 `isbt_phenotype` value (the PDF allele tables were archived by ISBT in November 2025).
+
 ## Key Features
 - **High accuracy** in allele determination under typical conditions.
 - **Modular and flexible architecture**, allowing for future adaptations.
