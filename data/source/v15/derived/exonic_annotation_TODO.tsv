@@ -1,0 +1,14 @@
+system	gene	refseq	chrom	strand	txStart_hg38	txEnd_hg38	note
+CH_RG	C4A	NM_007293	chr6	+	31982056	32002681	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+CH_RG	C4B	NM_001002029	chr6	+	32014794	32035418	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+KANNO	PRNP	NM_000311	chr20	+	4686455	4701588	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+SID	B4GALNT2	NM_153446	chr17	-	49120347	49176840	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+CTL2	SLC44A2	NM_020428	chr19	+	10602454	10644557	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+PEL	ABCC4	NM_005845	chr13	-	95670083	95958700	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+MAM	EMP3	NM_001425	chr19	+	48321509	48330554	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+EMM	PIGG	NM_001127178	chr4	+	499210	540200	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+ABCC1	ABCC1	NM_004996	chr16	+	15949138	16143257	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+ER	PIEZO1	NM_001142864	chr16	-	88713338	88790220	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+CD36	CD36	NM_001001548	chr7	-	80369575	80679277	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+ATP11C	ATP11C	NM_173694	chrX	-	139726346	139945276	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene
+MAL	MAL	NM_002371	chr2	-	95025677	95053992	needs cdsStart, cdsEnd, exonStarts, exonEnds from UCSC refGene

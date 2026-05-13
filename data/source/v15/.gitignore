@@ -1,0 +1,17 @@
+# Raw API dumps are large (~20 MB) and reproducible via tools/fetch_isbt_v15.sh
+# Keep them out of git; commit derived/ instead.
+raw/alleles/
+raw/allele_ids.txt
+raw/missing_ids.txt
+raw/rate_limited.txt
+raw/phenotype.json
+raw/variant.json
+raw/allele.json
+raw/antigen.json
+raw/publication.json
+raw/genbank.json
+# Small index files we DO keep:
+!raw/system.json
+!raw/gene.json
+!raw/release.json
+!raw/release_15.json

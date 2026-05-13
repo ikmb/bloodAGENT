@@ -1,0 +1,1449 @@
+allele	status	v15_system	current_system	v15_phenotype	current_phenotype
+A4GALT*01.02	added	P1PK		P1+, Pk+	
+A4GALT*01.04	added	P1PK		NOR+, P1+, Pk+	
+A4GALT*01N.28	added	P1PK		p	
+A4GALT*01N.34	added	P1PK		p	
+A4GALT*01N.35	added	P1PK		p	
+A4GALT*02.02	added	P1PK		P1- Pk+ (P2)	
+A4GALT*02N.01.02	added	P1PK		p	
+A4GALT*02N.14	added	P1PK		p	
+A4GALT*02N.20	added	P1PK		p	
+A4GALT*02N.21	added	P1PK		p	
+A4GALT*02N.22	added	P1PK		p	
+A4GALT*02N.23	added	P1PK		p	
+A4GALT*02N.24	added	P1PK		p	
+A4GALT*02N.25	added	P1PK		p	
+A4GALT*02N.26	added	P1PK		p	
+A4GALT*02N.27	added	P1PK		p	
+A4GALT*0XN.01.01	added	P1PK		p	
+A4GALT*0XN.04	added	P1PK		p	
+A4GALT*0XN.06	added	P1PK		p	
+A4GALT*0XN.09.02	added	P1PK		p	
+A4GALT*0XN.12	added	P1PK		p	
+A4GALT*0XN.15	added	P1PK		p	
+A4GALT*0XN.29	added	P1PK		p	
+A4GALT*0XN.30	added	P1PK		p	
+A4GALT*0XN.31	added	P1PK		p	
+A4GALT*0XN.32	added	P1PK		p	
+A4GALT*0XN.33	added	P1PK		p	
+A4GALT*0XN.36	added	P1PK		p	
+A4GALT*N.01	added	P1PK		p	
+A4GALT*N.02	added	P1PK		p	
+A4GALT*N.03	added	P1PK		p	
+ABCB6*01N.34	added	LAN		Lan-	
+ABCB6*01N.35	added	LAN		Lan-	
+ABCB6*01N.37	added	LAN		Lan-	
+ABCB6*01N.38	added	LAN		Lan-	
+ABCB6*01N.39	added	LAN		Lan-	
+ABCC1*01	added	ABCC1		ABCC1:1, WLF+	
+ABCC1*01N.01	added	ABCC1		ABCC1:-1 or WLF-	
+ABCC4*01	added	PEL		PEL:1 or PEL+	
+ABCC4*01.01W	added	PEL		PEL:1 or PEL+w	
+ABCC4*01.02W	added	PEL		PEL:1 or PEL+w	
+ABCC4*01.03W	added	PEL		PEL:1 or PEL+w	
+ABCC4*01N.01	added	PEL		PEL:-1 or PEL-	
+ABCG2*01N.23	added	JR		Jr(a−)	
+ABCG2*01N.27	added	JR		Jr(a−)	
+ABCG2*01N.28	added	JR		Jr(a-)	
+ABCG2*01W.03	added	JR		Jr(a+w)	
+ABO*AW.26	added	ABO		Aweak	
+ABO*AW.31.01	added	ABO		Ax/Aweak	
+ABO*AW.31.02-05	added	ABO		Ax/Aweak	
+ABO*O.16	added	ABO		O	
+ABO*cisAB.05	added	ABO		cisAB	
+ATP11C*01	added	ATP11C		ATP11C:1 or LIL+	
+ATP11C*01N.01	added	ATP11C		ATP11C:-1 or LIL-	
+AUG*03	added	AUG		AUG:3 or (ATML+)	
+AUG*04	added	AUG		AUG:4 or (ATAM+)	
+C4A*01	added	CH_RG		Ch+Rg- or CH:1,-2,3,-4,5,6. RG:-1,-2	
+C4A*03	added	CH_RG		Ch-Rg+ or CH:-1,-2,-3,-4,-5,-6. RG:1,2	
+C4A*07	added	CH_RG		Ch-Rg+WH+ or CH:-1,-2,-3, -4,-5,6. RG:1,-2, WH+	
+C4A*N.01	added	CH_RG		Rg- or RG: -1,-2	
+C4A*N.02	added	CH_RG		Rg- or RG: -1,-2	
+C4A*N.03	added	CH_RG		Rg- or RG: -1,-2	
+C4A*N.04	added	CH_RG		Rg- or RG: -1,-2	
+C4B*01	added	CH_RG		Ch+Rg- or CH:1,2,-3,4,5,-6. RG:-1,-2	
+C4B*02	added	CH_RG		Ch+Rg- or CH:1,-2,3,4,-5,6. RG:-1,-2	
+C4B*03	added	CH_RG		Ch+Rg- or CH:1,2,3,4,5,6. RG:-1,-2	
+C4B*05	added	CH_RG		Ch+Rg+WH+ or CH:-1,-2,-3,4,-5,6. RG:1,-2, WH+	
+C4B*N.01	added	CH_RG		Ch- or CH:-1,-2,-3,-4,-5, -6	
+C4B*N.02	added	CH_RG		Ch- or CH:-1,-2,-3,-4,-5, -6	
+C4B*N.03	added	CH_RG		Ch- or CH:-1,-2,-3,-4,-5, -6	
+CD36*01	added	CD36		CD36:1 or CD36+	
+CD36*01N.01	added	CD36		CD36:–1 or CD36–	
+CD36*01N.02	added	CD36		CD36:–1 or CD36–	
+CD36*01N.03	added	CD36		CD36:–1 or CD36–	
+CD36*01N.04	added	CD36		CD36:–1 or CD36–	
+CD36*01N.05	added	CD36		CD36:–1 or CD36–	
+CD36*01N.06	added	CD36		CD36:–1 or CD36–	
+CD36*01N.07	added	CD36		CD36:–1 or CD36–	
+CD36*01N.08	added	CD36		CD36:–1 or CD36–	
+CD36*01N.09	added	CD36		CD36:–1 or CD36–	
+CD36*01N.10	added	CD36		CD36:–1 or CD36–	
+CD36*01N.11	added	CD36		CD36:–1 or CD36–	
+CD36*01N.12	added	CD36		CD36:–1 or CD36–	
+CD36*01N.13	added	CD36		CD36:–1 or CD36–	
+CD36*01N.14	added	CD36		CD36:–1 or CD36–	
+CD36*01N.15	added	CD36		CD36:–1 or CD36–	
+CD36*01N.16	added	CD36		CD36:–1 or CD36–	
+CD36*01N.17	added	CD36		CD36:–1 or CD36–	
+CD36*01N.18	added	CD36		CD36:–1 or CD36–	
+CD36*01N.19	added	CD36		CD36:–1 or CD36–	
+CD36*01N.20	added	CD36		CD36:–1 or CD36–	
+CD36*01N.21	added	CD36		CD36:–1 or CD36–	
+CD36*01N.22	added	CD36		CD36:–1 or CD36–	
+CD59*01.02	added	CD59		CD59:1 or CD59.1+	
+CD59*01N.04	added	CD59		CD59:-1 or CD59.1-	
+CD59*01N.05	added	CD59		CD59:-1 or CD59.1-	
+CD59*01N.06	added	CD59		CD59:-1 or CD59.1-	
+CD99*01	added	XG		CD99	
+CD99*01N.01	added	XG		CD99-	
+CD99*01N.02	added	XG		CD99-	
+CD99*01N.03	added	XG		CD99-	
+CO*02.01	added	CO		CO:2 or Co(b+)	
+CO*02.02	added	CO		CO:2 or Co(b+)	
+CO*N.01	added	CO		CO:-1,-2 or Co(a-b-)	
+CROM*01.-17	added	CROM		CROM:–17 or CRUE–	
+CROM*01.-18	added	CROM		CROM:–18 or CRAG–	
+CROM*01.-19	added	CROM		CROM:−19 or CROK−	
+CROM*01.-20	added	CROM		CROM:−20 or CORS−	
+CROM*01N.05	added	CROM		CROM:–7 or Inab	
+CROM*01N.06	added	CROM		CROM:–7 or Inab	
+CTL2*01	added	CTL2		CTL2:1 or VER+	
+CTL2*01.-02	added	CTL2		CTL2:-2 or RIF-	
+CTL2*01.-05	added	CTL2		CTL2:–5 or BROS- or CTL2.5	
+CTL2*01.04	added	CTL2		CTL2:–3,4 or Csb, or CTL2.4, or HNA-3b	
+CTL2*01N.01	added	CTL2		CTL2:-1 or VER-	
+DI*02.04	added	DI		DI:-3,4 or Wr(a-b+)	
+DI*02.21	added	DI		DI:21 or SW1+	
+DI*02.22	added	DI		DI:22 or DISK+	
+DI*02.23	added	DI		DI:23 or DIST+	
+DO*01.-08	added	DO		DO:-8 or DOLG-	
+DO*01N.03	added	DO		DO:-3 or Gy(a-)	
+DO*01N.04	added	DO		DO:-4 or Gy(a-)	
+DO*01N.05	added	DO		DO:-5 or Gy(a-)	
+DO*01N.06	added	DO		DO:-6 or Gy(a-)	
+DO*02.-05	added	DO			
+DO*02.-06	added	DO			
+DO*02.-09	added	DO			
+DO*02.-10	added	DO			
+ER*01	added	ER		Er(a+b-), Er3+, ERSA+, ERAMA+ or ER:1,-2,3,4,5	
+ER*01.-03	added	ER		Er(a-b-), Er3-, ERSA+, ERAMA+ or ER:-1,-2,-3,4,5	
+ER*01.-04.01	added	ER		ERSA- or ER:-4	
+ER*01.-04.02	added	ER		ERSA- or ER:-4	
+ER*01.-05	added	ER		ERAMA- or ER:-5	
+ER*01N.01	added	ER		Er(a-b-), Er3-, ERSA-, ERAMA- or ER:-1,-2,-3,-4,-5	
+ER*02	added	ER		Er(a-b+) or ER:-1,2	
+FUT1*01.02	added	H		H+	
+FUT1*01N.21	added	H		H-	
+FUT1*01N.22	added	H		H-	
+FUT1*01N.23	added	H		H-	
+FUT1*01N.24	added	H		H-	
+FUT1*01N.25	added	H		H-	
+FUT1*01N.26	added	H		H-	
+FUT1*01N.27	added	H		H-	
+FUT1*01N.28	added	H		H-	
+FUT1*01N.29	added	H		H-	
+FUT1*01N.30	added	H		H-	
+FUT1*01N.31	added	H		H-	
+FUT1*01N.32	added	H		H-	
+FUT1*01N.33	added	H		H-	
+FUT1*01N.34	added	H		H-	
+FUT1*01N.35	added	H		H-	
+FUT1*01N.36	added	H		H-	
+FUT1*01N.37	added	H		H-	
+FUT1*01W.31	added	H		H+weak	
+FUT1*01W.32	added	H		H+weak	
+FUT1*01W.33	added	H		H+weak	
+FUT1*01W.34	added	H		H+weak	
+FUT1*01W.35	added	H		H+weak	
+FUT1*01W.36	added	H		H+weak	
+FUT1*01W.37	added	H		H+weak	
+FUT1*01W.38	added	H		H+weak	
+FUT1*01W.39	added	H		H+weak	
+FUT1*0N.01	added	H		H-	
+FUT2*01	added	H		H+	
+FUT2*01.02	added	H		H+	
+FUT2*01.03.01	added	H		H+	
+FUT2*01.03.02	added	H		H+	
+FUT2*01.03.03	added	H		H+	
+FUT2*01.04	added	H		H+	
+FUT2*01.05	added	H		H+	
+FUT2*01.06	added	H		H+	
+FUT2*01.07	added	H		H+	
+FUT2*01.08	added	H		H+	
+FUT2*01.09	added	H		H+	
+FUT2*01.10	added	H		H+	
+FUT2*01.11	added	H		H+	
+FUT2*01N.01	added	H		H-	
+FUT2*01N.02	added	H		H-	
+FUT2*01N.03	added	H		H-	
+FUT2*01N.04	added	H		H-	
+FUT2*01N.05	added	H		H-	
+FUT2*01N.06	added	H		H-	
+FUT2*01N.07	added	H		H-	
+FUT2*01N.08	added	H		H-	
+FUT2*01N.09	added	H		H-	
+FUT2*01N.10	added	H		H-	
+FUT2*01N.11	added	H		H-	
+FUT2*01N.12	added	H		H-	
+FUT2*01N.13	added	H		H-	
+FUT2*01N.14	added	H		H-	
+FUT2*01N.15	added	H		H-	
+FUT2*01N.16	added	H		H-	
+FUT2*01N.17	added	H		H-	
+FUT2*01N.18	added	H		H-	
+FUT2*01W.01	added	H		H+w	
+FUT2*01W.02.01	added	H		H+w	
+FUT2*01W.02.02	added	H		H+w	
+FUT2*01W.02.03	added	H		H+w	
+FUT2*01W.03	added	H		H+w	
+FUT2*01W.04	added	H		H+weak	
+FUT2*0N.01	added	H		H-	
+FUT2*0N.02	added	H		H-	
+FUT2*0N.03	added	H		H-	
+FUT2*0N.04	added	H		H-	
+FUT2*0N.05	added	H		H-	
+FUT2*ON.01	added	H		H-	
+FUT2*ON.03	added	H		H-	
+FUT2*ON.04	added	H		H-	
+FUT3*01.01	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.02	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.03	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.04	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.05	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.06	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.07	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.08.01	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.08.02	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.10	added	LE		FUT3 Active - can make Lewis antigens, however there is a 90% reduction in enzyme functionality.	
+FUT3*01.11	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.12	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.13	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.14	added	LE		FUT3 Active - can make Lewis antigens	
+FUT3*01.15	added	LE		FUT3 Active - can make Lewis antigens, however there is a 90% reduction in enzyme functionality.	
+FUT3*01.16	added	LE		FUT3 Active - can make Lewis antigens, however there is a 90% reduction in enzyme functionality.	
+FUT3*01.17.01	added	LE		FUT3 Active - can make Lewis antigens, however there is a 90% reduction in enzyme functionality.	
+FUT3*01N.01.01	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.02	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.03	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.04	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.05	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.06	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.07	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.08	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.09	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.10	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.11	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.01.12	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.01	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.02	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.03	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.04	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.05	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.06	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.07	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.08	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.09	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.10	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.11	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.03.12	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.02	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.03	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.04	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.05	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.06	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.07	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.08	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.09	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.10	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.11	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.12	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.13	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.14	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.15	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.16	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.17	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.18	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.19	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.20	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.21	added	LE		FUT3 Inactive - Le(a-b-)	
+FUT3*01N.17.22	added	LE		FUT3 Inactive - Le(a-b-)	
+FY*01N.10	added	FY		Fy(a-b-)	
+FY*01N.11	added	FY		Fy(a-b-)	
+FY*02.01	added	FY		FY:-2,3	
+FY*02N.07	added	FY		Fy(a-b-)	
+FY*02N.08	added	FY		Fy(a-b-)	
+FY*02N.09	added	FY		Fy(a-b-)	
+FY*02N.10	added	FY		Fy(a-b-)	
+FY*02W.05	added	FY		Fy(b+w)	
+GBGT1*01N.03	added	FORS		FORS:-1 (FORS-)	
+GBGT1*01N.04	added	FORS		FORS:-1 (FORS-)	
+GBGT1.01.01	added	FORS		FORS:1 (FORS+)	
+GBGT1.01.02	added	FORS		FORS:1 (FORS+)	
+GCNT2*01.02	added	I		I	
+GCNT2*01N.06	added	I		I- (adult)	
+GCNT2*01N.09	added	I		I- (adult)	
+GCNT2*01N.10	added	I		I- (adult)	
+GCNT2*01W.04	added	I		I:1weak or I+W	
+GE*01.-02.01	added	GE		GE:-2,3,4 or Yus type	
+GE*01.-02.02	added	GE		GE:-2,3,4 or Yus type	
+GE*01.-02.03	added	GE		GE:-2,3,4 or Yus type	
+GE*01.-02.04	added	GE		GE:-2,3,4 or Yus type	
+GE*01.-03.01	added	GE		GE:-2,-3,4 or Gerbich type	
+GE*01.-03.02	added	GE		GE:-2,-3,4 or Gerbich type	
+GE*01.-03.03	added	GE		GE:-2,-3,4 or Gerbich type	
+GE*01.-13	added	GE		GE:-13 or GECT-	
+GE*01.-14	added	GE		GE:-14 or GEAR-	
+GE*01.06.01	added	GE		GE:6 or Ls(a+)	
+GE*01.06.02	added	GE		GE:6 or Ls(a+)	
+GE*01N.01	added	GE		GE:-2,-3,-4 or Leach type (PL)	
+GIL*01N.02	added	GIL		GIL:−1 or GIL−	
+GLOB*01.02	added	GLOB		GLOB:1 (P+)	
+GLOB*01N.10	added	GLOB		GLOB:–1 (P–)	
+GLOB*01N.13	added	GLOB		GLOB:–1 (P–)	
+GYP*01N	added	MNS_HYBRID		MNS:-1,-2,-3,-4,-5 - or Mk M-N-S-s-U-	
+GYP*101.01	added	MNS_HYBRID		MNS:15 or St(a+)	
+GYP*101.02	added	MNS_HYBRID		MNS:15 or St(a+)	
+GYP*101.03	added	MNS_HYBRID		MNS:15 or St(a+)	
+GYP*101.04	added	MNS_HYBRID		MNS:6,15 or He+, St(a+)	
+GYP*201.01	added	MNS_HYBRID		MNS:-3,4,20,34 or S-s+, Hil+, MINY+	
+GYP*202.01	added	MNS_HYBRID		MNS:3,-4,32,33 or S+s-, TSEN+, MINY+	
+GYP*203.01	added	MNS_HYBRID		MNS:-1,2,-3,-4,-5,36 or M-N+S-s-U-, SAT+	
+GYP*301.01	added	MNS_HYBRID		MNS:10,32 or Mur+, DANE+	
+GYP*301.02	added	MNS_HYBRID		MNS: 10,32,-44 or Mur+, DANE+, ENDA-	
+GYP*302.01	added	MNS_HYBRID		MNS:26,27 or Hop+,Nob+	
+GYP*302.02	added	MNS_HYBRID		MNS:−26,27,−29 or Hop−,Nob+, ENKT−	
+GYP*303	added	MNS_HYBRID		MNS:20, -34 or Hil+, MINY-	
+GYP*304	added	MNS_HYBRID			
+GYP*401	added	MNS_HYBRID		MNS:15 or St(a+)	
+GYP*401.01	added	MNS_HYBRID			
+GYP*401.02	added	MNS_HYBRID			
+GYP*401.03	added	MNS_HYBRID			
+GYP*401.04	added	MNS_HYBRID			
+GYP*401.05	added	MNS_HYBRID			
+GYP*401.06	added	MNS_HYBRID			
+GYP*401.07	added	MNS_HYBRID			
+GYP*401.08	added	MNS_HYBRID			
+GYP*401.09	added	MNS_HYBRID			
+GYP*401.10	added	MNS_HYBRID			
+GYP*402	added	MNS_HYBRID		MNS:-3,4,25 or S-s+,Dantu+	
+GYP*403	added	MNS_HYBRID			
+GYP*501	added	MNS_HYBRID		MNS:-3,4,7,10,20,34,35 S-s+ or Mi(a+), Mur+, Hil+, MINY+, MUT+	
+GYP*502	added	MNS_HYBRID		MNS:3,-4,7,10,26,33,34,35 or S+s-, Mi(a+), Mur+, Hop+, TSEN+, MINY+, MUT+	
+GYP*503	added	MNS_HYBRID		MNS:-3,4,7,10,20,26,34,35 or S-s+, Mi(a+), Mur+, Hil+, MINY+, MUT+	
+GYP*504	added	MNS_HYBRID		MNS:-3,4,7, 20,34,35 or S-s+, Mi(a+), Hil+, MINY+, MUT+	
+GYP*505	added	MNS_HYBRID		MNS:-3,-4,-5,6 or S-s-U-He+	
+GYP*506	added	MNS_HYBRID		MNS:-3,4,7,10,20,34,35,48 or s+, Mi(a+), Mur+, MUT+, MINY+, Hil+, KIPP+	
+GYP*507	added	MNS_HYBRID			
+GYP*508	added	MNS_HYBRID			
+GYP*509	added	MNS_HYBRID			
+GYP*601	added	MNS_HYBRID			
+GYP*602	added	MNS_HYBRID			
+GYP*604	added	MNS_HYBRID			
+GYP*Hut	added	MNS_HYBRID			
+GYP*Mc	added	MNS_HYBRID			
+GYP*Mg	added	MNS_HYBRID			
+GYP*Vw	added	MNS_HYBRID			
+GYPA*01N.02	added	GYPA		MNS:-1,-28 or M-N- En(a-)	
+GYPA*01N.03	added	GYPA		MNS:-1,-2,-28 or M-N- En(a-)	
+GYPA*01W.01	added	GYPA		MNS:w1 or M+w	
+GYPA*02N.01	added	GYPA		MNS:-1,-2,-28 or M-N- En(a-)	
+GYPA*09.02	added	GYPA		MNS:2,7,9,−40 or Vw+	
+GYPA*28N.01	added	MNS_HYBRID		MNS:-1,-2,-28 or M-N- En(a-)	
+GYPA*50	added	GYPA		MNS:50 or SUMI+	
+GYPB*03.02	added	GYPB		MNS:3 (S+ partial)	
+GYPB*03.03	added	GYPB		MNS:w3 or S+w	
+GYPB*03.04	added	GYPB		MNS:3 (S+ partial)	
+GYPB*03.05	added	GYPB		MNS:w3 or S+w	
+GYPB*03.06	added	GYPB		MNS:3 or S+	
+GYPB*03.07	added	GYPB		MNS:3 or S+	
+GYPB*03N.05	added	GYPB		MNS:-3,w5 or S-U+var	
+GYPB*03N.06	added	GYPB		MNS:-3,w5 or S-U+var	
+GYPB*03N.07	added	GYPB		MNS:-3,w5 or S-U+var	
+GYPB*03N.08	added	GYPB		MNS:-3,-5 or S–U–	
+GYPB*04.02	added	GYPB		MNS:4 (s+ partial)	
+GYPB*04.03	added	GYPB		MNS:w4,w5 or s+w, U+w	
+GYPB*04.04	added	GYPB		MNS:4,5 (s+, U+) altered GPB	
+GYPB*04.05	added	GYPB		MNS:4 or s+	
+GYPB*04.06	added	GYPB		MNS:4,5 (s+, U+) altered U/GPB	
+GYPB*04.07	added	GYPB		MNS:4 or s+	
+GYPB*04N.02	added	GYPB		MNS:-4,-5 or s-U-	
+GYPB*04N.03	added	GYPB		MNS:-4,w5 or s-U+var	
+GYPB*04N.04	added	GYPB		MNS:-4,-5 or s-U-	
+GYPB*04N.05	added	GYPB		MNS:-3,-4,-5 or S-s-U-	
+GYPB*04N.06	added	GYPB		MNS:-4, or s-	
+GYPB*04N.09	added	GYPB		MNS:-4 or S-s-U-	
+GYPB*05N.01	added	GYPB		MNS:-3,-4,-5 or S-s-U-	
+GYPB*05N.02	added	GYPB		MNS:-3,-4,-5 or S-s-U-	
+GYPB*05N.03	added	GYPB		MNS:-3,-4,-5 or S-s-U-	
+GYPB*05N.04	added	GYPB		MNS:-3,-4,-5 or S-s-U-	
+IN*02.-06	added	IN		IN: –6 or INSL–	
+JK*01N.01	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.12	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.13	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.14	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.15	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.16	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.17	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.18	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.19	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.20	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.21	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.22	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.23	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.24	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.25	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.26	added	JK		JK:-3 or Jk(a-b-)	
+JK*01N.27	added	JK		Jk(a-)	
+JK*01N.28	added	JK		Jk(a-)	
+JK*01N.29	added	JK		JK(a-), JK3-	
+JK*01N.30	added	JK		JK(a-), JK3-	
+JK*01N.32	added	JK		Jk(a-)	
+JK*01W.06	added	JK		Jk(a+w)	
+JK*01W.07	added	JK		Jk(a+w)	
+JK*01W.08	added	JK		Jk(a+w)	
+JK*01W.09	added	JK		Jk(a+w)	
+JK*01W.10	added	JK		Jk(a+w)	
+JK*01W.11	added	JK		Jk(a+w)	
+JK*01W.12	added	JK		Jk(a+w)	
+JK*01W.13	added	JK		Jk(a+)	
+JK*02N.14	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.15	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.16	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.17	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.18	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.19	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.20	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.21	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.22	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.23	added	JK		JK:–3 or Jk(a-b-)	
+JK*02N.24	added	JK		JK:–3 or Jk(a-b-)	
+JK*02N.25	added	JK		JK:–3 or Jk(a-b-)	
+JK*02N.26	added	JK		JK:-3 or Jk(a-b-)	
+JK*02N.27	added	JK		JK(b-), JK3-	
+JK*02N.28	added	JK		Jk(b-)	
+JK*02N.29	added	JK		Jk(b-), JK3-	
+JK*02N.30	added	JK		Jk(b-)	
+JK*02W.03	added	JK		Jk(b+w)	
+JK*02W.04	added	JK		Jk(b+w)	
+JK*02W.05	added	JK		Jk(b+w)	
+JK*02W.06	added	JK		Jk(b+w)	
+JMH*01.-07	added	JMH		JMH: –7 or JMHN–	
+JMH*01.-08	added	JMH		JMH: -8 or JMHA-	
+KANNO*01	added	KANNO		KANNO:1 or KANNO1+	
+KANNO*01.-01	added	KANNO		KANNO:-1 or KANNO1-	
+KEL*01.03	added	KEL		KEL:1weak,3 or K+w, Kp(a+)	
+KEL*01M.02	added	KEL		Kmod	
+KEL*01M.03	added	KEL		Kmod	
+KEL*01M.04	added	KEL		Kmod	
+KEL*01M.05	added	KEL		Kmod	
+KEL*01M.06	added	KEL		Kmod	
+KEL*01N.03	added	KEL		K0	
+KEL*01N.04	added	KEL		K0	
+KEL*02.02	added	KEL		KEL:2 or k+	
+KEL*02.39	added	KEL		KEL:-37,39 or KHUL-,KEAL+	
+KEL*02.41	added	KEL		KEL:-40, 41 or KHIZ-, KHOZ+	
+KEL*02M.12	added	KEL		Kmod	
+KEL*02M.13	added	KEL		Kmod	
+KEL*02M.14	added	KEL		Kmod	
+KEL*02M.15	added	KEL		Kmod	
+KEL*02M.16	added	KEL		Kmod	
+KEL*02M.17	added	KEL		Kmod	
+KEL*02M.18	added	KEL		Kmod	
+KEL*02M.19	added	KEL		Kmod	
+KEL*02N.30	added	KEL		K0	
+KEL*02N.31	added	KEL		K0	
+KEL*02N.32	added	KEL		K0	
+KEL*02N.33	added	KEL		K0	
+KEL*02N.34	added	KEL		K0	
+KEL*02N.35	added	KEL		K0	
+KEL*02N.36	added	KEL		K0	
+KEL*02N.37	added	KEL		K0	
+KEL*02N.38	added	KEL		K0	
+KEL*02N.39	added	KEL		K0	
+KEL*02N.40	added	KEL		K0	
+KEL*02N.41	added	KEL		K0	
+KEL*02N.42	added	KEL		K0	
+KEL*02N.43	added	KEL		K0	
+KEL*02N.44	added	KEL		K0	
+KEL*02N.45	added	KEL		K0	
+KEL*02N.46	added	KEL		K0	
+KEL*02N.47	added	KEL		K0	
+KEL*02N.48	added	KEL		K0	
+KEL*02N.49	added	KEL		K0	
+KEL*02N.50	added	KEL		K0	
+KEL*02N.51	added	KEL		K0	
+KEL*02N.52	added	KEL		K0	
+KEL*02N.53	added	KEL		K0	
+KEL*02N.54	added	KEL		K0	
+KEL*02N.55	added	KEL		K0	
+KEL*02N.56	added	KEL		K0	
+KEL*02N.57	added	KEL		K0	
+KEL*02N.58	added	KEL		K0	
+KEL*02N.59	added	KEL		K0	
+KEL*02N.60	added	KEL		K0	
+KEL*02N.61	added	KEL		K0	
+KEL*02N.62	added	KEL		K0	
+KEL*02N.63	added	KEL		K0	
+KEL*02N.64	added	KEL		K0	
+KEL*02N.65	added	KEL		K0	
+KEL*02N.66	added	KEL		K0	
+KEL*02N.67	added	KEL		K0	
+KLF*BGM66	added	KLF1		In(Lu)	
+KLF*BGM67	added	KLF1		In(Lu)	
+KLF*BGM68	added	KLF1		In(Lu)	
+KLF*BGM69	added	KLF1		In(Lu)	
+KLF*BGM70	added	KLF1		In(Lu)	
+KLF*BGM71	added	KLF1		In(Lu)	
+KLF*BGM72	added	KLF1		In(Lu)	
+KLF*BGM73	added	KLF1		In(Lu)	
+KN*01.-13	added	KN		KN:-13 or KNMB-	
+KN*01.10	added	KN		KN:-9 or KCAM- KN:10 or KDAS+	
+KN*01.12	added	KN		KN:-11 or DACY- KN:12 or YCAD+	
+KN*01W	added	KN		Helgeson Phenotype	
+KN*02.10	added	KN		KN:2 or Kn(a-b+), KN:-9 or KCAM-, KN:10 or KDAS+	
+LU*02.-27	added	LU		LU:-27, LUYA-	
+LU*02.-28	added	LU		LU:-28, LUNU-	
+LU*02.-29	added	LU		LU:-29, LURA-	
+LU*02.-30	added	LU		LU:-30, LUOM-	
+LU*02N.02	added	LU		Lunull	
+LU*02N.05	added	LU		Lunull	
+LU*02N.06	added	LU		Lunull	
+LU*02N.07	added	LU		Lunull	
+LU*02W.01	added	LU		Lu(b+w)	
+LU*02W.02	added	LU		Lu(b+w)	
+LU*02W.03	added	LU		Lu(b+w)	
+LW*05.-8	added	LW		LW:-8 or LWEM-	
+LW*05N.02	added	LW		LW:-6 or LW(a-b-)	
+LW*05N.03	added	LW		LW:-6 or LW(a-b-)	
+MAL*01	added	MAL		MAL:1 or AnWj+	
+MAL*01N.01	added	MAL		MAL:-1 or AnWj‒	
+MAM*01	added	MAM		MAM:1 or MAM+	
+MAM*01N.01	added	MAM		MAM:-1 or MAM-	
+MAM*01N.02	added	MAM		MAM:-1 or MAM-	
+MAM*01N.03	added	MAM		MAM:-1 or MAM-	
+MAM*01N.04	added	MAM		MAM:-1 or MAM-	
+MAM*01N.05	added	MAM		MAM:-1 or MAM-	
+PIGG*01	added	EMM		EMM:1 or Emm+	
+PIGG*01N.01	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.02	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.03	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.04	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.05	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.06	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.07	added	EMM		EMM:-1 or Emm-	
+PIGG*01N.08	added	EMM		EMM:-1 or Emm-	
+RAPH*01.-01.01	added	RAPH		RAPH:-1 or MER2−	
+RAPH*01.-01.02	added	RAPH		RAPH:-1 or MER2−	
+RAPH*01.-01.03	added	RAPH		RAPH:-1 or MER2-	
+RHAG*01.-01	added	RHAG		RHAG:−1 or Duclos−	
+RHAG*01.-03	added	RHAG		RHAG:−3 or DSLK− RHAG:5 or Kg+	
+RHAG*01.02	added	RHAG		RHAG:2 or Ol(a+), RHAG weak	
+RHAG*01.06	added	RHAG		RHAG:6 or SHER	
+RHAG*01.07	added	RHAG		RHAG:7 or THIN	
+RHAG*01M.12	added	RHAG		Rhmod	
+RHAG*01M.13	added	RHAG		Rhmod	
+RHAG*01M.14	added	RHAG		Rhmod	
+RHAG*01M.15	added	RHAG		Rhmod	
+RHAG*01N.15	added	RHAG		Rhnull	
+RHAG*01N.17	added	RHAG		Rhnull	
+RHAG*01N.19	added	RHAG		Rhnull	
+RHAG*01N.20	added	RHAG		Rhnull	
+RHAG*01N.21	added	RHAG		Rhnull	
+RHAG*01N.22	added	RHAG		Rhnull	
+RHAG*01N.23	added	RHAG		Rhnull	
+RHAG*01N.24	added	RHAG		Rhnull	
+RHAG*01N.25	added	RHAG		Rhnull	
+RHAG*01N.26	added	RHAG		Rhnull	
+RHAG*01N.27	added	RHAG		Rhnull	
+RHCE*01	added	RHCE		RH:4 or c RH:5 or e RH:6 or f (ce)	
+RHCE*01.01	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.02.01	added	RHCE		RH:4 (c+ weak, partial) RH:5 (e+ weak, partial)	
+RHCE*01.02.02	added	RHCE			
+RHCE*01.03	added	RHCE		RH:5 (e+ partial)	
+RHCE*01.04.01	added	RHCE		RH:4 (c+ partial) RH:5 (e+ weak, partial) RH:10,-20 (V+ weak, VS-) RH:-18,-19 (Hr-, hrS-)	
+RHCE*01.04.02	added	RHCE		Inferred as RHCE*01.04.01 RHCE*ceAR	
+RHCE*01.04.03	added	RHCE		Inferred as RHCE*01.04.01 RHCE*ceAR	
+RHCE*01.04.04	added	RHCE		Inferred as RHCE*01.04.01 RHCE*ceAR	
+RHCE*01.05.01	added	RHCE		RH:4 (c+ partial) RH:5 (e+ weak, partial) RH:-18,-19 (Hr-, hrS-)	
+RHCE*01.05.02	added	RHCE		RH:4 (c+ partial) RH:5 (e+ partial) RH:-18,-19 (Hr-, hrs-)	
+RHCE*01.06.01	added	RHCE		RH:5 (e+ weak, partial) RH:-59 (CEAG-) RH:-31 (hrB-)	
+RHCE*01.06.02	added	RHCE			
+RHCE*01.06.03	added	RHCE			
+RHCE*01.06.04	added	RHCE			
+RHCE*01.06.05	added	RHCE		RH:2 (C+ partial, robust C+ expression) RH:5 (e+)	
+RHCE*01.07.01	added	RHCE		RH:4 (c+ partial) RH:5 (e+ weak, partial) RH:-19 (hrS-) RH:-31 (hrB-) RH:-61 (CEVF-)	
+RHCE*01.07.02	added	RHCE		RH:4 (c+ partial) RH:5 (e+ weak, partial) RH:-19 - (hrS-) RH:-31 (hrB-) RH:-61 (CEVF-)	
+RHCE*01.08	added	RHCE		RH:5 (e+ partial, weak to neg) RH:-18,-19 (Hr-, hrs-) RH:49 (STEM+)	
+RHCE*01.09	added	RHCE		RH:5 (e+ positive to negative) RH:-18 (Hr-) inferred RH:-19 (hrs-) Rh:49 (STEM+ weak)	
+RHCE*01.10.01.01	added	RHCE		RH:5 (e+ weak) Some monoclonal anti-D cross- react	
+RHCE*01.10.01.02	added	RHCE		RH:5 (e+ weak) Some monoclonal anti-D cross- react	
+RHCE*01.10.02	added	RHCE		RH:5 (e+ weak) Some monoclonal anti-D cross- react	
+RHCE*01.11	added	RHCE		RH:5 (e+ weak) Some monoclonal anti-D cross- react	
+RHCE*01.12	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.13	added	RHCE		RH:5 (e+ very weak) RH:58 (CELO+ weak)	
+RHCE*01.14	added	RHCE		RH:4 (c+ weak) RH:5 (e+ weak) RH:36 (Bea+)	
+RHCE*01.15	added	RHCE		RH:4 (c+ weak) RH:5 (e+ weak) RH:55 (LOCR+) RH:-26	
+RHCE*01.16	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.17	added	RHCE		Some monoclonal anti-D crossreact	
+RHCE*01.18	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.20.01	added	RHCE		RH:4 (c+ partial) RH:5 (e+ partial) RH:10,20 (V+VS+) RH:31 (hrB + very weak to neg)	
+RHCE*01.20.02.01	added	RHCE		RH:4 (c+ partial) RH:5 (e+ partial) RH:10,20 (V+VS+) RH:-31 (hrB-)	
+RHCE*01.20.02.02	added	RHCE		Inferred as RHCE*01.20.02.01	
+RHCE*01.20.03	added	RHCE		RH:4 (c+ partial) RH:5 (e+ partial) RH:-10,20 (V-VS+) RH:-31 (hrB-)	
+RHCE*01.20.04.01	added	RHCE		RH:5 (e+ partial) RH:10,20 (V+VS+) Probable RH:-31 (hrB-)	
+RHCE*01.20.04.02	added	RHCE		Inferred as RHCE*01.20.04.01 RHCE*ceTI type 2	
+RHCE*01.20.05	added	RHCE		RH:5 (e+ partial) RH:-10,20 (V-VS+) RH:-31 (hrB-)	
+RHCE*01.20.06	added	RHCE		RH:4 (c+ partial) RH:5 (e+ partial, positive to negative) RH:20 (VS+) RH:-19,-31 (hrS-, hrB-) RH:43 (Crawford+) RH:-58 (CELO-) Some monoclonal anti-D cross- react	
+RHCE*01.20.06.02	added	RHCE		Some monoclonal anti-D cross- react	
+RHCE*01.20.07	added	RHCE		RH:4 (c+ partial, weak to neg) RH:5 (e+ partial, weak to neg) RH:10 (V+ weak to neg) RH:19 (hrS+ weak to neg) RH:20 (VS+ weak to neg) RH:31 (hrB + weak to neg) RH:48 (JAL+) RH:-57 (CEST-)	
+RHCE*01.20.08	added	RHCE		RH:5 (e+ weak) RH:10,20 (V+VS+) Probable RH:-31 (hrB-)	
+RHCE*01.20.09	added	RHCE		RH:5 (e+ weak) RH:10,20 (V+VS+) RH:31 (hrB + weak)	
+RHCE*01.20.10	added	RHCE		Probable RH:4 (c+ partial): Probable RH:5 (e+ partial)	
+RHCE*01.20.11	added	RHCE			
+RHCE*01.20.12	added	RHCE		Some monoclonal anti-D cross-react	
+RHCE*01.20.13	added	RHCE		RH:5 (e+) RH:9 (CX+) RH:20 (VS+)	
+RHCE*01.21.01	added	RHCE		RH:5 (e+ weak) RH:48 (JAL+)	
+RHCE*01.21.02	added	RHCE		RH:5 (e+ weak) RH:48 (JAL+)	
+RHCE*01.22.01	added	RHCE		RH:5 (e+ weak) RH:33 (DHAR+) RH:50 (FPTT+) Some monoclonal anti-D cross-react	
+RHCE*01.22.02	added	RHCE		Inferred as RHCE*01.22.01 RHCE*ceHAR.01	
+RHCE*01.23	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.24	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.25	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.26	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.27	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.28	added	RHCE		RH:4 (c+ weak)	
+RHCE*01.29	added	RHCE		RH:4,-5 (c+e-)	
+RHCE*01.30	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.31	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.32	added	RHCE			
+RHCE*01.33	added	RHCE		RH:5 (e+ partial, weak to neg) RH:-31 (hrB-)	
+RHCE*01.34	added	RHCE		RH:4 (c+ partial) RH:-5 (e-)	
+RHCE*01.35	added	RHCE			
+RHCE*01.36	added	RHCE		RH:2 (robust C+ expression) RH:-4 (c-)	
+RHCE*01.37	added	RHCE			
+RHCE*01.38	added	RHCE		RH:5 (e+ weak)	
+RHCE*01.39	added	RHCE		RH:2 (C+ weak) RH:-4 (c-)	
+RHCE*01.40	added	RHCE		RH:4 (c+ weak)	
+RHCE*01.41	added	RHCE		RH:-8 (CW-) RH:9 (CX+ weak) Rh:-51 (MAR-) RH:-62 (PARG-)	
+RHCE*01.42	added	RHCE		Some monoclonal anti-D crossreact	
+RHCE*01.43	added	RHCE		RH:3 (E+ weak to neg)	
+RHCE*01.44	added	RHCE		RH:4 (c+ partial, weak) RH:5 (e+ partial, weak)	
+RHCE*01N.01	added	RHCE		RH:-4,-5,-17 (c-e-)	
+RHCE*01N.02	added	RHCE		RH:-4,-5,-17 (c-e-)	
+RHCE*01N.03	added	RHCE		RH:-4,-5,-17 (c-e-)	
+RHCE*01N.04	added	RHCE		RH:-4,-5,-17 (c-e-), inferred (ce in trans)	
+RHCE*01N.05	added	RHCE		RH:-5 (e-) (cE in trans)	
+RHCE*01N.06	added	RHCE		RH:-4,-5,-17 (c-e-)	
+RHCE*01N.07	added	RHCE		RH:-4 (c-) (ce or Ce in trans)	
+RHCE*01N.08	added	RHCE		RH:-4,-5,-17 (c-e-)	
+RHCE*01N.09	added	RHCE		RH:-4,-5,-17 (c-e-)	
+RHCE*01N.10	added	RHCE		RH:-4,-5 (c-e-)	
+RHCE*01N.11	added	RHCE		RH:-4 (c-) (Ce in trans)	
+RHCE*01N.12	added	RHCE		RH:-4 (c-) (Ce in trans)	
+RHCE*01N.13	added	RHCE		RH:-4 (c-) (Ce in trans)	
+RHCE*02	added	RHCE		RH:2 or C RH:5 or e RH:7 or Ce	
+RHCE*02.01	added	RHCE		RH:2 (C+ weak to neg) RH:5 (e+ weak) RH:48 (JAL+)	
+RHCE*02.02	added	RHCE		RH:2 (C+) RH:5 (e+)	
+RHCE*02.03	added	RHCE		RH:2 (C+ weak to neg) RH:5 (e+ weak) RH:53 (JAHK+)	
+RHCE*02.04	added	RHCE		RH:2 (C+ partial, weak to neg)	
+RHCE*02.04.01	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.05	added	RHCE		RH:60 (PARG+)	
+RHCE*02.08.01	added	RHCE		RH:2 (C+ partial) RH:5 (e+ partial) RH:8 (CW+) RH:-51 (MAR-)	
+RHCE*02.08.02	added	RHCE		RH:8 (CW+) RH:-56 (CENR-)	
+RHCE*02.09	added	RHCE		RH:2 (C+ partial) RH:9 (C*+) RH:-51 (MAR-)	
+RHCE*02.10.01	added	RHCE		RH:1 (D+) in the absence of conventional D RH:2 (C+ partial, weak to neg) RH:5 (e+ partial, weak) RH:32 RH:54 (DAK+) RH:-46 (Sec-)	
+RHCE*02.10.02	added	RHCE		RH:2 (C+ partial, weak to neg) RH:5 (e+ partial, weak) RH:32 RH:54 (DAK+) RH:-46 (Sec-)	
+RHCE*02.11	added	RHCE		RH:2 (C+ weak) RH:5 (e+) RH:55 (LOCR+)	
+RHCE*02.12	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.13	added	RHCE		RH:5 (e+ weak)	
+RHCE*02.14	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.15	added	RHCE		RH:5 (e+ weak)	
+RHCE*02.16	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.17	added	RHCE		RH:5 (e+ weak)	
+RHCE*02.18	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.19	added	RHCE		RH:5 (e+ weak)	
+RHCE*02.20	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.21	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.22	added	RHCE		RH:2 (C+ weak) RH:5 (e+ partial, weak)	
+RHCE*02.23	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.24	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.25	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.26	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.27	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.28	added	RHCE		RH:2,5 (C+e+) RH:9 (CX+)	
+RHCE*02.29	added	RHCE		RH:2 (C+) RH:3 (E+ pos to neg) RH:5 (e+)	
+RHCE*02.30	added	RHCE		RH:2,5 (C+ e+) RH:10,20 (V+VS+)	
+RHCE*02.31	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.32	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.33	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.34	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.35	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.36	added	RHCE		RH:2 (C+ weak)	
+RHCE*02.37	added	RHCE		RH:2 (C+)	
+RHCE*02.38	added	RHCE		RH:2 (C+ weak) RH:5 (e+ weak)	
+RHCE*02.39	added	RHCE		RH:2 (C+ very weak)	
+RHCE*02.40	added	RHCE		RH:2 (C+ weak, mixed field) RH:-10 (V-)	
+RHCE*02N.01	added	RHCE		RH:-2,-5,-17 (C-e-)	
+RHCE*02N.02	added	RHCE		RH:-2 (C-) RH:-5 (e-) inferred RH:-17 inferred	
+RHCE*02N.03	added	RHCE		RH:-2 (C-) (ce in trans)	
+RHCE*02N.04	added	RHCE		RH:-2,-5 (C-e-) RH:-17, inferred	
+RHCE*02N.05	added	RHCE		RH:-2,-5 (C-e-) RH:-17, inferred	
+RHCE*02N.06	added	RHCE		RH:-2,-5,-17 (C-e-)	
+RHCE*02N.07	added	RHCE		RH:-2,-5,-17 (C-e-)	
+RHCE*02N.08	added	RHCE		RH:-2,-5,-17 (C-e-)	
+RHCE*02N.09	added	RHCE		RH:-2,-5,-17 (C-e-)	
+RHCE*02N.10	added	RHCE		RH:-2 (C-) RH:-5 (e-) inferred RH:-17 inferred	
+RHCE*02N.11	added	RHCE		RH:-2,-5 (C-e-) RH:-17, inferred	
+RHCE*02N.12	added	RHCE		RH:-2 (C-) RH:-5 (e-) inferred RH:-17 inferred	
+RHCE*02N.13	added	RHCE		RH:-2 (C- ) RH:-5 (e-) inferred	
+RHCE*02N.14	added	RHCE		RH:-2,-5,-17 (C-e-)	
+RHCE*03	added	RHCE		RH:4 or c RH:3 or E RH:27 or cE	
+RHCE*03.01	added	RHCE		RH:3 (E+ partial, weak to neg) RH:11 (EW+)	
+RHCE*03.02	added	RHCE		RH:3 (E+ partial, weak to neg) RH:4 (c+ weak to neg)	
+RHCE*03.03	added	RHCE		RH:3 (E+ partial, weak to neg)	
+RHCE*03.03.02	added	RHCE		RH:3 (E+ partial, weak to neg)	
+RHCE*03.03.03	added	RHCE		RH:3 (E+ partial, weak to neg)	
+RHCE*03.04	added	RHCE		RH:3 (E+ partial, weak to neg) RH:4 (c+ weak)	
+RHCE*03.05	added	RHCE		RH:3 (E+ partial, weak to neg) RH:4 (c+ weak to neg)	
+RHCE*03.06	added	RHCE		RH:3 (E+ weak) RH:4 (c+ weak)	
+RHCE*03.07	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.08	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.09	added	RHCE		RH:3 (E+ weak) RH:4 (c+ weak)	
+RHCE*03.10	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.11	added	RHCE		RH:3 (E+ weak) RH:4 (c+ weak)	
+RHCE*03.12	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.13	added	RHCE		RH:3 (E+ weak) RH:4 (c+ weak)	
+RHCE*03.14	added	RHCE		RH:3 (E+ very weak to neg) RH:4 (c+ weak)	
+RHCE*03.15.01	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.15.02	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.16	added	RHCE		RH:4 (c+ weak)	
+RHCE*03.17	added	RHCE		RH:3 (E+ partial)	
+RHCE*03.18	added	RHCE		RH:3 (E+) RH:4 (c+)	
+RHCE*03.19	added	RHCE		RH:3 (E+ weak to neg) RH:4 (c+ weak to neg)	
+RHCE*03.20	added	RHCE		RH:3 (E+ weak to neg) RH:4 (c+ weak)	
+RHCE*03.21	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.22	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.23	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.24	added	RHCE		RH:3 (E+ weak)	
+RHCE*03.26	added	RHCE		RH:2 (C+ weak to neg) RH:3 (E+)	
+RHCE*03.27	added	RHCE		Some monoclonal anti-C cross-react	
+RHCE*03.28	added	RHCE		RH:3 (E+ weak to neg)	
+RHCE*03.29	added	RHCE		RH:3 (E+ very weak) RH:4 (c+ weak to neg)	
+RHCE*03.30	added	RHCE		RH:3 (E+ very weak)	
+RHCE*03.31	added	RHCE		RH:3 (E+ very weak to neg) RH:4 (c+ weak to neg) RH: 17	
+RHCE*03.32	added	RHCE		RH:3 (E+ weak to neg)	
+RHCE*03N.02	added	RHCE		RH:-3,-4,-17 (E-c-)	
+RHCE*03N.03	added	RHCE		RH:-3,-4 (E-c-) RH:-17 inferred	
+RHCE*03N.04	added	RHCE		RH:-3,-4,-17 (E-c-)	
+RHCE*03N.05	added	RHCE		RH:-3,-4,-17 (E-c-)	
+RHCE*03N.06	added	RHCE		RH:-3,-4 (E-c-) RH:-17 inferred	
+RHCE*03N.07	added	RHCE		RH:-3,-4,-17 (E-c-)	
+RHCE*04	added	RHCE		RH:2 or C RH:3 or E RH:22 or CE	
+RHCE*04.01	added	RHCE		RH:2 (C+ weak) RH:3 (E+ weak to neg)	
+RHCE*04.02	added	RHCE		RH:2 (C+ weak to neg) RH:3 (E+ weak to neg)	
+RHD*01EL.15	added	RHD		Del or D negative	
+RHD*01EL.17	added	RHD		Del	
+RHD*01EL.22	added	RHD		Del	
+RHD*01EL.23	added	RHD		Del Partial D	
+RHD*01EL.30	added	RHD		Del	
+RHD*01EL.35	added	RHD		Del	
+RHD*01EL.37	added	RHD		Del	
+RHD*01EL.38	added	RHD		Del	
+RHD*01EL.44	added	RHD		Del	
+RHD*01EL.46	added	RHD		Del	
+RHD*01EL.47	added	RHD		DEL Partial D	
+RHD*01EL.48	added	RHD		DEL Partial D	
+RHD*01EL.49	added	RHD		Del	
+RHD*01EL.50	added	RHD		Del	
+RHD*01N.02	added	RHD		D-	
+RHD*01N.03	added	RHD		D-	
+RHD*01N.04	added	RHD		D-	
+RHD*01N.05	added	RHD		D-	
+RHD*01N.06	added	RHD		D- C+ very weak	
+RHD*01N.07	added	RHD		D-G+	
+RHD*01N.31	added	RHD		D-	
+RHD*01N.42	added	RHD		D-	
+RHD*01N.43	added	RHD		D-	
+RHD*01N.67	added	RHD		D-	
+RHD*01N.82	added	RHD		D-	
+RHD*01N.83	added	RHD		D-	
+RHD*01N.84	added	RHD		D-	
+RHD*01N.85	added	RHD		D-	
+RHD*01N.86	added	RHD		D-	
+RHD*01W.1.2	added	RHD		Type1.2	
+RHD*01W.1.3	added	RHD		Type 1.3	
+RHD*01W.136	added	RHD		Type 136	
+RHD*01W.137	added	RHD		Type 137	
+RHD*01W.138	added	RHD		Type 138	
+RHD*01W.139	added	RHD		Type 139	
+RHD*01W.140	added	RHD		Type 140	
+RHD*01W.141	added	RHD		Type 141	
+RHD*01W.142	added	RHD		Type 142	
+RHD*01W.143	added	RHD		Type 143	
+RHD*01W.144	added	RHD		Type 144	
+RHD*01W.145	added	RHD		Type 145	
+RHD*01W.146	added	RHD		Type 146	
+RHD*01W.147	added	RHD		Type 147	
+RHD*01W.148	added	RHD		Type 148	
+RHD*01W.149	added	RHD		Type 149	
+RHD*01W.150	added	RHD		Type 150	
+RHD*01W.151	added	RHD		Type 151	
+RHD*01W.152	added	RHD		Type 152	
+RHD*01W.153	added	RHD		Type 153	
+RHD*01W.154	added	RHD		Type 154	
+RHD*01W.155	added	RHD		Type 155	
+RHD*01W.156	added	RHD		Type 156	
+RHD*01W.157	added	RHD		Type 157	
+RHD*01W.158	added	RHD		Type 158	
+RHD*01W.159	added	RHD		Type 159	
+RHD*01W.160	added	RHD		Type 160	
+RHD*01W.161	added	RHD		Type 161	
+RHD*01W.162	added	RHD		Type 162	
+RHD*01W.163	added	RHD		Type 163	
+RHD*01W.164	added	RHD		Type 164	
+RHD*01W.165	added	RHD		Type 165	
+RHD*01W.2.2	added	RHD		Type2.2	
+RHD*01W.3.1	added	RHD		Type3.1	
+RHD*01W.57	added	RHD		Type 57	
+RHD*03.09	added	RHD		DIII type 9	
+RHD*03N.01	added	RHD		D- C+	
+RHD*03N.02	added	RHD			
+RHD*09.01	added	RHD		DAR(T203A)	
+RHD*09.02	added	RHD		DAR2 (DARE)	
+RHD*12.04	added	RHD		DOL4	
+RHD*16.03	added	RHD		DCS-3	
+RHD*41	added	RHD			
+RHD*63	added	RHD		Weak partial D	
+RHD*64	added	RHD		Partial D	
+RHD*65	added	RHD		Partial D	
+RHD*66	added	RHD		Partial D	
+SC*01.-08	added	SC		SC:-8 or SCAR-	
+SC*01.-09	added	SC		SC:-9 or SCAC-	
+SID*01	added	SID		SID1 or Sd(a+)	
+SID*01N.01	added	SID		Sd(a-)	
+SID*01N.02	added	SID		Sd(a-)	
+SID*01N.03	added	SID		Sd(a-)	
+SID*01N.04	added	SID		Sd(a-)	
+See partial RHD*11	added	RHD		Type 11 weak partial or Del phenotype	
+See partial RHD*15	added	RHD		Type 15 weak partial phenotype	
+See partial RHD*21	added	RHD		Type 21	
+Unclear Jr Phenotype 1	added	JR		Unclear Jr Phenotype	
+Unclear Jr Phenotype 2	added	JR		Unclear Jr Phenotype	
+Unclear Jr Phenotype 3	added	JR		Unclear Jr Phenotype	
+Unclear Jr Phenotype 4	added	JR		Unclear Jr Phenotype	
+Unclear Jr Phenotype 5	added	JR		Unclear Jr Phenotype	
+VEL*01.01	added	VEL		Velstrong	
+VEL*01N.01	added	VEL		VEL-	
+VEL*01W.03	added	VEL		VELweak	
+VEL*01W.05	added	VEL		VELweak	
+XG*01N.02	added	XG		Xg(a-)	
+XG*01N.03	added	XG		Xg(a-)	
+XK*01.02	added	XK		XK:1 or Kx+	
+XK*N.01	added	XK		XK:-1 kx-	
+XK*N.01.001	added	XK		XK:-1 kx-	
+XK*N.01.002	added	XK		XK:-1 kx-	
+XK*N.01.003	added	XK		XK:-1 kx-	
+XK*N.01.004	added	XK		XK:-1 kx-	
+XK*N.01.005	added	XK		XK:-1 kx-	
+XK*N.01.006	added	XK		XK:-1 kx-	
+XK*N.01.007	added	XK		XK:-1 kx-	
+XK*N.01.008	added	XK		XK:-1 kx-	
+XK*N.01.009	added	XK		XK:-1 kx-	
+XK*N.01.010	added	XK		XK:-1 kx-	
+XK*N.01.011	added	XK		XK:-1 kx-	
+XK*N.01.100	added	XK		XK:-1 kx-	
+XK*N.01.101	added	XK		XK:-1 kx-	
+XK*N.01.102	added	XK		XK:-1 kx-	
+XK*N.01.103	added	XK		XK:-1 kx-	
+XK*N.01.104	added	XK		XK:-1 kx-	
+XK*N.01.105	added	XK		XK:-1 kx-	
+XK*N.02	added	XK		XK:-1 kx-	
+XK*N.03	added	XK		XK:-1 kx-	
+XK*N.04	added	XK		XK:-1 kx-	
+XK*N.05	added	XK		XK:-1 kx-	
+XK*N.30	added	XK		XK:-1 kx-	
+XK*N.31	added	XK		XK:-1 kx-	
+XK*N.32	added	XK		XK:-1 kx-	
+XK*N.33	added	XK		XK:-1 kx-	
+XK*N.34	added	XK		XK:-1 kx-	
+XK*N.35	added	XK		XK:-1 kx-	
+XK*N.36	added	XK		XK:-1 kx-	
+XK*N.37	added	XK		XK:-1 kx-	
+XK*N.38	added	XK		XK:-1 kx-	
+XK*N.39	added	XK		XK:-1 kx-	
+XK*N.40	added	XK		XK:-1 kx-	
+XK*N.41	added	XK		XK:-1 kx-	
+XK*N.42	added	XK		XK:-1 kx-	
+XK*N.43	added	XK		XK:-1 kx-	
+XK*N.44	added	XK		XK:-1 kx-	
+XK*N.45	added	XK		XK:-1 kx-	
+XK*N.46	added	XK		XK:-1 kx-	
+XK*N.47	added	XK		XK:-1 kx-	
+XK*N.48	added	XK		XK:-1 kx-	
+XK*N.49	added	XK		Predicted Kx negative Note that weak k antigen expression was observed.	
+YT*01.-03	added	YT		YT:-3 or YTEG-	
+YT*01.-04	added	YT		YT:-4 or YTLI-	
+YT*01.-05	added	YT		YT:-5 or YTOT-	
+A4GALT*01N.01.01	retired		P1PK		p
+A4GALT*01N.01.02	retired		P1PK		p
+A4GALT*01N.02	retired		P1PK		p
+A4GALT*01N.04	retired		P1PK		p
+A4GALT*01N.05	retired		P1PK		p
+A4GALT*01N.06	retired		P1PK		p
+A4GALT*01N.07	retired		P1PK		p
+A4GALT*01N.08	retired		P1PK		p
+A4GALT*01N.09.02	retired		P1PK		p
+A4GALT*01N.12	retired		P1PK		p
+A4GALT*01N.14	retired		P1PK		p
+A4GALT*01N.15	retired		P1PK		p
+A4GALT*01N.20	retired		P1PK		p
+A4GALT*01N.21	retired		P1PK		p
+A4GALT*01N.22	retired		P1PK		p
+A4GALT*01N.23	retired		P1PK		p
+A4GALT*02N.01	retired		P1PK		p
+A4GALT*02N.02	retired		P1PK		p
+A4GALT*02N.03	retired		P1PK		p
+A4GALT*02N.04	retired		P1PK		p
+A4GALT*02N.05	retired		P1PK		p
+A4GALT*02N.06	retired		P1PK		p
+A4GALT*02N.07	retired		P1PK		p
+A4GALT*02N.08	retired		P1PK		p
+A4GALT*04	retired		P1PK		p
+A4GALT*P2.01	retired		P1PK		P1– Pk+
+CO*02	retired		CO		Co(b+)
+FUT1*02	retired		H		H–
+FUT1*02N.01	retired		H		H–
+FUT1*02W.01	retired		H		H+weak
+FUT1*02W.02	retired		H		H+weak
+FUT1*02W.03	retired		H		H+weak
+FUT1*02W.04	retired		H		H+weak
+FUT1*02W.05	retired		H		H+weak
+FUT3	retired		LE		FUT3
+FUT3_1049T	retired		LE		FUT3_1049T
+FUT3_104A	retired		LE		FUT3_104A
+FUT3_1060G	retired		LE		FUT3_1060G
+FUT3_1067A	retired		LE		FUT3_1067A
+FUT3_13A,179A,484A,808A	retired		LE		FUT3_13A,179A,484A,808A
+FUT3_13A,484A,522A,667A	retired		LE		FUT3_13A,484A,522A,667A
+FUT3_13A,484A,667A	retired		LE		FUT3_13A,484A,667A
+FUT3_13A,484A,667A,808A	retired		LE		FUT3_13A,484A,667A,808A
+FUT3_13A,484A,667A,962A	retired		LE		FUT3_13A,484A,667A,962A
+FUT3_13A,484A,667A,974T	retired		LE		FUT3_13A,484A,667A,974T
+FUT3_13A,484A,808A;968C	retired		LE		FUT3_13A,484A,808A;968C
+FUT3_13A,484A,968C	retired		LE		FUT3_13A,484A,968C
+FUT3_202C	retired		LE		FUT3_202C
+FUT3_202C,1067A	retired		LE		FUT3_202C,1067A
+FUT3_202C,314T,451G	retired		LE		FUT3_202C,314T,451G
+FUT3_202C,314T,560T	retired		LE		FUT3_202C,314T,560T
+FUT3_202C,314T,612G	retired		LE		FUT3_202C,314T,612G
+FUT3_202C,314T,858G	retired		LE		FUT3_202C,314T,858G
+FUT3_202C,_314T	retired		LE		FUT3_202C,_314T
+FUT3_202C,_314T,_484A	retired		LE		FUT3_202C,_314T,_484A
+FUT3_304A	retired		LE		FUT3_304A
+FUT3_370G	retired		LE		FUT3_370G
+FUT3_41A_	retired		LE		FUT3_41A_
+FUT3_478T	retired		LE		FUT3_478T
+FUT3_47C,202C,314T,655A,1029G	retired		LE		FUT3_47C,202C,314T,655A,1029G
+FUT3_47C,_202C,_314T	retired		LE		FUT3_47C,_202C,_314T
+FUT3_47C,_508A	retired		LE		FUT3_47C,_508A
+FUT3_484A,_667A	retired		LE		FUT3_484A,_667A
+FUT3_484A,_667A,_808A	retired		LE		FUT3_484A,_667A,_808A
+FUT3_55A,59G	retired		LE		FUT3_55A,59G
+FUT3_59G	retired		LE		FUT3_59G
+FUT3_59G,202C,1067A	retired		LE		FUT3_59G,202C,1067A
+FUT3_59G,258T,1067A	retired		LE		FUT3_59G,258T,1067A
+FUT3_59G,508A,548T	retired		LE		FUT3_59G,508A,548T
+FUT3_59G,508A,612G	retired		LE		FUT3_59G,508A,612G
+FUT3_59G,508A,732T	retired		LE		FUT3_59G,508A,732T
+FUT3_59G,508A,858G	retired		LE		FUT3_59G,508A,858G
+FUT3_59G,548T,612G,1067A	retired		LE		FUT3_59G,548T,612G,1067A
+FUT3_59G,571A,1067A	retired		LE		FUT3_59G,571A,1067A
+FUT3_59G,61T,508A	retired		LE		FUT3_59G,61T,508A
+FUT3_59G,61T,508A,980A	retired		LE		FUT3_59G,61T,508A,980A
+FUT3_59G,_1067A	retired		LE		FUT3_59G,_1067A
+FUT3_59G,_445A	retired		LE		FUT3_59G,_445A
+FUT3_59G,_508A	retired		LE		FUT3_59G,_508A
+FUT3_612G	retired		LE		FUT3_612G
+FUT3_732T	retired		LE		FUT3_732T
+FUT3_732T,858G	retired		LE		FUT3_732T,858G
+FUT3_735C	retired		LE		FUT3_735C
+FUT3_760A	retired		LE		FUT3_760A
+FUT3_882T	retired		LE		FUT3_882T
+FUT3_975A	retired		LE		FUT3_975A
+GBGT1*01.01	retired		FORS		FORS:1
+GBGT1*01.02	retired		FORS		FORS:1
+GBGT1*02N	retired		FORS		FORS:–1
+GCNT2*02	retired		I		I
+GCNT2*02N.01	retired		I		I– (i adult)
+GLOB*02	retired		GLOB		GLOB:1 (P+)
+GLOB*02N.01	retired		GLOB		GLOB:–1 (P–)
+KEL*02.-37	retired		KEL		KEL:−37
+KLF1*BGM12	retired		KLF1		KLF1*BGM12
+KLF1*BGM66	retired		KLF1		KLF1*BGM66
+KLF1*BGM67	retired		KLF1		KLF1*BGM67
+KLF1*BGM68	retired		KLF1		KLF1*BGM68
+KLF1*BGM69	retired		KLF1		KLF1*BGM69
+KLF1*BGM70	retired		KLF1		KLF1*BGM70
+KLF1*BGM71	retired		KLF1		KLF1*BGM71
+KLF1*BGM72	retired		KLF1		KLF1*BGM72
+KLF1*BGM73	retired		KLF1		KLF1*BGM73
+KN*01.-09	retired		KN		KN:–9
+RAPH*-01.01	retired		RAPH		RAPH:−1
+RAPH*-01.02	retired		RAPH		RAPH:−1
+RHAG*-01	retired		RHAG		RHAG:−1
+RHAG*-03	retired		RHAG		RHAG:−3
+RHAG*02	retired		RHAG		RHAG:2
+RHAG*04	retired		RHAG		RHAG:4
+RHCE*C	retired		RHC		NaN
+RHCE*E	retired		RHE		NaN
+RHCE*c	retired		RHC		NaN
+RHCE*e	retired		RHE		NaN
+RHD*09.02.00	retired		RHD		DAR2(DARE)
+VEL*-01	retired		VEL		Vel–
+non-secretor	retired		FUT2		non-secretor
+secretor	retired		FUT2		secretor
+A4GALT*01	phen_changed	P1PK	P1PK	P1+, Pk+	P1+ Pk+
+A4GALT*02	phen_changed	P1PK	P1PK	P1- Pk+ (P2)	P1– Pk+
+ABCB6*01N.36	phen_changed	LAN	LAN	Lan-	NaN
+ABCB6*01W.01	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+ABCB6*01W.02	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+ABCB6*01W.03	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+ABCB6*01W.04	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+ABCB6*01W.05	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+ABCB6*01W.06	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+ABCB6*01W.07	phen_changed	LAN	LAN	Lan(+wk)	Lan weak
+AUG*01	phen_changed	AUG	AUG	AUG:1,2,-3,4 or AUG1+,At(a+),ATML-,ATAM+	At(a+) or AUG:1,2,−3
+AUG*01N	phen_changed	AUG	AUG	AUG:-1 or AUG1-	At(a−) or AUG: −1,−2
+AUG*02	phen_changed	AUG	AUG	AUG:-2 or At(a-)	At(a−) or AUG:1,−2,−3
+CD59*01	phen_changed	CD59	CD59	CD59:1 or CD59.1+	CD59:+1
+CD59*01N.01	phen_changed	CD59	CD59	CD59:-1 or CD59.1-	CD59:-1
+CD59*01N.02	phen_changed	CD59	CD59	CD59:-1 or CD59.1-	CD59:-1
+CD59*01N.03	phen_changed	CD59	CD59	CD59:-1 or CD59.1-	CD59:-1
+CO*01.-04	phen_changed	CO	CO	CO:-1,-2,3,-4	NaN
+CO*01.01	phen_changed	CO	CO	CO:1 or Co(a+)	Co(a+)
+CO*01N.03	phen_changed	CO	CO	CO:-1,-2 or Co(a-b-)	Co(a–b–)
+CO*01N.04	phen_changed	CO	CO	CO:-1,-2 or Co(a-b-)	Co(a–b-)
+CO*01N.05	phen_changed	CO	CO	CO:-1,-2 or Co(a-b-)	Co(a–b-)
+CO*01N.06	phen_changed	CO	CO	CO:-1,-2 or Co(a-b-)	Co(a–b-)
+CO*M.01	phen_changed	CO	CO	CO:-1,-2,W3 or Co(a-b-) Co3+w	Co(a–b-) Co3+w
+CO*N.02	phen_changed	CO	CO	CO:-1,-2 or Co(a-b-)	Co(a–b–)
+CROM*-01	phen_changed	CROM	CROM	CROM:–1 or Cr(a–)	CROM:–1
+CROM*01	phen_changed	CROM	CROM	CROM:1 or Cr(a+)	CROM:1
+CROM*01.-05	phen_changed	CROM	CROM	CROM:–5 or Dr(a–)	CROM:–5
+CROM*01.-06	phen_changed	CROM	CROM	CROM:–6 or Es(a–)	CROM:–6
+CROM*01.-10	phen_changed	CROM	CROM	CROM:–10 or UMC–	CROM:–10
+CROM*01.-11	phen_changed	CROM	CROM	CROM:–11 or GUTI–	CROM:–11
+CROM*01.-12	phen_changed	CROM	CROM	CROM:–12 or SERF–	CROM:–12
+CROM*01.-13	phen_changed	CROM	CROM	CROM:–13 or ZENA–	CROM:–13
+CROM*01.-14	phen_changed	CROM	CROM	CROM:–14 or CROV–	CROM:–14
+CROM*01.-15	phen_changed	CROM	CROM	CROM:–15 or CRAM–	CROM:–15
+CROM*01.-16	phen_changed	CROM	CROM	CROM:–16 or CROZ–	CROM:–16
+CROM*01.03	phen_changed	CROM	CROM	CROM:3 or Tc(b+)	CROM:3
+CROM*01.04	phen_changed	CROM	CROM	CROM:4 or Tc(c+)	CROM:4
+CROM*01.08	phen_changed	CROM	CROM	CROM:8 or WES(a+)	CROM:8
+CROM*01N.01	phen_changed	CROM	CROM	CROM:–7 or Inab	CROM:–7
+CROM*01N.02	phen_changed	CROM	CROM	CROM:–7 or Inab	CROM:–7
+CROM*01N.03	phen_changed	CROM	CROM	CROM:–7 or Inab	CROM:–7
+CROM*01N.04	phen_changed	CROM	CROM	CROM:–7 or Inab	CROM:–7
+DI*01	phen_changed	DI	DI	DI:1,-2 or Di(a+b-)	Di(a+b–),Wr(a-b+)
+DI*02	phen_changed	DI	DI	DI:-1,2 or Di(a-b+)	Di(a–b+)
+DI*02.03	phen_changed	DI	DI	DI:3,-4 or Wr(a+b-)	Di(a–b+),Wr(a+b–)
+DI*02.05	phen_changed	DI	DI	DI:5 or Wd(a+)	Wd(a+)
+DI*02.06	phen_changed	DI	DI	DI:6 or Rb(a+)	Rb(a+)
+DI*02.07	phen_changed	DI	DI	DI:7 or WARR+	WARR+
+DI*02.08	phen_changed	DI	DI	DI:8 or ELO+	ELO+
+DI*02.09	phen_changed	DI	DI	DI:9,-22 or Wu+, DISK-	Wu+, DISK–
+DI*02.10	phen_changed	DI	DI	DI:10 or Bp(a+)	Bp(a+)
+DI*02.11	phen_changed	DI	DI	DI:11 or Mo(a+)	Mo(a+)
+DI*02.12	phen_changed	DI	DI	DI:12 or Hg(a+)	Hg(a+)
+DI*02.13	phen_changed	DI	DI	DI:13 or Vg(a+)	Vg(a+)
+DI*02.14.01	phen_changed	DI	DI	DI:14 or Sw(a+)	Sw(a+)
+DI*02.14.02	phen_changed	DI	DI	DI:14 or Sw(a+)	Sw(a+)
+DI*02.15	phen_changed	DI	DI	DI:15 or BOW+	BOW+
+DI*02.16	phen_changed	DI	DI	DI:16 or NFLD+	NFLD+
+DI*02.17	phen_changed	DI	DI	DI:17 or Jn(a+)	Jn(a+)
+DI*02.18	phen_changed	DI	DI	DI:18 or KREP+	KREP+
+DI*02.19	phen_changed	DI	DI	DI:19 or Tr(a+)	Tr(a+)
+DI*02.20	phen_changed	DI	DI	DI:20 or Fr(a+)	Fr(a+)
+DI*02N.01	phen_changed	DI	DI	Di(a-b-)	Di(a–b–),Wr(a-b+)
+DO*01	phen_changed	DO	DO	DO:1+ or Do(a+)	Do(a+)
+DO*01.-05	phen_changed	DO	DO	DO:-5 or Jo(a-)	Jo(a–)
+DO*01.-06	phen_changed	DO	DO	DO:-6 or DOYA-	DOYA–
+DO*01.-09	phen_changed	DO	DO	DO:-9 or DOLC-	DOLC–
+DO*01.-10	phen_changed	DO	DO	DO:-10 or DODE-	DODE–
+DO*01N.01	phen_changed	DO	DO	DO:-3 or Gy(a-)	Gy(a–)
+DO*01N.02	phen_changed	DO	DO	DO:-3 or Gy(a-)	Gy(a–)
+DO*02	phen_changed	DO	DO	DO:2 or Do(b+)	Do(b+)
+DO*02.-04	phen_changed	DO	DO	DO:-4 or Hy-	Hy–
+DO*02.-07	phen_changed	DO	DO	DO:-7 or DOMR-	DOMR–
+DO*02.-08	phen_changed	DO	DO		DOLG–
+DO*02N.01	phen_changed	DO	DO	DO:-3 or Gy(a-)	Gy(a–)
+DO*02N.02	phen_changed	DO	DO	DO:-3 or Gy(a-)	Gy(a–)
+DO*02N.03	phen_changed	DO	DO	DO:-3 or Gy(a-)	Gy(a–)
+DO*02N.04	phen_changed	DO	DO	DO:-3 or Gy(a-)	Gy(a–)
+FUT1*01N.01	phen_changed	H	H	H-	H–
+FUT1*01N.02	phen_changed	H	H	H-	H–
+FUT1*01N.03	phen_changed	H	H	H-	H–
+FUT1*01N.04	phen_changed	H	H	H-	H–
+FUT1*01N.05	phen_changed	H	H	H-	H–
+FUT1*01N.06	phen_changed	H	H	H-	H–
+FUT1*01N.07	phen_changed	H	H	H-	H–
+FUT1*01N.08	phen_changed	H	H	H-	H–
+FUT1*01N.09	phen_changed	H	H	H-	H–
+FUT1*01N.10	phen_changed	H	H	H-	H–
+FUT1*01N.11	phen_changed	H	H	H-	H–
+FUT1*01N.12	phen_changed	H	H	H-	H–
+FUT1*01N.13	phen_changed	H	H	H-	H–
+FUT1*01N.14	phen_changed	H	H	H-	H–
+FUT1*01N.15	phen_changed	H	H	H-	H–
+FUT1*01N.16	phen_changed	H	H	H-	H–
+FUT1*01N.17	phen_changed	H	H	H-	H–
+FUT1*01N.18	phen_changed	H	H	H-	H–
+FUT1*01N.19	phen_changed	H	H	H-	H–
+FUT1*01N.20	phen_changed	H	H	H-	H–
+FY*01	phen_changed	FY	FY	FY:1 or Fy(a+)	Fy(a+)
+FY*01N.01	phen_changed	FY	FY	Fy(a-b-) erythroid cells only	Fy(a−b−)
+FY*01N.02	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*01N.03	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*01N.04	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*01N.05	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*01N.06	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*01N.07	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*01N.08	phen_changed	FY	FY	Fy(a-b-) erythroid cells only	Fy(a−b−)
+FY*01N.09	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*02	phen_changed	FY	FY	FY:2 or Fy(b+)	Fy(b+)
+FY*02N.01	phen_changed	FY	FY	Fy(a-b-) erythroid cells only	Fy(a−b−)
+FY*02N.02	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*02N.03	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*02N.04	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*02N.05	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+FY*02N.06	phen_changed	FY	FY	Fy(a-b-)	Fy(a−b−)
+GATA1*01	phen_changed	GATA1	GATA1	Common	GATA1*01
+GATA1*BGM01	phen_changed	GATA1	GATA1	XS2 Lu-mod	Lu-mod
+GBGT1*01N.01	phen_changed	FORS	FORS	FORS:–1 (FORS–)	FORS:–1
+GBGT1*01N.02	phen_changed	FORS	FORS	FORS:–1 (FORS–)	FORS:–1
+GCNT2*01N.01	phen_changed	I	I	I- (adult)	I– (i adult)
+GCNT2*01N.02	phen_changed	I	I	I- (adult)	I– (i adult)
+GCNT2*01N.05	phen_changed	I	I	I- (adult)	I– (i adult)
+GCNT2*01N.07	phen_changed	I	I	I- (adult)	I– (i adult)
+GCNT2*01N.08	phen_changed	I	I	I- (adult)	I– (i adult)
+GCNT2*01W.01	phen_changed	I	I	I+w	I+W
+GCNT2*01W.02	phen_changed	I	I	I+w	I+W
+GCNT2*01W.03	phen_changed	I	I	I+w	I+W
+GE*01.-10	phen_changed	GE	GE	GE:-10 or GEPL-	GE:–10
+GE*01.-11	phen_changed	GE	GE	GE:-11 or GEAT-	GE :–11
+GE*01.-12	phen_changed	GE	GE	GE:-12 or GETI-	GE:–12
+GE*01.05	phen_changed	GE	GE	GE:5 or Wb+	GE:5
+GE*01.07	phen_changed	GE	GE	GE:7 or An(a+)	GE:7
+GE*01.08	phen_changed	GE	GE	GE:8 or Dh(a+)	GE:8
+GE*01.09	phen_changed	GE	GE	GE:9 or GEIS+	GE:9
+GE*01N.02	phen_changed	GE	GE	GE:-2,-3,-4 or Leach type (LN)	Ge:–2,–3,–4 Leach type (LN)
+GIL*01	phen_changed	GIL	GIL	GIL:1 or GIL+	GIL+
+GIL*01N.01	phen_changed	GIL	GIL	GIL:−1 or GIL−	GIL−
+GYPA*-45	phen_changed	GYPA	GYPA	MNS: or ENEV-	MNS:–45
+GYPA*01	phen_changed	GYPA	GYPA	MNS:1 or M+	MNS:1
+GYPA*02	phen_changed	GYPA	GYPA	MNS:2 or N+	MNS:2
+GYPA*08	phen_changed	GYPA	GYPA	MNS:1,-2,8 or Mc+	MNS:1,-2,8†
+GYPA*09	phen_changed	GYPA	GYPA	MNS:1,7,9,−40 or Vw+	MNS:7,9,–40
+GYPA*11	phen_changed	GYPA	GYPA	MNS:-1,-2,11,32 or Mg+DANE+	MNS:−1,−2,11,32
+GYPA*12	phen_changed	GYPA	GYPA	MNS:12 or Vr+	MNS:12
+GYPA*14	phen_changed	GYPA	GYPA	MNS:14 or Mt(a+)	MNS:14
+GYPA*16	phen_changed	GYPA	GYPA	MNS:16 or Ri(a+)	MNS:16
+GYPA*18	phen_changed	GYPA	GYPA	MNS:18 or Ny(a+)	MNS:18
+GYPA*19	phen_changed	GYPA	GYPA	MNS:7,19,-40 or Hut+	MNS:7,19,–40
+GYPA*31	phen_changed	GYPA	GYPA	MNS:31 or Or+	MNS:31
+GYPA*37	phen_changed	GYPA	GYPA	MNS:37 or ERIK+	MNS:37
+GYPA*38	phen_changed	GYPA	GYPA	MNS:38 or Os(a+)	MNS:38
+GYPA*41	phen_changed	GYPA	GYPA	MNS:-39,41 or HAG+	MNS:–39,41
+GYPA*43	phen_changed	GYPA	GYPA	MNS:-42,43 or MARS+	MNS:–42,43
+GYPA*46	phen_changed	GYPA	GYPA	MNS:46 or MNTD+	NaN
+GYPA*47	phen_changed	GYPA	GYPA	MNS:47 or SARA+	MNS:47
+GYPB*03	phen_changed	GYPB	GYPB	MNS:3 or S+	MNS:3
+GYPB*03N.01	phen_changed	GYPB	GYPB	MNS:-3,w5 or S-U+w	MNS:–3,w5
+GYPB*03N.02	phen_changed	GYPB	GYPB	MNS:-3,w5 or S-U+var	MNS:–3,w5
+GYPB*03N.03	phen_changed	GYPB	GYPB	MNS:-3,w5 or S-U+var	MNS:–3,w5
+GYPB*03N.04	phen_changed	GYPB	GYPB	MNS:-3,w5 or S-U+w	MNS:–3,w5
+GYPB*04	phen_changed	GYPB	GYPB	MNS:4 or s+	MNS:4
+GYPB*04N.01	phen_changed	GYPB	GYPB	MNS:-4,w5 or s–U+var	MNS:–4,w5
+GYPB*06.01	phen_changed	GYPB	GYPB	MNS:4,6 or St, He+	MNS:4,6
+GYPB*06.02	phen_changed	GYPB	GYPB	MNS:3,6 or S+, He+	MNS:3,6
+GYPB*21	phen_changed	GYPB	GYPB	MNS:21or Mv+	MNS:21
+GYPB*23	phen_changed	GYPB	GYPB	MNS:23 or sD+	MNS:23
+GYPB*24	phen_changed	GYPB	GYPB	MNS:24 or Mit+	MNS:24
+IN*02.-03	phen_changed	IN	IN	IN:–3 or INFI–	IN:–3
+IN*02.-04	phen_changed	IN	IN	IN:–4 or INJA–	IN:–4
+IN*02.-05	phen_changed	IN	IN	IN: –5 or INRA–	IN: –5
+JK*01	phen_changed	JK	JK	JK:1 or Jk(a+)	Jk(a+)
+JK*01N.02	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.03	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.04	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.05	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.06	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.07	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.08	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.09	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*01N.10	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02	phen_changed	JK	JK	JK:2 or Jk(b+)	Jk(b+)
+JK*02N.01	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.02	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.03	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.04	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.05	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.06	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.07	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.08	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.09	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.10	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.11	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.12	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JK*02N.13	phen_changed	JK	JK	JK:-3 or Jk(a-b-)	Jk(a–b–)
+JMH*01	phen_changed	JMH	JMH	JMH:1 or JMH+	JMH:1
+JMH*01.-02	phen_changed	JMH	JMH	JMH:–2 or JMHK–	JMH:–2
+JMH*01.-03	phen_changed	JMH	JMH	JMH:–3 or JMHL–	JMH:–3
+JMH*01.-04	phen_changed	JMH	JMH	JMH:–4 or JMHG–	JMH:–4
+JMH*01.-05	phen_changed	JMH	JMH	JMH:–5 or JMHM–	JMH:–5
+JMH*01.-06	phen_changed	JMH	JMH	JMH: –6 or JMHQ–	JMH: –6
+KEL*01.01	phen_changed	KEL	KEL	KEL:1,-2 or K+k-	KEL:1,−2
+KEL*01.02	phen_changed	KEL	KEL	KEL:1weak or K+w	KEL:1weak
+KEL*01M.01	phen_changed	KEL	KEL	Kmod	Kmod; KEL:1weak
+KEL*02	phen_changed	KEL	KEL	KEL:2 or k+	KEL:1weak
+KEL*02.-12	phen_changed	KEL	KEL	KEL: -12	KEL: −12
+KEL*02.-14.1	phen_changed	KEL	KEL	KEL:-14,-24	KEL:−14,−24
+KEL*02.-14.2	phen_changed	KEL	KEL	KEL:-14	KEL:−14
+KEL*02.-18.1	phen_changed	KEL	KEL	KEL:-18	KEL:−18
+KEL*02.-18.2	phen_changed	KEL	KEL	KEL:-18	KEL:−18
+KEL*02.-19	phen_changed	KEL	KEL	KEL:-19	KEL:−19
+KEL*02.-22	phen_changed	KEL	KEL	KEL:-22	KEL:−22
+KEL*02.-26	phen_changed	KEL	KEL	KEL:-26 or TOU-	KEL:−26
+KEL*02.-27	phen_changed	KEL	KEL	KEL:-27 or RAZ-	KEL:−27
+KEL*02.-29	phen_changed	KEL	KEL	KEL:-29 or KALT-	KEL:−29
+KEL*02.-30	phen_changed	KEL	KEL	KEL:-30 or KTIM-	KEL:−30
+KEL*02.-32	phen_changed	KEL	KEL	KEL:-32 or KUCI-	KEL:−32
+KEL*02.-33	phen_changed	KEL	KEL	KEL:-33 or KANT-	KEL:−33
+KEL*02.-34	phen_changed	KEL	KEL	KEL:-34 or KASH-	KEL:−34
+KEL*02.-35	phen_changed	KEL	KEL	KEL:-35 or KELP-	KEL:−35
+KEL*02.-36	phen_changed	KEL	KEL	KEL:-36 or KETI-	KEL:–36
+KEL*02.03	phen_changed	KEL	KEL	KEL:3,-4,-21 or Kp(a+b-c-)	KEL:3,−4,−21
+KEL*02.06	phen_changed	KEL	KEL	KEL:6,-7 or Js(a+b-)	KEL:6,−7
+KEL*02.10	phen_changed	KEL	KEL	KEL:10 or Ul(a+)	KEL:10
+KEL*02.17	phen_changed	KEL	KEL	KEL:-11,17	KEL: −11,17
+KEL*02.21	phen_changed	KEL	KEL	KEL:-3,-4,21 or Kp(a-b-c+)	KEL:−3,−4,21
+KEL*02.23	phen_changed	KEL	KEL	KEL: 23	KEL:23
+KEL*02.24	phen_changed	KEL	KEL	KEL: -14,24	KEL: −14,24
+KEL*02.25	phen_changed	KEL	KEL	KEL:25,-28 or VLAN+ VONG-	KEL:25,−28
+KEL*02.28	phen_changed	KEL	KEL	KEL:-25,28 or VLAN- VONG+	KEL:−25,28
+KEL*02.31	phen_changed	KEL	KEL	KEL:31, -38 or KYO+, KYOR-	KEL:31,–38
+KEL*02M.03	phen_changed	KEL	KEL	Kmod KEL:-13	Kmod KEL:−13
+KEL*02M.05	phen_changed	KEL	KEL	K0 phenotype	Kmod
+KLF1*01	phen_changed	KLF1	KLF1	Common	KLF1*01
+KLF1*BGM01	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM01
+KLF1*BGM02	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM02
+KLF1*BGM03	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM03
+KLF1*BGM04	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM04
+KLF1*BGM05	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM05
+KLF1*BGM06	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM06
+KLF1*BGM07	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM07
+KLF1*BGM08	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM08
+KLF1*BGM09	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM09
+KLF1*BGM10	phen_changed	KLF1	KLF1	CO:-1,-2 IN:-1,-2	KLF1*BGM10
+KLF1*BGM11	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM11
+KLF1*BGM13	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM13
+KLF1*BGM14	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM14
+KLF1*BGM15	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM15
+KLF1*BGM16	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM16
+KLF1*BGM17	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM17
+KLF1*BGM18	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM18
+KLF1*BGM19	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM19
+KLF1*BGM20	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM20
+KLF1*BGM21	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM21
+KLF1*BGM22	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM22
+KLF1*BGM23	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM23
+KLF1*BGM24	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM24
+KLF1*BGM25	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM25
+KLF1*BGM26	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM26
+KLF1*BGM27	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM27
+KLF1*BGM28	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM28
+KLF1*BGM29	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM29
+KLF1*BGM30	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM30
+KLF1*BGM31	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM31
+KLF1*BGM32	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM32
+KLF1*BGM33	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM33
+KLF1*BGM34	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM34
+KLF1*BGM35	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM35
+KLF1*BGM36	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM36
+KLF1*BGM37	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM37
+KLF1*BGM38	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM38
+KLF1*BGM39	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM39
+KLF1*BGM40	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM40
+KLF1*BGM41	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM41
+KLF1*BGM42	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM42
+KLF1*BGM43	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM43
+KLF1*BGM44	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM44
+KLF1*BGM45	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM45
+KLF1*BGM46	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM46
+KLF1*BGM47	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM47
+KLF1*BGM48	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM48
+KLF1*BGM49	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM49
+KLF1*BGM50	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM50
+KLF1*BGM51	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM51
+KLF1*BGM52	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM52
+KLF1*BGM53	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM53
+KLF1*BGM54	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM54
+KLF1*BGM55	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM55
+KLF1*BGM56	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM56
+KLF1*BGM57	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM57
+KLF1*BGM58	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM58
+KLF1*BGM59	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM59
+KLF1*BGM60	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM60
+KLF1*BGM61	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM61
+KLF1*BGM62	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM62
+KLF1*BGM63	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM63
+KLF1*BGM64	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM64
+KLF1*BGM65	phen_changed	KLF1	KLF1	In(Lu)	KLF1*BGM65
+KN*01	phen_changed	KN	KN	KN:1 or Kn(a+) KN:3 or McC(a+) KN:4 or S11+ KN:5 or Yk(a+) KN:8 or S13+ KN:9 or KCAM+ KN:11 or DACY+	KN:1
+KN*01.-05	phen_changed	KN	KN	KN:5 or Yk(a-)	KN:5
+KN*01.-08	phen_changed	KN	KN	KN:-8 or Sl3-	KN:–8
+KN*01.06	phen_changed	KN	KN	KN:-4 or Sl1- KN:-3,6 or McC(a-b+) KN:7 or Vil+ KN:-9 or KCAM- KN:10 or KDAS+	KN:6
+KN*01.07	phen_changed	KN	KN	KN:7 or Vil+ KN:-9 or KCAM- KN:10 or KDAS+	KN:7
+KN*02	phen_changed	KN	KN	KN:2 or Kn(a-b+)	KN:2
+LU*01	phen_changed	LU	LU	LU:1 or Lu(a+)	LU:1
+LU*02	phen_changed	LU	LU	LU:2 or Lu(b+)	Lu(b+)
+LU*02.-22	phen_changed	LU	LU	LU:-22, LURC-	LU:-22
+LU*02.-23	phen_changed	LU	LU	LU:-23, LUIT-	LU:-23
+LU*02.-24	phen_changed	LU	LU	LU:-24, LUGA-	LU:-24
+LU*02.-25	phen_changed	LU	LU	LU:-25, LUAC-	LU:-25
+LU*02.-26	phen_changed	LU	LU	LU:-26, LUBI-	LU:-26
+LU*02.09	phen_changed	LU	LU	LU:-6,9	LU:--6,9
+LU*02.14	phen_changed	LU	LU	LU:-8,14	LU:--8,14
+LU*02.19	phen_changed	LU	LU	LU:-18,19 or Au(a-b+)	LU:-18,19
+LU*02.19.14	phen_changed	LU	LU	LU:-18,19,-8,14	LU:--18,19,-8,14
+LU*02N.01	phen_changed	LU	LU	Lunull	Lu(a–b–)
+LU*02N.03	phen_changed	LU	LU	Lunull	Lu(a–b–)
+LU*02N.04	phen_changed	LU	LU	Lunull	Lu(a–b–)
+LW*05	phen_changed	LW	LW	LW:5 or LW(a+)	LW:5
+LW*05N.01	phen_changed	LW	LW	LW:–6 or LW(a–b–)	LW:–6
+LW*07	phen_changed	LW	LW	LW:7 or LW(b+)	LW:7
+OK*01.-01	phen_changed	OK	OK	OK:–1 or Ok(a–)	Ok(a–)
+OK*01.-02	phen_changed	OK	OK	OK:–2 or OKGV–	OKGV–
+OK*01.-03	phen_changed	OK	OK	OK:–3 or OKVM–	OKVM–
+OK*01.01	phen_changed	OK	OK	OK:1 or Ok(a+)	Ok(a+)
+RAPH*01	phen_changed	RAPH	RAPH	RAPH:1 or MER2+	RAPH:1
+RAPH*01N.01	phen_changed	RAPH	RAPH	RAPHnull	RAPH:−1
+RHAG*01	phen_changed	RHAG	RHAG	RHAG:1 or Duclos+	RHAG:1
+RHD*01	phen_changed	RHD	RHD	D RH:1	D
+RHD*01.01	phen_changed	RHD	RHD	Normal D antigen	NaN
+RHD*01EL.01	phen_changed	RHD	RHD	Del	NaN
+RHD*01EL.02	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.03	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.04	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.05	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.06	phen_changed	RHD	RHD	Del or weak D	DEL
+RHD*01EL.07	phen_changed	RHD	RHD	Del or weak D	DEL
+RHD*01EL.08	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.09	phen_changed	RHD	RHD	Del or D negative	DEL
+RHD*01EL.10	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.11	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.12	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.13	phen_changed	RHD	RHD	Del or D negative	DEL
+RHD*01EL.14	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.16	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.18	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.19	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.20	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.21	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.24	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.25	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.26	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.28	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.29	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.31	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.32	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.33	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.36	phen_changed	RHD	RHD	Del	NaN
+RHD*01EL.39	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.40	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.41	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.42	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.43	phen_changed	RHD	RHD	Del	DEL
+RHD*01EL.45	phen_changed	RHD	RHD	Del	DEL
+RHD*01N.01	phen_changed	RHD	RHD	D-	d
+RHD*01N.57	phen_changed	RHD	RHD	D-Del	D-
+RHD*01W.1	phen_changed	RHD	RHD	Type 1	NaN
+RHD*01W.25	phen_changed	RHD	RHD	Type 25	NaN
+RHD*01W.28	phen_changed	RHD	RHD	Type 28	NaN
+RHD*01W.3	phen_changed	RHD	RHD	Type 3	NaN
+RHD*01W.33	phen_changed	RHD	RHD	Type 33	NaN
+RHD*01W.45	phen_changed	RHD	RHD	Type 45	NaN
+RHD*01W.45.1	phen_changed	RHD	RHD	Type45.1	Type 45.1
+RHD*01W.45.2	phen_changed	RHD	RHD	Type45.2	Type 45.2
+RHD*01W.66	phen_changed	RHD	RHD	Type 66	NaN
+RHD*03.01	phen_changed	RHD	RHD	DIIIa RH:54 (DAK+)	NaN
+RHD*03.02	phen_changed	RHD	RHD	DIllb Caucasian RH:54 (DAK+) RH:-12 (G-)	DIIIb
+RHD*03.04	phen_changed	RHD	RHD	DIII type 4	NaN
+RHD*03.04.02	phen_changed	RHD	RHD	Not tested	NaN
+RHD*03.06	phen_changed	RHD	RHD	DIII type 6	NaN
+RHD*03.07	phen_changed	RHD	RHD	DIII type 7 (likely the historically defined DIIIb)	DIII type 7
+RHD*04.01	phen_changed	RHD	RHD	DIVa RH30+ (Goa+)	NaN
+RHD*04.05	phen_changed	RHD	RHD	DIV type 5	NaN
+RHD*05.04	phen_changed	RHD	RHD	DV Type 4 RH:23 (Dw+)	NaN
+RHD*05.05	phen_changed	RHD	RHD	DV type 5 RH:-23 (Dw-)	DV type 5 (Dw+)
+RHD*05.06	phen_changed	RHD	RHD	DV type 6	DV type 6 (Dw-)
+RHD*06.01	phen_changed	RHD	RHD	DVI type 1 RH:-52 (BARC-)	DVI type 1 (BARC─)
+RHD*06.02	phen_changed	RHD	RHD	DVI type 2 RH:52 (BARC+)	DVI type 2 (BARC+)
+RHD*06.03.01	phen_changed	RHD	RHD	DVI type 3 RH:52 BARC+	DVI type 3 BARC+
+RHD*06.03.02	phen_changed	RHD	RHD	DVI type 3.2 BARC not tested	DVI type 3.2 BARC
+RHD*06.04	phen_changed	RHD	RHD	DVI type 4 RH:52 (BARC+)	DVI type 4 (BARC+)
+RHD*07.01	phen_changed	RHD	RHD	DVII RH:40 (Tar+)	NaN
+RHD*08.01	phen_changed	RHD	RHD	DFV	NaN
+RHD*08N.01	phen_changed	RHD	RHD	D-	NaN
+RHD*09.01.00	phen_changed	RHD	RHD	DAR1 (weak D 4.2)	DAR1(weak D 4.2)
+RHD*09.01.01	phen_changed	RHD	RHD	DAR1.1 (weak D 4.2.1)	DAR1.1(weak D 4.2.1)
+RHD*09.01.02	phen_changed	RHD	RHD	DAR1.2 (weak D 4.2.2)	DAR1.2(weak D 4.2.2)
+RHD*09.01.03	phen_changed	RHD	RHD	DAR1.3 (weak D 4.2.3)	DAR1.3(weak D 4.2.3)
+RHD*09.03	phen_changed	RHD	RHD	DAR3 (weak partial D 4.0.1)	DAR3(weak partial D4.0.1)
+RHD*09.03.01	phen_changed	RHD	RHD	DAR3.1 (weak partial D 4.0)	NaN
+RHD*09.04	phen_changed	RHD	RHD	DAR4 (weak D 4.1)	DAR4(weak D 4.1)
+RHD*09.05	phen_changed	RHD	RHD	DAR5 (weak D 4.3 or Del)	DAR5(weak D 4.3 or RHD*DAR5 Del)
+RHD*09.06	phen_changed	RHD	RHD	DAR6 Or DAR(CE2:V50V-S68N)	DAR6 or DAR(CE2:V50V-S68N)
+RHD*10.00	phen_changed	RHD	RHD	DAUO	NaN
+RHD*10.00.01	phen_changed	RHD	RHD	DAU0.01	NaN
+RHD*10.00.02	phen_changed	RHD	RHD	DAU0.02	NaN
+RHD*10.03	phen_changed	RHD	RHD	DAU3	NaN
+RHD*10.05	phen_changed	RHD	RHD	DAU5	NaN
+RHD*10.06	phen_changed	RHD	RHD	DAU6	NaN
+RHD*10.14	phen_changed	RHD	RHD	DAU14	NaN
+RHD*10.15	phen_changed	RHD	RHD	RHD(M1V,T379M) Or DAU15	DAU15 weak partial 11
+RHD*11	phen_changed	RHD	RHD	weak partial 11 or Del	DAU11
+RHD*12.01	phen_changed	RHD	RHD	DOL1 RH:54(DAK+)	DOL1
+RHD*12.02	phen_changed	RHD	RHD	DOL2 RH:54(DAK+)	DOL2
+RHD*15	phen_changed	RHD	RHD	Weak partial Type 15	NaN
+RHD*21	phen_changed	RHD	RHD	Weak partial Type 21	Weak partial
+RHD*25	phen_changed	RHD	RHD	DNB	NaN
+RHD*29	phen_changed	RHD	RHD	DYU	DYU(DQC)
+RHD*30	phen_changed	RHD	RHD	(DQC)	DTO
+RHD*31	phen_changed	RHD	RHD	(DQC)	DVL1
+RHD*33	phen_changed	RHD	RHD	DWI (DWLLE)	DWI(DWLLE)
+RHD*34	phen_changed	RHD	RHD	DIM (DlleM)	DIM(DIleM)
+RHD*37	phen_changed	RHD	RHD	DUC2	NaN
+RHD*38	phen_changed	RHD	RHD	RHD*DNT	DNT
+RHD*39	phen_changed	RHD	RHD	RHD(S103P) RH:-12 (G-)	RHD(S103P)
+RHD*42	phen_changed	RHD	RHD		DCC
+RHD*50	phen_changed	RHD	RHD	RHD (A354T)	RHD(A354T)
+RHD*59	phen_changed	RHD	RHD	RHD(F175L)	NaN
+SC*01	phen_changed	SC	SC	SC:1 or Sc1+	SC:1
+SC*01.-05	phen_changed	SC	SC	SC:-5 or STAR-	SC:–5
+SC*01.-06	phen_changed	SC	SC	SC:-6 or SCER-	SC:–6
+SC*01.-07	phen_changed	SC	SC	SC:-7 or SCAN-	SC:–7
+SC*01.04	phen_changed	SC	SC	SC:4 or Rd+	SC:4
+SC*01N.01	phen_changed	SC	SC	SC:-3 or SC:-1-2-3	SC:–3
+SC*01N.02	phen_changed	SC	SC	SC:-3 or SC:-1-2-3	SC:–3
+SC*02	phen_changed	SC	SC	SC:2 or Sc2+	SC:2
+VEL*01	phen_changed	VEL	VEL	VEL:1 or VEL+	Vel+
+VEL*01W.01	phen_changed	VEL	VEL	VELweak	Vel weak
+VEL*01W.02	phen_changed	VEL	VEL	VELweak / Vel-	Vel weak/Vel–
+XG*01	phen_changed	XG	XG	Xga	Xg(a)
+XK*01	phen_changed	XK	XK	XK:1 or Kx+	Xg(?)
+YT*01	phen_changed	YT	YT	YT:1,-2 or Yt(a+b-)	Yt(a+)
+YT*02	phen_changed	YT	YT	YT:-1,2 or Yt(a-b+)	Yt(b+)
