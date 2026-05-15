@@ -42,3 +42,10 @@ data/source/v15/derived/genotype_to_phenotype_annotation.v15.dat
 data/source/v15/derived/pipeline/
 data/source/v15/derived/allele_to_variants.tsv
 
+# Regression test JSON outputs (large + reproducible via tools/run_regression.sh)
+data/source/v15/derived/regression/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
+

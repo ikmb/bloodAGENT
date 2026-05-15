@@ -1,0 +1,44 @@
+# Local-only Dockerfile that swaps apt sources to Aliyun mirrors. Use this when
+# ports.ubuntu.com is unreachable (typical from CN networks). Not for upstream PR.
+FROM ubuntu:22.04 AS builder
+
+# Switch to Aliyun mirror (works for arm64 ports.ubuntu.com replacement)
+RUN sed -i 's|http://ports.ubuntu.com/ubuntu-ports|http://mirrors.aliyun.com/ubuntu-ports|g' /etc/apt/sources.list \
+    && sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' /etc/apt/sources.list \
+    && sed -i 's|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y \
+    g++ \
+    make \
+    zlib1g-dev \
+    libbz2-dev \
+    git \
+    liblzma-dev \
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY . .
+
+# Drop the hardcoded x86_64 -m64 flag from the NetBeans Makefile so the build
+# works on ARM64 (Apple Silicon) hosts.
+RUN sed -i 's/=-m64$/=/' nbproject/Makefile-Release.mk
+
+RUN cd ./external/htslib && make clean && make && \
+    cd ../libBigWig && make clean && make && \
+    cd ../..  && make clean && make CONF=Release
+
+# Single-stage runtime: just promote the builder image. Skips the second apt-get
+# step that's been failing under the CN apt mirror.
+FROM builder AS final
+
+# Put the binary + shared libs on a stable path & set LD_LIBRARY_PATH so the
+# runtime can find libhts / libBigWig.
+RUN mkdir -p /runtime \
+    && cp /app/dist/Release/GNU-Linux/bloodAGENT /runtime/bloodAGENT \
+    && cp /app/external/htslib/libhts.so* /runtime/ \
+    && cp /app/external/libBigWig/libBigWig.so /runtime/
+
+ENV LD_LIBRARY_PATH=/runtime
+WORKDIR /app
+ENTRYPOINT ["/runtime/bloodAGENT"]

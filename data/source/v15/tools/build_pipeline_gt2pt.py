@@ -32,13 +32,15 @@ PIPELINES = {
     "PacBio":    ["TGSGATK", "TGSPBSV"],  # two callers
 }
 
-# Upstream HGDP file keeps these 4 pseudo-alleles for coverage-detected C/E.
+# Upstream HGDP file uses these 4 pseudo-alleles for coverage-based C/E detection.
+# Names taken verbatim from the pre-V15 HGDP gt2pt so downstream JSON consumers
+# that read RHCE*c / RHCE*C / RHCE*e / RHCE*E keep working unchanged.
 HGDP_RHC_RHE_PSEUDO = [
-    # PureSystem  MySystemKey  System  Allele      Pheno_PDF  Pheno  Pheno_flat  base_change  acid_change  incidence
-    ["ToDo", "RHC",  "RHCE", "RHC*+",  "C+",  "C+",  "C+",  "",  "",  ""],
-    ["ToDo", "RHC",  "RHCE", "RHC*-",  "C-",  "C-",  "C-",  "",  "",  ""],
-    ["ToDo", "RHE",  "RHCE", "RHE*+",  "E+",  "E+",  "E+",  "",  "",  ""],
-    ["ToDo", "RHE",  "RHCE", "RHE*-",  "E-",  "E-",  "E-",  "",  "",  ""],
+    # PureSystem  MySystemKey  System  Allele      Pheno_PDF  Pheno  Pheno_flat  base_change                                              acid_change  incidence
+    ["ToDo", "RHC", "RHC", "RHCE*c", "NaN", "NaN", "c", "", "", "20.13%"],
+    ["ToDo", "RHC", "RHC", "RHCE*C", "NaN", "NaN", "C", "336-2849_336-2848insTTGCTATAGCTTAAGGACTCACCTGGCAGCAACACCAAACCAGGGCCACCACCATTTGAAATCCCCCAGGGTGCCCTTTGTCACTTCCCAGTGGTACAATCATAGCT", "", ""],
+    ["ToDo", "RHE", "RHE", "RHCE*e", "NaN", "NaN", "e", "", "", "13.38%"],
+    ["ToDo", "RHE", "RHE", "RHCE*E", "NaN", "NaN", "E", "676G>C", "Ala226Pro", "13.38%"],
 ]
 
 
