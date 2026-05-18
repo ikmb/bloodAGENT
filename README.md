@@ -1,7 +1,26 @@
-# bloodAGENT
+# bloodAGENT (ISBT V15 fork)
+
+**A fork of [ikmb/bloodAGENT](https://github.com/ikmb/bloodAGENT)** with the reference allele tables refreshed against the new **ISBT Blood Group Database V15** (May 2026 release). The C++ engine is unchanged; only the data layer under `data/config/` and a new toolchain under `data/source/v15/` have been added.
+
+| | |
+| --- | --- |
+| Upstream | https://github.com/ikmb/bloodAGENT (Wittig lab, IKMB Kiel) |
+| This fork | https://github.com/gangchen/bloodAGENT |
+| Reference data | **ISBT Blood Group Database V15** (applied 2026-05-01) |
+| Coverage | 48 blood group systems · 57 genes · 397 antigens · 2 036 alleles · 1 828 variants |
+| License | BSD 2-Clause (unchanged from upstream) |
+
+---
+
 ## Table of Contents
 
-- [Introduction](#introduction)
+- [What this fork changes](#what-this-fork-changes)
+- [Quick start (Docker)](#quick-start-docker)
+- [Project origin](#project-origin)
+- [Reference data: ISBT V15](#reference-data-isbt-v15)
+- [V15 regression results](#v15-regression-results)
+- [Regenerating the data from a future ISBT release](#regenerating-the-data-from-a-future-isbt-release)
+- [Introduction (from upstream)](#introduction-from-upstream)
 - [Key Features](#key-features)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
@@ -9,30 +28,153 @@
   - [Testdata](#testdata)
 - [Cosine Similarity Scoring](#cosine-similarity-scoring)
 - [Running bloodAGENT](#running-bloodagent)
-  - [Job Type: Phenotype Analysis](#job-type-phenotype-analysis)
-  - [Parameters for `phenotype` Job](#parameters-for-phenotype-job)
-  - [Job Type: Simulated Data Generation](#job-type-simulated-data-generation)
-  - [Parameters for `vcf` Job](#parameters-for-vcf-job)
 - [Output Format](#output-format)
-  - [JSON File Structure](#json-file-structure)
-    - [General](#general)
-    - [Parameter Section](#parameter-section)
-    - [Data Section](#data-section)
-- [How to Run Custom Secondary Analysis Scripts](#how-to-run-custom-secondary-analysis-scripts)
-  - [RHCE Antigen Detection Strategy](#rhce-antigen-detection-strategy)
-  - [Step-by-Step Configuration](#step-by-step-configuration)
-  - [Running the Analysis](#running-the-analysis)
+- [Custom Secondary Analysis (RHCE)](#how-to-run-custom-secondary-analysis-scripts)
 - [Special Case: RHD](#special-case-rhd)
-  - [Interpretation Logic](#interpretation-logic)
-  - [Recommendation](#recommendation)
 - [Limitations](#limitations)
 - [Licensing](#licensing)
 
+---
 
-## Introduction
+## What this fork changes
+
+Compared to the upstream commit (`fee47fd`, Jan 2026):
+
+1. **All allele tables refreshed to ISBT V15** (May 2026 snapshot). 12 brand-new blood group systems gain first-time bloodAGENT coverage (CH_RG, KANNO, SID, CTL2, PEL, MAM, EMM, ABCC1, ER, CD36, ATP11C, MAL); all existing systems get added/renamed alleles. See [`data/source/v15/derived/baseline_analysis.md`](data/source/v15/derived/baseline_analysis.md) for the per-system delta.
+2. **All six pipeline configs regenerated**: CMR, Dragen, HGDP, Microarray, ONT, PacBio (×2 callers). HGDP and Microarray keep their pipeline-specific subsetting.
+3. **`exonic_annotation.hg{19,38}.BGStarget.txt`** extended with the 12 new gene rows.
+4. **Reproducible regeneration toolchain** under [`data/source/v15/tools/`](data/source/v15/tools/) — fetches the V15 snapshot from the public ISBT REST API, rebuilds every `.dat`, validates against the C++ index loader, and writes the in-place swap with one-touch backup files.
+5. **End-to-end regression harness** that builds the Docker image, runs the four bundled test samples, and emits a biological-equivalence verdict per system in [`data/source/v15/derived/regression_report.md`](data/source/v15/derived/regression_report.md).
+6. **`Dockerfile.cn`** — single-stage build with Aliyun apt mirror + a patch dropping the NetBeans Makefile's hardcoded `-m64` flag so the binary compiles natively on Apple Silicon (linux/arm64). Use this if you are on a CN network and/or an ARM Mac.
+
+The upstream C++ source is **untouched**; this is a pure data refresh + tooling addition.
+
+---
+
+## Quick start (Docker)
+
+The fastest way to run bloodAGENT V15 on macOS / Linux:
+
+```sh
+# Clone with submodules
+git clone --recurse-submodules https://github.com/gangchen/bloodAGENT.git
+cd bloodAGENT
+
+# Build the image — use Dockerfile.cn on Apple Silicon or CN networks
+docker build -f Dockerfile.cn -t bloodagent:v15 .          # ~5–8 min on M-series Mac
+# docker build              -t bloodagent:v15 .            # original upstream Dockerfile (x86_64 Linux)
+
+# Smoke test
+docker run --rm bloodagent:v15 --help
+
+# Run the four bundled samples and write V15 JSONs to data/source/v15/derived/regression/
+data/source/v15/tools/run_regression.sh bloodagent:v15
+
+# Compare against the pre-V15 baselines bundled in data/testdata/
+python3 data/source/v15/tools/analyze_regression_v2.py
+```
+
+---
+
+## Project origin
+
+bloodAGENT was created by the **IKMB Kiel** group (Wittig lab) as part of the work on resolving blood-group alleles from NGS / TGS data, with the original publication describing the cosine-similarity scoring approach and the HGDP benchmark. The upstream repository at https://github.com/ikmb/bloodAGENT remains the canonical source for the C++ engine.
+
+This fork was started in May 2026 with one goal: keep the reference data layer aligned with the **ISBT Blood Group Database**, which replaced the per-system PDF allele tables in November 2025. Because the upstream `.dat` files were a PDF-era snapshot (2019–2024 vintage), they had drifted from current ISBT consensus by ~770 alleles by the time of V15. This fork picks up that drift and provides the toolchain to keep picking it up at each future ISBT release.
+
+All credit for the algorithm, C++ implementation, and original benchmarking belongs to the upstream authors. This fork is data-only.
+
+---
+
+## Reference data: ISBT V15
+
+| Metric | Value |
+| --- | --- |
+| Release | v15 (applied 2026-05-01, covers 2026-04 changes) |
+| Source | https://blooddatabase.isbtweb.org/ (public REST API at `/api/`) |
+| Blood group systems | 48 |
+| Genes | 57 |
+| Antigens | 397 |
+| Effective alleles | 2 036 |
+| Variants | 1 828 |
+| Updated this release | 1 448 alleles touched |
+
+**Newly added systems** (none of these existed in upstream bloodAGENT data): ER (044, *PIEZO1*), CD36 (045), ATP11C (046), MAL (047), plus older systems the upstream had not covered: CH_RG (017, *C4A/C4B*), KANNO (037, *PRNP*), SID (038, *B4GALNT2*), CTL2 (039, *SLC44A2*), PEL (040, *ABCC4*), MAM (041, *EMP3*), EMM (042, *PIGG*), ABCC1 (043). 82 new alleles across these 12 systems.
+
+**Note on the `Phenotype_PDF_Table` column** in `genotype_to_phenotype_annotation_*.dat`: the column name is retained for backward compatibility with any downstream consumer, but it now holds the V15 `isbt_phenotype` value (the per-system PDF tables it used to reference were archived by ISBT in November 2025). Treat it as a phenotype label column going forward.
+
+---
+
+## V15 regression results
+
+Full report in [`data/source/v15/derived/regression_report.md`](data/source/v15/derived/regression_report.md). Headline numbers from the four bundled test samples (HGDP00001/00003/00005 + NA24143):
+
+| | Result |
+| --- | --- |
+| Schema-load failures on the new `.dat` files | **0** |
+| Crashes / segfaults across 4 samples | **0** |
+| **Biological equivalence vs pre-V15** (allele-level) | **120 / 123 system calls preserved (97.6 %)** |
+| Phenotype calls equivalent after canonicalisation | 90 / 123 (73.2 %) |
+| Genuine V15 reclassifications (need clinical review) | **3** — P1PK on HGDP00001/3, GLOB on HGDP00003 |
+
+The report classifies every deviation into one of four categories:
+
+- **A-renaming** — V15 renamed the identifier but the underlying biology is identical (e.g. upstream `GLOB*02` ≡ V15 `GLOB*01.02`; upstream `secretor` ≡ V15 `FUT2*01`). 0 prediction change.
+- **B-obsoleted** — V15 retired an upstream allele identifier (`KLF1*BGM12` is `obsolete:true` in V15). V15 calls a phenotypically-equivalent successor.
+- **C-reclassification** — V15 changed which DNA variants define an allele based on new evidence. The flagship case is **P1PK**: V15 redefined `A4GALT*02` (the P2 reference) as requiring the deep-intronic regulatory SNP `c.-188+3010G>T`, not the exonic `c.109A>G` (Met37Val). A sample typed only on exonic data can no longer be confidently called P1 vs P2 — that's a real consequence of the ISBT working party adopting newer evidence.
+- **D-expansion** — V15's larger allele table means more alleles share the same SNV signature when the input VCF can't discriminate. Top systems on HGDP00001: RHD +98, XK +52, KEL +49, FUT2 +43, JK +40 extra alleles tied at top score. This is a precision effect, not a correctness regression — tune `--scoreRange` or use higher-resolution sequencing.
+
+The full per-system verdict table sits in [`data/source/v15/derived/regression_report.md`](data/source/v15/derived/regression_report.md). The recommendation for clinical reports generated by this fork is: surface the V15 allele name as primary, append `(formerly: <upstream name>)` for systems with renaming, and flag P1PK calls as needing intronic-SNP or serology confirmation when c.109A>G is the only signal.
+
+---
+
+## Regenerating the data from a future ISBT release
+
+When ISBT publishes V16 (or any later snapshot), the full regeneration takes about an hour mostly waiting on the rate-limited API:
+
+```sh
+# 1. Pull the V<N> snapshot (about 1 hour with the throttler).
+data/source/v15/tools/fetch_isbt_v15.sh
+
+# 2. Rebuild the master variation_annotation + master gt2pt
+python3 data/source/v15/tools/build_variation_annotation.py \
+    --raw-dir data/source/v15/raw \
+    --allele-detail-dir data/source/v15/raw/alleles \
+    --out-dir data/source/v15/derived \
+    --old-master data/config/variation_annotation.dat
+
+python3 data/source/v15/tools/build_gt2pt.py \
+    --raw-dir data/source/v15/raw \
+    --allele-detail-dir data/source/v15/raw/alleles \
+    --out-dir data/source/v15/derived
+
+# 3. Fork per-pipeline gt2pt files (HGDP, Microarray)
+python3 data/source/v15/tools/build_pipeline_gt2pt.py
+
+# 4. Generate exonic_annotation supplement for any new systems
+python3 data/source/v15/tools/build_exonic_supplement.py
+
+# 5. Validate everything against the C++ index loader semantics
+python3 data/source/v15/tools/validate_dat.py \
+    data/source/v15/derived/variation_annotation.v15.dat \
+    data/source/v15/derived/genotype_to_phenotype_annotation.v15.dat
+
+# 6. Swap the new files into data/config/ (creates *.pre-v15.bak backups)
+data/source/v15/tools/apply_to_config.sh --apply
+
+# 7. Rebuild the container and run regression
+docker build -f Dockerfile.cn -t bloodagent:v16 .
+data/source/v15/tools/run_regression.sh bloodagent:v16
+python3 data/source/v15/tools/analyze_regression_v2.py
+```
+
+To roll back: `for f in $(find data/config -name '*.pre-v15.bak'); do mv "$f" "${f%.pre-v15.bak}"; done`.
+
+---
+
+## Introduction (from upstream)
+
 **bloodAGENT** (Blood Antigen GENo Typer) is an open-source software tool designed for the determination of blood group alleles based on genetic markers. By analyzing genomic data from Next-Generation Sequencing (NGS) and Third-Generation Sequencing (TGS), bloodAGENT resolves blood group alleles and provides insights into genomic variations.
-
-> **Reference data:** ISBT Blood Group Database **V15** (released 2026-05-01) — 48 blood group systems, 57 genes, 397 antigens, 2 036 alleles, 1 828 variants. The full V15 snapshot was fetched from the public REST API at `https://blooddatabase.isbtweb.org/api/` and converted to bloodAGENT's `.dat` schema. Provenance, source dumps, conversion scripts, and per-system diff vs. the previous PDF-era tables live under `data/source/v15/`. To reproduce or refresh after a future ISBT release, run `data/source/v15/tools/fetch_isbt_v15.sh` then `build_variation_annotation.py` / `build_gt2pt.py` / `build_pipeline_gt2pt.py` / `apply_to_config.sh`. The `Phenotype_PDF_Table` column in `genotype_to_phenotype_annotation_*.dat` is retained for backward compatibility but now holds the V15 `isbt_phenotype` value (the PDF allele tables were archived by ISBT in November 2025).
 
 ## Key Features
 - **High accuracy** in allele determination under typical conditions.
@@ -40,102 +182,96 @@
 - **Uses cosine similarity scoring** to determine the best haplotype match.
 - **Supports VCF and BigWig file formats** for variant and coverage data.
 - **Open-source** for transparency and community collaboration.
+- **(this fork)** Reference data pinned to **ISBT V15** (May 2026), with a reproducible upgrade path.
 
 ## System Requirements
-**Supported platforms:** Compatible with Windows, macOS, and Linux through the Singularity image bloodagent.sif
 
-For advanced users who prefer to build the software from source, the following dependencies are required:
-**Dependencies:** 
+**Supported platforms:** Compatible with Windows, macOS, and Linux through the Singularity / Docker image.
+
+Native build dependencies (Linux only — see Apple Silicon caveat below):
 - GCC or Clang compiler
-- `libhts` library: `https://github.com/samtools/htslib` (for vcf file reading)
-- `libBigWig` library https://github.com/dpryan79/libBigWig.git` (for coverage file reading)
-- Python (for parsing output files)
-- `https://github.com/mirror/tclap.git` (for command-line argument parsing)
-- `https://github.com/nlohmann/json` (for JSON output generation)
+- `libhts` library: https://github.com/samtools/htslib
+- `libBigWig` library: https://github.com/dpryan79/libBigWig
+- Python 3 (for parsing output files + running the V15 toolchain)
+- https://github.com/mirror/tclap (CLI argument parsing)
+- https://github.com/nlohmann/json (JSON output)
+
+> **Apple Silicon (M-series Mac):** the upstream NetBeans Makefile passes `-m64` which g++ on ARM64 doesn't recognise. Use `Dockerfile.cn` (or apply the same `sed -i 's/=-m64$/=/' nbproject/Makefile-Release.mk` patch before `make`) to build on ARM. Native ARM build runs ~5–8 minutes; cross-build for `linux/amd64` via Docker Desktop emulation is ~3–5× slower.
 
 ## Installation
-1. Install all dependencies:
-   ```sh
-   sudo apt-get update && sudo apt-get install -y \
-    g++ \
-    make \
-    zlib1g-dev \
-    libbz2-dev \
-    git \
-    liblzma-dev \
-    libcurl4-openssl-dev
-   ```
-2. Clone the repository:
-   ```sh
-   git clone --recurse-submodules https://github.com/ikmb/bloodAGENT.git
-   cd bloodAGENT
-   git submodule update --init --recursive
-   ```
-3. Navigate to the project folder (if not already there):
-   ```sh
-   cd bloodAGENT
-   ```
-4. Build the software:
-   ```sh
-   cd external/htslib
-   make
-   cd ../libBigWig
-   make
-   cd ../..
-   make CONF=Release
-   ```
-5. Setup environment
-   ```
-   # find the two external libraries
-   find . -iname "libhts.so" -o -iname "libBigWig.so"
-   # add them to the LD_LIBRARY_PATH variable
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<PATH to libhts.so.>:<PATH to libBigWig.so.>
-   ```
-6. Verify installation (e.g.):
-   ```sh
-   ./dist/Release/GNU-Linux/bloodAGENT --help
-   ```
+
+### Docker (recommended)
+```sh
+git clone --recurse-submodules https://github.com/gangchen/bloodAGENT.git
+cd bloodAGENT
+docker build -f Dockerfile.cn -t bloodagent:v15 .   # apply CN mirror + ARM64 patch
+# or: docker build -t bloodagent:v15 .              # upstream Dockerfile, x86_64 Linux only
+```
+
+### Native (Linux x86_64)
+```sh
+sudo apt-get update && sudo apt-get install -y \
+    g++ make zlib1g-dev libbz2-dev git liblzma-dev libcurl4-openssl-dev
+
+git clone --recurse-submodules https://github.com/gangchen/bloodAGENT.git
+cd bloodAGENT
+cd external/htslib && make
+cd ../libBigWig && make
+cd ../..
+make CONF=Release
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/external/htslib:$PWD/external/libBigWig
+./dist/Release/GNU-Linux/bloodAGENT --help
+```
 
 ## Input Data Format
+
 bloodAGENT requires two main input files:
-- **VCF files**: Represent genomic variants (compatible with hg19 and hg38 reference genomes).
-- **BigWig files**: Provide sequencing coverage information to determine the sequencing depth of SNVs that are not listed in the VCF file
+- **VCF files**: genomic variants (compatible with hg19 and hg38).
+- **BigWig files**: coverage data for SNVs that are not present in the VCF.
 
-Additionally, three configuration files are needed:
-- **./data/config/exonic_annotation.${build}.BGStarget.txt**: Transcript annotation for blood group targets. A separate file for each genome build.
-- **./data/config/variation_annotation_${Sec.Analysis.Pipeline}.dat**: Variant annotation for different pipelines. Pipelines means the combination of read aligner and variant caller.
-- **./data/config/genotype_to_phenotype_annotation_${Sec.Analysis.Pipeline}.dat**: Genotype-to-phenotype mapping for different pipelines. Pipelines means the combination of read aligner and variant caller.
-Different secondary analysis pipelines may produce varying VCF file entries. However, it is of critical importance that the representation of ISBT variants in the VCF is correctly annotated. Currently, the differences are limited to the representation of the 109bp insertion of RHCE*02, but additional discrepancies cannot be ruled out.
+Configuration files (already provisioned in this fork at V15):
+- `data/config/exonic_annotation.${build}.BGStarget.txt` — transcript annotation for blood-group targets (one per genome build).
+- `data/config/<PIPELINE>/variation_annotation_<TAG>.dat` — variant annotation per pipeline.
+- `data/config/<PIPELINE>/genotype_to_phenotype_annotation_<TAG>.dat` — genotype→phenotype mapping per pipeline.
 
-Pipeline settings:
-- **HGDP**    The original HGDP Project secondary analysis pipeline
-- **PacBio**  For third generation sequencing using pbmm2 and GATK or another variant caller like deepVariant and pbsv for insertions/deletions
-- **ONT**     For Oxford nanopore sequencing. Using mm2, clair3 and sniffles for dtecting the RHCE 109bp insertion
-- **Dragen**  For data coming out of the Dragen platform<br>
-  
-All Details about howto choose the correct setting can be found here: [pipeline settings](data/config/)  
+Per-pipeline differences are primarily about how the RHCE *02 109 bp insertion is represented in the VCF (Illumina/ICA vs GATK vs sniffles vs pbsv); the V15 refresh preserves these handler files unchanged.
 
-Variant Phasing:<br>
-For phasing, we typically use WhatsHap, as it determines haplotypes based on read data and SNP coverage. Since our focus is primarily on long reads, this is our preferred choice.
-In the supplementary methods of the original publication, we also discuss SHAPEIT5, which we applied to the short-read HGDP dataset. Our conclusion is that SHAPEIT5 is the better choice for short reads.
+### Pipeline settings
 
-However, it is important to ensure that the Phasing ID field in the VCF is set, SHAPEIT5 does not do this. For this purpose, we have added the script append_phasingID.py.<br>
-Note: To run SHAPEIT5, a multi-sample VCF must first be generated. SHAPEIT5 is then applied to this file. The fully phased VCF must be split back into single-sample VCFs, as bloodAGENT only works with single-sample files. The script append_phasingID.py should then be applied to each of these single-sample VCFs.
+- **HGDP** — original HGDP project pipeline. RHCE alleles are excluded from the gt2pt and detection is coverage-based via `-k/--trick`.
+- **CMR** — Illumina ICA cloud constellation-mapped reads.
+- **Dragen** — Illumina Dragen platform.
+- **PacBio** — pbmm2 + GATK (or DeepVariant) for SNVs, pbsv for SVs.
+- **ONT** — Oxford Nanopore + minimap2 + clair3 + sniffles (for the 109 bp insertion).
+- **Microarray** — Affy / Illumina array. Subset of the gt2pt restricted to SNV / short-indel single-variant alleles.
 
+Pipeline-selection details: [`data/config/`](data/config/).
+
+### Variant Phasing
+
+WhatsHap is recommended for long-read data. SHAPEIT5 is recommended for short-read HGDP-class data — but **SHAPEIT5 does not set the VCF Phasing-ID field**, which bloodAGENT requires. The `append_phasingID.py` script in this repo writes it for you.
+
+Workflow for SHAPEIT5: phase a multi-sample VCF → split back into single-sample VCFs → run `append_phasingID.py` on each → feed to bloodAGENT.
 
 ### Testdata
-Data for testing can be found under ./data/testdata/. HGDP samples 001, 002 and 003. The complete HGDP dataset used for benchmarking in our original publication can be downloaded at: https://www.internationalgenome.org/data-portal/data-collection/hgdp
+Located under `./data/testdata/` — HGDP00001, HGDP00003, HGDP00005, and the GIAB NA24143. The bundled `*.phased.json` files are pre-V15 baseline outputs kept for the regression harness; the V15 outputs go to `data/source/v15/derived/regression/` (gitignored, reproducible). The complete HGDP benchmark dataset used in the upstream publication is available at https://www.internationalgenome.org/data-portal/data-collection/hgdp.
 
 ## Cosine Similarity Scoring
-bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from the International Society of Blood Transfusion (ISBT). The score ranges from **0 to 2**, where:
+
+bloodAGENT uses **cosine similarity** to measure the similarity between observed haplotypes and reference haplotypes from ISBT. The score ranges from **0 to 2**:
 - **1 per haplotype** is the theoretical maximum.
 - **2** is the best possible match for a diploid genome.
 
-However, due to varying numbers of relevant SNPs across blood groups and alleles, **scores between different blood groups or individuals are not directly comparable**. A score of **1.9 vs. 1.8 does not necessarily indicate a better result** unless both results refer to the same blood group and allele.
+Scores between different blood groups or individuals are **not directly comparable** — different systems have different numbers of relevant SNPs. A score of 1.9 vs 1.8 is meaningful only within the same system+allele pair.
+
+> **V15 caveat:** the larger V15 allele table can produce more tied alleles at the top score on a given input VCF (e.g. RHD ties up to 99 alleles per haplotype on the bundled HGDP00001 sample). This is a precision effect of V15 having alleles whose discriminating variants aren't in the input VCF; tune `--scoreRange` or use higher-resolution sequencing if you need a single-allele call.
 
 ## Running bloodAGENT
+
 ### Job Type: Phenotype Analysis
-A typical command:
+
+Native binary:
 ```sh
 bloodAGENT --job phenotype \
   --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
@@ -147,203 +283,130 @@ bloodAGENT --job phenotype \
   --out HGDP00001.json \
   --build hg38 -k --id "HGDP00001"
 ```
+
+Docker:
 ```sh
-### Singularity:
-singularity exec bloodagent.sif /app/bloodAGENT --job phenotype \
-  --target ./data/config/exonic_annotation.hg38.BGStarget.txt \
-  --variants ./data/config/HGDP/variation_annotation_HGDP.dat \
-  --gt2pt ./data/config/HGDP/genotype_to_phenotype_annotation_HGDP.dat \
-  --vcf ./data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
-  --bigwig ./data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
+docker run --rm -v "$PWD":/work -w /work bloodagent:v15 \
+  --job phenotype \
+  --target /work/data/config/exonic_annotation.hg38.BGStarget.txt \
+  --variants /work/data/config/HGDP/variation_annotation_HGDP.dat \
+  --gt2pt /work/data/config/HGDP/genotype_to_phenotype_annotation_HGDP.dat \
+  --vcf /work/data/testdata/HGDP00001/HGDP00001.phased.vcf.gz \
+  --bigwig /work/data/testdata/HGDP00001/HGDP00001.BGStarget.bw \
   --coverage 12 --verbose 2 --scoreRange 1 \
-  --out HGDP00001.json \
+  --out /work/HGDP00001.json \
   --build hg38 -k --id "HGDP00001"
 ```
 
-## Configuration Files
-
-Configuration files are required for the analysis.  
-Why and under which circumstances a specific configuration is needed is described in detail here:  
-[workflows](data/config/README.md)
-
-Further details on how to generate your own configuration files can be found below in the section:  
-[How to Run Custom Secondary Analysis Scripts](#how-to-run-custom-secondary-analysis-scripts)
-
-
-#### Parameters for `phenotype` Job
-## Command-Line Parameters
-
-| Short Code | Long Code | Description | Data Type | Required | Default Value |
-|------------|------------|--------------|----------|----------|--------------|
-| `-j` | `--job phenotype` | Runs bloodAGENT to determine blood group phenotypes. | String | Yes | - |
-| `-t` | `--target <file>` | Annotation file containing transcript information for blood group targets. | File | Yes | - |
-| `-s` | `--variants <file>` | Variant annotation file for ISBT blood group typing. | File | Yes | - |
-| `-g` | `--gt2pt <file>` | Mapping file from genotype to phenotype. | File | Yes | - |
-| `-v` | `--vcf <file>` | VCF file containing phased genetic variants. | File | Yes | - |
-| `-b` | `--bigwig <file>` | BigWig file for coverage data. instead ob bigwig format it also accepts bam format. | File | No | - |
-| `-c` | `--coverage <int>` | Minimum sequencing coverage required for reliable results. | Integer | No | `10` |
-| `-d` | `--verbose <int>` | Level of verbosity (0: none, 1: warnings, 2: status, 3: detailed logs). | Integer | No | `1` |
-| `-r` | `--scoreRange <float>` | Score threshold multiplier for reporting matches. | Float | No | - |
-| `-o` | `--out <file>` | Output file in JSON format. | File | No | "bloodAGENT.json" |
-| `-u` | `--build <hg19\|hg38>` | Specifies genome reference build. | String | Yes | - |
-| `-k` | -trick | Enables coverage-based typing of RhD instead of variant-based typing. | Boolean (Flag) | No | `false` |
-| `-f` | `--id <string>` | Sample identifier. | String | No | `unknown` |
-
-
-
+Singularity (if you build a `.sif` from the docker image):
+```sh
+singularity exec bloodagent.sif /runtime/bloodAGENT --job phenotype <...same flags...>
+```
 
 ### Job Type: Simulated Data Generation
-A typical command:
 ```sh
 bloodAGENT --job vcf \
   --variants ./data/config/variation_annotation.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
-  --phased \
-  --dropout 1 --crack 5
-```
-```sh 
-### Singularity:
-singularity exec bloodagent.sif /app/bloodAGENT --job vcf \
-  --variants ./data/config/variation_annotation.dat \
-  --gt2pt ./data/config/genotype_to_phenotype_annotation.dat -a "ABO*A1.01" -b "ABO*O.01.01" \
-  --phased \
-  --dropout 1 --crack 5
+  --gt2pt ./data/config/genotype_to_phenotype_annotation.dat \
+  -a "ABO*A1.01" -b "ABO*O.01.01" \
+  --phased --dropout 1 --crack 5
 ```
 
-#### Parameters for `vcf` Job
-## Command-Line Parameters
-| Short Code | Long Code | Description | Data Type | Required | Default Value |
-|------------|------------|--------------|----------|----------|--------------|
-| `-j` | `--job vcf` | Generates simulated genetic data in VCF format. | String | Yes | - |
-| `-s` | `--variants <file>` | Variant annotation file for TGS-based analysis. | File | Yes | - |
-| `-g` | `--gt2pt <file>` | Genotype-to-phenotype mapping file. | File | Yes | - |
-| `-a` | `--alleleA <string>` | First allele for in silico simulation. | String | Yes | - |
-| `-b` | `--alleleB <string>` | Second allele for in silico simulation. | String | Yes | - |
-| `-p` | `--phased` | Ensures output includes phased haplotypes. | Boolean (Flag) | No | `false` |
-| `-o` | `--dropout <float>` | Probability of SNP dropout (0.0–1.0). | Float | No | - |
-| `-x` | `--crack <float>` | Probability of haplotype breakage at heterozygous sites (0.0–1.0). | Float | No | - |
+### Command-Line Parameters
 
+`--job phenotype`:
+
+| Short | Long | Description | Type | Required | Default |
+|---|---|---|---|---|---|
+| `-j` | `--job phenotype` | Run phenotype determination. | String | Yes | – |
+| `-t` | `--target <file>` | Transcript annotation for blood-group targets. | File | Yes | – |
+| `-s` | `--variants <file>` | Variant annotation (V15 in this fork). | File | Yes | – |
+| `-g` | `--gt2pt <file>` | Genotype→phenotype mapping (V15 in this fork). | File | Yes | – |
+| `-v` | `--vcf <file>` | Phased VCF (comma-separate multiple files). | File | Yes | – |
+| `-b` | `--bigwig <file>` | Coverage BigWig (or BAM). | File | No | – |
+| `-c` | `--coverage <int>` | Minimum coverage for a reliable call. | Integer | No | `10` |
+| `-d` | `--verbose <int>` | Verbosity 0–3. | Integer | No | `1` |
+| `-r` | `--scoreRange <float>` | Score range below the top to report. | Float | No | – |
+| `-o` | `--out <file>` | JSON output path. | File | No | `bloodAGENT.json` |
+| `-u` | `--build <hg19\|hg38>` | Genome reference build. | String | Yes | – |
+| `-k` | `--trick` | Use coverage-based RhD typing instead of variant-based. | Flag | No | `false` |
+| `-f` | `--id <string>` | Sample identifier. | String | No | `unknown` |
+
+`--job vcf`:
+
+| Short | Long | Description | Type | Required | Default |
+|---|---|---|---|---|---|
+| `-j` | `--job vcf` | Generate a simulated VCF. | String | Yes | – |
+| `-s` | `--variants <file>` | Variant annotation. | File | Yes | – |
+| `-g` | `--gt2pt <file>` | gt→pt mapping. | File | Yes | – |
+| `-a` | `--alleleA <string>` | First allele. | String | Yes | – |
+| `-b` | `--alleleB <string>` | Second allele. | String | Yes | – |
+| `-p` | `--phased` | Output phased haplotypes. | Flag | No | `false` |
+| `-o` | `--dropout <float>` | SNP dropout probability. | Float | No | – |
+| `-x` | `--crack <float>` | Haplotype-breakage probability at heterozygous sites. | Float | No | – |
 
 ## Output Format
-bloodAGENT generates results in JSON format (`--job phenotype`). To extract the most important values in a tab-delimited table, you can use the provided script **deepblood_values.py**.
-For simulated data (`--job vcf`), the output is the data lines of an vcf file written to stdout.
 
+`--job phenotype` writes JSON. The helper `deepBlood_values.py` extracts a tab-delimited summary. `--job vcf` writes VCF data lines to stdout.
 
+### JSON structure
 
-### JSON File Structure
+- **genome** — reference build (e.g. `hg38`).
+- **sample_id** — value passed via `--id`.
+- **version** — bloodAGENT binary version.
+- **parameters** — full command-line snapshot.
+- **loci** — blood-group systems.
+  - **`<system>`**
+    - **calls** — list of genotype/phenotype determinations:
+      - **alleles** — detected V15 allele names per haplotype (plus per-allele coverage / mismatch issues).
+      - **haplotypes** — genotype calls.
+      - **phenotypes** — predicted phenotype(s) in V15 notation.
+      - **score** — cosine similarity (0 if coverage-failed variants exist; otherwise up to 2).
+      - **weak_score** — score ignoring coverage-failed variants.
+      - **coverage_failed_variants** — variants with insufficient depth.
+      - **mean_coverage** — coverage stats per region.
+      - **relevant_variations** — every ISBT variant for the system (chrom, position, ref/alt, high-impact flag, depth, etc.).
 
-#### General
-- **genome**: Specifies the genome build (e.g., hg38).
-- **sample_id**: Specifies the sample id given by the user.
-- **version**: bloodAGENT version
-
-#### Parameter Section
-- **command line parameters** List of all command line parameters and their values.
-
-#### Data Section
-- **loci**: Contains blood group systems.
-  - **System Name (e.g., ABO)**:
-    - **calls**: List of genotype and phenotype determinations.
-      - **alleles**: List of detected alleles.
-        - **names**: Names of identified alleles.
-        - **issues**: Quality and coverage issues related to each allele.
-    - **haplotypes**: Genotype data.
-    - **phenotypes**: Predicted blood group phenotypes.
-    - **score**: Cosine similarity score: If ISBT-relevant SNV positions do not meet the coverage requirements (as defined by the --coverage parameter), this score is set to zero.
-    - **weak_score**: Cosine similarity score: This score remains unaffected if ISBT-relevant SNV positions do not meet the coverage requirements (as defined by the --coverage parameter). It represents the default score, disregarding coverage-failed variants.
-    - **coverage_failed_variants**: List of genetic variations with insufficient coverage.
-    - **mean_coverage**: Coverage statistics for different genomic regions.
-    - **relevant_variations**: List of all ISBT variants of this blood group system.
-      - **chrom**: Chromosome location.
-      - **position**: Position in the genome.
-      - **reference / alternative**: Reference and detected allele.
-      - **high_impact**: Whether the variation is of high impact.
-      - **is_covered**: Whether the variant has sufficient read coverage.
-      - **depth**: Sequencing depth at the variant position.
-
-This structure provides an overview of the key components within the JSON file, organizing metadata and data into a hierarchical format.
-
+> **V15 notation note:** phenotype strings now follow the ISBT-V15 convention (`Co(a+)` → `CO:1 or Co(a+)`). The biological meaning is unchanged; the dual notation is V15's canonical format. The regression harness includes a phenotype canonicaliser that handles this.
 
 ## How to Run Custom Secondary Analysis Scripts
 
-This guide demonstrates how to run a custom secondary analysis for the **RHCE antigens** using the example **HGDP dataset**. Unlike standard workflows, this analysis does **not detect all alleles directly** due to limitations in secondary data. Instead, we analyze **exon coverage** to infer antigen status.
+This is the upstream-documented strategy for **RHCE antigens**, retained verbatim under V15.
 
 ### RHCE Antigen Detection Strategy
 
-- **RHCE-Cc Antigen**  
-  Detection is based on **coverage analysis** of **Exon 2** in the *RHCE* gene. A lack of coverage at this location suggests a C-negative status.
+- **RHCE-Cc Antigen** — coverage of *RHCE* exon 2: absence ⇒ C-negative.
+- **RHCE-Ee Antigen** — tagging SNP `676G>C`.
 
-- **RHCE-Ee Antigen**  
-  Inferred using the **tagging SNP 676G>C**, which allows us to deduce the presence or absence of the E antigen.
+Both antigens are reported separately in the JSON output. The HGDP gt2pt at V15 still uses the upstream `RHCE*c / RHCE*C / RHCE*e / RHCE*E` pseudo-allele names so existing downstream consumers keep working.
 
-> Both antigens are reported **separately** in the final output.
+### Step-by-step
+1. Run `detect_RHCplusminus.py` on the sample → produces a `*.RHC.vcf`.
+2. Pass it as a second `--vcf` to bloodAGENT (comma-separated):
 
----
-
-## Step-by-Step Configuration
-
-### 1. Edit Configuration Files
-
-We have updated the following files for RHCE:
-
-- `genotype_to_phenotype_annotation_HGDP.dat`
-- `variation_annotation_HGDP.dat`
-
-### 2. Modify `variation_annotation_HGDP.dat`
-
-In the HGDP version of this file, we removed all existing *RHCE* entries and replace them with:
-
-- One entry for **RHCE-C**, characterized by the presence of a **109 bp insertion**, which will be detected later via coverage analysis.
-- One entry for **676G>C** as a **tagging SNP** for the Ee antigen.
-
-➡️ These entries are found in **lines 1019–1020** of `variation_annotation_HGDP.dat`.
-
-### 3. Edit `genotype_to_phenotype_annotation_HGDP.dat`
-
-We defined the "haplotypes" for the new simplified antigen detection logic.
-
-➡️ These entries are found in **lines 693–696**.
-
----
-
-## Running the Analysis
-
-Run the custom detection script **detect_RHCplusminus.py** on the sample data set using **HGDP** as pipeline parameter. This will generate a VCF file, which must be passed to the bloodAGENT tool as a second input VCF file, using comma separation.
-
+```sh
+--vcf sample.phased.vcf.gz,sample.RHC.vcf
+```
 
 ## Special Case: RHD
 
-Although the annotation files include all ISBT-defined entries for **RHD**, secondary analysis tools struggle to **reliably detect RHD-specific variants**. This even applies to **RHD*01N.01**, a complete deletion of the RHD gene, which frequently fails to be identified correctly.
+Secondary analysis tools struggle to call RHD-specific variants reliably — even the complete `RHD*01N.01` deletion is often missed. bloodAGENT therefore offers a **coverage-based RHD detection** mode via `-k / --trick`:
 
-To overcome this issue, a **coverage-based detection method for RHD** was introduced early on in the development of bloodAGENT. It can be activated using a specific parameter **-k/--trick**.
+- Homozygous `RHD*01N.01` deletion → **RhD negative**
+- Any other allele combination → **RhD positive**
 
-If no deletion or only a heterozygous deletion is detected via coverage, the tool attempts to determine the specific allele. However, this result is often **not trustworthy**, and therefore the outcome is interpreted more generally as either **RhD positive** or **RhD negative**.
-
-### Interpretation Logic
-
-- A **homozygous RHD*01N.01 deletion** is interpreted as **RhD negative**
-- Any other allele combination (i.e., with at least one non-null allele) is interpreted as **RhD positive**
-
-### Recommendation
-
-We **strongly recommend** always enabling the **coverage-based detection mode** for RHD analysis, **unless a highly reliable secondary analysis pipeline is available**.
-
+We **strongly recommend always enabling `-k`** unless you have an exceptionally reliable secondary-analysis pipeline.
 
 ## Limitations
-- **Dropout effects**: Missing variants significantly impact allele determination. Accuracy drops below **50% at a 50% dropout rate**.
-- **Phasing information**: While its effect on ambiguity is minor, it remains important for resolving certain blood group systems (e.g., KEL, ABO, Duffy).
-- **Paralogous regions**: Some blood group alleles (e.g., RHCE) may be misclassified due to read alignment issues, variant calling issues, annotation issues or any issue we are not aware of
 
-```
+- **Dropout**: missing variants degrade accuracy; ~50 % accuracy at a 50 % dropout rate.
+- **Phasing**: marginal on most systems but important for KEL / ABO / Duffy.
+- **Paralogous regions**: RHCE, GYPA/B/E, C4A/C4B, etc. can be mis-aligned or mis-called by upstream pipelines.
+- **V15-specific**: P1PK typing on exonic-only data is now ambiguous (V15 moved the P2-defining variant to the deep intron `c.-188+3010G>T`). 12 new V15 systems have empty `cdsStart/exonStarts/exonEnds` in the supplementary exonic-annotation rows — pure SNV typing works, but coverage-based detection on those new systems requires UCSC refGene backfill. The TODO list is at [`data/source/v15/derived/exonic_annotation_TODO.tsv`](data/source/v15/derived/exonic_annotation_TODO.tsv).
 
 ## Licensing
 
-Third party licenses can be found at Third_Party_Licenses.md
-The docker/singularity container(s) include third-party components under various open source licenses.
-See the `/licenses` directory inside the image for details.
+BSD 2-Clause (unchanged from upstream). Third-party licenses are in `Third_Party_Licenses.md`; the docker / singularity image's `/licenses` directory contains per-component licenses for the bundled libraries.
 
-The source code of this project is available at: 
-
-The official [GitHub repository](https://github.com/ikmb/bloodAGENT).
-
-
+Source code of this fork: https://github.com/gangchen/bloodAGENT.
+Upstream source code: https://github.com/ikmb/bloodAGENT.
