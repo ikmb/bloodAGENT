@@ -205,7 +205,28 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
     nmq = bcf_get_format_int32(hdr, rec, "MQ", &mq, &nmq_arr);
     nhq = bcf_get_format_int32(hdr, rec, "HQ", &hq, &nhq_arr);
     
+    m_is_phased = false;
+
+    if (ngt > 1 &&
+        gt[0] != bcf_gt_missing &&
+        gt[1] != bcf_gt_missing &&
+        gt[1] != bcf_int32_vector_end)
+    {
+        m_is_phased = bcf_gt_is_phased(gt[1]);
+    }
     
+    if (m_is_phased) {
+        if (nps > 0 && ps &&
+            ps[0] != bcf_int32_missing &&
+            ps[0] != bcf_int32_vector_end)
+        {
+            m_phasing_id = ps[0];
+        }
+        else {
+            // Phased GT without explicit PS
+            m_phasing_id = 1;
+        }
+    }
 
     if(rec->rid < static_cast<int32_t>(seq_names.size()))
         m_chrom = seq_names[rec->rid];
@@ -225,9 +246,6 @@ void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::strin
         m_qualities.push_back(gq[i]);
     for(int i = 0; i < nhq; i++)
         m_haplotype_qualities.push_back(hq[i]);
-    if (nps > 0 && ps && ps[0] != bcf_int32_missing && ps[0] != bcf_int32_vector_end) {
-        m_phasing_id = ps[0];
-    }
     if(nmq > 0)
         m_mapping_quality = mq[0];
         

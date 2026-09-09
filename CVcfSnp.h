@@ -41,7 +41,7 @@ public:
     std::string                 refAllele()const{return m_ref_allele;}
     std::string                 SNP()const;
     int                         phasingID()const{return m_phasing_id;}
-    bool                        isPhased()const{return m_phasing_id != -1;}
+    bool                        isPhased()const{return m_is_phased;}
     
     bool                        isHomozygous()const;
     bool                        isHeterozygous()const{return !isHomozygous();};
@@ -62,6 +62,7 @@ private:
     int                         m_mapping_quality;
     long                        m_depth;
     bool                        m_verbose;
+    bool                        m_is_phased = false;
     int                         m_phasing_id;
     std::string                 m_ref_allele;
     
