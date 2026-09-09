@@ -126,6 +126,11 @@ std::vector<std::string>  CVcfSnp::indelalleles()const
     // Soll sein G/A, reportiert aber mit Freebayes als:
     // 6       31106499        .       GTCCCCCCCA      ATCCCCCCA       271.543
     vector<std::string> vRet = m_alleles;
+    
+    // Do not normalize homozygous reference calls into deletions
+    // if(isHomozygous() && !vRet.empty() && vRet[0] == m_ref_allele)
+    //    return vRet;
+    
     if(vRet.size() > 1)
     {
         string hlp = m_ref_allele;

@@ -115,12 +115,19 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
     }
     
     vector<string> alleles = var.alleles();
+    // Homozygous reference calls do not represent a variant
+    if (alleles.size() == 2 &&
+        alleles[0] == var.refAllele() &&
+        alleles[1] == var.refAllele())
+    {
+        return true;
+    }
     if(isbv.isInDel())
         alleles = var.indelalleles();
     CVariantChainVariation vcv;
     for(size_t i = 0; i < 2 && i < alleles.size(); i++)
     {
-        cerr << "compare" << endl << "anno: " << isbv.alternative() << endl << "vcf:  "  << alleles[i] << endl << "----" << endl;
+        //cerr << "compare" << endl << "anno: " << isbv.alternative() << endl << "vcf:  "  << alleles[i] << endl << "----" << endl;
         if(isbv.alternative().compare(alleles[i]) == 0)
         {
             if(i == 0)
