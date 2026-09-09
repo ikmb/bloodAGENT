@@ -132,8 +132,8 @@ string CVariantChains::add(const CVcfSnp& act_snp)
     string the_act_system = m_isbt->getSystemAt(act_snp.chrom(),act_snp.pos());
     if(!the_act_system.empty())
     {
-        m_variant_chains[the_act_system].add(act_snp,m_break_phasing);
-        return the_act_system;
+        if(m_variant_chains[the_act_system].add(act_snp,m_break_phasing))
+            return the_act_system;
     }
     return "";
 }
