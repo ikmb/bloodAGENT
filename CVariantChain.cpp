@@ -120,7 +120,7 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
         alleles[0] == var.refAllele() &&
         alleles[1] == var.refAllele())
     {
-        return true;
+        return false;
     }
     if(isbv.isInDel())
         alleles = var.indelalleles();
