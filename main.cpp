@@ -68,7 +68,7 @@
 using namespace std;
 //using namespace BamTools;
 
-#define APP_VERSION_DEEPBLOOD "v0.0.1"
+#define APP_VERSION_DEEPBLOOD "v0.1.0"
 
 void phenotype(const string& arg_target_anno, bool arg_trick,const string& arg_isbt_SNPs,const string& arg_genotype_to_phenotype,const string& arg_vcf_file,const string& arg_bigWig,
         const string& arg_fastqgz, const string& arg_motifs,int arg_coverage, int arg_verbose, float arg_top_hits = 1.0, const string& arg_locus = "", 
