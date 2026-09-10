@@ -96,11 +96,11 @@ bool CISBTAnno::readAnnotation(const std::string& filename)
     return true;
   }
 
-bool CISBTAnno::isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system)
+/*bool CISBTAnno::isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system)
 {
     CIsbtVariant var = m_parsed_isbt_variant[m_isbt_variant_to_index[system][isbtVariant]];
     return var.reference().compare(allele) == 0;
-}
+}*/
 
 std::set<CISBTAnno::variation> CISBTAnno::getReferenceVariations(const std::string& system)
 {
