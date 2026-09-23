@@ -37,7 +37,7 @@ public:
     std::string                 chrom()const{return m_chrom;}
     long                        pos()const{return m_pos;}
     std::vector<std::string>    alleles()const{return m_alleles;}
-    std::vector<std::string>    indelalleles()const;
+    // std::vector<std::string>    indelalleles()const;
     std::string                 refAllele()const{return m_ref_allele;}
     std::string                 SNP()const;
     int                         phasingID()const{return m_phasing_id;}

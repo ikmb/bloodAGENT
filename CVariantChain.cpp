@@ -92,6 +92,15 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
     if(!m_isbt_anno)
         return false;
     
+    vector<string> alleles = var.alleles();
+    // Homozygous reference calls do not represent a variant
+    if (alleles.size() == 2 &&
+        alleles[0] == var.refAllele() &&
+        alleles[1] == var.refAllele())
+    {
+        return false;
+    }
+    
     CISBTAnno::variation isbv = m_isbt_anno->getCorrespondingIsbtVariation(var);
     isbv.addVcfSnp(var);
     CVariantChainVariation clean_vcv(isbv);
@@ -114,21 +123,14 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
             i++;
     }
     
-    vector<string> alleles = var.alleles();
-    // Homozygous reference calls do not represent a variant
-    if (alleles.size() == 2 &&
-        alleles[0] == var.refAllele() &&
-        alleles[1] == var.refAllele())
-    {
-        return false;
-    }
-    if(isbv.isInDel())
-        alleles = var.indelalleles();
+    // Relikt, ich leite nicht mehr von HGVS ab sondern habe VCF Repräsentation
+    // if(isbv.isInDel())
+    //    alleles = var.indelalleles();
     CVariantChainVariation vcv;
     for(size_t i = 0; i < 2 && i < alleles.size(); i++)
     {
-        //cerr << "compare" << endl << "anno: " << isbv.alternative() << endl << "vcf:  "  << alleles[i] << endl << "----" << endl;
-        if(isbv.alternative().compare(alleles[i]) == 0)
+        //cerr << "compare" << endl << "anno: " << isbv.vcfAlternative() << endl << "vcf:  "  << alleles[i] << endl << "----" << endl;
+        if(isbv.vcfAlternative().compare(alleles[i]) == 0)
         {
             if(i == 0)
                 vcv.first_variant = isbv;

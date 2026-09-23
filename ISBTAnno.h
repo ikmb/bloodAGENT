@@ -60,7 +60,7 @@ public:
     char strand(const std::string& system)const{if(m_strand.find(system) != m_strand.end())return m_strand.find(system)->second;return 'u';}
     
     
-    bool isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system);
+    //bool isVcfAlleleAnIsbtVariant(const std::string& allele, const std::string isbtVariant, const std::string system);
     
     std::set<std::string>   loci()const{ return m_loci;}
     

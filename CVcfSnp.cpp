@@ -119,7 +119,7 @@ CVcfSnp::~CVcfSnp() {
      return true;
  }
 
-std::vector<std::string>  CVcfSnp::indelalleles()const
+/*std::vector<std::string>  CVcfSnp::indelalleles()const
 {
     // ToDO:
     // Seltener Fall eines zum SNP benachbarten indels mit Freebyas gecallt
@@ -156,7 +156,7 @@ std::vector<std::string>  CVcfSnp::indelalleles()const
         if(vRet[i].size() == 0)
             vRet[i]="-";
     return vRet;
-}
+}*/
 
 void CVcfSnp::read_SNP_entry(htsFile *inf, bcf_hdr_t *hdr,std::vector<std::string>& seq_names,bcf1_t *rec)
 {
