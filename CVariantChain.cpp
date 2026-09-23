@@ -127,10 +127,13 @@ bool CVariantChain::add(const CVcfSnp& var, bool break_phasing)
     // if(isbv.isInDel())
     //    alleles = var.indelalleles();
     CVariantChainVariation vcv;
+    string variant_allele = isbv.isRefNClikeGRChNC()
+        ? isbv.vcfAlternative()
+        : isbv.vcfReference();
     for(size_t i = 0; i < 2 && i < alleles.size(); i++)
     {
         //cerr << "compare" << endl << "anno: " << isbv.vcfAlternative() << endl << "vcf:  "  << alleles[i] << endl << "----" << endl;
-        if(isbv.vcfAlternative().compare(alleles[i]) == 0)
+        if(variant_allele.compare(alleles[i]) == 0)
         {
             if(i == 0)
                 vcv.first_variant = isbv;
