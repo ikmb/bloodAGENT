@@ -697,21 +697,21 @@ float CIsbtGt2Pt::getTopPredictedScoreOfAllGenotypes(const typing_result& genoty
 void CIsbtGt2Pt::findAlleTaggingBaseChanges()
 {
     // std::map<std::string,vector<CIsbtPtAllele>>
-    for(auto blood_system : m_allele_vector)
+    for(const auto& blood_system : m_allele_vector)
     {
         map<string,set<CIsbtPtAllele>> unique_Finder;
         const string& act_system = blood_system.first;
-        for(auto act_allele : blood_system.second)
+        for(const auto& act_allele : blood_system.second)
         {
             std::vector<string> act_all_combinations = act_allele.getFullBaseChangeRecombinations();
-            for(auto act_combination : act_all_combinations)
+            for(const auto& act_combination : act_all_combinations)
                 unique_Finder[act_combination].insert(act_allele);
         }
         // find tagging SNPs
-        for(auto act_allele : blood_system.second)
+        for(const auto& act_allele : blood_system.second)
         {
             vector<string> hit_list;
-            for(auto act_gt_combi : unique_Finder)
+            for(const auto& act_gt_combi : unique_Finder)
             {   // if the act_allele is the only one for this genotype set then store it
                 // multiple hits are possible, so we will take the one with the fewest variations
                 if(act_gt_combi.second.size() == 1 && act_gt_combi.second.begin()->operator ==(act_allele))
@@ -719,7 +719,7 @@ void CIsbtGt2Pt::findAlleTaggingBaseChanges()
             }
             std::sort(hit_list.begin(),hit_list.end(),sort_by_space_separated_entries_asc);
             
-            for(auto act_gt : hit_list)
+            for(const auto& act_gt : hit_list)
             {
                 //cerr << act_system << '\t' << act_allele.name() << '\t' << act_gt << endl;
                 m_allele_vector_redundant[act_system].push_back(CIsbtPtAllele(act_allele.name(), act_allele.phenotype(), act_allele.flatPhenotype(), act_gt, "", 0.0f));
